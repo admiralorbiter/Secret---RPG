@@ -2,19 +2,37 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.*;
 
+public class GamePanel extends JPanel implements KeyListener{
 
-public class GamePanel extends JPanel implements KeyListener {
-
+	public enum GameState {
+	    TITLE_STATE,
+	    MAINGAME_STATE,
+	    SCENE_START,
+	    CARD_SELECTION,
+	    INITIATIVE,
+	    END;
+	}
+	
+	GameState state;
+	List<Integer> order = new ArrayList<Integer>();
 	//Player players[];
 	//int numberOfPlayers;
-	
+	List<Player> players = new ArrayList<Player>();
 	Scenario scene;
+	int currentPlayer;
+	char storedkey;
+	boolean next;
+	int playerCount=1;
+	int cardLock;
 	
 	public GamePanel(int numberOfPlayers) {
 		addKeyListener(this);
@@ -23,31 +41,69 @@ public class GamePanel extends JPanel implements KeyListener {
 		setFocusable(true);
 		initGame();
 		repaint();
+		/*
+		boolean running=true;
+		do{
+			repaint();
+		}
+		while(running);
+		*/
+		
 	}
 	
 	void initGame() {
 		int sceneID=1;
-		int playerCount=1;
-		scene = new Scenario(sceneID, playerCount);
+		currentPlayer=-1;
+		for(int i=0; i<playerCount; i++)
+			players.add(new Player("Mindthief"));
+		
+		scene = new Scenario(sceneID, players);
+		next=true;
+		state=GameState.SCENE_START;
+	}
+	
+	public void gameManager(Graphics g) {
+		if(state==GameState.SCENE_START) {
+			state=GameState.CARD_SELECTION;
+			currentPlayer=0;
+			cardLock=0;
+			next=false;
+		}
+		if(state==GameState.CARD_SELECTION) {
+			if(next==false)
+				players.get(currentPlayer).pickCards(g);
+			
+			if(next==true) {
+				if((currentPlayer+1)!=playerCount) {
+					currentPlayer++;
+					next=false;
+				}
+				else {
+					currentPlayer=-1;
+					state=GameState.INITIATIVE;
+				}
+			}
+		}
+		if(state==GameState.INITIATIVE) {
+			scene.pickCard();
+			orderPlayers();
+		}
+		
+		System.out.println("State: "+state);
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.magenta);
-		
-		List<Player> players=scene.getPlayers();
 		List<Enemy> enemies=scene.getEnemies();
 		
 		for(int i=0; i<players.size(); i++)
 			g.drawImage(players.get(i).getImage(), ((int)players.get(i).getX())*50, ((int)players.get(i).getY())*50, null);
 		
-		//System.out.println(((int)players.get(0).getX())*50+", "+((int)players.get(0).getY())*50);
-		
 		for(int i=0; i<enemies.size(); i++) {
 			int x = ((int)enemies.get(i).getX())*100;
 			int y =  ((int)enemies.get(i).getY());
-			System.out.println(x+","+y);
 			if(i%2!=0) {
 				y=y*100+5;
 			}
@@ -55,28 +111,70 @@ public class GamePanel extends JPanel implements KeyListener {
 				y=y*100;
 			
 			g.drawImage(enemies.get(i).getImage(), x, y, null);
-			//System.out.println(enemies.get(i).getName()+": "+((int)enemies.get(i).getX())*50+", "+((int)enemies.get(i).getY())*50);
 		}
-		//System.out.println(enemies.size());
 		
-		//g.drawImage(players[0].getImage(), 50, 50, null);
+		gameManager(g);
+		
 	}
 	
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
-
+		char k = e.getKeyChar();
+		int key=Integer.parseInt(String.valueOf(k));  
+		switch(state) {
+			case CARD_SELECTION:
+				if((key>=0) && (key<players.get(currentPlayer).getCardCount()))
+				{
+					cardLock++;
+					storedkey=k;
+					if(cardLock==1)
+						players.get(currentPlayer).lockedCard1=key;
+					if((cardLock==2)&&(key!=players.get(currentPlayer).lockedCard1))
+					{
+						players.get(currentPlayer).lockedCard2=key;
+						next=true;
+					}
+					else if(cardLock==2) {
+						cardLock--;
+					}
+				}
+				break;
+		}
+		
+		repaint();
 	}
 
+	public void orderPlayers() {
+		List<Integer> temp = new ArrayList<Integer>();
+		temp.clear();
+		temp.add(scene.getEnemyInitiative());
+		for(int i=0; i<(playerCount); i++) {
+			temp.add(players.get(i).getInitiative());
+		}
+		Collections.sort(temp);
+
+		order.clear();
+		
+		//i need an ordered list of players, not initiative
+		
+		for(int i=0; i<(playerCount+1); i++) {
+			order.add(i, temp.get(i));
+			System.out.println(order.get(i));
+		}
+		
+	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
+	
 }

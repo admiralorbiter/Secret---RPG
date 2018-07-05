@@ -2,6 +2,9 @@ package Gloomhaven;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Enemy {
 	

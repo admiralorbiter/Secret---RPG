@@ -27,6 +27,9 @@ public class CardDataObject {
 	boolean roundbonus;
 	int shield;
 	
+	//for enemies
+	boolean shuffle;
+	
 	public CardDataObject() {
 		attack=0;
 		move=0;
@@ -53,5 +56,6 @@ public class CardDataObject {
 		aoe=false;
 		roundbonus=false;
 		shield=0;
+		shuffle=false;
 	}
 }

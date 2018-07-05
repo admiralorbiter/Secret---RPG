@@ -157,9 +157,19 @@ public class AbilityCards {
 				
 			}
 		}
+		
 	}
 	
 	CardDataObject getTop() {return top;}
 	CardDataObject getBottom() {return bottom;}
+	
+	String getText() {
+		String text=initiative+": "+top.text+" - "+bottom.text;
+		return text;
+	}
+	
+	int getInitiative() {
+		return initiative;
+	}
 	
 }

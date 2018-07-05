@@ -135,6 +135,12 @@ public class CardsMindthief implements Cards {
 		return bottom;
 	}
 
+	@Override
+	public CardDataObject getData(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	
 }

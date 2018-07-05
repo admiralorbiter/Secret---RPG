@@ -3,6 +3,7 @@ package Gloomhaven;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ScenarioRoom {
 	List<Enemy> enemies = new ArrayList<Enemy>();
@@ -11,7 +12,6 @@ public class ScenarioRoom {
 	int enemyCount;
 	int height;
 	int width;
-	
 	Point starting;//starting place for players this should be temp
 	
 	public ScenarioRoom(int id) {
@@ -36,6 +36,7 @@ public class ScenarioRoom {
 				enemies.get(5).setXY(new Point(5, 0));
 				enemies.get(6).setXY(new Point(6, 0));
 				starting = new Point(3, 3);
+				
 		}
 		
 	}

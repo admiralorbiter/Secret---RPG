@@ -45,7 +45,16 @@ public class GamePanel extends JPanel implements KeyListener {
 		//System.out.println(((int)players.get(0).getX())*50+", "+((int)players.get(0).getY())*50);
 		
 		for(int i=0; i<enemies.size(); i++) {
-			g.drawImage(enemies.get(i).getImage(), ((int)enemies.get(i).getX())*50, ((int)enemies.get(i).getY())*50, null);
+			int x = ((int)enemies.get(i).getX())*100;
+			int y =  ((int)enemies.get(i).getY());
+			System.out.println(x+","+y);
+			if(i%2!=0) {
+				y=y*100+5;
+			}
+			else
+				y=y*100;
+			
+			g.drawImage(enemies.get(i).getImage(), x, y, null);
 			//System.out.println(enemies.get(i).getName()+": "+((int)enemies.get(i).getX())*50+", "+((int)enemies.get(i).getY())*50);
 		}
 		//System.out.println(enemies.size());

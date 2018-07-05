@@ -10,10 +10,11 @@ public class AbilityCards {
 	
 	CardDataObject top = new CardDataObject();
 	CardDataObject bottom = new CardDataObject();
-	Cards card = new CardsMindthief();
+	Cards card;
 	
 	public AbilityCards(int level, int id, String Class) {
 		if(Class=="Mindthief") {
+			card = new CardsMindthief();
 			if(level==1) {
 				switch(id)
 				{
@@ -88,6 +89,72 @@ public class AbilityCards {
 						break;
 						
 				}
+			}
+		}
+		else if(Class=="Inox Brute") {
+			card = new CardsBrute();
+			switch(id) {
+				case 101:
+					name="Temple";
+					initiative=72;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 102:
+					name="Eye for an Eye";
+					initiative=18;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 103:
+					name="Sweeping Blow";
+					initiative=64;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 104:
+					name="Provoking Roar";
+					initiative=10;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 105:
+					name="Overwhelming Assault";
+					initiative=61;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 106:
+					name="Grab and Go";
+					initiative=87;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 107:
+					name="Warding Strength";
+					initiative=32;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 108:
+					name="Shield Bash";
+					initiative=15;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 109:
+					name="Leaping Cleave";
+					initiative=54;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				case 110:
+					name="Spare Dagger";
+					initiative=27;
+					top=card.getTop(name);
+					bottom=card.getBottom(name);	
+					break;
+				
 			}
 		}
 	}

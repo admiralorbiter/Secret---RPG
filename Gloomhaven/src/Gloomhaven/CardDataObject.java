@@ -8,6 +8,7 @@ public class CardDataObject {
 	int push;
 	int heal;
 	int range;
+	int pierce;
 	boolean continuous;
 	boolean discard;
 	boolean lost;
@@ -21,6 +22,10 @@ public class CardDataObject {
 	boolean invisible;
 	boolean jump;
 	boolean complex;
+	boolean retaliate;
+	boolean aoe;
+	boolean roundbonus;
+	int shield;
 	
 	public CardDataObject() {
 		attack=0;
@@ -29,6 +34,7 @@ public class CardDataObject {
 		push=0;
 		heal=0;
 		range=0;
+		pierce=0;
 		continuous=false;
 		discard=true;
 		lost=false;
@@ -43,5 +49,9 @@ public class CardDataObject {
 		invisible=false;
 		jump=false;
 		complex=false;
+		retaliate=false;
+		aoe=false;
+		roundbonus=false;
+		shield=0;
 	}
 }

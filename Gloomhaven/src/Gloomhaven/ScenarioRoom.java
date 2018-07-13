@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.Random;
 
 public class ScenarioRoom {
-	List<Enemy> enemies = new ArrayList<Enemy>();
 	List<Player> players;
-	
+	List<Enemy> enemies;
 	int enemyCount;
 	int height;
 	int width;
 	Point starting;//starting place for players this should be temp
 	
-	public ScenarioRoom(int id) {
+	public ScenarioRoom(int id, List<Enemy> enemies) {
+		this.enemies=enemies;
 		if(id==1) {
 			enemyCount=7;
 			for(int i=0; i<enemyCount; i++) {
-				enemies.add(new Enemy("Bandit Guard"));
+				enemies.add(new Enemy("Bandit Guard", i));
 			}
 			
 				enemies.get(1).makeElite();
@@ -48,7 +48,8 @@ public class ScenarioRoom {
 		}
 	}
 	
+	/*
 	public List<Enemy> getEnemies() {
 		return enemies;
-	}
+	}*/
 }

@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	    SCENE_START,
 	    CARD_SELECTION,
 	    INITIATIVE,
+	    ATTACK,
 	    END;
 	}
 	
@@ -87,6 +88,10 @@ public class GamePanel extends JPanel implements KeyListener{
 		if(state==GameState.INITIATIVE) {
 			scene.pickCard();
 			orderPlayers();
+			state=GameState.ATTACK;
+		}
+		if(state==GameState.ATTACK) {
+			scene.enemyAttack();
 		}
 		
 		System.out.println("State: "+state);
@@ -102,13 +107,14 @@ public class GamePanel extends JPanel implements KeyListener{
 			g.drawImage(players.get(i).getImage(), ((int)players.get(i).getX())*50, ((int)players.get(i).getY())*50, null);
 		
 		for(int i=0; i<enemies.size(); i++) {
-			int x = ((int)enemies.get(i).getX())*100;
-			int y =  ((int)enemies.get(i).getY());
-			if(i%2!=0) {
-				y=y*100+5;
+			int x = ((int)enemies.get(i).getX());
+			int y =  ((int)enemies.get(i).getY())*50;
+			
+			if(x%2!=0) {
+				y=y+50;
 			}
-			else
-				y=y*100;
+			
+			x=x*100;
 			
 			g.drawImage(enemies.get(i).getImage(), x, y, null);
 		}

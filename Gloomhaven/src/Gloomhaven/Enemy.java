@@ -12,11 +12,17 @@ public class Enemy {
 	Sprite sprite;
 	boolean elite=false;
 	Point position;
+	int id;
 	
-	public Enemy(String name) {
+	public Enemy(String name, int id) {
+		this.id=id;
 		this.name=name;
 		position = new Point(0, 0);
 		sprite=new Sprite("src/Gloomhaven/Sprites/Enemy.png");
+	}
+	
+	public boolean isElite() {
+		return elite;
 	}
 	
 	public void makeElite() {
@@ -26,7 +32,7 @@ public class Enemy {
 	public void setXY(Point position) {
 		this.position=position;
 	}
-	
+
 	public Image getImage(){return sprite.getImage();}
 	
 	public double getX() {return position.getX();}

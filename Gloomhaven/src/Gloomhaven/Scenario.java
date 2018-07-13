@@ -13,8 +13,10 @@ public class Scenario {
 	int currentRoom;
 	int sceneID;
 	List<EnemyAbilityCards> list = new ArrayList<EnemyAbilityCards>();
+	List<Enemy> enemies = new ArrayList<Enemy>();
 	int cardCount;
 	int card;
+	
 	
 	//temp
 	//Mindthief player;
@@ -28,11 +30,11 @@ public class Scenario {
 			
 			//setup rooms
 			int roomID=1;
-			rooms.add(new ScenarioRoom(roomID));
+			rooms.add(new ScenarioRoom(roomID, enemies));
 			roomID=2;
-			rooms.add(new ScenarioRoom(roomID));
+			rooms.add(new ScenarioRoom(roomID, enemies));
 			roomID=3;
-			rooms.add(new ScenarioRoom(roomID));
+			rooms.add(new ScenarioRoom(roomID, enemies));
 			
 			rooms.get(0).addPlayers(players);
 			
@@ -47,6 +49,7 @@ public class Scenario {
 			list.add(new EnemyAbilityCards(1, i+1, "Guard"));
 		}
 		
+		orderEnemies();
 		//player = new Mindthief();
 	}
 	
@@ -56,7 +59,8 @@ public class Scenario {
 	
 	public List<Enemy> getEnemies(){
 		//System.out.println("Test: "+room.get(0).getEnemies);
-		return rooms.get(currentRoom).getEnemies();
+		//return rooms.get(currentRoom).getEnemies();
+		return enemies;
 		//List<Enemy> enemies=rooms.get(currentRoom).getEnemies();
 		//return enemies;
 	}
@@ -77,5 +81,43 @@ public class Scenario {
 	
 	public int getEnemyInitiative() {
 		return list.get(card).getInitiative();
+	}
+	
+	public void enemyAttack() {
+		//need to order the list of enemies - order list done at start of scenario
+		//need to for each check what players are in distance
+		//if no one is next, move and attack
+		//if none are in distance, move to the next
+		
+		for(int i=0; i<enemies.size(); i++) {
+			if(inMelee())
+		}
+		
+		for(int i=0; i<enemies.size(); i++)
+			System.out.println(enemies.get(i).getName()+": "+enemies.get(i).getX()+","+enemies.get(i).getY());
+	}
+	
+	private void inMelee(Enemy enemy) {
+		for(int i=0; i<players.size(); i++) {
+			
+		}
+	}
+	
+	private void orderEnemies() {
+		
+		List<Enemy> temp = new ArrayList<Enemy>();
+		for(int i=0; i<enemies.size(); i++) {
+			if(enemies.get(i).isElite()) {
+				temp.add(enemies.get(i));
+			}
+		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			if(!(enemies.get(i).isElite())) {
+				temp.add(enemies.get(i));
+			}
+		}
+	
+		enemies=temp;		
 	}
 }

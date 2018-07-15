@@ -20,6 +20,10 @@ public class GamePanel extends JPanel implements KeyListener{
 	    CARD_SELECTION,
 	    INITIATIVE,
 	    ATTACK,
+	    ENEMYATTACK,
+	    PLAYERATTACK,
+	    PLAYERDEFENSE,
+	    ENEMYDEFENSE,
 	    END;
 	}
 	
@@ -34,6 +38,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	boolean next;
 	int playerCount=1;
 	int cardLock;
+	int turn;
 	
 	public GamePanel(int numberOfPlayers) {
 		addKeyListener(this);
@@ -91,7 +96,30 @@ public class GamePanel extends JPanel implements KeyListener{
 			state=GameState.ATTACK;
 		}
 		if(state==GameState.ATTACK) {
-			scene.enemyAttack();
+			//deciede if is player attack or enemy attack
+			state=GameState.ENEMYATTACK;
+			turn=0;
+		}
+		if(state==GameState.ENEMYATTACK) {
+			if(next==true) {
+				scene.enemyAttackProcedure();
+				next=false;
+			}
+			if(next==false) {
+				System.out.println("Test");
+				scene.playerDefendProcedure(g);
+			}
+		}
+		if(state==GameState.PLAYERATTACK) {
+			
+			
+			turn++;
+			if(turn==1) {
+				state=GameState.ENEMYATTACK;
+			}
+			else {
+				state=GameState.END;
+			}
 		}
 		
 		System.out.println("State: "+state);
@@ -143,6 +171,31 @@ public class GamePanel extends JPanel implements KeyListener{
 					}
 					else if(cardLock==2) {
 						cardLock--;
+					}
+				}
+				break;
+				
+			case PLAYERDEFENSE:
+				if(k=='y') {
+					storedkey=k;
+					next=true;
+					turn++;
+					if(turn==1) {
+						state=GameState.PLAYERATTACK;
+					}
+					else {
+						state=GameState.END;
+					}
+				}
+				else if(k=='n') {
+					storedkey=k;
+					next=true;
+					turn++;
+					if(turn==1) {
+						state=GameState.PLAYERATTACK;
+					}
+					else {
+						state=GameState.END;
 					}
 				}
 				break;

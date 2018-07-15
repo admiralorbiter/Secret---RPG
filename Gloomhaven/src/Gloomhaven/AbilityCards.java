@@ -171,5 +171,4 @@ public class AbilityCards {
 	int getInitiative() {
 		return initiative;
 	}
-	
 }

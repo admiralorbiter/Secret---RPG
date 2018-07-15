@@ -34,7 +34,7 @@ public class Enemy {
 	}
 
 	public Image getImage(){return sprite.getImage();}
-	
+	public Point getPosition() {return position;}
 	public double getX() {return position.getX();}
 	public double getY() {return position.getY();}
 	public String getName() {return name;}

@@ -72,6 +72,11 @@ public class EnemyAbilityCards {
 		
 	}
 	
+	int getAttack() {
+		return cardDO.attack;
+	}
+	
+	
 	Boolean cardFree() {
 		if(lost)
 			return false;

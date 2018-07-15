@@ -27,6 +27,7 @@ public class Player {
 	int lockedCard1;
 	int lockedCard2;
 	
+	int damage;
 	
 	public Player(String Class) {
 		
@@ -55,6 +56,10 @@ public class Player {
 
 	}
 
+	public void deciedeDefense(int damage) {
+		this.damage=damage;
+	}
+	
 	public void pickCards(Graphics g) {
 		for(int i=0; i<list.size(); i++)	
 			g.drawString(i+": "+list.get(i).getText(), 50, i*20+500);
@@ -67,10 +72,11 @@ public class Player {
 		this.position=position;
 	}
 	
+	public Point getPosition() {return position;}
 	public double getX() {return position.getX();}
 	public double getY() {return position.getY();}
 	public int getCardCount() {return list.size();}
-	
+	public String getName() {return Class;}
 	public int getInitiative() {
 		return list.get(lockedCard1).getInitiative();
 	}

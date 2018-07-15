@@ -1,5 +1,7 @@
 package Gloomhaven;
 
+import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,6 +19,9 @@ public class Scenario {
 	int cardCount;
 	int card;
 	
+	int attackedPlayer;
+	
+	Boolean wait;
 	
 	//temp
 	//Mindthief player;
@@ -83,24 +88,80 @@ public class Scenario {
 		return list.get(card).getInitiative();
 	}
 	
-	public void enemyAttack() {
+	public void enemyAttackProcedure() {
 		//need to order the list of enemies - order list done at start of scenario
 		//need to for each check what players are in distance
 		//if no one is next, move and attack
 		//if none are in distance, move to the next
 		
+		/*this shit is in here because i literally can't figure out how
+		 * to have it wait for a command from the user to decide then move on
+		 * so i have this janky ass system. if you are reading this, it is probably
+		 * to late to help. If wait is commented out with no comments, god help us all.
+		 */
+		//wait=false;
+		
+		//first do melee check because then move/range doesn't matter
 		for(int i=0; i<enemies.size(); i++) {
-			if(inMelee())
+			int meleeCode=inMelee(enemies.get(i));
+			if(meleeCode!=-1) {
+				//do stuff if in melee with meleeCode
+				attackPlayer(meleeCode);
+
+			}
 		}
 		
 		for(int i=0; i<enemies.size(); i++)
 			System.out.println(enemies.get(i).getName()+": "+enemies.get(i).getX()+","+enemies.get(i).getY());
 	}
 	
-	private void inMelee(Enemy enemy) {
+	public void playerDefendProcedure(Graphics g) {
+		int attack=list.get(card).getAttack();
+		g.drawString("Defend against "+attack+" of damage by discarding?", 50, 500);
+	}
+	
+	private void attackPlayer(int playerIndex) {
+		attackedPlayer=playerIndex;
+		
+	}
+	
+	private int inMelee(Enemy enemy) {
+		Point enemyPos = enemy.getPosition();
 		for(int i=0; i<players.size(); i++) {
-			
+			Point playerPos = players.get(i).getPosition();
+			if((enemyPos.x!=0)&&(playerPos.x==(enemyPos.x-1))) {
+				if(playerPos.y==(enemyPos.y-1)) {
+					return i;
+				}
+				else if(playerPos.y==(enemyPos.y)) {
+					return i;
+				}
+				else if(playerPos.y==(enemyPos.y+1)) {
+					return i;
+				}
+			}
+			else if((enemyPos.x!=0)&&(playerPos.x==(enemyPos.x+1))) {
+				if(playerPos.y==(enemyPos.y-1)) {
+					return i;
+				}
+				else if(playerPos.y==(enemyPos.y)) {
+					return i;
+				}
+				else if(playerPos.y==(enemyPos.y+1)) {
+					return i;
+				}
+			}
+			else if((enemyPos.x!=0)&&(playerPos.x==enemyPos.x)) {
+				if(playerPos.y==(enemyPos.y-1)) {
+					return i;
+				}
+				else if(playerPos.y==(enemyPos.y+1)) {
+					return i;
+				}
+			}
 		}
+		
+		return -1;
 	}
 	
 	private void orderEnemies() {

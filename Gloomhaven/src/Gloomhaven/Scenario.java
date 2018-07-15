@@ -22,6 +22,7 @@ public class Scenario {
 	int attackedPlayer;
 	
 	Boolean wait;
+
 	
 	//temp
 	//Mindthief player;
@@ -46,7 +47,6 @@ public class Scenario {
 		}
 		
 		currentRoom=0;
-
 		//depends on class/name
 		cardCount=8;
 		for(int i=0; i<cardCount; i++) {
@@ -147,7 +147,10 @@ public class Scenario {
 	public void discardTargetPlayer() {
 		players.get(attackedPlayer).randomDiscard();
 	}
-	
+	/*
+	 * I think the los should mostly work for range 2
+	 * Range of 3 will need to be worked on in the future.
+	 */
 	private boolean checkLOS(Point pPos, Point ePos) {
 		String board[][] = rooms.get(currentRoom).getBoard();
 		Point dim = rooms.get(currentRoom).getDim();

@@ -25,6 +25,8 @@ public class Player {
 	CardDataObject cardData;
 	Point position;
 	
+	int top;
+	
 	int lockedCard1;
 	int lockedCard2;
 	
@@ -49,6 +51,14 @@ public class Player {
 		
 		lockedCard1=-1;
 		lockedCard2=-1;
+	}
+	
+	public String firstCard() {
+		return list.get(lockedCard1).getText();
+	}
+	
+	public String secondCard() {
+		return list.get(lockedCard2).getText();
 	}
 	
 	private void playCard(AbilityCards card, boolean top) {
@@ -84,7 +94,7 @@ public class Player {
 	public void setXY(Point position) {
 		this.position=position;
 	}
-	
+	public void setTop(int topIndex) {topIndex=top;}
 	public Point getPosition() {return position;}
 	public double getX() {return position.getX();}
 	public double getY() {return position.getY();}

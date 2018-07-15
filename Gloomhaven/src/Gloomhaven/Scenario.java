@@ -104,11 +104,10 @@ public class Scenario {
 		//first do melee check because then move/range doesn't matter
 		for(int i=0; i<enemies.size(); i++) {
 			int meleeCode=inMelee(enemies.get(i));
-			if(meleeCode!=-1) {
-				//do stuff if in melee with meleeCode
-				attackPlayer(meleeCode);
 
-			}
+			//do stuff if in melee with meleeCode
+			attackPlayer(meleeCode);
+
 		}
 		
 		for(int i=0; i<enemies.size(); i++)
@@ -117,12 +116,24 @@ public class Scenario {
 	
 	public void playerDefendProcedure(Graphics g) {
 		int attack=list.get(card).getAttack();
-		g.drawString("Defend against "+attack+" of damage by discarding?", 50, 500);
+		
+		g.drawString("Defend against "+card+" with "+attack+" of damage by discarding?", 50, 500);
 	}
 	
 	private void attackPlayer(int playerIndex) {
 		attackedPlayer=playerIndex;
 		
+	}
+	
+	public int getTargetedPlayer() {return attackedPlayer;}
+	
+	public void decreaseTargetPlayerHealth() {
+		int attack=list.get(card).getAttack();
+		players.get(attackedPlayer).takeDamage(attack);
+	}
+	
+	public void discardTargetPlayer() {
+		players.get(attackedPlayer).randomDiscard();
 	}
 	
 	private int inMelee(Enemy enemy) {
@@ -181,4 +192,5 @@ public class Scenario {
 	
 		enemies=temp;		
 	}
+	
 }

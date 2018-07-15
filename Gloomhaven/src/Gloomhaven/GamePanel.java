@@ -106,20 +106,36 @@ public class GamePanel extends JPanel implements KeyListener{
 				next=false;
 			}
 			if(next==false) {
-				System.out.println("Test");
-				scene.playerDefendProcedure(g);
+				if(scene.getTargetedPlayer()==-1)
+				{
+					System.out.println("No one in range");
+					turn++;
+					if(turn==1) {
+						state=GameState.PLAYERATTACK;
+					}
+					else {
+						state=GameState.END;
+					}
+					
+				}
+				else {
+					state=GameState.PLAYERDEFENSE;
+				}
 			}
+		}
+		if(state==GameState.PLAYERDEFENSE) {
+			scene.playerDefendProcedure(g);
 		}
 		if(state==GameState.PLAYERATTACK) {
 			
-			
-			turn++;
+			System.out.println("Health: "+players.get(0).getHealth());
+			/*turn++;
 			if(turn==1) {
 				state=GameState.ENEMYATTACK;
 			}
 			else {
 				state=GameState.END;
-			}
+			}*/
 		}
 		
 		System.out.println("State: "+state);
@@ -155,7 +171,13 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char k = e.getKeyChar();
-		int key=Integer.parseInt(String.valueOf(k));  
+		int key = -1;
+		try{
+			key=Integer.parseInt(String.valueOf(k));  
+			}catch(NumberFormatException ex){ // handle your exception
+			   System.out.println("");
+			}
+		//int key=Integer.parseInt(String.valueOf(k));  
 		switch(state) {
 			case CARD_SELECTION:
 				if((key>=0) && (key<players.get(currentPlayer).getCardCount()))
@@ -176,10 +198,15 @@ public class GamePanel extends JPanel implements KeyListener{
 				break;
 				
 			case PLAYERDEFENSE:
+				//System.out.println(turn);
 				if(k=='y') {
 					storedkey=k;
 					next=true;
 					turn++;
+					
+					//discard a card
+					scene.discardTargetPlayer();
+					
 					if(turn==1) {
 						state=GameState.PLAYERATTACK;
 					}
@@ -191,6 +218,10 @@ public class GamePanel extends JPanel implements KeyListener{
 					storedkey=k;
 					next=true;
 					turn++;
+					
+					//decrease health
+					scene.decreaseTargetPlayerHealth();
+					
 					if(turn==1) {
 						state=GameState.PLAYERATTACK;
 					}

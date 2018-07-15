@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,7 +28,9 @@ public class Player {
 	int lockedCard1;
 	int lockedCard2;
 	
-	int damage;
+	boolean dead;
+	
+	//int damage;
 	
 	public Player(String Class) {
 		
@@ -36,7 +39,7 @@ public class Player {
 		health=6;
 		level=1;
 		cardCount=10;
-		
+		dead=false;
 		this.Class=Class;
 		position = new Point(0, 0);
 		pSprite=new Sprite("src/Gloomhaven/Sprites/Player.png");
@@ -56,9 +59,19 @@ public class Player {
 
 	}
 
-	public void deciedeDefense(int damage) {
-		this.damage=damage;
+	public void takeDamage(int damage) {
+		health=health-damage;
+		if(health<=0)
+			dead=true;
 	}
+	
+	public void randomDiscard() {
+		Random rand = new Random();
+		int index = rand.nextInt(list.size());
+		list.remove(index);
+	}
+	
+	public int getHealth() {return health;}
 	
 	public void pickCards(Graphics g) {
 		for(int i=0; i<list.size(); i++)	

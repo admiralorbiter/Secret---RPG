@@ -89,7 +89,7 @@ public class Scenario {
 	}
 	
 	public void enemyAttackProcedure() {
-		//need to order the list of enemies - order list done at start of scenario
+		//need to order the list of enemies -ene order list done at start of scenario
 		//need to for each check what players are in distance
 		//if no one is next, move and attack
 		//if none are in distance, move to the next
@@ -106,7 +106,18 @@ public class Scenario {
 			int meleeCode=inMelee(enemies.get(i));
 
 			//do stuff if in melee with meleeCode
-			attackPlayer(meleeCode);
+			if(list.get(card).getRange()==0)
+				attackPlayer(meleeCode);
+			else {
+				/*
+				 * Need to check if there is a direct line, not just if something is range. 
+				 * First check if something is in range. Then check if there is los
+				 */
+				int rangeCode=inRange(enemies.get(i));
+				if(rangeCode!=-1) {
+					attackPlayer(rangeCode);
+				}
+			}
 
 		}
 		
@@ -134,6 +145,77 @@ public class Scenario {
 	
 	public void discardTargetPlayer() {
 		players.get(attackedPlayer).randomDiscard();
+	}
+	
+	private	int inRange(Enemy enemy) {
+		Point enemyPos = enemy.getPosition();
+		String board[][] = rooms.get(currentRoom).getBoard();
+		Point dim = rooms.get(currentRoom).getDim();
+		int range = list.get(card).getRange();
+		for(int i=0; i<players.size(); i++) {
+			Point playerPos = players.get(i).getPosition();
+			int x;
+			int y;
+			for(int r=0; r<range; r++) {
+				x=enemyPos.x;
+				y=enemyPos.y;
+				
+				if((enemyPos.y-r)>=0) {
+					y=y-r;
+					if(board[x][y]=="Player") {
+						return i;
+					}
+				}
+				if((enemyPos.y+r)<=dim.getY()) {
+					y=y+r;
+					if(board[x][y]=="Player") {
+						return i;
+					}
+				}
+				
+				if((enemyPos.x-r)>=0) {
+					x=x-r;
+					if(board[x][y]=="Player") {
+						return i;
+					}
+					if((enemyPos.y-r)>=0) {
+						y=y-r;
+						if(board[x][y]=="Player") {
+							return i;
+						}
+					}
+					if((enemyPos.y+r)<=dim.getY()) {
+						y=y+r;
+						if(board[x][y]=="Player") {
+							return i;
+						}
+					}
+				}
+				
+				if((enemyPos.x+r)<=dim.getY()) {
+					x=x+r;
+					if(board[x][y]=="Player") {
+						return i;
+					}
+					if((enemyPos.y-r)>=0) {
+						y=y-r;
+						if(board[x][y]=="Player") {
+							return i;
+						}
+					}
+					if((enemyPos.y+r)<=dim.getY()) {
+						y=y+r;
+						if(board[x][y]=="Player") {
+							return i;
+						}
+					}
+				}
+			}
+			
+		}
+		
+		
+		return -1;
 	}
 	
 	private int inMelee(Enemy enemy) {

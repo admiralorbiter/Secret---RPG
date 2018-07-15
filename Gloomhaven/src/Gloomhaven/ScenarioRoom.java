@@ -67,6 +67,8 @@ public class ScenarioRoom {
 		}
 	}
 	
+	public String[][] getBoard() { return board;}
+	
 	/*
 	public List<Enemy> getEnemies() {
 		return enemies;

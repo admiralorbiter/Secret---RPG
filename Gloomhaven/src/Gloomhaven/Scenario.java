@@ -105,8 +105,9 @@ public class Scenario {
 		for(int i=0; i<enemies.size(); i++) {
 			int meleeCode=inMelee(enemies.get(i));
 
-			//do stuff if in melee with meleeCode
-			if(list.get(card).getRange()==0)
+			//if no range or in melee range, do melee
+			//if not, target range
+			if((list.get(card).getRange()==0)||(meleeCode!=-1))
 				attackPlayer(meleeCode);
 			else {
 				/*
@@ -147,6 +148,127 @@ public class Scenario {
 		players.get(attackedPlayer).randomDiscard();
 	}
 	
+	private boolean checkLOS(Point pPos, Point ePos) {
+		String board[][] = rooms.get(currentRoom).getBoard();
+		Point dim = rooms.get(currentRoom).getDim();
+		int x=pPos.x;
+		int y=pPos.y;
+		boolean los=false;
+		
+		x=pPos.x;
+		y=pPos.y;
+		if(pPos.x==ePos.x) {
+
+			los=true;
+			for(int i=1; i<Math.abs(pPos.y-ePos.y); i++) {
+				if((pPos.y-ePos.y)<0) {
+					y=y+1;
+				}
+				else {
+					y=y-1;
+				}
+				
+				if(board[x][y]!="Empty") {
+					los=false;
+				}
+			}
+			if(los==true) {
+				return true;
+			}
+		}
+		
+		x=pPos.x;
+		y=pPos.y;
+		if(pPos.y==ePos.y) {
+			los=true;
+			for(int i=1; i<Math.abs(pPos.x-ePos.x); i++) {
+				if((pPos.x-ePos.x)<0) {
+					x=x+1;
+				}
+				else {
+					x=x-1;
+				}
+				
+				if(board[x][y]!="Empty") {
+					los=false;
+				}
+			}
+			if(los==true) {
+				return true;
+			}
+		}
+		
+		//if not on the same line
+		//move the x values  until same
+		//then move the ys until less than 1
+		//if range 3, this may not check every potential
+		x=pPos.x;
+		y=pPos.y;
+		los=true;
+		for(int i=0; i<Math.abs(pPos.x-ePos.x); i++) {
+			if((pPos.x-ePos.x)<0) {
+				x=x+1;
+			}
+			else {
+				x=x-1;
+			}
+			
+			if(board[x][y]!="Empty") {
+				los=false;
+			}
+		}
+		for(int i=1; i<Math.abs(pPos.y-ePos.y); i++) {
+			if((pPos.y-ePos.y)<0) {
+				y=y+1;
+			}
+			else {
+				y=y-1;
+			}
+			
+			if(board[x][y]!="Empty") {
+				los=false;
+			}
+		}
+		if(los==true) {
+			return true;
+		}
+		
+		//now need to go up with the y, then the x
+		x=pPos.x;
+		y=pPos.y;
+		los=true;
+		for(int i=0; i<Math.abs(pPos.y-ePos.y); i++) {
+			if((pPos.y-ePos.y)<0) {
+				y=y+1;
+			}
+			else {
+				y=y-1;
+			}
+			
+			if(board[x][y]!="Empty") {
+				los=false;
+			}
+		}
+		for(int i=1; i<Math.abs(pPos.x-ePos.x); i++) {
+			if((pPos.x-ePos.x)<0) {
+				x=x+1;
+			}
+			else {
+				x=x-1;
+			}
+			
+			if(board[x][y]!="Empty") {
+				los=false;
+			}
+		}
+		if(los==true) {
+			return true;
+		}
+		
+		
+		return false;
+	}
+	
 	private	int inRange(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		String board[][] = rooms.get(currentRoom).getBoard();
@@ -163,12 +285,14 @@ public class Scenario {
 				if((enemyPos.y-r)>=0) {
 					y=y-r;
 					if(board[x][y]=="Player") {
+						//checkLOS(pPos, ePos);
 						return i;
 					}
 				}
 				if((enemyPos.y+r)<=dim.getY()) {
 					y=y+r;
 					if(board[x][y]=="Player") {
+						//checkLOS();
 						return i;
 					}
 				}
@@ -176,17 +300,20 @@ public class Scenario {
 				if((enemyPos.x-r)>=0) {
 					x=x-r;
 					if(board[x][y]=="Player") {
+						//checkLOS();
 						return i;
 					}
 					if((enemyPos.y-r)>=0) {
 						y=y-r;
 						if(board[x][y]=="Player") {
+							//checkLOS();
 							return i;
 						}
 					}
 					if((enemyPos.y+r)<=dim.getY()) {
 						y=y+r;
 						if(board[x][y]=="Player") {
+							//checkLOS();
 							return i;
 						}
 					}
@@ -195,17 +322,20 @@ public class Scenario {
 				if((enemyPos.x+r)<=dim.getY()) {
 					x=x+r;
 					if(board[x][y]=="Player") {
+						//checkLOS();
 						return i;
 					}
 					if((enemyPos.y-r)>=0) {
 						y=y-r;
 						if(board[x][y]=="Player") {
+							//checkLOS();
 							return i;
 						}
 					}
 					if((enemyPos.y+r)<=dim.getY()) {
 						y=y+r;
 						if(board[x][y]=="Player") {
+							//checkLOS();
 							return i;
 						}
 					}

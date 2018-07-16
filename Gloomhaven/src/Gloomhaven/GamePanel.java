@@ -138,6 +138,7 @@ public class GamePanel extends JPanel implements KeyListener{
 				printPlayerCards(g);
 			
 			if(next==true) {
+				repaint();
 				if((currentPlayer+1)!=playerCount) {
 					currentPlayer++;
 					next=false;
@@ -165,6 +166,8 @@ public class GamePanel extends JPanel implements KeyListener{
 		g.drawString("Pick top card. Second card will default bottom.", 50, 450);
 		g.drawString(1+": "+card1, 50, 500);
 		g.drawString(2+": "+card2, 50, 550);
+		g.drawString(3+": Attack +2", 500, 500);
+		g.drawString(4+": Move +2", 500, 550);
 	}
 	
 	@Override
@@ -226,7 +229,7 @@ public class GamePanel extends JPanel implements KeyListener{
 			case PLAYERATTACK:
 				int temp1;
 				int temp2;
-				if((key>0) && (key<3))
+				if((key>=1) && (key<=4))
 				{
 					players.get(currentPlayer).setTop(key);
 					next=true;

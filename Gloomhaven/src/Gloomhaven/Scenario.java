@@ -114,7 +114,7 @@ public class Scenario {
 				 * Need to check if there is a direct line, not just if something is range. 
 				 * First check if something is in range. Then check if there is los
 				 */
-				int rangeCode=inRange(enemies.get(i));
+				int rangeCode=playerInRange(enemies.get(i));
 				if(rangeCode!=-1) {
 					attackPlayer(rangeCode);
 				}
@@ -147,11 +147,12 @@ public class Scenario {
 	public void discardTargetPlayer() {
 		players.get(attackedPlayer).randomDiscard();
 	}
+	
 	/*
 	 * I think the los should mostly work for range 2
 	 * Range of 3 will need to be worked on in the future.
 	 */
-	private boolean checkLOS(Point pPos, Point ePos) {
+	public boolean checkLOS(Point pPos, Point ePos) {
 		String board[][] = rooms.get(currentRoom).getBoard();
 		Point dim = rooms.get(currentRoom).getDim();
 		int x=pPos.x;
@@ -271,14 +272,93 @@ public class Scenario {
 		
 		return false;
 	}
-	
-	private	int inRange(Enemy enemy) {
+//-----------------------------------------------------------------------------
+	boolean inRange(Point p1, Point p2, int range) {
+		String board[][] = rooms.get(currentRoom).getBoard();
+		Point dim = rooms.get(currentRoom).getDim();
+		
+		int x=p2.x;
+		int y=p2.y;
+		
+		for(int r=0; r<range; r++) {
+			x=p1.x;
+			y=p1.y;
+			
+			if((p1.y-r)>=0) {
+				y=y-r;
+				if(board[x][y]=="Player") {
+					//checkLOS(pPos, ePos);
+					return true;
+				}
+			}
+			if((p1.y+r)<=dim.getY()) {
+				y=y+r;
+				if(board[x][y]=="Player") {
+					//checkLOS();
+					return true;
+				}
+			}
+			
+			if((p1.x-r)>=0) {
+				x=x-r;
+				if(board[x][y]=="Player") {
+					//checkLOS();
+					return true;
+				}
+				if((p1.y-r)>=0) {
+					y=y-r;
+					if(board[x][y]=="Player") {
+						//checkLOS();
+						return true;
+					}
+				}
+				if((p1.y+r)<=dim.getY()) {
+					y=y+r;
+					if(board[x][y]=="Player") {
+						//checkLOS();
+						return true;
+					}
+				}
+			}
+			
+			if((p1.x+r)<=dim.getY()) {
+				x=x+r;
+				if(board[x][y]=="Player") {
+					//checkLOS();
+					return true;
+				}
+				if((p1.y-r)>=0) {
+					y=y-r;
+					if(board[x][y]=="Player") {
+						//checkLOS();
+						return true;
+					}
+				}
+				if((p1.y+r)<=dim.getY()) {
+					y=y+r;
+					if(board[x][y]=="Player") {
+						//checkLOS();
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+//---------------------------------------------------------
+	private	int playerInRange(Enemy enemy) {
 		Point enemyPos = enemy.getPosition();
 		String board[][] = rooms.get(currentRoom).getBoard();
 		Point dim = rooms.get(currentRoom).getDim();
 		int range = list.get(card).getRange();
 		for(int i=0; i<players.size(); i++) {
 			Point playerPos = players.get(i).getPosition();
+			
+			if(inRange(enemyPos, playerPos, range)) {
+				return i;
+			}
+			/*
 			int x;
 			int y;
 			for(int r=0; r<range; r++) {
@@ -343,7 +423,7 @@ public class Scenario {
 						}
 					}
 				}
-			}
+			}*/
 			
 		}
 		

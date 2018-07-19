@@ -53,6 +53,15 @@ public class Player {
 		lockedCard2=-1;
 	}
 	
+	public AbilityCards getCard(int index) {
+		if(index==0) {
+			return list.get(lockedCard1);
+		}
+		else {
+			return list.get(lockedCard2);
+		}
+	}
+	
 	public String firstCard() {
 		return list.get(lockedCard1).getText();
 	}

@@ -14,7 +14,7 @@ public class CardsGuard implements Cards{
 
 	public CardDataObject getData(int id) {
 		CardDataObject card = new CardDataObject();
-		
+		/*
 		if(id==1)
 		{
 			card.text="Shield +1; Retaliate +2";
@@ -32,6 +32,8 @@ public class CardsGuard implements Cards{
 			card.text="Move +0; Attack +0";
 			card.move=0;
 			card.attack=0;
+			//test
+			card.move=2;
 		}
 		else if(id==4) {
 			card.text="Move +1; Attack -1";
@@ -42,6 +44,8 @@ public class CardsGuard implements Cards{
 			card.text="Move +0; Attack +0";
 			card.move=0;
 			card.attack=0;
+			//test
+			card.move=2;
 		}
 		else if(id==6) {
 			card.text="Move -1; Attack +1";
@@ -60,7 +64,12 @@ public class CardsGuard implements Cards{
 			card.move=-1;
 			card.attack=0;
 			card.statusEffect=true;//strengthen (self)
-		}
+		}*/
+		card.text="test";
+		card.move=2;
+		card.attack=3;
+		card.range=2;
+		
 		return card;
 		
 	}

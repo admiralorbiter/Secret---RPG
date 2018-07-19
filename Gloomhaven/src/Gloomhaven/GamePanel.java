@@ -21,9 +21,10 @@ public class GamePanel extends JPanel implements KeyListener{
 	    INITIATIVE,
 	    ATTACK,
 	    ENEMYATTACK,
-	    PLAYERATTACK,
+	    PLAYERCHOICE,
 	    PLAYERDEFENSE,
 	    ENEMYDEFENSE,
+	    PLAYERCARD,
 	    END;
 	}
 	
@@ -39,6 +40,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	int playerCount=1;
 	int cardLock;
 	int turn;
+	int cardUsed;
 	
 	public GamePanel(int numberOfPlayers) {
 		addKeyListener(this);
@@ -112,7 +114,7 @@ public class GamePanel extends JPanel implements KeyListener{
 					turn++;
 					if(turn==1) {
 						currentPlayer=0;
-						state=GameState.PLAYERATTACK;
+						state=GameState.PLAYERCHOICE;
 						next=false;
 					}
 					else {
@@ -129,8 +131,10 @@ public class GamePanel extends JPanel implements KeyListener{
 			scene.playerDefendProcedure(g);
 			cardLock=0;
 		}
-		if(state==GameState.PLAYERATTACK) {
-			
+		if(state==GameState.PLAYERCHOICE) {
+			/*
+			 * At the moment, the first card picked is the top card.
+			 */
 			System.out.println("Health: "+players.get(0).getHealth());
 			printPlayerCards(g);
 
@@ -139,7 +143,11 @@ public class GamePanel extends JPanel implements KeyListener{
 			
 			if(next==true) {
 				repaint();
-				if((currentPlayer+1)!=playerCount) {
+				
+				state=GameState.PLAYERCARD;
+				next=false;
+				cardUsed=0;
+				/*if((currentPlayer+1)!=playerCount) {
 					currentPlayer++;
 					next=false;
 				}
@@ -152,11 +160,94 @@ public class GamePanel extends JPanel implements KeyListener{
 					else {
 						state=GameState.END;
 					}
+				}*/
+				
+			}
+		}
+		
+		if(state==GameState.PLAYERCARD) {
+			if(next==false) {
+				//do attack then change next to true
+				playerCard(g, cardUsed);
+				
+			}
+			
+			if(next==true) {
+				if(cardUsed==0) {
+					cardUsed++;
+				}
+				else {
+					cardUsed=0;
+					if((currentPlayer+1)!=playerCount) {
+						currentPlayer++;
+						next=false;
+					}
+					else {
+						currentPlayer=-1;
+						turn++;
+						if(turn==1) {
+							state=GameState.ENEMYATTACK;
+						}
+						else {
+							state=GameState.END;
+						}
+					}
 				}
 			}
 		}
 		
 		System.out.println("State: "+state);
+	}
+	
+	private void playerCard(Graphics g, int cardsUsed) {
+		//do what player card one does, either attack or defense
+		//if attack	
+		//display enemies in attack radius
+		//use key presses to pick enemies
+		//no enemies no attack
+		//if move
+		//move, one at a time
+		g.drawString("Card "+(cardUsed+1), 50, 500);
+		AbilityCards card;
+		card=players.get(currentPlayer).getCard(cardsUsed);
+		int move;
+		int attack;
+		List<Enemy> enemies=scene.getEnemies();
+		List<Enemy> targets = new ArrayList();
+
+		if(cardsUsed==0) {
+			move=card.getTop().move;
+			attack=card.getTop().attack;
+		}
+		else {
+			move=card.getBottom().move;
+			attack=card.getBottom().attack;
+		}
+		
+		if(move!=0) {
+			//do the move stuff first
+			
+		}
+		if(attack!=0){
+			//make a target list
+			for(int i=0; i<enemies.size(); i++) {
+				
+				if(scene.inRange(players.get(currentPlayer).getPosition(), enemies.get(i).getPosition(), move)) {
+					if(scene.checkLOS(players.get(currentPlayer).getPosition(), enemies.get(i).getPosition())) {
+						//add to enemies list
+						targets.add(enemies.get(i));
+					}
+				}
+			}
+
+			if(targets.size()!=0) {
+				//attack
+			}
+			else {
+				next=true;
+			}
+			
+		}
 	}
 	
 	private void printPlayerCards(Graphics g) {
@@ -226,26 +317,13 @@ public class GamePanel extends JPanel implements KeyListener{
 				}
 				break;
 			
-			case PLAYERATTACK:
+			case PLAYERCHOICE:
 				int temp1;
 				int temp2;
 				if((key>=1) && (key<=4))
 				{
 					players.get(currentPlayer).setTop(key);
 					next=true;
-					
-					/*cardLock++;
-					storedkey=k;
-					if(cardLock==1)
-						temp1=key;
-					if((cardLock==2)&&(key!=players.get(currentPlayer).lockedCard1))
-					{
-						temp2=key;
-						next=true;
-					}
-					else if(cardLock==2) {
-						cardLock--;
-					}*/
 				}
 				break;
 				
@@ -261,7 +339,7 @@ public class GamePanel extends JPanel implements KeyListener{
 					
 					if(turn==1) {
 						currentPlayer=0;
-						state=GameState.PLAYERATTACK;
+						state=GameState.PLAYERCHOICE;
 						next=false;
 					}
 					else {
@@ -278,7 +356,7 @@ public class GamePanel extends JPanel implements KeyListener{
 					
 					if(turn==1) {
 						currentPlayer=0;
-						state=GameState.PLAYERATTACK;
+						state=GameState.PLAYERCHOICE;
 						next=false;
 					}
 					else {

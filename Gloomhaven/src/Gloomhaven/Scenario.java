@@ -88,6 +88,10 @@ public class Scenario {
 		return list.get(card).getInitiative();
 	}
 	
+	public Point getDim() {
+		return rooms.get(currentRoom).getDim();
+	}
+	
 	public void enemyAttackProcedure() {
 		//need to order the list of enemies -ene order list done at start of scenario
 		//need to for each check what players are in distance
@@ -129,7 +133,7 @@ public class Scenario {
 	public void playerDefendProcedure(Graphics g) {
 		int attack=list.get(card).getAttack();
 		
-		g.drawString("Defend against "+card+" with "+attack+" of damage by discarding?", 50, 500);
+		g.drawString("Defend against "+card+" with "+attack+" of damage by discarding?", 50, 800);
 	}
 	
 	private void attackPlayer(int playerIndex) {

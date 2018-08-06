@@ -9,7 +9,7 @@ public class Application extends JFrame {
 	static int numberOfPlayers=1;
 	
 	public Application() {
-		setSize(1400, 800);
+		setSize(1800, 1000);
 		setTitle("Game");
 		game = new GamePanel(numberOfPlayers);
 		add(game);

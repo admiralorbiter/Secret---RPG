@@ -5,7 +5,7 @@ public class CardsMindthief implements Cards {
 	@Override
 	public CardDataObject getTop(String name) {
 		CardDataObject top = new CardDataObject();
-		
+		/*
 		if(name=="Submissive Afflication") {
 			top.text="Attack +2; Add +1 attack for each negative condition on the target. +1 Exp";
 			top.attack=2;
@@ -68,7 +68,11 @@ public class CardsMindthief implements Cards {
 			top.createsElement=true;//need to implment
 			top.experience=2;
 			top.lost=true;
-		}
+		}*/
+		
+		top.text = "test";
+		top.move=3;
+		top.attack=0;
 			
 		return top;
 	}
@@ -76,7 +80,7 @@ public class CardsMindthief implements Cards {
 	@Override
 	public CardDataObject getBottom(String name) {
 		CardDataObject bottom = new CardDataObject();
-		
+		/*
 		if(name=="Submissive Afflication") {
 			bottom.text="Force one enemy within +5 range to perform +2 Attack/+0 Range targeting another enemy with you controlling the action.";
 			bottom.mindcontrol=true;//need to implment
@@ -130,7 +134,11 @@ public class CardsMindthief implements Cards {
 			bottom.text = "Move +2, Heal +2 (Self)";
 			bottom.move=2;
 			bottom.heal=2;
-		}
+		}*/
+		
+		bottom.text="test";
+		bottom.move=3;
+		bottom.attack=0;
 	
 		return bottom;
 	}

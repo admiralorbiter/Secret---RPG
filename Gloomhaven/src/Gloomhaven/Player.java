@@ -94,8 +94,8 @@ public class Player {
 	
 	public void pickCards(Graphics g) {
 		for(int i=0; i<list.size(); i++)	
-			g.drawString(i+": "+list.get(i).getText(), 50, i*20+500);
-		g.drawString("Pick your top card", 50, list.size()*20+500);
+			g.drawString(i+": "+list.get(i).getText(), 50, i*20+600);
+		g.drawString("Pick your top card", 50, list.size()*20+600);
 	}
 	
 	public Image getImage(){return pSprite.getImage();}

@@ -3,6 +3,8 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	    PLAYERDEFENSE,
 	    ENEMYDEFENSE,
 	    PLAYERCARD,
+	    PLAYERMOVE,
 	    END;
 	}
 	
@@ -41,6 +44,9 @@ public class GamePanel extends JPanel implements KeyListener{
 	int cardLock;
 	int turn;
 	int cardUsed;
+	Point select = new Point();
+	int move;
+	Point dim = new Point();
 	
 	public GamePanel(int numberOfPlayers) {
 		addKeyListener(this);
@@ -72,6 +78,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	public void gameManager(Graphics g) {
 		if(state==GameState.SCENE_START) {
+			dim = scene.getDim();
 			state=GameState.CARD_SELECTION;
 			currentPlayer=0;
 			cardLock=0;
@@ -165,7 +172,11 @@ public class GamePanel extends JPanel implements KeyListener{
 			}
 		}
 		
+		if(state==GameState.PLAYERMOVE) {
+			playerMove(g);
+		}
 		if(state==GameState.PLAYERCARD) {
+
 			if(next==false) {
 				//do attack then change next to true
 				playerCard(g, cardUsed);
@@ -207,10 +218,10 @@ public class GamePanel extends JPanel implements KeyListener{
 		//no enemies no attack
 		//if move
 		//move, one at a time
-		g.drawString("Card "+(cardUsed+1), 50, 500);
+		g.drawString("Card "+(cardUsed+1), 50, 600);
+		repaint();
 		AbilityCards card;
 		card=players.get(currentPlayer).getCard(cardsUsed);
-		int move;
 		int attack;
 		List<Enemy> enemies=scene.getEnemies();
 		List<Enemy> targets = new ArrayList();
@@ -223,10 +234,12 @@ public class GamePanel extends JPanel implements KeyListener{
 			move=card.getBottom().move;
 			attack=card.getBottom().attack;
 		}
-		
+		//System.out.println("GP: 230 - "+move);
 		if(move!=0) {
 			//do the move stuff first
-			
+			state=GameState.PLAYERMOVE;
+			select = new Point((int)players.get(currentPlayer).getX(), (int)players.get(currentPlayer).getY());
+			dim = scene.getDim();
 		}
 		if(attack!=0){
 			//make a target list
@@ -248,17 +261,38 @@ public class GamePanel extends JPanel implements KeyListener{
 			}
 			
 		}
+		
+		next=true;
+	}
+	
+	private void playerMove(Graphics g) {
+		g.setColor(Color.MAGENTA);
+		//System.out.println((int)players.get(currentPlayer).getX()+" - "+(int)players.get(currentPlayer).getY());
+		int x = (int) select.getX();
+		int y = (int) (select.getY()*100);
+		
+		if(x%2!=0) {
+			y=y+50;
+		}
+		
+		x=x*150+x*-50;
+
+		
+		g.setColor(Color.BLUE);
+		g.drawRect(x+50, y+25, 50, 50);
+		//drawHex(g, x, y);
+		repaint();
 	}
 	
 	private void printPlayerCards(Graphics g) {
 		String card1 = players.get(currentPlayer).firstCard();
 		String card2 = players.get(currentPlayer).secondCard();
 		
-		g.drawString("Pick top card. Second card will default bottom.", 50, 450);
-		g.drawString(1+": "+card1, 50, 500);
-		g.drawString(2+": "+card2, 50, 550);
-		g.drawString(3+": Attack +2", 500, 500);
-		g.drawString(4+": Move +2", 500, 550);
+		g.drawString("Pick top card. Second card will default bottom.", 50, 600);
+		g.drawString(1+": "+card1, 50, 650);
+		g.drawString(2+": "+card2, 50, 700);
+		g.drawString(3+": Attack +2", 500, 650);
+		g.drawString(4+": Move +2", 500, 700);
 	}
 	
 	@Override
@@ -266,25 +300,51 @@ public class GamePanel extends JPanel implements KeyListener{
 		super.paintComponent(g);
 		g.setColor(Color.magenta);
 		List<Enemy> enemies=scene.getEnemies();
+	
+		for(int h=0; h<=dim.y; h++) {
+			for(int w=0; w<dim.x; w++) {
+				drawHex(g, w, h);
+			}
+		}
+		g.setColor(Color.MAGENTA);
 		
 		for(int i=0; i<players.size(); i++)
-			g.drawImage(players.get(i).getImage(), ((int)players.get(i).getX())*50, ((int)players.get(i).getY())*50, null);
-		
+			drawSprite(g, players.get(i).getImage(), ((int)players.get(i).getX()), ((int)players.get(i).getY()));
 		for(int i=0; i<enemies.size(); i++) {
-			int x = ((int)enemies.get(i).getX());
-			int y =  ((int)enemies.get(i).getY())*50;
 			
-			if(x%2!=0) {
-				y=y+50;
-			}
-			
-			x=x*100;
-			
-			g.drawImage(enemies.get(i).getImage(), x, y, null);
+			drawSprite(g, enemies.get(i).getImage(), (int)enemies.get(i).getX(), (int)enemies.get(i).getY());
 		}
 		
 		gameManager(g);
 		
+	}
+	
+	public void drawHex(Graphics g, int x, int y) {
+		int size=100;
+		int nPoints=7;
+		int offsetY=0;
+		int offsetX=0;
+		//offsetX=-25*x;
+		if(x%2!=0) {
+			offsetY=50;
+		}
+		
+		int[] tX = {0+x*size+offsetX, 50+x*size+offsetX, 100+x*size+offsetX, 150+x*size+offsetX, 100+x*size+offsetX, 50+x*size+offsetX, 0+x*size+offsetX};
+		int[] tY = {50+y*size+offsetY, 0+y*size+offsetY,  0+y*size+offsetY, 50+y*size+offsetY, 100+y*size+offsetY, 100+y*size+offsetY, 50+y*size+offsetY};
+		g.drawPolygon(tX, tY, nPoints);
+	}
+	
+	public void drawSprite(Graphics g, Image image, int x, int y) {
+		x = x;
+		y =  y*100+25;
+		
+		if(x%2!=0) {
+			y=y+50;
+		}
+		
+		x=50+x*100;
+		
+		g.drawImage(image, x, y, null);
 	}
 	
 	
@@ -320,6 +380,7 @@ public class GamePanel extends JPanel implements KeyListener{
 			case PLAYERCHOICE:
 				int temp1;
 				int temp2;
+				System.out.println("Stupid test");
 				if((key>=1) && (key<=4))
 				{
 					players.get(currentPlayer).setTop(key);
@@ -361,6 +422,30 @@ public class GamePanel extends JPanel implements KeyListener{
 					}
 					else {
 						state=GameState.END;
+					}
+				}
+				break;
+				
+			case PLAYERMOVE:
+				System.out.println("Player moves");
+				if(k=='w') {
+					if(select.y-1>=0) {
+						select.y=select.y-1;
+					}
+				}
+				if(k=='a') {
+					if(select.x-1>=0) {
+						select.x=select.x-1;
+					}
+				}
+				if(k=='s') {
+					if(select.y+1<=dim.y) {
+						select.y=select.y+1;
+					}
+				}
+				if(k=='d') {
+					if(select.x+1<=dim.x) {
+						select.x=select.x+1;
 					}
 				}
 				break;

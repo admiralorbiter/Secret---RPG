@@ -6,12 +6,10 @@ public class Application extends JFrame {
 
 	GamePanel game;
 	
-	static int numberOfPlayers=1;
-	
 	public Application() {
 		setSize(1400, 800);
 		setTitle("Game");
-		game = new GamePanel(numberOfPlayers);
+		game = new GamePanel();
 		add(game);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		repaint();

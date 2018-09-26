@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.TempStorage;
 
 public interface Cards {
 	public CardDataObject getTop(String name);

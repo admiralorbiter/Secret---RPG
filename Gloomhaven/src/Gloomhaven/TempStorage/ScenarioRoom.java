@@ -1,9 +1,11 @@
-package Gloomhaven;
+package Gloomhaven.TempStorage;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import Gloomhaven.Player;
 
 public class ScenarioRoom {
 	List<Player> players;

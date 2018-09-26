@@ -12,105 +12,60 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Gloomhaven.TempStorage.AbilityCards;
+import Gloomhaven.TempStorage.Augument;
+import Gloomhaven.TempStorage.CardDataObject;
+import Gloomhaven.TempStorage.Enemy;
+import Gloomhaven.TempStorage.Sprite;
+import Gloomhaven.TempStorage.StatusEffects;
+
 public class Player {
-	Sprite pSprite;
-	String Class;
-	int level;
-	int xp;
-	int health;
-	int cardCount;
-	List<AbilityCards> list = new ArrayList<AbilityCards>();
-	Augument augument;
-	StatusEffects status;
-	CardDataObject cardData;
-	Point position;
+
+	List<AbilityCards> deck = new ArrayList<AbilityCards>();
+	List<Enemy> enemies = new ArrayList<Enemy>();
 	
-	int top;
+	//Card choice variable - if true pick top card, if false pick bottom card
+	boolean cardChoice=true;
+	int topCard=-1;
+	int bottomCard=-1;
 	
-	int lockedCard1;
-	int lockedCard2;
-	
-	boolean dead;
-	
-	//int damage;
-	
-	public Player(String Class) {
+	public Player() {
 		
-		//depends on class
-		xp=0;
-		health=6;
-		level=1;
-		cardCount=10;
-		dead=false;
-		this.Class=Class;
-		position = new Point(0, 0);
-		pSprite=new Sprite("src/Gloomhaven/Sprites/Player.png");
-		
-		for(int i=0; i<cardCount; i++)
-			list.add(new AbilityCards(level, i+1, Class));
-		
-		lockedCard1=-1;
-		lockedCard2=-1;
 	}
 	
-	public AbilityCards getCard(int index) {
-		if(index==0) {
-			return list.get(lockedCard1);
+	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
+	public void resetCards(){
+		topCard=-1;
+		bottomCard=-1;
+	}
+	
+	public void pickCards(int key, Graphics g) {
+		
+		g.drawString("Picking cards", 10, 50);
+		if(cardChoice) {
+			g.drawString("Choose top card.", 10, 75);
+			
+			//[Test] Picking cards assuming there are 8
+			if(key>=1 && key<=8) {
+				topCard=key;
+				cardChoice=!cardChoice;
+			}
 		}
 		else {
-			return list.get(lockedCard2);
+			g.drawString("Choose bottom card.", 10, 75);
+			//[Test] Picking cards assuming there are 8
+			if(key>=1 && key<=8) {
+				bottomCard=key;
+				cardChoice=!cardChoice;
+			}
+			
 		}
 	}
 	
-	public String firstCard() {
-		return list.get(lockedCard1).getText();
-	}
-	
-	public String secondCard() {
-		return list.get(lockedCard2).getText();
-	}
-	
-	private void playCard(AbilityCards card, boolean top) {
-		if(top)
-			cardData = card.getTop();
+	public boolean cardsLocked() {
+		if(topCard!=-1 && bottomCard!=-1)
+			return true;
 		else
-			cardData = card.getBottom();
-
+			return false;
 	}
-
-	public void takeDamage(int damage) {
-		health=health-damage;
-		if(health<=0)
-			dead=true;
-	}
-	
-	public void randomDiscard() {
-		Random rand = new Random();
-		int index = rand.nextInt(list.size());
-		list.remove(index);
-	}
-	
-	public int getHealth() {return health;}
-	
-	public void pickCards(Graphics g) {
-		for(int i=0; i<list.size(); i++)	
-			g.drawString(i+": "+list.get(i).getText(), 50, i*20+500);
-		g.drawString("Pick your top card", 50, list.size()*20+500);
-	}
-	
-	public Image getImage(){return pSprite.getImage();}
-	
-	public void setXY(Point position) {
-		this.position=position;
-	}
-	public void setTop(int topIndex) {topIndex=top;}
-	public Point getPosition() {return position;}
-	public double getX() {return position.getX();}
-	public double getY() {return position.getY();}
-	public int getCardCount() {return list.size();}
-	public String getName() {return Class;}
-	public int getInitiative() {
-		return list.get(lockedCard1).getInitiative();
-	}
-	
 }

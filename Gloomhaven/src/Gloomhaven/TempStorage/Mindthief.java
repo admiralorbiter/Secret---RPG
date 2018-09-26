@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.TempStorage;
 
 import java.util.ArrayList;
 import java.util.List;

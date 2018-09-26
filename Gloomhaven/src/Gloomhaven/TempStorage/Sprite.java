@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.TempStorage;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;

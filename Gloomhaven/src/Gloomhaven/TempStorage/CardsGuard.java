@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.TempStorage;
 
 public class CardsGuard implements Cards{
 

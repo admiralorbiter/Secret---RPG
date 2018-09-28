@@ -22,4 +22,38 @@ public class EnemyInfo {
 	}
 	
 	public int getTurnNumber() {return turnNumber;}
+	
+	public void orderEnemies() {
+		List<Enemy> temp = new ArrayList<Enemy>();
+		for(int i=0; i<enemies.size(); i++) {
+			if(enemies.get(i).isElite()) {
+				temp.add(enemies.get(i));
+			}
+		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			if(!(enemies.get(i).isElite())) {
+				temp.add(enemies.get(i));
+			}
+		}
+	
+		enemies=temp;
+	}
+	
+	public Enemy getEnemy(int index) {return enemies.get(index);}
+	
+	public int getCount() {return enemies.size();}
+	
+	public boolean enemyAttackProcedure(int index) {
+		
+		//[Test]
+		return true;
+	}
+	
+	//[Test]
+	public void testPrintEnemies() {
+		for(int i=0; i<enemies.size(); i++) {
+			System.out.println(enemies.get(i).getClassID());
+		}
+	}
 }

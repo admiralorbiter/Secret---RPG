@@ -19,11 +19,11 @@ public class Scenario {
 	    CARD_SELECTION,
 	    INITIATIVE,
 	    ATTACK,
-	    ENEMYATTACK,
-	    PLAYERCHOICE,
-	    PLAYERDEFENSE,
-	    ENEMYDEFENSE,
-	    PLAYERCARD,
+	    ENEMY_ATTACK,
+	    PLAYER_CHOICE,
+	    PLAYER_DEFENSE,
+	    ENEMY_DEFENSE,
+	    PLAYER_CARD,
 	    ROUND_FINISHED,
 	    END;
 	}
@@ -41,6 +41,8 @@ public class Scenario {
 	
 	private int currentPlayer;
 	private int enemyInit;
+	private int turn;
+	private int playerIndex;
 	
 	public Scenario(int sceneID, List<Player> party) {
 		List<Enemy> enemies = new ArrayList<Enemy>();
@@ -50,10 +52,11 @@ public class Scenario {
 		this.party=party;
 
 		if(sceneID==1) {
-			enemies.add(new Enemy());
+			enemies.add(new Enemy("Test"));
+			enemies.add(new Enemy("TestElite"));
 		}
 		enemyInfo=new EnemyInfo(enemies);
-		
+		enemyInfo.orderEnemies();
 		currentPlayer=0;											//sets currentplayer to 0 for the card selection around
 		num=-1;
 		state=State.CARD_SELECTION;
@@ -82,40 +85,100 @@ public class Scenario {
 			enemyInit=enemyInfo.drawCard();							//Pick enemy card for initiative
 			orderPlayers();											//order players
 			
+			//Goes through the party and enemy and gives a turn number
+			//The party is in order, so i just have to fit the enemy in
 			for(int i=0; i<party.size(); i++) {
-				if(enemyInit<party.get(i).getInitiative()) {
+				if(enemyInit<party.get(i).getInitiative()) {		//If enemy's init is lowest, it goes first
 					enemyInfo.setTurnNumber(i);
 					party.get(i).setTurnNumber(i+1);
 				}
-				else if(party.get(i).getInitiative()<enemyInit) {
+				else if(party.get(i).getInitiative()<enemyInit) {	//Sorts player's with lower init before enemy
 					party.get(i).setTurnNumber(i);
 				}
-				else if(party.get(i-1).getInitiative()<enemyInit){
+				else if(party.get(i-1).getInitiative()<enemyInit){	//places the enemy between players if the previous one is lower, but the next is higher
 					enemyInfo.setTurnNumber(i);
 					party.get(i).setTurnNumber(i+1);
 				}
-				else {
+				else {												//Everyone else is placed after the enemy
 					party.get(i).setTurnNumber(i+1);
 				}
 			}
-			
+			playerIndex=-1;
+			turn=0;
 			state=State.ATTACK;										//change state to attack
 		}
 		//State has the logic for who should be attacking and setting the state for enemy attack, player defense, etc
 		//Also should know the end state of when attacks are over and round is done
 		if(state==State.ATTACK) {
-			//[Test]
-			for(int i=0; i<party.size()+1; i++) {
-				for(int j=0; j<party.size(); j++) {
-					if(party.get(j).getTurnNumber()==i)
-						System.out.println(party.get(j).getInitiative());
-					else
-						System.out.println(enemyInfo.getTurnNumber());
+	
+			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
+				//do enemy stuff
+				turn=0;
+				state=State.ENEMY_ATTACK;
+			}
+			else {
+				for(int i=0; i<party.size(); i++) {					//Searches for a match on the turn and the players
+					if(party.get(i).getTurnNumber()==turn) {		//Once a match is found, sets the index, changes state, and breaks
+						playerIndex=i;
+						state=State.PLAYER_CHOICE;
+						break;
+					}
 				}
 			}
 		}
 		
-		//State deciedes if scenario is over or another round should begin
+		if(state==State.ENEMY_ATTACK) {
+			//Do Enemy Attack Stuff
+			//Enemies ordered at the beginning of the scenario
+			//Goes through all the enemies and sets distance and range flags
+			//if no one is next, move and attack
+			//if none are in distance, move to the next
+			//if turn is over
+			
+			//turn variable will keep track of whose turn it is
+			//This will allow me to move them one by one so it shows up in the graphics
+			int enemyCount=enemyInfo.getCount();
+			boolean playerInRange;
+			//Goes through the enemies and sets range / distance flags
+			playerInRange=enemyInfo.enemyAttackProcedure(turn);
+			
+			if(playerInRange)
+				state=State.PLAYER_DEFENSE;
+			else {
+				//If it has gone through all the enemies, go to next state
+				if(turn==enemyInfo.getCount()) {
+					turn=0;
+					if(turn==party.size()+1)
+						state=State.ROUND_FINISHED;
+					else
+						state=State.ATTACK;
+				}
+			}
+		}
+		
+		if(state==State.PLAYER_DEFENSE) {
+			
+			//If it has gone through all the enemies, go to next state
+			if(turn==enemyInfo.getCount()) {
+				turn=0;
+				if(turn==party.size()+1)
+					state=State.ROUND_FINISHED;
+				else
+					state=State.ATTACK;
+			}
+		}
+		
+		if(state==State.PLAYER_CHOICE) {
+			//Do player stuff
+			
+			//if turn is over
+			if(turn==party.size()+1)
+				state=State.ROUND_FINISHED;
+			else
+				state=State.ATTACK;
+		}
+		
+		//State decides if scenario is over or another round should begin
 		if(state==State.ROUND_FINISHED) {
 			
 		}
@@ -163,5 +226,19 @@ public class Scenario {
 
 		return order;
 	}
+	
+	//[Test] Function to print order of the init
+	private void testPrintTurnList() {
+		//[Test]
+		for(int i=0; i<party.size()+1; i++) {
+			for(int j=0; j<party.size(); j++) {
+				if(party.get(j).getTurnNumber()==i)
+					System.out.println(i+" - "+party.get(j).getInitiative());
+				else
+					System.out.println(i+" - "+enemyInfo.getTurnNumber());
+			}
+		}
+	}
+	
 	
 }

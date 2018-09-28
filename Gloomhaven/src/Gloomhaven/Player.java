@@ -12,16 +12,10 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import Gloomhaven.TempStorage.AbilityCards;
-import Gloomhaven.TempStorage.Augument;
-import Gloomhaven.TempStorage.CardDataObject;
-import Gloomhaven.TempStorage.Enemy;
-import Gloomhaven.TempStorage.Sprite;
-import Gloomhaven.TempStorage.StatusEffects;
 
 public class Player {
 
-	List<AbilityCards> deck = new ArrayList<AbilityCards>();
+	//List<AbilityCards> deck = new ArrayList<AbilityCards>();
 	
 	//Player Variables
 	//[Rem] Will need to implement a system that creates a unique id since it is possible

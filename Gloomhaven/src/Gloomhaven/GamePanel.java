@@ -11,9 +11,6 @@ import java.util.List;
 
 import javax.swing.*;
 
-import Gloomhaven.TempStorage.AbilityCards;
-import Gloomhaven.TempStorage.Enemy;
-
 public class GamePanel extends JPanel implements KeyListener{
 
 	//Testing Variables

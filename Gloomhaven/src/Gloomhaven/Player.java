@@ -33,6 +33,7 @@ public class Player {
 	boolean cardChoice=true;
 	int topCard=-1;
 	int bottomCard=-1;
+	int turnNumber;
 	
 	public Player(int id) {
 		this.id=id;
@@ -82,4 +83,10 @@ public class Player {
 	public int getInitiative() {
 		return topCard;
 	}
+	
+	public void setTurnNumber(int turnNumber) {
+		this.turnNumber=turnNumber;
+	}
+	
+	public int getTurnNumber() {return turnNumber;}
 }

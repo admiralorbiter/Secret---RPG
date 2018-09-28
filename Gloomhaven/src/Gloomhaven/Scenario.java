@@ -5,8 +5,10 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.*;
 
 import Gloomhaven.GamePanel.GameState;
 
@@ -22,14 +24,16 @@ public class Scenario {
 	    PLAYERDEFENSE,
 	    ENEMYDEFENSE,
 	    PLAYERCARD,
+	    ROUND_FINISHED,
 	    END;
 	}
 	
 	State state;													//State of the scenario
 	boolean finished;												//Tells the gamepanel if the scenario is finished
 	List<Player> party = new ArrayList<Player>();					//Party
-	List<Enemy> enemies = new ArrayList<Enemy>();
-	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
+	//List<Enemy> enemies = new ArrayList<Enemy>();
+	//AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
+	EnemyInfo enemyInfo;
 	
 	//Key variables
 	char k;															//Character from key
@@ -39,6 +43,8 @@ public class Scenario {
 	private int enemyInit;
 	
 	public Scenario(int sceneID, List<Player> party) {
+		List<Enemy> enemies = new ArrayList<Enemy>();
+		
 		state=State.SETUP;
 		finished=false;
 		this.party=party;
@@ -46,6 +52,8 @@ public class Scenario {
 		if(sceneID==1) {
 			enemies.add(new Enemy());
 		}
+		enemyInfo=new EnemyInfo(enemies);
+		
 		currentPlayer=0;											//sets currentplayer to 0 for the card selection around
 		num=-1;
 		state=State.CARD_SELECTION;
@@ -54,6 +62,8 @@ public class Scenario {
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
 	public void playRound(KeyEvent key, Graphics g) {
 
+		//[Rem] Might need else ifs in order to have the graphics update
+		
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
 			party.get(currentPlayer).pickCards(num, g);
@@ -66,14 +76,49 @@ public class Scenario {
 				}
 			}
 		}
+		//State sets initiative and orders players based on it
 		if(state==State.INITIATIVE) {
-			//Pick enemy card for initiative
-			enemyInit=enemyDeck.drawCard();
-			//order players
-			orderPlayers();
-			//change state to attack
+
+			enemyInit=enemyInfo.drawCard();							//Pick enemy card for initiative
+			orderPlayers();											//order players
+			
+			for(int i=0; i<party.size(); i++) {
+				if(enemyInit<party.get(i).getInitiative()) {
+					enemyInfo.setTurnNumber(i);
+					party.get(i).setTurnNumber(i+1);
+				}
+				else if(party.get(i).getInitiative()<enemyInit) {
+					party.get(i).setTurnNumber(i);
+				}
+				else if(party.get(i-1).getInitiative()<enemyInit){
+					enemyInfo.setTurnNumber(i);
+					party.get(i).setTurnNumber(i+1);
+				}
+				else {
+					party.get(i).setTurnNumber(i+1);
+				}
+			}
+			
+			state=State.ATTACK;										//change state to attack
+		}
+		//State has the logic for who should be attacking and setting the state for enemy attack, player defense, etc
+		//Also should know the end state of when attacks are over and round is done
+		if(state==State.ATTACK) {
+			//[Test]
+			for(int i=0; i<party.size()+1; i++) {
+				for(int j=0; j<party.size(); j++) {
+					if(party.get(j).getTurnNumber()==i)
+						System.out.println(party.get(j).getInitiative());
+					else
+						System.out.println(enemyInfo.getTurnNumber());
+				}
+			}
 		}
 		
+		//State deciedes if scenario is over or another round should begin
+		if(state==State.ROUND_FINISHED) {
+			
+		}
 		
 		//[Temp] Press t to end the scenario
 		if(k=='t') {
@@ -106,23 +151,16 @@ public class Scenario {
 			}
 	}
 	
-	/*
-	 * 
-	 * NEED TO REWRITE THIS. SHOULD GIVE ME A LIST OF THE PLAYER ID SORTED BY INIT
-	 * 
-	 * 
-	 */
-	private List<Integer> orderPlayers() {
-		List<Integer> order = new ArrayList<Integer>();
-		order.clear();
-		order.add(enemyInit);
+	//[Rem] This will only sort the players based on initiative. The enemy init will need to be taken into account during the battle phase
+	private List<Player> orderPlayers() {
+		List<Player> order = new ArrayList<Player>();
+
+		order=party;
 		
-		for(int i=0; i<party.size(); i++) {
-			order.add(party.get(i).getInitiative());
-		}
-		
-		Collections.sort(order);
-		
+		//Sorts the party comparing the initiative which is based on the top card
+		//[Rem] That at the moment initiative is based on top card number, not actual init
+		order.sort(Comparator.comparingInt(Player::getInitiative));
+
 		return order;
 	}
 	

@@ -17,7 +17,7 @@ import Gloomhaven.TempStorage.Enemy;
 public class GamePanel extends JPanel implements KeyListener{
 
 	//Testing Variables
-	int numPlayers=1;
+	int NUMPLAYERS=1;
 	
 	public enum GameState {
 	    TITLE_STATE,
@@ -49,8 +49,8 @@ public class GamePanel extends JPanel implements KeyListener{
 	void initGame() {
 		//[Temp] Will have a phase for party setup
 		//Adds the players to the party
-		for(int i=0; i<numPlayers; i++)
-			party.add(new Player(1));
+		for(int id=0; id<NUMPLAYERS; id++)
+			party.add(new Player(id));
 		
 		//[Temp] Need to randomly pick town event, road event
 		//[Temp] Need to pick scenario during party setup

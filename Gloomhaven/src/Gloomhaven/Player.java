@@ -22,15 +22,22 @@ import Gloomhaven.TempStorage.StatusEffects;
 public class Player {
 
 	List<AbilityCards> deck = new ArrayList<AbilityCards>();
-	List<Enemy> enemies = new ArrayList<Enemy>();
+	
+	//Player Variables
+	//[Rem] Will need to implement a system that creates a unique id since it is possible
+	//to have multiple parties.
+	int id;
 	
 	//Card choice variable - if true pick top card, if false pick bottom card
+	//[Temp] Top card and bottom card should be card objects with an init variables
 	boolean cardChoice=true;
 	int topCard=-1;
 	int bottomCard=-1;
 	
-	public Player() {
-		
+	public Player(int id) {
+		this.id=id;
+		topCard=-1;
+		bottomCard=-1;
 	}
 	
 	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
@@ -39,6 +46,7 @@ public class Player {
 		bottomCard=-1;
 	}
 	
+	//Picks the two cards needed for initiative
 	public void pickCards(int key, Graphics g) {
 		
 		g.drawString("Picking cards", 10, 50);
@@ -62,10 +70,16 @@ public class Player {
 		}
 	}
 	
+	
+	//Returns whether the two cards have been locked for initiative
 	public boolean cardsLocked() {
 		if(topCard!=-1 && bottomCard!=-1)
 			return true;
 		else
 			return false;
+	}
+	
+	public int getInitiative() {
+		return topCard;
 	}
 }

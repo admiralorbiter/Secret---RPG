@@ -29,10 +29,10 @@ public class GamePanel extends JPanel implements KeyListener{
 	    END;
 	}
 	
-	GameState state=GameState.TESTING_SETUP;
-	List<Player> party = new ArrayList<Player>();
-	Scenario scene;
-	KeyEvent key;
+	GameState state=GameState.TESTING_SETUP;						//State of the Game
+	List<Player> party = new ArrayList<Player>();					//Party
+	Scenario scene;													//Current Scenario
+	KeyEvent key;													//Current Key Event
 
 	public GamePanel() {
 		addKeyListener(this);
@@ -45,11 +45,12 @@ public class GamePanel extends JPanel implements KeyListener{
 		repaint();	
 	}
 	
+	//Initials Scenario, Town Event, Road Event
 	void initGame() {
 		//[Temp] Will have a phase for party setup
 		//Adds the players to the party
 		for(int i=0; i<numPlayers; i++)
-			party.add(new Player());
+			party.add(new Player(1));
 		
 		//[Temp] Need to randomly pick town event, road event
 		//[Temp] Need to pick scenario during party setup
@@ -60,9 +61,12 @@ public class GamePanel extends JPanel implements KeyListener{
 	}
 	
 	public void gameManager(Graphics g) {
-		System.out.println(state);
+		
+		//[Temp] Prints the Current State of the Game
+		System.out.println(state);															
 		
 		//[Rem] Did if/else so it has to go back and paint screen every state
+		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
 			g.drawString("Town", 10, 25);
 			state=GameState.ROAD_EVENT;
@@ -83,8 +87,6 @@ public class GamePanel extends JPanel implements KeyListener{
 			System.exit(0);
 		}
 	}
-	
-
 	
 	@Override
 	public void paintComponent(Graphics g) {

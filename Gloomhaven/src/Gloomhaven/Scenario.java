@@ -64,21 +64,19 @@ public class Scenario {
 		currentPlayer=0;											//sets current player to 0 for the card selection around
 		num=-1;														//sets the num variable to -1 but will be changed to what the user types in
 		room = new Room(setup.getRoomID(), party, enemies);			//sets the room based on the scene id
-		enemyInfo=new EnemyInfo(enemies);							//Creates enemy tracking object
+		enemyInfo=new EnemyInfo(enemies, room);							//Creates enemy tracking object
 		enemyInfo.orderEnemies();									//orders the enemies in list
 		room.testDisplayRoom();
+		
+		//[Temp]
 		dimensions=room.getDimensions();							//Sets dimensions from room
 		passDimensions(enemies);									//passes dimension to enemies and party
 		
-		//enemyInfo.setDimensions(dimensions);						//Passes dimensions from scene -> enemy info
 		state=State.CARD_SELECTION;
 	}
 	
-	private void passDimensions(List<Enemy> enemies) {
-		for(int i=0; i<enemies.size(); i++) {
-			enemies.get(i).setDimensions(dimensions);
-		}
-		
+	//[Temp] Should handle the party the same way i do with enemies with an object that holds all the info
+	private void passDimensions(List<Enemy> enemies) {		
 		for(int i=0; i<party.size(); i++) {
 			party.get(i).setDimensions(dimensions);
 		}

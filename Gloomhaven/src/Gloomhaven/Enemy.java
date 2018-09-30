@@ -9,12 +9,14 @@ public class Enemy {
 	
 	boolean eliteFlag;
 	String classID;
+	String id;
 	Point2D coordinates;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	Point2D dimensions;
 	
-	public Enemy(String classID) {
+	public Enemy(String classID, int id) {
 		this.classID=classID;
+		this.id=id+classID;
 		
 		switch(classID) {
 			case "Test": 
@@ -52,17 +54,42 @@ public class Enemy {
 	
 	public Point2D getCoordinate() {return coordinates;}
 	
-	public boolean checkMeleeRange() {
+	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
+	public boolean checkMeleeRange(String board[][], String lookingForID) {
 		
-		if(coordinates.getX()>0) {
-			
+		int x=(int) coordinates.getX();
+		int y=(int) coordinates.getY();
+	
+		if(x>0) {
+			if(board[x-1][y]==lookingForID)
+				return true;
+			if(y>0) {
+				if(board[x-1][y-1]==lookingForID) {
+					return true;
+				}
+			}
+			if(y<dimensions.getY()) {
+				if(board[x-1][y+1]==lookingForID) {
+					return true;
+				}
+			}
 		}
 		
-		if(coordinates.getX()<dimensions.getX()) {
-			
+		if(x<dimensions.getX()) {
+			if(board[x+1][y]==lookingForID)
+				return true;
+			if(y>0) {
+				if(board[x+1][y-1]==lookingForID) {
+					return true;
+				}
+			}
+			if(y<dimensions.getY()) {
+				if(board[x+1][y+1]==lookingForID) {
+					return true;
+				}
+			}
 		}
 		
-		//[Temp]
 		return false;
 	}
 	

@@ -9,9 +9,16 @@ public class EnemyInfo {
 	List<Enemy> enemies = new ArrayList<Enemy>();
 	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	int turnNumber;
-	Point2D dimensions;
-	public EnemyInfo(List<Enemy> enemies) {
-		this.enemies=enemies;			
+	Room room;
+	
+	public EnemyInfo(List<Enemy> enemies, Room room) {
+		this.enemies=enemies;
+		this.room=room;
+		Point2D dimensions=room.getDimensions();
+		
+		for(int i=0; i<enemies.size(); i++) {
+			enemies.get(i).setDimensions(dimensions);
+		}
 	}
 	
 	public int drawCard() {
@@ -54,7 +61,7 @@ public class EnemyInfo {
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		
 		if(canAttack) {
-			boolean meleeRange=enemies.get(index).checkMeleeRange();
+			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P");
 			
 			if(meleeRange) {
 				targets=enemies.get(index).createMeleeTargetList();
@@ -74,10 +81,6 @@ public class EnemyInfo {
 		else {
 			return targets;
 		}
-	}
-	
-	public void setDimensions(Point2D dimensions) {
-		this.dimensions=dimensions;
 	}
 	
 	//[Test]

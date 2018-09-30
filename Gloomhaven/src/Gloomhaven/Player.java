@@ -21,7 +21,7 @@ public class Player {
 	//Player Variables
 	//[Rem] Will need to implement a system that creates a unique id since it is possible
 	//to have multiple parties.
-	int id;
+	String id;
 	
 	//Card choice variable - if true pick top card, if false pick bottom card
 	//[Temp] Top card and bottom card should be card objects with an init variables
@@ -36,7 +36,7 @@ public class Player {
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	
 	public Player(int id) {
-		this.id=id;
+		this.id="P"+id;
 		topCard=-1;
 		bottomCard=-1;
 	}

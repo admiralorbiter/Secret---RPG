@@ -97,4 +97,6 @@ public class Room {
 		return dimensions;
 	}
 	
+	public String[][] getBoard(){return board;}
+	
 }

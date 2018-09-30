@@ -15,14 +15,14 @@ public class SetupScenario {
 		
 		switch(scenarioID) {
 			case "Test":
-				enemies.add(new Enemy("Test"));
-				enemies.add(new Enemy("TestElite"));
-				enemies.add(new Enemy("Test"));
+				enemies.add(new Enemy("Test", 0));
+				enemies.add(new Enemy("TestElite", 1));
+				enemies.add(new Enemy("Test", 2));
 				break;
 			default:
-				enemies.add(new Enemy("Test"));
-				enemies.add(new Enemy("TestElite"));
-				enemies.add(new Enemy("Test"));
+				enemies.add(new Enemy("Test", 0));
+				enemies.add(new Enemy("TestElite", 1));
+				enemies.add(new Enemy("Test", 2));
 		}
 		
 		return enemies;

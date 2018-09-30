@@ -3,11 +3,13 @@ package Gloomhaven;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 import Gloomhaven.GamePanel.GameState;
@@ -34,6 +36,10 @@ public class Scenario {
 	//List<Enemy> enemies = new ArrayList<Enemy>();
 	//AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	EnemyInfo enemyInfo;
+	Room room;
+	List<Player> targets;
+	
+	SetupScenario setup;
 	
 	//Key variables
 	char k;															//Character from key
@@ -43,29 +49,48 @@ public class Scenario {
 	private int enemyInit;
 	private int turn;
 	private int playerIndex;
-	
-	public Scenario(int sceneID, List<Player> party) {
+	private int enemyTurnIndex;
+	private Point2D dimensions;
+	public Scenario(String sceneID, List<Player> party) {
 		List<Enemy> enemies = new ArrayList<Enemy>();
 		
-		state=State.SETUP;
-		finished=false;
-		this.party=party;
+		state=State.SETUP;											//Not sure this is necessary, flags the state for setup inside that state so...
+		finished=false;												//Flag that tells whether the scenario is finished - Sets it to false
+		this.party=party;											//imports the party into the scenarios
 
-		if(sceneID==1) {
-			enemies.add(new Enemy("Test"));
-			enemies.add(new Enemy("TestElite"));
-		}
-		enemyInfo=new EnemyInfo(enemies);
-		enemyInfo.orderEnemies();
-		currentPlayer=0;											//sets currentplayer to 0 for the card selection around
-		num=-1;
+		setup = new SetupScenario(sceneID);							//creates the setup based on the scene id
+		enemies = setup.getEnemies();								//gets the enemies form the setup
+		
+		currentPlayer=0;											//sets current player to 0 for the card selection around
+		num=-1;														//sets the num variable to -1 but will be changed to what the user types in
+		room = new Room(setup.getRoomID(), party, enemies);			//sets the room based on the scene id
+		enemyInfo=new EnemyInfo(enemies);							//Creates enemy tracking object
+		enemyInfo.orderEnemies();									//orders the enemies in list
+		room.testDisplayRoom();
+		dimensions=room.getDimensions();							//Sets dimensions from room
+		passDimensions(enemies);									//passes dimension to enemies and party
+		
+		//enemyInfo.setDimensions(dimensions);						//Passes dimensions from scene -> enemy info
 		state=State.CARD_SELECTION;
+	}
+	
+	private void passDimensions(List<Enemy> enemies) {
+		for(int i=0; i<enemies.size(); i++) {
+			enemies.get(i).setDimensions(dimensions);
+		}
+		
+		for(int i=0; i<party.size(); i++) {
+			party.get(i).setDimensions(dimensions);
+		}
 	}
 	
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
 	public void playRound(KeyEvent key, Graphics g) {
 
 		//[Rem] Might need else ifs in order to have the graphics update
+		
+		g.drawString(state.toString(), 50, 500);
+		room.drawRoom(g);
 		
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
@@ -84,11 +109,16 @@ public class Scenario {
 
 			enemyInit=enemyInfo.drawCard();							//Pick enemy card for initiative
 			orderPlayers();											//order players
-			
+
 			//Goes through the party and enemy and gives a turn number
 			//The party is in order, so i just have to fit the enemy in
 			for(int i=0; i<party.size(); i++) {
-				if(enemyInit<party.get(i).getInitiative()) {		//If enemy's init is lowest, it goes first
+
+				if(enemyInit==party.get(i).getInitiative()) {
+					//Do nothing at the moment
+					//[Temp]
+				}
+				else if(enemyInit<party.get(i).getInitiative()) {		//If enemy's init is lowest, it goes first
 					enemyInfo.setTurnNumber(i);
 					party.get(i).setTurnNumber(i+1);
 				}
@@ -110,13 +140,14 @@ public class Scenario {
 		//State has the logic for who should be attacking and setting the state for enemy attack, player defense, etc
 		//Also should know the end state of when attacks are over and round is done
 		if(state==State.ATTACK) {
-	
+		
 			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
 				//do enemy stuff
-				turn=0;
+				enemyTurnIndex=0;
 				state=State.ENEMY_ATTACK;
 			}
 			else {
+				
 				for(int i=0; i<party.size(); i++) {					//Searches for a match on the turn and the players
 					if(party.get(i).getTurnNumber()==turn) {		//Once a match is found, sets the index, changes state, and breaks
 						playerIndex=i;
@@ -138,22 +169,29 @@ public class Scenario {
 			//turn variable will keep track of whose turn it is
 			//This will allow me to move them one by one so it shows up in the graphics
 			int enemyCount=enemyInfo.getCount();
-			boolean playerInRange;
+			targets = new ArrayList<Player>();
 			//Goes through the enemies and sets range / distance flags
-			playerInRange=enemyInfo.enemyAttackProcedure(turn);
 			
-			if(playerInRange)
+			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex);
+		
+			if(targets.size()>0) {
 				state=State.PLAYER_DEFENSE;
-			else {
+			}else {
 				//If it has gone through all the enemies, go to next state
-				if(turn==enemyInfo.getCount()) {
-					turn=0;
-					if(turn==party.size()+1)
+				if(enemyTurnIndex==(enemyInfo.getCount()-1)) {
+					if(turn==party.size())
 						state=State.ROUND_FINISHED;
-					else
+					else {
+						turn++;
 						state=State.ATTACK;
+					}
+				}
+				else {
+					enemyTurnIndex++;
+					state=State.ENEMY_ATTACK;
 				}
 			}
+		
 		}
 		
 		if(state==State.PLAYER_DEFENSE) {
@@ -161,7 +199,7 @@ public class Scenario {
 			//If it has gone through all the enemies, go to next state
 			if(turn==enemyInfo.getCount()) {
 				turn=0;
-				if(turn==party.size()+1)
+				if(turn==party.size())
 					state=State.ROUND_FINISHED;
 				else
 					state=State.ATTACK;
@@ -170,12 +208,14 @@ public class Scenario {
 		
 		if(state==State.PLAYER_CHOICE) {
 			//Do player stuff
-			
+
 			//if turn is over
-			if(turn==party.size()+1)
+			if(turn==party.size())
 				state=State.ROUND_FINISHED;
-			else
+			else {
+				turn++;
 				state=State.ATTACK;
+			}
 		}
 		
 		//State decides if scenario is over or another round should begin
@@ -188,6 +228,18 @@ public class Scenario {
 			state=State.END;
 		}
 		
+		delayBySeconds(1);
+		
+	}
+	
+	//[Test] Function that delays for a certain amount of seconds
+	private void delayBySeconds(int sec) {
+		try {
+			TimeUnit.SECONDS.sleep(sec);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//Returns if the round is finished or still being played
@@ -205,7 +257,14 @@ public class Scenario {
 	 * Catches exceptions so it doesn't give errors
 	 */
 	private void parseKey(KeyEvent key) {
-		k = key.getKeyChar();
+		//[Rem] This feels like a super bad workaround
+		//Was getting null pointer if i tried to move the screen before typing in
+		try{
+			k = key.getKeyChar();
+			}catch(NullPointerException ex){ // handle your exception
+			   System.out.println("");
+			}
+		
 		num = -1;
 		try{
 			num=Integer.parseInt(String.valueOf(k));  

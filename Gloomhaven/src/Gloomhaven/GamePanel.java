@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
@@ -51,7 +52,7 @@ public class GamePanel extends JPanel implements KeyListener{
 		
 		//[Temp] Need to randomly pick town event, road event
 		//[Temp] Need to pick scenario during party setup
-		int sceneID=1;
+		String sceneID="Test";
 		scene= new Scenario(sceneID, party);
 		
 		state=GameState.TOWN;
@@ -89,6 +90,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.MAGENTA);
+		
 		if(!(state==GameState.TESTING_SETUP)) 
 			gameManager(g);
 	}

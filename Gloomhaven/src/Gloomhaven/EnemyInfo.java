@@ -1,5 +1,6 @@
 package Gloomhaven;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class EnemyInfo {
 	List<Enemy> enemies = new ArrayList<Enemy>();
 	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	int turnNumber;
-	
+	Point2D dimensions;
 	public EnemyInfo(List<Enemy> enemies) {
 		this.enemies=enemies;			
 	}
@@ -44,10 +45,39 @@ public class EnemyInfo {
 	
 	public int getCount() {return enemies.size();}
 	
-	public boolean enemyAttackProcedure(int index) {
+	/*Algorithm:
+	 * Can enemy Attack -> is melee range -> quick range check
+	 */
+	public List<Player> enemyAttackProcedure(int index) {
+		List<Player> targets = new ArrayList<Player>();
 		
-		//[Test]
-		return true;
+		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
+		
+		if(canAttack) {
+			boolean meleeRange=enemies.get(index).checkMeleeRange();
+			
+			if(meleeRange) {
+				targets=enemies.get(index).createMeleeTargetList();
+				return targets;
+			}
+			else {
+				targets=enemies.get(index).playersInRangeEstimate();
+				if(targets.size()>0) {
+					targets=enemies.get(index).playersInRange(targets);
+					return targets;
+				}
+				else {
+					return targets;
+				}
+			}
+		}
+		else {
+			return targets;
+		}
+	}
+	
+	public void setDimensions(Point2D dimensions) {
+		this.dimensions=dimensions;
 	}
 	
 	//[Test]
@@ -56,4 +86,13 @@ public class EnemyInfo {
 			System.out.println(enemies.get(i).getClassID());
 		}
 	}
+	
+	//[Test]
+	public void testPrintDimensions() {
+		for(int i=0; i<enemies.size(); i++) {
+			System.out.println(enemies.get(i).getDimensions());
+		}
+	}
+	
+	
 }

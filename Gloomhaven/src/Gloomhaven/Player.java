@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -28,6 +29,11 @@ public class Player {
 	int topCard=-1;
 	int bottomCard=-1;
 	int turnNumber;
+	
+	Point2D coordinates;
+	Point2D dimensions;
+	
+	StatusEffectDataObject effects = new StatusEffectDataObject();
 	
 	public Player(int id) {
 		this.id=id;
@@ -83,4 +89,14 @@ public class Player {
 	}
 	
 	public int getTurnNumber() {return turnNumber;}
+	
+	public void setPoint(Point2D point) {
+		this.coordinates=point;
+	}
+	
+	public Point2D getCoordinate() {return coordinates;}
+	
+	public void setDimensions(Point2D dimensions) {
+		this.dimensions=dimensions;
+	}
 }

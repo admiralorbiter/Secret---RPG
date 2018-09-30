@@ -103,8 +103,7 @@ public class Scenario {
 				}
 			}
 		}
-		//State sets initiative and orders players based on it
-		if(state==State.INITIATIVE) {
+		else if(state==State.INITIATIVE) {//State sets initiative and orders players based on it
 
 			enemyInit=enemyInfo.drawCard();							//Pick enemy card for initiative
 			orderPlayers();											//order players
@@ -138,7 +137,7 @@ public class Scenario {
 		}
 		//State has the logic for who should be attacking and setting the state for enemy attack, player defense, etc
 		//Also should know the end state of when attacks are over and round is done
-		if(state==State.ATTACK) {
+		else if(state==State.ATTACK) {
 		
 			//[Test]
 			System.out.println("Turn: "+turn);
@@ -159,8 +158,7 @@ public class Scenario {
 				}
 			}
 		}
-		
-		if(state==State.ENEMY_ATTACK) {
+		else if(state==State.ENEMY_ATTACK) {
 			//Do Enemy Attack Stuff
 			//Enemies ordered at the beginning of the scenario
 			//Goes through all the enemies and sets distance and range flags
@@ -188,33 +186,35 @@ public class Scenario {
 			}
 		
 		}
-		
-		if(state==State.PLAYER_DEFENSE) {
-			for(int i=0; i<party.size(); i++) {
-				if(party.get(i).getID()==targetID) {
-					party.get(i).decreaseHealth(enemyInfo.getEnemy(enemyTurnIndex).getAttack());
-					if(party.get(i).getHealth()<=0) {
-						party.remove(i);							//Kill Player
+		else if(state==State.PLAYER_DEFENSE) {
+			g.drawString("Press d to discard card or h to take damage.", 50, 550);
+			if(k=='h') {
+				for(int i=0; i<party.size(); i++) {
+					if(party.get(i).getID()==targetID) {
+						party.get(i).decreaseHealth(enemyInfo.getEnemy(enemyTurnIndex).getAttack());
+						if(party.get(i).getHealth()<=0) {
+							party.remove(i);							//Kill Player
+						}
 					}
 				}
+				enemyControlLogic();
 			}
-			enemyControlLogic();
+			if(k=='d') {
+				enemyControlLogic();
+			}
 		}
-		
-		if(state==State.PLAYER_CHOICE) {
+		else if(state==State.PLAYER_CHOICE) {
 			//Do player stuff
-
-			//if turn is over
-			if(turn==party.size())
-				state=State.ROUND_FINISHED;
-			else {
-				turn++;
-				state=State.ATTACK;
+			g.drawString("Press 1 to test or 2 to test", 50, 550);
+			if(num==1) {
+				playerControlLogic();
+			}
+			if(num==2) {
+				playerControlLogic();
 			}
 		}
-		
 		//State decides if scenario is over or another round should begin
-		if(state==State.ROUND_FINISHED) {
+		else if(state==State.ROUND_FINISHED) {
 			//Look at win and finish conditions
 			if(party.size()==0) 
 				System.exit(1);
@@ -228,14 +228,23 @@ public class Scenario {
 			currentPlayer=0;
 			state=State.CARD_SELECTION;
 		}
-		
 		//[Temp] Press t to end the scenario
-		if(k=='t') {
+		else if(k=='t') {
 			state=State.END;
 		}
 		
 		//delayBySeconds(1);
 		
+	}
+	
+	private void playerControlLogic() {
+		//if turn is over
+		if(turn==party.size())
+			state=State.ROUND_FINISHED;
+		else {
+			turn++;
+			state=State.ATTACK;
+		}
 	}
 	
 	private void enemyControlLogic() {

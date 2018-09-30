@@ -22,14 +22,15 @@ public class Player {
 	//[Rem] Will need to implement a system that creates a unique id since it is possible
 	//to have multiple parties.
 	String id;
-	
+	String character;
+	List<AbilityCards> abilityDeck = new ArrayList<AbilityCards>();
 	//Card choice variable - if true pick top card, if false pick bottom card
 	//[Temp] Top card and bottom card should be card objects with an init variables
 	boolean cardChoice=true;
 	int topCard=-1;
 	int bottomCard=-1;
 	int turnNumber;
-	
+	int abilityCardCount;
 	Point2D coordinates;
 	Point2D dimensions;
 	
@@ -43,10 +44,17 @@ public class Player {
 	int TEST_ATTACK=3;
 	int TEST_RANGE=3;
 	
-	public Player(int id) {
+	public Player(int id, String character) {
 		this.id="P"+id;
 		topCard=-1;
 		bottomCard=-1;
+		this.character=character;
+		abilityCardCount=10;
+		
+		for(int i=0; i<abilityCardCount; i++)
+			abilityDeck.add(new AbilityCards(1, i+1, character));
+		
+		//[Test]
 		range=TEST_RANGE;
 		attack=TEST_ATTACK;
 		health=TEST_HEALTH;

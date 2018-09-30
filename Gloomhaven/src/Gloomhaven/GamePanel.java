@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements KeyListener{
 		//[Temp] Will have a phase for party setup
 		//Adds the players to the party
 		for(int id=0; id<NUMPLAYERS; id++)
-			party.add(new Player(id));
+			party.add(new Player(id, "Test"));
 		
 		//[Temp] Need to randomly pick town event, road event
 		//[Temp] Need to pick scenario during party setup

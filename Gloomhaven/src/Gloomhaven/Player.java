@@ -99,4 +99,6 @@ public class Player {
 	public void setDimensions(Point2D dimensions) {
 		this.dimensions=dimensions;
 	}
+	
+	public String getID() {return id;}
 }

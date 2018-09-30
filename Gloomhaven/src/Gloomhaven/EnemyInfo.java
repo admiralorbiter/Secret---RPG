@@ -61,7 +61,7 @@ public class EnemyInfo {
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		
 		if(canAttack) {
-			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P");
+			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getqBoard(), "P");
 			
 			if(meleeRange) {
 				targets=enemies.get(index).createMeleeTargetList();

@@ -96,6 +96,8 @@ public class Enemy {
 	public List<Player> createMeleeTargetList(){
 		List<Player> targets = new ArrayList<Player>();
 		
+		
+		
 		return targets;
 	}
 	
@@ -144,4 +146,6 @@ public class Enemy {
 	public Point2D getDimensions() {
 		return dimensions;
 	}
+	
+	public String getID() {return id;}
 }

@@ -9,7 +9,9 @@ public class Room {
 	//Constants
 	int SIZE_OF_HEX=100;
 	
-	String board[][];
+	String qBoard[][];
+	String idBoard[][]; 											//Eventually want this to hold objects, not just lookup ids
+	
 	//[Rem] Need to make sure there are enough enemies created in setup scenario.
 	//Might want to combine the two classes
 	Point2D dimensions;
@@ -21,7 +23,8 @@ public class Room {
 		switch(id) {
 			case "Test":
 				dimensions= new Point2D.Double(7, 5);
-				board = new String[(int) dimensions.getX()][(int) dimensions.getY()];
+				qBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
+				idBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				resetBoard();
 				
 				point=new Point2D.Double(1, 1);
@@ -38,7 +41,8 @@ public class Room {
 				
 				break;
 			default:
-				board = new String[8][8];
+				qBoard = new String[8][8];
+				idBoard = new String[8][8];
 				dimensions= new Point2D.Double(8, 8);
 		}
 	}
@@ -46,18 +50,21 @@ public class Room {
 	//[Temp] Might want to do more than just P, put an object or the full name or identifer.
 	private void setTilePlayer(Player player, Point2D point) {
 		player.setPoint(point);
-		board[(int) point.getX()][(int) point.getY()]="P";
+		qBoard[(int) point.getX()][(int) point.getY()]="P";
+		idBoard[(int) point.getX()][(int) point.getY()]=player.getID();
 	}
 	
 	private void setTileEnemy(Enemy enemy, Point2D point) {
 		enemy.setPoint(point);
-		board[(int) point.getX()][(int) point.getY()]="E";
+		qBoard[(int) point.getX()][(int) point.getY()]="E";
+		idBoard[(int) point.getX()][(int) point.getY()]=enemy.getID();
 	}
 	
 	private void resetBoard() {
 		for(int x=0; x<dimensions.getX(); x++) {
 			for(int y=0; y<dimensions.getY(); y++) {
-				board[x][y]="-";
+				qBoard[x][y]="-";
+				idBoard[x][y]=" ";
 			}
 		}
 	}
@@ -84,10 +91,18 @@ public class Room {
 	}
 	
 	public void testDisplayRoom() {
-		System.out.println("Room");
+		System.out.println("Quick Room");
 		for(int x=0; x<dimensions.getX(); x++) {
 			for(int y=0; y<dimensions.getY();  y++) {
-				System.out.print(board[x][y]+" ");
+				System.out.print(qBoard[x][y]+" ");
+			}
+			System.out.println();
+		}
+		
+		System.out.println("ID Room");
+		for(int x=0; x<dimensions.getX(); x++) {
+			for(int y=0; y<dimensions.getY();  y++) {
+				System.out.print(idBoard[x][y]+" ");
 			}
 			System.out.println();
 		}
@@ -97,6 +112,6 @@ public class Room {
 		return dimensions;
 	}
 	
-	public String[][] getBoard(){return board;}
+	public String[][] getqBoard(){return qBoard;}
 	
 }

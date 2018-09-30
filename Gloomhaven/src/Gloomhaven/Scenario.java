@@ -38,6 +38,7 @@ public class Scenario {
 	EnemyInfo enemyInfo;
 	Room room;
 	List<Player> targets;
+	String targetID;
 	
 	SetupScenario setup;
 	
@@ -177,6 +178,9 @@ public class Scenario {
 			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);
 			
 			if(targets.size()>0) {
+				//Picks first one on the list
+				//[Temp]
+				targetID=targets.get(0).getID();
 				
 				state=State.PLAYER_DEFENSE;
 			}else {
@@ -186,7 +190,14 @@ public class Scenario {
 		}
 		
 		if(state==State.PLAYER_DEFENSE) {
-			
+			for(int i=0; i<party.size(); i++) {
+				if(party.get(i).getID()==targetID) {
+					party.get(i).decreaseHealth(enemyInfo.getEnemy(enemyTurnIndex).getAttack());
+					if(party.get(i).getHealth()<=0) {
+						party.remove(i);							//Kill Player
+					}
+				}
+			}
 			enemyControlLogic();
 		}
 		
@@ -204,7 +215,18 @@ public class Scenario {
 		
 		//State decides if scenario is over or another round should begin
 		if(state==State.ROUND_FINISHED) {
+			//Look at win and finish conditions
+			if(party.size()==0) 
+				System.exit(1);
 			
+			if(enemyInfo.getCount()==0)
+				System.exit(1);
+			
+			for(int i=0; i<party.size(); i++)
+				party.get(i).resetCards();
+			turn=0;
+			currentPlayer=0;
+			state=State.CARD_SELECTION;
 		}
 		
 		//[Temp] Press t to end the scenario
@@ -212,7 +234,7 @@ public class Scenario {
 			state=State.END;
 		}
 		
-		delayBySeconds(1);
+		//delayBySeconds(1);
 		
 	}
 	

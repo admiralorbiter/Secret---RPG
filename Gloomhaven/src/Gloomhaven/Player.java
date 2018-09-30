@@ -35,10 +35,21 @@ public class Player {
 	
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	
+	int range;
+	int attack;
+	int health;
+	
+	int TEST_HEALTH=12;
+	int TEST_ATTACK=3;
+	int TEST_RANGE=3;
+	
 	public Player(int id) {
 		this.id="P"+id;
 		topCard=-1;
 		bottomCard=-1;
+		range=TEST_RANGE;
+		attack=TEST_ATTACK;
+		health=TEST_HEALTH;
 	}
 	
 	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
@@ -101,4 +112,12 @@ public class Player {
 	}
 	
 	public String getID() {return id;}
+	public int getAttack() {return attack;}
+	public int getHealth() {return health;}
+	public void decreaseHealth(int damage) {
+		health=health-damage;
+		
+		//[Test]
+		System.out.println("Player was attacked for "+damage+" making thier health "+health);
+	}
 }

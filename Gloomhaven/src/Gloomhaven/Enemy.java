@@ -15,6 +15,12 @@ public class Enemy {
 	Point2D dimensions;
 	
 	int range;
+	int attack;
+	int health;
+	
+	int TEST_HEALTH=6;
+	int TEST_ATTACK=3;
+	int TEST_RANGE=3;
 	
 	public Enemy(String classID, int id) {
 		this.classID=classID;
@@ -23,15 +29,21 @@ public class Enemy {
 		switch(classID) {
 			case "Test": 
 				eliteFlag=false;
-				range=3;
+				range=TEST_RANGE;
+				attack=TEST_ATTACK;
+				health=TEST_HEALTH;
 				break;
 			case "TestElite":
 				eliteFlag=true;
-				range=3;
+				range=TEST_RANGE;
+				attack=TEST_ATTACK;
+				health=TEST_HEALTH;
 				break;
 			default:
 				eliteFlag=true;
-				range=3;
+				range=TEST_RANGE;
+				attack=TEST_ATTACK;
+				health=TEST_HEALTH;
 		}
 	}	
 	
@@ -264,4 +276,8 @@ public class Enemy {
 	}
 	
 	public String getID() {return id;}
+	public int getAttack() {return attack;}
+	public void decreaseHealth(int damage) {
+		health=health-damage;
+	}
 }

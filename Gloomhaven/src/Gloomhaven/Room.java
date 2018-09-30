@@ -88,6 +88,7 @@ public class Room {
 		int[] tX = {0+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 150+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 0+x*SIZE_OF_HEX+offsetX};
 		int[] tY = {50+y*SIZE_OF_HEX+offsetY, 0+y*SIZE_OF_HEX+offsetY,  0+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
+		g.drawString(qBoard[x][y], x*SIZE_OF_HEX+offsetX, y*SIZE_OF_HEX+offsetY);
 	}
 	
 	public void testDisplayRoom() {
@@ -113,5 +114,6 @@ public class Room {
 	}
 	
 	public String[][] getqBoard(){return qBoard;}
+	public String[][] getIDBoard(){return idBoard;}
 	
 }

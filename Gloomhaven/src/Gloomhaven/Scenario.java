@@ -139,6 +139,9 @@ public class Scenario {
 		//Also should know the end state of when attacks are over and round is done
 		if(state==State.ATTACK) {
 		
+			//[Test]
+			System.out.println("Turn: "+turn);
+			
 			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
 				//do enemy stuff
 				enemyTurnIndex=0;
@@ -170,38 +173,27 @@ public class Scenario {
 			targets = new ArrayList<Player>();
 			//Goes through the enemies and sets range / distance flags
 			
-			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex);
-		
+			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);
+			
 			if(targets.size()>0) {
+				
+				//[Test]
+				System.out.println("Targets:");
+				for(int i=0; i<targets.size(); i++) {
+					System.out.println(i+": "+targets);
+				}
+				System.out.println("");
+				
 				state=State.PLAYER_DEFENSE;
 			}else {
-				//If it has gone through all the enemies, go to next state
-				if(enemyTurnIndex==(enemyInfo.getCount()-1)) {
-					if(turn==party.size())
-						state=State.ROUND_FINISHED;
-					else {
-						turn++;
-						state=State.ATTACK;
-					}
-				}
-				else {
-					enemyTurnIndex++;
-					state=State.ENEMY_ATTACK;
-				}
+				enemyControlLogic();
 			}
 		
 		}
 		
 		if(state==State.PLAYER_DEFENSE) {
 			
-			//If it has gone through all the enemies, go to next state
-			if(turn==enemyInfo.getCount()) {
-				turn=0;
-				if(turn==party.size())
-					state=State.ROUND_FINISHED;
-				else
-					state=State.ATTACK;
-			}
+			enemyControlLogic();
 		}
 		
 		if(state==State.PLAYER_CHOICE) {
@@ -228,6 +220,22 @@ public class Scenario {
 		
 		delayBySeconds(1);
 		
+	}
+	
+	private void enemyControlLogic() {
+		//If it has gone through all the enemies, go to next state
+		if(enemyTurnIndex==(enemyInfo.getCount()-1)) {
+			if(turn==party.size())
+				state=State.ROUND_FINISHED;
+			else {
+				turn++;
+				state=State.ATTACK;
+			}	
+		}
+		else {
+			enemyTurnIndex++;
+			state=State.ENEMY_ATTACK;
+		}
 	}
 	
 	//[Test] Function that delays for a certain amount of seconds

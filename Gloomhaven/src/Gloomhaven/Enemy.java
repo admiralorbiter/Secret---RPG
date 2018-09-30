@@ -14,6 +14,8 @@ public class Enemy {
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	Point2D dimensions;
 	
+	int range;
+	
 	public Enemy(String classID, int id) {
 		this.classID=classID;
 		this.id=id+classID;
@@ -21,12 +23,15 @@ public class Enemy {
 		switch(classID) {
 			case "Test": 
 				eliteFlag=false;
+				range=3;
 				break;
 			case "TestElite":
 				eliteFlag=true;
+				range=3;
 				break;
 			default:
 				eliteFlag=true;
+				range=3;
 		}
 	}	
 	
@@ -60,30 +65,30 @@ public class Enemy {
 		int x=(int) coordinates.getX();
 		int y=(int) coordinates.getY();
 	
-		if(x>0) {
+		if(x-1>0) {
 			if(board[x-1][y]==lookingForID)
 				return true;
-			if(y>0) {
+			if(y-1>0) {
 				if(board[x-1][y-1]==lookingForID) {
 					return true;
 				}
 			}
-			if(y<dimensions.getY()) {
+			if(y+1<dimensions.getY()) {
 				if(board[x-1][y+1]==lookingForID) {
 					return true;
 				}
 			}
 		}
 		
-		if(x<dimensions.getX()) {
+		if(x+1<dimensions.getX()) {
 			if(board[x+1][y]==lookingForID)
 				return true;
-			if(y>0) {
+			if(y-1>0) {
 				if(board[x+1][y-1]==lookingForID) {
 					return true;
 				}
 			}
-			if(y<dimensions.getY()) {
+			if(y+1<dimensions.getY()) {
 				if(board[x+1][y+1]==lookingForID) {
 					return true;
 				}
@@ -93,20 +98,116 @@ public class Enemy {
 		return false;
 	}
 	
-	public List<Player> createMeleeTargetList(){
+	//[Rem] This has to be a way to abstract this for both player and enemies
+	public List<Player> createMeleeTargetList(String qBoard[][], String idBoard[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
+		List<String> idList = new ArrayList<String>();
 		
+		int x=(int) coordinates.getX();
+		int y=(int) coordinates.getY();
+	
+		if(x-1>0) {
+			if(qBoard[x-1][y]=="P")
+				idList.add(idBoard[x-1][y]);
+			if(y-1>0) {
+				if(qBoard[x-1][y-1]=="P") {
+					idList.add(idBoard[x-1][y-1]);
+				}
+			}
+			if(y+1<dimensions.getY()) {
+				if(qBoard[x-1][y+1]=="P") {
+					idList.add(idBoard[x-1][y+1]);
+				}
+			}
+		}
 		
+		if(x+1<dimensions.getX()) {
+			if(qBoard[x+1][y]=="P")
+				idList.add(idBoard[x+1][y]);
+			if(y-1>0) {
+				if(qBoard[x+1][y-1]=="P") {
+					idList.add(idBoard[x+1][y-1]);
+				}
+			}
+			if(y+1<dimensions.getY()) {
+				if(qBoard[x+1][y+1]=="P") {
+					idList.add(idBoard[x+1][y+1]);
+				}
+			}
+		}
+
+		for(int idIndex=0; idIndex<idList.size(); idIndex++) {
+			for(int i=0; i<party.size(); i++) {
+				if(party.get(i).getID()==idList.get(idIndex)) {
+					targets.add(party.get(i));
+					break;											//[Rem] Worried this will cause a bug.
+				}
+			}
+		}
 		
 		return targets;
 	}
 	
-	public List<Player> playersInRangeEstimate(){
+	public List<Player> playersInRangeEstimate(String qBoard[][], String idBoard[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
+		
+		if(range<=1)
+			return targets;
+		
+		for(int r=2; r<=range; r++)
+			checkRange(qBoard, idBoard, "P", r, party, targets);
 		
 		return targets;
 	}
 	
+	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
+	public void checkRange(String qBoard[][], String idBoard[][], String lookingForID, int range, List<Player> party, List<Player> targets) {
+		List<String> idList = new ArrayList<String>();
+		
+		int x=(int) coordinates.getX();
+		int y=(int) coordinates.getY();
+	
+		if(x-range>0) {
+			if(qBoard[x-range][y]==lookingForID)
+				idList.add(idBoard[x-1][y]);
+			if(y-range>0) {
+				if(qBoard[x-range][y-range]==lookingForID) {
+					idList.add(idBoard[x-range][y-range]);
+				}
+			}
+			if(y+range<dimensions.getY()) {
+				if(qBoard[x-range][y+range]==lookingForID) {
+					idList.add(idBoard[x-range][y+range]);
+				}
+			}
+		}
+		
+		if(x+range<dimensions.getX()) {
+			if(qBoard[x+range][y]==lookingForID)
+				idList.add(idBoard[x+range][y]);
+			if(y-range>0) {
+				if(qBoard[x+1][y-1]==lookingForID) {
+					idList.add(idBoard[x+1][y-1]);
+				}
+			}
+			if(y+range<dimensions.getY()) {
+				if(qBoard[x+range][y+range]==lookingForID) {
+					idList.add(idBoard[x+range][y+range]);
+				}
+			}
+		}
+
+		for(int idIndex=0; idIndex<idList.size(); idIndex++) {
+			for(int i=0; i<party.size(); i++) {
+				if(party.get(i).getID()==idList.get(idIndex)) {
+					targets.add(party.get(i));
+					break;											//[Rem] Worried this will cause a bug.
+				}
+			}
+		}
+	}
+	
+	//[Need to Do] Remove players that can't be reached
 	public List<Player> playersInRange(List<Player> targets){
 		
 		return targets;

@@ -55,7 +55,7 @@ public class EnemyInfo {
 	/*Algorithm:
 	 * Can enemy Attack -> is melee range -> quick range check
 	 */
-	public List<Player> enemyAttackProcedure(int index) {
+	public List<Player> enemyAttackProcedure(int index, List<Player> party) {
 		List<Player> targets = new ArrayList<Player>();
 		
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
@@ -64,11 +64,11 @@ public class EnemyInfo {
 			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getqBoard(), "P");
 			
 			if(meleeRange) {
-				targets=enemies.get(index).createMeleeTargetList();
+				targets=enemies.get(index).createMeleeTargetList(room.getqBoard(), room.getIDBoard(), party);
 				return targets;
 			}
 			else {
-				targets=enemies.get(index).playersInRangeEstimate();
+				targets=enemies.get(index).playersInRangeEstimate(room.getqBoard(), room.getIDBoard(), party);
 				if(targets.size()>0) {
 					targets=enemies.get(index).playersInRange(targets);
 					return targets;

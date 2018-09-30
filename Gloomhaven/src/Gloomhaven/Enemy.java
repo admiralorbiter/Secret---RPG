@@ -60,7 +60,9 @@ public class Enemy {
 	public Point2D getCoordinate() {return coordinates;}
 	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
+	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
 	public boolean checkMeleeRange(String board[][], String lookingForID) {
+		
 		
 		int x=(int) coordinates.getX();
 		int y=(int) coordinates.getY();
@@ -101,7 +103,9 @@ public class Enemy {
 	//[Rem] This has to be a way to abstract this for both player and enemies
 	public List<Player> createMeleeTargetList(String qBoard[][], String idBoard[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
-		List<String> idList = new ArrayList<String>();
+		checkRange(qBoard, idBoard, "P", 1, party, targets);
+		
+		/*List<String> idList = new ArrayList<String>();
 		
 		int x=(int) coordinates.getX();
 		int y=(int) coordinates.getY();
@@ -143,7 +147,7 @@ public class Enemy {
 					break;											//[Rem] Worried this will cause a bug.
 				}
 			}
-		}
+		}*/
 		
 		return targets;
 	}
@@ -154,8 +158,9 @@ public class Enemy {
 		if(range<=1)
 			return targets;
 		
-		for(int r=2; r<=range; r++)
+		for(int r=2; r<=range; r++) {
 			checkRange(qBoard, idBoard, "P", r, party, targets);
+		}
 		
 		return targets;
 	}
@@ -167,9 +172,19 @@ public class Enemy {
 		int x=(int) coordinates.getX();
 		int y=(int) coordinates.getY();
 	
+		if(y-range>0) {
+			if(qBoard[x][y-range]==lookingForID)
+				idList.add(idBoard[x][y-range]);
+		}
+		
+		if(y+range<dimensions.getY()) {
+			if(qBoard[x][y+range]==lookingForID)
+				idList.add(idBoard[x][y+range]);
+		}
+		
 		if(x-range>0) {
 			if(qBoard[x-range][y]==lookingForID)
-				idList.add(idBoard[x-1][y]);
+				idList.add(idBoard[x-range][y]);
 			if(y-range>0) {
 				if(qBoard[x-range][y-range]==lookingForID) {
 					idList.add(idBoard[x-range][y-range]);
@@ -186,8 +201,8 @@ public class Enemy {
 			if(qBoard[x+range][y]==lookingForID)
 				idList.add(idBoard[x+range][y]);
 			if(y-range>0) {
-				if(qBoard[x+1][y-1]==lookingForID) {
-					idList.add(idBoard[x+1][y-1]);
+				if(qBoard[x+range][y-range]==lookingForID) {
+					idList.add(idBoard[x+range][y-range]);
 				}
 			}
 			if(y+range<dimensions.getY()) {

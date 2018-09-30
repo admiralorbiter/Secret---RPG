@@ -171,18 +171,12 @@ public class Scenario {
 			//This will allow me to move them one by one so it shows up in the graphics
 			int enemyCount=enemyInfo.getCount();
 			targets = new ArrayList<Player>();
-			//Goes through the enemies and sets range / distance flags
 			
+			
+			//Goes through the enemies and sets range / distance flags
 			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);
 			
 			if(targets.size()>0) {
-				
-				//[Test]
-				System.out.println("Targets:");
-				for(int i=0; i<targets.size(); i++) {
-					System.out.println(i+": "+targets);
-				}
-				System.out.println("");
 				
 				state=State.PLAYER_DEFENSE;
 			}else {
@@ -303,6 +297,15 @@ public class Scenario {
 					System.out.println(i+" - "+enemyInfo.getTurnNumber());
 			}
 		}
+	}
+	
+	private void testPrintEnemyTargets() {
+		//[Test]
+		System.out.println("Targets for Enemy "+enemyTurnIndex+":");
+		for(int i=0; i<targets.size(); i++) {
+			System.out.println(i+": "+targets);
+		}
+		System.out.println("");
 	}
 	
 	

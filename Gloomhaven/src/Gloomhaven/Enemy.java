@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Enemy {
 	
@@ -13,7 +14,9 @@ public class Enemy {
 	Point2D coordinates;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	Point2D dimensions;
-	
+
+	int move;
+	int shield;
 	int range;
 	int attack;
 	int health;
@@ -21,29 +24,37 @@ public class Enemy {
 	int TEST_HEALTH=6;
 	int TEST_ATTACK=3;
 	int TEST_RANGE=3;
+	int TEST_MOVE=2;
+	int TEST_SHIELD=0;
 	
-	public Enemy(String classID, int id) {
+	public Enemy(String classID, int id, int scenarioLevel) {
 		this.classID=classID;
 		this.id=id+classID;
-		
+	
 		switch(classID) {
 			case "Test": 
 				eliteFlag=false;
 				range=TEST_RANGE;
 				attack=TEST_ATTACK;
 				health=TEST_HEALTH;
+				move=TEST_MOVE;
+				shield=TEST_SHIELD;
 				break;
 			case "TestElite":
 				eliteFlag=true;
-				range=TEST_RANGE;
-				attack=TEST_ATTACK;
-				health=TEST_HEALTH;
+				range=TEST_RANGE+scenarioLevel;
+				attack=TEST_ATTACK+scenarioLevel;
+				health=TEST_HEALTH+scenarioLevel;
+				move=TEST_MOVE+scenarioLevel;
+				shield=TEST_SHIELD+scenarioLevel;
 				break;
 			default:
 				eliteFlag=true;
 				range=TEST_RANGE;
 				attack=TEST_ATTACK;
 				health=TEST_HEALTH;
+				move=TEST_MOVE;
+				shield=TEST_SHIELD;
 		}
 	}	
 	
@@ -275,8 +286,9 @@ public class Enemy {
 		return dimensions;
 	}
 	
-	public String getID() {return id;}
+
 	public int getAttack() {return attack;}
+	public String getID() {return id;}
 	public void decreaseHealth(int damage) {
 		health=health-damage;
 	}

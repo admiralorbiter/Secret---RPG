@@ -98,6 +98,7 @@ public class Scenario {
 				if((currentPlayer+1)!=party.size())
 					currentPlayer++;
 				else {
+					enemyInfo.pickRandomAbilityCard();
 					currentPlayer=0;
 					state=State.INITIATIVE;
 				}
@@ -105,7 +106,7 @@ public class Scenario {
 		}
 		else if(state==State.INITIATIVE) {//State sets initiative and orders players based on it
 
-			enemyInit=enemyInfo.drawCard();							//Pick enemy card for initiative
+			enemyInit=enemyInfo.getInitiative();					//Pick enemy card for initiative
 			orderPlayers();											//order players
 
 			//Goes through the party and enemy and gives a turn number
@@ -191,7 +192,7 @@ public class Scenario {
 			if(k=='h') {
 				for(int i=0; i<party.size(); i++) {
 					if(party.get(i).getID()==targetID) {
-						party.get(i).decreaseHealth(enemyInfo.getEnemy(enemyTurnIndex).getAttack());
+						party.get(i).decreaseHealth(enemyInfo.getAttack(enemyTurnIndex));
 						if(party.get(i).getHealth()<=0) {
 							party.remove(i);							//Kill Player
 						}

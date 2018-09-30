@@ -23,7 +23,7 @@ public class Player {
 	//to have multiple parties.
 	String id;
 	String character;
-	List<AbilityCards> abilityDeck = new ArrayList<AbilityCards>();
+	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();
 	//Card choice variable - if true pick top card, if false pick bottom card
 	//[Temp] Top card and bottom card should be card objects with an init variables
 	boolean cardChoice=true;
@@ -52,7 +52,7 @@ public class Player {
 		startingAbilityCardCount=10;
 		
 		for(int i=0; i<startingAbilityCardCount; i++)
-			abilityDeck.add(new AbilityCards(1, i+1, character));
+			abilityDeck.add(new PlayerAbilityCards(1, i+1, character));
 		
 		//[Test]
 		range=TEST_RANGE;

@@ -1,6 +1,6 @@
 package Gloomhaven;
 
-public class AbilityCards {
+public class PlayerAbilityCards {
 	private String name;
 	private int initiative;
 	
@@ -8,7 +8,7 @@ public class AbilityCards {
 	CardDataObject bottom = new CardDataObject();
 	CardInterface card;
 	
-	public AbilityCards(int level, int id, String Class) {
+	public PlayerAbilityCards(int level, int id, String Class) {
 		if(Class=="Test") {
 			card = new CardsTest();
 			if(level==1) {

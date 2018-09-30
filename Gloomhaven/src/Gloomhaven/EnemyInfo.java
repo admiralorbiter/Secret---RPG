@@ -3,28 +3,33 @@ package Gloomhaven;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class EnemyInfo {
 	
+	List<EnemyAbilityCards> abilityDeck = new ArrayList<EnemyAbilityCards>();
 	List<Enemy> enemies = new ArrayList<Enemy>();
 	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	int turnNumber;
 	Room room;
+	int startingAbilityCardCount;
+	int abilityCardIndex;
 	
 	public EnemyInfo(List<Enemy> enemies, Room room) {
 		this.enemies=enemies;
 		this.room=room;
 		Point2D dimensions=room.getDimensions();
 		
+		abilityCardIndex=0;
+		startingAbilityCardCount=8;
+		for(int i=0; i<startingAbilityCardCount; i++)
+			abilityDeck.add(new EnemyAbilityCards(1, i+1, "Test"));
+		
 		for(int i=0; i<enemies.size(); i++) {
 			enemies.get(i).setDimensions(dimensions);
 		}
 	}
-	
-	public int drawCard() {
-		return enemyDeck.drawCard();
-	}
-	
+	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiatve();}
 	public void setTurnNumber(int turnNumber) {
 		this.turnNumber=turnNumber;
 	}
@@ -85,6 +90,24 @@ public class EnemyInfo {
 		else {
 			return targets;
 		}
+	}
+	
+	public void pickRandomAbilityCard() {
+		Random rand = new Random();
+		boolean running=true;
+		do
+		{
+		 int pick = rand.nextInt(abilityDeck.size());
+		 if(abilityDeck.get(pick).cardFree()) {
+			 abilityCardIndex=pick;
+			 running=false;
+		 }
+		}
+		while(running);
+	}
+	
+	public int getAttack(int enemyTurnIndex) {
+		return enemies.get(enemyTurnIndex).getAttack()+abilityDeck.get(abilityCardIndex).getAttack();
 	}
 	
 	//[Test]

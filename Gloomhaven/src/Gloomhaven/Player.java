@@ -30,7 +30,7 @@ public class Player {
 	int topCard=-1;
 	int bottomCard=-1;
 	int turnNumber;
-	int abilityCardCount;
+	int startingAbilityCardCount;
 	Point2D coordinates;
 	Point2D dimensions;
 	
@@ -49,9 +49,9 @@ public class Player {
 		topCard=-1;
 		bottomCard=-1;
 		this.character=character;
-		abilityCardCount=10;
+		startingAbilityCardCount=10;
 		
-		for(int i=0; i<abilityCardCount; i++)
+		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new AbilityCards(1, i+1, character));
 		
 		//[Test]
@@ -70,23 +70,33 @@ public class Player {
 	public void pickCards(int key, Graphics g) {
 		
 		g.drawString("Picking cards", 10, 50);
-		if(cardChoice) {
-			g.drawString("Choose top card.", 10, 75);
-			
-			//[Test] Picking cards assuming there are 8
-			if(key>=1 && key<=8) {
-				topCard=key;
-				cardChoice=!cardChoice;
+		drawAbilityCards(g);
+		
+		if(abilityDeck.size()>1) {
+			if(cardChoice) {
+				g.drawString("Choose top card.", 10, 75);
+				
+				//[Test] Picking cards assuming there are 8
+				if(key>=1 && key<=abilityDeck.size()) {
+					topCard=key;
+					cardChoice=!cardChoice;
+				}
+			}
+			else {
+				g.drawString("Choose bottom card.", 10, 75);
+				//[Test] Picking cards assuming there are 8
+				if(key>=1 && key<=abilityDeck.size()) {
+					bottomCard=key;
+					cardChoice=!cardChoice;
+				}
+				
 			}
 		}
-		else {
-			g.drawString("Choose bottom card.", 10, 75);
-			//[Test] Picking cards assuming there are 8
-			if(key>=1 && key<=8) {
-				bottomCard=key;
-				cardChoice=!cardChoice;
-			}
-			
+	}
+	
+	public void drawAbilityCards(Graphics g) {
+		for(int i=0; i<abilityDeck.size(); i++) {
+			g.drawString(abilityDeck.get(i).getText(), 10, 90+i*15);
 		}
 	}
 	
@@ -100,7 +110,7 @@ public class Player {
 	}
 	
 	public int getInitiative() {
-		return topCard;
+		return abilityDeck.get(topCard).getInitiative();
 	}
 	
 	public void setTurnNumber(int turnNumber) {

@@ -15,70 +15,70 @@ public class AbilityCards {
 				switch(id)
 				{
 					case 1:
-						name="Submissive Afflication";
+						name="Feel The Love";
 						initiative=48;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 					
 					case 2:
-						name="Into the Night";
+						name="Fire";
 						initiative=14;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 3:
-						name="Fearsome Blade";
+						name="4th Dimension";
 						initiative=27;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 4:
-						name="Feedback Loop";
+						name="Freee (Ghost Town Pt.2)";
 						initiative=79;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 5:
-						name="Gnawing Horde";
+						name="Reborn";
 						initiative=82;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 6:
-						name="The Mind's Weakness";
+						name="Kids See Ghost";
 						initiative=75;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 7:
-						name="Parasite Influence";
+						name="Cudi Montage";
 						initiative=71;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 8:
-						name="Scurry";
+						name="I Thought About Killing You";
 						initiative=20;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);
 						break;
 						
 					case 9:
-						name="Perverse Edge";
+						name="Yikes";
 						initiative=8;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);	
 						break;
 						
 					case 10:
-						name="Empathetic Assault";
+						name="All Mine";
 						initiative=11;
 						top=card.getTop(name);
 						bottom=card.getBottom(name);	

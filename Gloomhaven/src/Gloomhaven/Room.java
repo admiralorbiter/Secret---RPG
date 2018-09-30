@@ -80,7 +80,7 @@ public class Room {
 	private void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;
 		int offsetY=0;
-		int offsetX=200;
+		int offsetX=400;
 		if(x%2!=0) {
 			offsetY=50;
 		}

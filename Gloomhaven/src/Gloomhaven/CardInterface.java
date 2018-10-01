@@ -1,7 +1,7 @@
 package Gloomhaven;
 
 public interface CardInterface {
-	public CardDataObject getTop(String name);
-	public CardDataObject getBottom(String name);
-	public CardDataObject getData(int i);
+	public CardDataObject getTop(int id);
+	public CardDataObject getBottom(int id);
+	public CardDataObject getData(int id);
 }

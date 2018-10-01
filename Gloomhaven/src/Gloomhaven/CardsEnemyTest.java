@@ -3,13 +3,13 @@ package Gloomhaven;
 public class CardsEnemyTest implements CardInterface {
 
 	@Override
-	public CardDataObject getTop(String name) {
+	public CardDataObject getTop(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CardDataObject getBottom(String name) {
+	public CardDataObject getBottom(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -17,7 +17,7 @@ public class CardsEnemyTest implements CardInterface {
 	@Override
 	public CardDataObject getData(int id) {
 		CardDataObject data = new CardDataObject();
-			
+		
 		switch(id) {
 		case 1:
 			data.move=0;

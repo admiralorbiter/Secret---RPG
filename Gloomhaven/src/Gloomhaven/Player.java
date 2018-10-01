@@ -35,7 +35,7 @@ public class Player {
 	int startingAbilityCardCount;
 	Point2D coordinates;
 	Point2D dimensions;
-	
+	int abilityDeckSize;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	
 	int range;
@@ -70,18 +70,44 @@ public class Player {
 		bottomCard=null;
 	}
 	
+	public boolean discardForHealth(int key, Graphics g) {
+		g.drawString("Pick card to discard.", 10, 50);
+		drawAbilityCards(g);
+		findAbilityCardsLeft();
+		
+		if(abilityDeckSize==1) {
+			for(int i=0; i<abilityDeck.size(); i++) {
+				if(abilityDeck.get(i).cardFree()) {
+					abilityDeck.get(i).discardPile();
+					return true;
+				}
+			}
+		}else {
+			if(key>=0 && key<abilityDeck.size()) {
+				if(abilityDeck.get(key).cardFree()) {
+					abilityDeck.get(key).discardPile();
+					return true;
+				}
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
 	//Picks the two cards needed for initiative
 	public void pickCards(int key, Graphics g) {
 		
 		g.drawString("Picking cards", 10, 50);
 		drawAbilityCards(g);
+		findAbilityCardsLeft();
 		
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
 				g.drawString("Choose top card.", 10, 75);
 				
 				//[Test] Picking cards assuming there are 8
-				if(key>=0 && key<=abilityDeck.size()) {
+				if(key>=0 && key<abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
 						topCard=abilityDeck.get(key);
 						abilityDeck.get(key).setInPlay();
@@ -93,7 +119,7 @@ public class Player {
 			else {
 				g.drawString("Choose bottom card.", 10, 75);
 				//[Test] Picking cards assuming there are 8
-				if(key>=0 && key<=abilityDeck.size()) {
+				if(key>=0 && key<abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
 						bottomCard=abilityDeck.get(key);
 						abilityDeck.get(key).setInPlay();
@@ -164,6 +190,18 @@ public class Player {
 	
 	public void setDimensions(Point2D dimensions) {
 		this.dimensions=dimensions;
+	}
+	public int abilityCardsLeft() {
+		
+		return abilityDeckSize;
+	}
+	
+	private void findAbilityCardsLeft() {
+		abilityDeckSize=0;
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(abilityDeck.get(i).cardFree())
+				abilityDeckSize++;
+		}
 	}
 	
 	//[Test]

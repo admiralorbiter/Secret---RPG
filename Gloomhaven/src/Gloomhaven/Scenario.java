@@ -24,6 +24,7 @@ public class Scenario {
 	    ENEMY_ATTACK,
 	    PLAYER_CHOICE,
 	    PLAYER_DEFENSE,
+	    PLAYER_DISCARD,
 	    ENEMY_DEFENSE,
 	    PLAYER_CARD,
 	    ROUND_FINISHED,
@@ -87,7 +88,7 @@ public class Scenario {
 	public void playRound(KeyEvent key, Graphics g) {
 
 		//[Rem] Might need else ifs in order to have the graphics update
-		
+		g.drawString("State of Scenario", 50, 485);
 		g.drawString(state.toString(), 50, 500);
 		room.drawRoom(g);
 		
@@ -205,20 +206,21 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_DEFENSE) {
 			g.drawString("Press d to discard card or h to take damage.", 50, 550);
-			if(k=='h') {
-				for(int i=0; i<party.size(); i++) {
-					if(party.get(i).getID()==targetID) {
-						party.get(i).decreaseHealth(enemyInfo.getAttack(enemyTurnIndex));
-						if(party.get(i).getHealth()<=0) {
-							party.remove(i);							//Kill Player
-						}
-					}
+			int playerIndex = getTargetIndex();
+			
+			if((k=='h') || (party.get(playerIndex).abilityCardsLeft()==0)) {
+				if(party.get(playerIndex).getHealth()<=0) {
+					party.remove(playerIndex);						//Kill Player
 				}
 				enemyControlLogic();
 			}
 			if(k=='d') {
-				enemyControlLogic();
+				state=State.PLAYER_DISCARD;
 			}
+		}
+		else if(state==State.PLAYER_DISCARD) {
+			if(party.get(playerIndex).discardForHealth(num, g))
+				enemyControlLogic();
 		}
 		else if(state==State.PLAYER_CHOICE) {
 			//Do player stuff
@@ -358,6 +360,16 @@ public class Scenario {
 			System.out.println(i+": "+targets);
 		}
 		System.out.println("");
+	}
+	
+	private int getTargetIndex() {
+		int playerIndex = -1;
+		for(int i=0; i<party.size(); i++) {
+			if(party.get(i).getID()==targetID) {
+				playerIndex=i;
+			}
+		}
+		return playerIndex;
 	}
 	
 	

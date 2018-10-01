@@ -113,7 +113,10 @@ public class Scenario {
 			g.drawString("Enemy: "+String.valueOf(enemyInit), 50, 400);
 			for(int i=0; i<party.size();  i++) {
 				g.drawString("Player: "+String.valueOf(party.get(i).getInitiative()), 50, 420+20*i);
+				//[Test]
+				//g.drawString(String.valueOf(party.get(i).testGetTopCardIndex())+"  "+String.valueOf(party.get(i).testGetBottomCardIndex()), 50, 440+20*i);
 			}
+			
 			
 			//[Temp] Couldn't get the order right so players go first, enemies last
 			for(int i=0; i<party.size(); i++)
@@ -154,9 +157,6 @@ public class Scenario {
 		//Also should know the end state of when attacks are over and round is done
 		else if(state==State.ATTACK) {
 		
-			//[Test]
-			System.out.println("Turn: "+turn);
-			System.out.println(enemyInfo.getTurnNumber()+" - "+party.get(0).getTurnNumber());
 			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
 				//do enemy stuff
 				enemyTurnIndex=0;

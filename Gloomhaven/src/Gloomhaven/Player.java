@@ -81,7 +81,7 @@ public class Player {
 				g.drawString("Choose top card.", 10, 75);
 				
 				//[Test] Picking cards assuming there are 8
-				if(key>=1 && key<=abilityDeck.size()) {
+				if(key>=0 && key<=abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
 						topCard=abilityDeck.get(key);
 						abilityDeck.get(key).setInPlay();
@@ -93,7 +93,7 @@ public class Player {
 			else {
 				g.drawString("Choose bottom card.", 10, 75);
 				//[Test] Picking cards assuming there are 8
-				if(key>=1 && key<=abilityDeck.size()) {
+				if(key>=0 && key<=abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
 						bottomCard=abilityDeck.get(key);
 						abilityDeck.get(key).setInPlay();
@@ -107,7 +107,8 @@ public class Player {
 	
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
-			g.drawString(abilityDeck.get(i).getText(), 10, 90+i*15);
+			if(abilityDeck.get(i).cardFree())
+				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 90+i*15);
 		}
 	}
 	
@@ -164,6 +165,10 @@ public class Player {
 	public void setDimensions(Point2D dimensions) {
 		this.dimensions=dimensions;
 	}
+	
+	//[Test]
+	public int testGetTopCardIndex() {return topCard.getIndex();}
+	public int testGetBottomCardIndex() {return bottomCard.getIndex();}
 	
 	public String getID() {return id;}
 	public int getAttack() {return attack;}

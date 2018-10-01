@@ -108,7 +108,20 @@ public class Scenario {
 
 			enemyInit=enemyInfo.getInitiative();					//Pick enemy card for initiative
 			orderPlayers();											//order players
-
+			
+			g.drawString("Initiatives:", 50, 380);
+			g.drawString("Enemy: "+String.valueOf(enemyInit), 50, 400);
+			for(int i=0; i<party.size();  i++) {
+				g.drawString("Player: "+String.valueOf(party.get(i).getInitiative()), 50, 420+20*i);
+			}
+			
+			//[Temp] Couldn't get the order right so players go first, enemies last
+			for(int i=0; i<party.size(); i++)
+				party.get(i).setTurnNumber(i);
+			
+			enemyInfo.setTurnNumber(party.size());
+			
+			/*
 			//Goes through the party and enemy and gives a turn number
 			//The party is in order, so i just have to fit the enemy in
 			for(int i=0; i<party.size(); i++) {
@@ -131,7 +144,8 @@ public class Scenario {
 				else {												//Everyone else is placed after the enemy
 					party.get(i).setTurnNumber(i+1);
 				}
-			}
+			}*/
+			
 			playerIndex=-1;
 			turn=0;
 			state=State.ATTACK;										//change state to attack
@@ -142,7 +156,7 @@ public class Scenario {
 		
 			//[Test]
 			System.out.println("Turn: "+turn);
-			
+			System.out.println(enemyInfo.getTurnNumber()+" - "+party.get(0).getTurnNumber());
 			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
 				//do enemy stuff
 				enemyTurnIndex=0;
@@ -157,6 +171,8 @@ public class Scenario {
 						break;
 					}
 				}
+				
+				System.out.println("In Scenario.java [Test] If you are seeing this, it shouldn't be possible");
 			}
 		}
 		else if(state==State.ENEMY_ATTACK) {
@@ -217,6 +233,10 @@ public class Scenario {
 		//State decides if scenario is over or another round should begin
 		else if(state==State.ROUND_FINISHED) {
 			//Look at win and finish conditions
+			
+			for(int i=0; i<party.size(); i++)
+				party.get(i).endTurn();
+			
 			if(party.size()==0) 
 				System.exit(1);
 			

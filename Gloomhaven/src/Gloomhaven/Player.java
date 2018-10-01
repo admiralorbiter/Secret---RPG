@@ -27,8 +27,10 @@ public class Player {
 	//Card choice variable - if true pick top card, if false pick bottom card
 	//[Temp] Top card and bottom card should be card objects with an init variables
 	boolean cardChoice=true;
-	int topCard=-1;
-	int bottomCard=-1;
+	int initiative=-1;
+	PlayerAbilityCards topCard=null;
+	PlayerAbilityCards bottomCard=null;
+	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();
 	int turnNumber;
 	int startingAbilityCardCount;
 	Point2D coordinates;
@@ -46,8 +48,9 @@ public class Player {
 	
 	public Player(int id, String character) {
 		this.id="P"+id;
-		topCard=-1;
-		bottomCard=-1;
+		initiative=-1;
+		topCard=null;
+		bottomCard=null;
 		this.character=character;
 		startingAbilityCardCount=10;
 		
@@ -62,8 +65,9 @@ public class Player {
 	
 	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
 	public void resetCards(){
-		topCard=-1;
-		bottomCard=-1;
+		initiative=-1;
+		topCard=null;
+		bottomCard=null;
 	}
 	
 	//Picks the two cards needed for initiative
@@ -78,16 +82,23 @@ public class Player {
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=1 && key<=abilityDeck.size()) {
-					topCard=key;
-					cardChoice=!cardChoice;
+					if(abilityDeck.get(key).cardFree()) {
+						topCard=abilityDeck.get(key);
+						abilityDeck.get(key).setInPlay();
+						initiative=abilityDeck.get(key).getInitiative();
+						cardChoice=!cardChoice;
+					}
 				}
 			}
 			else {
 				g.drawString("Choose bottom card.", 10, 75);
 				//[Test] Picking cards assuming there are 8
 				if(key>=1 && key<=abilityDeck.size()) {
-					bottomCard=key;
-					cardChoice=!cardChoice;
+					if(abilityDeck.get(key).cardFree()) {
+						bottomCard=abilityDeck.get(key);
+						abilityDeck.get(key).setInPlay();
+						cardChoice=!cardChoice;
+					}
 				}
 				
 			}
@@ -100,17 +111,42 @@ public class Player {
 		}
 	}
 	
+	public void endTurn() {
+		CardDataObject card= topCard.getTop();
+		int index = topCard.getIndex();
+		
+		if(card.continuous) {
+			inPlay.add(topCard);									//Need a way to track if i am using the top or bottom as a cont
+		}else if(card.lost) {
+			abilityDeck.get(index).lostPile();
+		}else {
+			abilityDeck.get(index).discardPile();
+		}
+		
+		card= bottomCard.getBottom();
+		index = bottomCard.getIndex();
+		
+		if(card.continuous) {
+			inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
+		}else if(card.lost) {
+			abilityDeck.get(index).lostPile();
+		}else {
+			abilityDeck.get(index).discardPile();
+		}
+		
+	}
+	
 	
 	//Returns whether the two cards have been locked for initiative
 	public boolean cardsLocked() {
-		if(topCard!=-1 && bottomCard!=-1)
+		if(topCard!=null && bottomCard!=null)
 			return true;
 		else
 			return false;
 	}
 	
 	public int getInitiative() {
-		return abilityDeck.get(topCard).getInitiative();
+		return initiative;
 	}
 	
 	public void setTurnNumber(int turnNumber) {

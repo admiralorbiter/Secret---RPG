@@ -1,5 +1,6 @@
 package Gloomhaven;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
@@ -28,6 +29,9 @@ public class Scenario {
 	    ENEMY_DEFENSE,
 	    PLAYER_CARD,
 	    ROUND_FINISHED,
+	    PLAYER_ATTACK_LOGIC,
+	    PLAYER_MOVE,
+	    PLAYER_ATTACK,
 	    END;
 	}
 	
@@ -47,6 +51,7 @@ public class Scenario {
 	char k;															//Character from key
 	int num;														//Number from Key
 	
+	private CardDataObject card = new CardDataObject();
 	private int currentPlayer;
 	private int enemyInit;
 	private int turn;
@@ -94,7 +99,7 @@ public class Scenario {
 		
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
-			party.get(currentPlayer).pickCards(num, g);
+			party.get(currentPlayer).pickAbilityCards(num, g);
 			if(party.get(currentPlayer).cardsLocked()) {
 				if((currentPlayer+1)!=party.size())
 					currentPlayer++;
@@ -168,6 +173,7 @@ public class Scenario {
 				for(int i=0; i<party.size(); i++) {					//Searches for a match on the turn and the players
 					if(party.get(i).getTurnNumber()==turn) {		//Once a match is found, sets the index, changes state, and breaks
 						playerIndex=i;
+						party.get(i).resetCardChoice();				//Resets card choice so it can be used in player choice when picking cards
 						state=State.PLAYER_CHOICE;
 						break;
 					}
@@ -224,12 +230,68 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_CHOICE) {
 			//Do player stuff
-			g.drawString("Press 1 to test or 2 to test", 50, 550);
-			if(num==1) {
-				playerControlLogic();
+			card = new CardDataObject();
+			//[Test]
+			room.testDrawRange(g, party.get(currentPlayer).getCoordinate(), 1, Color.GREEN);
+			room.testDrawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
+			
+			
+			int cardPick=party.get(currentPlayer).pickPlayCard(num, g);
+			if(cardPick>=1 && cardPick<=4)
+				state=State.PLAYER_ATTACK_LOGIC;
+		
+		}
+		else if(state==State.PLAYER_ATTACK_LOGIC) {
+			card = party.get(currentPlayer).playCard();
+			//[Temp] Currently only moves then attacks
+			if(card.move>0) {
+				state=State.PLAYER_MOVE;
+			}else if(card.attack>0) {
+				state=State.PLAYER_ATTACK;
+			}else {
+				//if turn is over
+				if(turn==party.size())
+					state=State.ROUND_FINISHED;
+				else {
+					turn++;
+					state=State.ATTACK;
+				}
 			}
-			if(num==2) {
-				playerControlLogic();
+		}
+		else if(state==State.PLAYER_MOVE) {
+			boolean finished=false;
+			//Make the player move
+			
+			if(finished) {
+				if(card.attack>0) {
+					state=State.PLAYER_ATTACK;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_FINISHED;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
+				}
+			}
+		}
+		else if(state==State.PLAYER_ATTACK) {
+			boolean finished=false;
+			//make the player attack
+			
+			if(finished) {
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_FINISHED;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
+				}
 			}
 		}
 		//State decides if scenario is over or another round should begin
@@ -260,15 +322,6 @@ public class Scenario {
 		
 	}
 	
-	private void playerControlLogic() {
-		//if turn is over
-		if(turn==party.size())
-			state=State.ROUND_FINISHED;
-		else {
-			turn++;
-			state=State.ATTACK;
-		}
-	}
 	
 	private void enemyControlLogic() {
 		//If it has gone through all the enemies, go to next state

@@ -1,5 +1,6 @@
 package Gloomhaven;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -77,6 +78,44 @@ public class Room {
 		}
 	}
 	
+	//[Test]
+	//but also will be used in some functions
+	public void testDrawRange(Graphics g, Point2D start, int range, Color color) {
+		int x=(int)start.getX();
+		int y=(int)start.getY();
+		
+		g.setColor(color);
+		
+		if(y-range>0) {
+			drawHex(g, x, y-range);
+		}
+		
+		if(y+range<dimensions.getY()) {
+			drawHex(g, x, y+range);
+		}
+		
+		if(x-range>0) {
+			drawHex(g, x-range, y);
+			if(y-range>0) {
+				drawHex(g, x-range, y-range);
+			}
+			if(y+range<dimensions.getY()) {
+				drawHex(g, x-range, y+range);
+			}
+		}
+		
+		if(x+range<dimensions.getX()) {
+			drawHex(g, x+range, y);
+			if(y-range>0) {
+				drawHex(g, x+range, y-range);
+			}
+			if(y+range<dimensions.getY()) {
+				drawHex(g, x+range, y+range);
+			}
+		}
+		g.setColor(Color.MAGENTA);
+	}
+	
 	private void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;
 		int offsetY=0;
@@ -88,7 +127,7 @@ public class Room {
 		int[] tX = {0+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 150+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 0+x*SIZE_OF_HEX+offsetX};
 		int[] tY = {50+y*SIZE_OF_HEX+offsetY, 0+y*SIZE_OF_HEX+offsetY,  0+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
-		g.drawString(qBoard[x][y], x*SIZE_OF_HEX+offsetX, y*SIZE_OF_HEX+offsetY);
+		g.drawString(qBoard[x][y], 75+x*SIZE_OF_HEX+offsetX, 50+y*SIZE_OF_HEX+offsetY);
 	}
 	
 	public void testDisplayRoom() {

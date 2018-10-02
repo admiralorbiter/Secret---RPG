@@ -38,6 +38,9 @@ public class Player {
 	int abilityDeckSize;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	
+	int firstCardChoice;
+	int secondCardChoice;
+	
 	int range;
 	int attack;
 	int health;
@@ -49,6 +52,8 @@ public class Player {
 	public Player(int id, String character) {
 		this.id="P"+id;
 		initiative=-1;
+		firstCardChoice=0;
+		secondCardChoice=0;
 		topCard=null;
 		bottomCard=null;
 		this.character=character;
@@ -66,8 +71,17 @@ public class Player {
 	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
 	public void resetCards(){
 		initiative=-1;
+		firstCardChoice=0;
+		secondCardChoice=0;
+		cardChoice=true;
 		topCard=null;
 		bottomCard=null;
+	}
+	
+	public void resetCardChoice() {
+		firstCardChoice=0;
+		secondCardChoice=0;
+		cardChoice=true;
 	}
 	
 	public boolean discardForHealth(int key, Graphics g) {
@@ -94,9 +108,101 @@ public class Player {
 		
 		return false;
 	}
+
+	public int pickPlayCard(int key, Graphics g) {
+		showPickedCards(g);
+		
+		if(cardChoice) {
+			if(key>=1 && key<=4) {
+				cardChoice=!cardChoice;
+				firstCardChoice=key;
+				return key;
+			}		
+		}
+		else {
+			if(key==4 || key==3) {
+				if(firstCardChoice==1 || firstCardChoice==2) {
+					cardChoice=!cardChoice;
+					secondCardChoice=key;
+					return key;
+				}
+			}
+			else if(key==1 || key==2) {
+				if(firstCardChoice==3 || firstCardChoice==4) {
+					cardChoice=!cardChoice;
+					secondCardChoice=key;
+					return key;
+				}
+			}
+		}
+
+		
+		return -1;
+		
+	}
+	
+	public CardDataObject playCard() {
+		if(firstCardChoice!=0) {
+			if(firstCardChoice==1)
+				return getAbilityCardData("Top", 1);
+			else if(firstCardChoice==2)
+				playAlternative("Top");
+			else if(firstCardChoice==3)
+				return getAbilityCardData("Bottom", 3);
+			else if(firstCardChoice==4)
+				playAlternative("Bottom");
+		}else {
+			if(secondCardChoice==1)
+				return getAbilityCardData("Top", 1);
+			else if(secondCardChoice==2)
+				playAlternative("Top");
+			else if(secondCardChoice==3)
+				return getAbilityCardData("Bottom", 3);
+			else if(secondCardChoice==4)
+				playAlternative("Bottom");
+		}
+		
+		return null;
+	}
+	
+	//[Rem] I had to write this way because I was dumb and forgot that either card could be played as the top or bottom after init round
+	public CardDataObject getAbilityCardData(String flag, int cardFlag) {
+		CardDataObject card = new CardDataObject();
+		if(flag=="Top")
+		{
+			//Get the data from the correct card
+			if(cardFlag==1)
+				card=topCard.getTop();
+			if(cardFlag==3)
+				card=bottomCard.getTop();
+				
+		}
+		
+		//get the data from the correct card
+		if(cardFlag==1)
+			card=topCard.getBottom();
+		if(cardFlag==3)
+			card=bottomCard.getBottom();
+		
+		return card;
+		
+	}
+	
+	public void playAlternative(String flag) {
+		if(flag=="Top")
+		{
+			//do the top alt of the ability card
+		}
+		
+		//Play bottom alt of the ability card
+	}
+	
+	public boolean getCardChoice() {return cardChoice;}
+	public int getFirstCardChoice() {return firstCardChoice;}
+	public int getSecondCardChoice() {return secondCardChoice;}
 	
 	//Picks the two cards needed for initiative
-	public void pickCards(int key, Graphics g) {
+	public void pickAbilityCards(int key, Graphics g) {
 		
 		g.drawString("Picking cards", 10, 50);
 		drawAbilityCards(g);
@@ -138,7 +244,20 @@ public class Player {
 		}
 	}
 	
+	public void showPickedCards(Graphics g) {
+		int startingY=50;
+		int offsetY=15;
+		g.drawString("Cards", 10, startingY+offsetY*0);
+		g.drawString("1: "+topCard.getText(), 10, startingY+offsetY*1);
+		g.drawString("2: Attack +2", 10, startingY+offsetY*2);
+		g.drawString("3: "+bottomCard.getText(), 10, startingY+offsetY*3);
+		g.drawString("4: Move +2", 10, startingY+offsetY*4);
+	}
+	
 	public void endTurn() {
+		cardChoice=true;
+		secondCardChoice=0;
+		firstCardChoice=0;
 		CardDataObject card= topCard.getTop();
 		int index = topCard.getIndex();
 		

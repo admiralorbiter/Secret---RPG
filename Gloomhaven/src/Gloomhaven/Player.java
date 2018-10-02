@@ -33,7 +33,7 @@ public class Player {
 	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();
 	int turnNumber;
 	int startingAbilityCardCount;
-	Point coordinates;
+	private Point coordinates;
 	Point2D dimensions;
 	int abilityDeckSize;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
@@ -50,6 +50,7 @@ public class Player {
 	int TEST_RANGE=3;
 	
 	public Player(int id, String character) {
+		coordinates= new Point(0, 0);
 		this.id="P"+id;
 		initiative=-1;
 		firstCardChoice=0;
@@ -302,6 +303,9 @@ public class Player {
 	public int getTurnNumber() {return turnNumber;}
 	
 	public void setPoint(Point point) {
+		//[Test]
+		System.out.println("Coordinate is being changed for player");
+		
 		this.coordinates=point;
 	}
 	

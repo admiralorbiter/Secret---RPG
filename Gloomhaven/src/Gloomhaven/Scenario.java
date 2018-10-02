@@ -269,8 +269,14 @@ public class Scenario {
 			room.drawSelectionHex(g);
 			
 			Point select = room.getSelectionCoordinates();			//[Rem] Probably more efficient to move in the if  and change it only if it is changed
+			
+			//[Test]
+			System.out.println(currentPlayer);
+			System.out.println(party.get(currentPlayer).getCoordinate());
+			
+			
 			if(k=='w') {
-				if(select.getY()-1>=0) {
+				if(select.y-1>=0) {
 					select.y=select.y-1;
 				}
 				
@@ -290,7 +296,7 @@ public class Scenario {
 					select.x=select.x+1;
 				}
 			}
-			room.setSelectionCoordinates(select);
+			//room.setSelectionCoordinates(select);
 			
 			//Make the player move then flip the finished boolean
 			//[Temp]

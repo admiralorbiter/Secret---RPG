@@ -78,9 +78,8 @@ public class Room {
 		}
 	}
 	
-	//[Test]
-	//but also will be used in some functions
-	public void testDrawRange(Graphics g, Point2D start, int range, Color color) {
+	//[Rem] Needs to be fixed
+	public void drawRange(Graphics g, Point2D start, int range, Color color) {
 		int x=(int)start.getX();
 		int y=(int)start.getY();
 		

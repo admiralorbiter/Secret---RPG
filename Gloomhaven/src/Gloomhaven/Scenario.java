@@ -232,8 +232,8 @@ public class Scenario {
 			//Do player stuff
 			card = new CardDataObject();
 			//[Test]
-			room.testDrawRange(g, party.get(currentPlayer).getCoordinate(), 1, Color.GREEN);
-			room.testDrawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
+			room.drawRange(g, party.get(currentPlayer).getCoordinate(), 1, Color.GREEN);
+			room.drawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
 			
 			
 			int cardPick=party.get(currentPlayer).pickPlayCard(num, g);
@@ -261,6 +261,9 @@ public class Scenario {
 		else if(state==State.PLAYER_MOVE) {
 			boolean finished=false;
 			//Make the player move
+				
+			for(int r=1; r<=card.move; r++)
+				room.drawRange(g, party.get(currentPlayer).getCoordinate(), r, Color.BLUE);
 			
 			if(finished) {
 				if(card.attack>0) {

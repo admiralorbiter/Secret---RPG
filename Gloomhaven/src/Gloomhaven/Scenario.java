@@ -260,10 +260,16 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_MOVE) {
 			boolean finished=false;
-			//Make the player move
 				
+			//Highlight tiles that players can move to
 			for(int r=1; r<=card.move; r++)
 				room.drawRange(g, party.get(currentPlayer).getCoordinate(), r, Color.BLUE);
+			
+			//Make the player move then flip the finished boolean
+			//[Temp]
+			g.drawString("Press 1 to continue", 10, 550);
+			if(num==1)
+				finished=true;
 			
 			if(finished) {
 				if(card.attack>0) {

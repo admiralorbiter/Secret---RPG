@@ -294,15 +294,17 @@ public class Scenario {
 					selectTemp.x=selectTemp.x+1;
 				}
 			}
-
+		
 			room.setSelectionCoordinates(selectTemp);
 			
-			//Make the player move then flip the finished boolean
-			//[Temp]
-			g.drawString("Press 1 to continue", 10, 550);
-			if(num==1)
-				finished=true;
-			
+			if(k==' ') {
+				if(room.isSpaceEmpty(selectTemp)) {
+					room.movePlayer(party.get(currentPlayer).getCoordinate(), selectTemp);
+					party.get(currentPlayer).movePlayer(new Point(selectTemp));
+					finished=true;
+				}
+			}
+
 			if(finished) {
 				if(card.attack>0) {
 					state=State.PLAYER_ATTACK;

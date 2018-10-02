@@ -87,6 +87,14 @@ public class Room {
 		}
 	}
 	
+	public void movePlayer(Point starting, Point ending) {
+		qBoard[(int) ending.getX()][(int) ending.getY()]=qBoard[(int) starting.getX()][(int) starting.getY()];
+		idBoard[(int) ending.getX()][(int) ending.getY()]=idBoard[(int) starting.getX()][(int) starting.getY()];
+	
+		qBoard[(int) starting.getX()][(int) starting.getY()]="-";
+		idBoard[(int) starting.getX()][(int) starting.getY()]=" ";
+	}
+	
 	public void drawSelectionHex(Graphics g) {
 		g.setColor(Color.RED);
 		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
@@ -164,6 +172,13 @@ public class Room {
 	
 	public Point2D getDimensions() {
 		return dimensions;
+	}
+	
+	public boolean isSpaceEmpty(Point space) {
+		if(qBoard[(int) space.getX()][(int) space.getY()]=="-")
+			return true;
+		
+		return false;
 	}
 	
 	public String[][] getqBoard(){return qBoard;}

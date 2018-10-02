@@ -303,12 +303,7 @@ public class Player {
 	public int getTurnNumber() {return turnNumber;}
 	
 	public void setPoint(Point point) {
-		//[Test]
-		System.out.println("Coordinate is being changed for player");
-		Point temp = new Point();
-		temp = point;
-		//this.coordinates=point;
-		this.coordinates=temp;
+		this.coordinates=new Point(point);
 	}
 	
 	public Point getCoordinate() {return coordinates;}
@@ -327,6 +322,10 @@ public class Player {
 			if(abilityDeck.get(i).cardFree())
 				abilityDeckSize++;
 		}
+	}
+	
+	public void movePlayer(Point space) {
+		coordinates=new Point(space);
 	}
 	
 	//[Test]

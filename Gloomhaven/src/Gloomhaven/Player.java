@@ -109,6 +109,51 @@ public class Player {
 		
 		return false;
 	}
+	
+	public List<Point> createTargetList(String qBoard[][], int range){
+		List<Point> targets = new ArrayList<Point>();
+		
+		int x=(int)coordinates.getX();
+		int y=(int)coordinates.getY();
+
+		if(y-range>0) {
+			if(qBoard[x][y-range]=="E")
+				targets.add(new Point(x, y-range));
+		}
+		
+		if(y+range<dimensions.getY()) {
+			if(qBoard[x][y+range]=="E")
+				targets.add(new Point(x, y+range));
+		}
+		
+		if(x-range>0) {
+			if(qBoard[x-range][y]=="E")
+				targets.add(new Point(x-range, y));
+			if(y-range>0) {
+				if(qBoard[x-range][y-range]=="E")
+					targets.add(new Point(x-range, y-range));
+			}
+			if(y+range<dimensions.getY()) {
+				if(qBoard[x-range][y+range]=="E")
+					targets.add(new Point(x-range, y+range));
+			}
+		}
+		
+		if(x+range<dimensions.getX()) {
+			if(qBoard[x+range][y]=="E")
+				targets.add(new Point(x+range, y));
+			if(y-range>0) {
+				if(qBoard[x+range][y-range]=="E")
+					targets.add(new Point(x+range, y-range));
+			}
+			if(y+range<dimensions.getY()) {
+				if(qBoard[x+range][y+range]=="E")
+					targets.add(new Point(x+range, y+range));
+			}
+		}
+		
+		return targets;
+	}
 
 	public int pickPlayCard(int key, Graphics g) {
 		showPickedCards(g);

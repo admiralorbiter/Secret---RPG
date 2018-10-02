@@ -6,6 +6,7 @@ public class CardDataObject {
 	int initiative;
 	int move;
 	int attack;
+	int range;
 	
 	//Effects that change the in play or out of play
 	boolean lost;
@@ -15,7 +16,7 @@ public class CardDataObject {
 		text="If you are seeing this, it is a mistake";
 		move=0;
 		attack=0;
-		
+		range=0;
 		lost=false;
 		continuous=false;
 	}

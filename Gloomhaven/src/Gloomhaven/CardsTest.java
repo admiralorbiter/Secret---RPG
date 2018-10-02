@@ -5,7 +5,7 @@ public class CardsTest implements CardInterface {
 	@Override
 	public CardDataObject getTop(int id) {
 		CardDataObject top = new CardDataObject();	
-		
+		top.range=2;
 		switch(id)
 		{
 			case 1:
@@ -87,7 +87,7 @@ public class CardsTest implements CardInterface {
 	@Override
 	public CardDataObject getBottom(int id) {
 		CardDataObject bottom = new CardDataObject();	
-	
+		bottom.range=2;
 		switch(id)
 		{
 			case 1:

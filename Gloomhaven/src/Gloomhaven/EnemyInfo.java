@@ -34,6 +34,16 @@ public class EnemyInfo {
 		this.turnNumber=turnNumber;
 	}
 	
+	public void playerAttack(String id, CardDataObject attackData) {
+		for(int i=0; i<enemies.size(); i++) {
+
+			if(enemies.get(i).getID()==id) {
+				enemies.get(i).takeDamage(attackData.attack);
+			}
+		}
+		
+	}
+	
 	public int getTurnNumber() {return turnNumber;}
 	
 	public void orderEnemies() {

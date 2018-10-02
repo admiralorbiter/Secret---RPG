@@ -272,44 +272,20 @@ public class Scenario {
 			for(int r=1; r<=card.move; r++)
 				room.drawRange(g, playerPoint, r, Color.BLUE);
 	
-			room.drawSelectionHex(g);
-			delayBy(100);											//Makes it feel more smoother
-			Point selectTemp=new Point(room.getSelectionCoordinates());			//[Rem] Probably more efficient to move in the if  and change it only if it is changed	
 			
-			if(k=='w') {
-				if(selectTemp.y-1>=0) {
-					selectTemp.y=selectTemp.y-1;
-				}
-				
-			}
-			if(k=='a') {
-				if(selectTemp.x-1>=0) {
-					selectTemp.x=selectTemp.x-1;
-				}
-			}
-			if(k=='s') {
-				if(selectTemp.y+1<room.getDimensions().getY()) {
-					selectTemp.y=selectTemp.y+1;
-				}
-			}
-			if(k=='d') {
-				if(selectTemp.x+1<room.getDimensions().getX()) {
-					selectTemp.x=selectTemp.x+1;
-				}
-			}
+			selection(g);
 		
-			room.setSelectionCoordinates(selectTemp);
-			
 			if(k==' ') {
-				if(room.isSpaceEmpty(selectTemp)) {
-					room.movePlayer(party.get(currentPlayer).getCoordinate(), selectTemp);
-					party.get(currentPlayer).movePlayer(new Point(selectTemp));
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+					room.movePlayer(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates());
+					party.get(currentPlayer).movePlayer(new Point(room.getSelectionCoordinates()));
 					finished=true;
 				}
 			}
 
 			if(finished) {
 				if(card.attack>0) {
+					room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));
 					state=State.PLAYER_ATTACK;
 				}else {
 					//if turn is over
@@ -325,6 +301,27 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK) {
 			boolean finished=false;
 			//make the player attack
+			
+			List<Point> targets = new ArrayList<Point>();
+			if(card.range>0) {
+				for(int range=1; range<card.range; range++)
+					targets = party.get(currentPlayer).createTargetList(room.getqBoard(), range);
+			}
+			
+			room.highlightTargets(targets, g);
+			
+			selection(g);
+			
+			if(k==' ') {
+				if(room.isSpace(room.getSelectionCoordinates(), "E")) {
+					if(targets.contains(room.getSelectionCoordinates())){
+						String id = room.getID(room.getSelectionCoordinates());
+						enemyInfo.playerAttack(id, card);
+						finished=true;
+					}
+				}
+			}
+
 			
 			if(finished) {
 				if(party.get(currentPlayer).getCardChoice()==false) {
@@ -366,6 +363,37 @@ public class Scenario {
 		
 		//delayBySeconds(1);
 		
+	}
+	
+	private void selection(Graphics g) {
+		room.drawSelectionHex(g);
+		delayBy(100);											//Makes it feel more smoother
+		Point selectTemp=new Point(room.getSelectionCoordinates());			//[Rem] Probably more efficient to move in the if  and change it only if it is changed	
+		
+		if(k=='w') {
+			if(selectTemp.y-1>=0) {
+				selectTemp.y=selectTemp.y-1;
+			}
+			
+		}
+		if(k=='a') {
+			if(selectTemp.x-1>=0) {
+				selectTemp.x=selectTemp.x-1;
+			}
+		}
+		if(k=='s') {
+			if(selectTemp.y+1<room.getDimensions().getY()) {
+				selectTemp.y=selectTemp.y+1;
+			}
+		}
+		if(k=='d') {
+			if(selectTemp.x+1<room.getDimensions().getX()) {
+				selectTemp.x=selectTemp.x+1;
+			}
+		}
+		
+
+		room.setSelectionCoordinates(selectTemp);
 	}
 	
 	

@@ -137,7 +137,7 @@ public class Room {
 		}
 		g.setColor(Color.MAGENTA);
 	}
-	
+
 	private void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;
 		int offsetY=0;
@@ -150,6 +150,26 @@ public class Room {
 		int[] tY = {50+y*SIZE_OF_HEX+offsetY, 0+y*SIZE_OF_HEX+offsetY,  0+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
 		g.drawString(qBoard[x][y], 75+x*SIZE_OF_HEX+offsetX, 50+y*SIZE_OF_HEX+offsetY);
+		g.drawString(x+", "+y, 70+x*SIZE_OF_HEX+offsetX, 65+y*SIZE_OF_HEX+offsetY);
+	}
+	
+	public void highlightTargets(List<Point> targets, Graphics g) {
+		for(int i=0; i<targets.size(); i++) {
+			g.setColor(Color.GREEN);
+			drawHex(g, (int)targets.get(i).getX(), (int)targets.get(i).getY());
+			g.setColor(Color.MAGENTA);
+		}
+	}
+	
+	public String getID(Point point) {
+		return idBoard[(int)point.getX()][(int)point.getY()];
+	}
+	
+	public boolean isSpace(Point point, String check) {
+		if(qBoard[(int)point.getX()][(int)point.getY()]==check)
+			return true;
+		
+		return false;
 	}
 	
 	public void testDisplayRoom() {

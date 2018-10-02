@@ -123,6 +123,15 @@ public class Enemy {
 		return false;
 	}
 	
+	public void takeDamage(int damage) {
+		damage=damage-shield;
+		if(damage>0)
+			health=health-damage;
+		
+		//[Test]
+		System.out.println("Enemy "+id+" took "+damage+" and is now at "+health);
+	}
+	
 	//[Rem] This has to be a way to abstract this for both player and enemies
 	public List<Player> createMeleeTargetList(String qBoard[][], String idBoard[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();

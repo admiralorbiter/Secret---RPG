@@ -169,15 +169,18 @@ public class Player {
 	//[Rem] I had to write this way because I was dumb and forgot that either card could be played as the top or bottom after init round
 	public CardDataObject getAbilityCardData(String flag, int cardFlag) {
 		CardDataObject card = new CardDataObject();
+		
+		//if(flag.compareTo("Top")==0)
 		if(flag=="Top")
 		{
+			
 			//Get the data from the correct card
 			if(cardFlag==1)
 				card=topCard.getTop();
 			if(cardFlag==3)
 				card=bottomCard.getTop();
 				
-		}
+		}else {
 		
 		//get the data from the correct card
 		if(cardFlag==1)
@@ -186,7 +189,9 @@ public class Player {
 			card=bottomCard.getBottom();
 		
 		return card;
+		}
 		
+		return card;
 	}
 	
 	public void playAlternative(String flag) {

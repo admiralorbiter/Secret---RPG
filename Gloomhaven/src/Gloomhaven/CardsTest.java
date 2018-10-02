@@ -9,8 +9,8 @@ public class CardsTest implements CardInterface {
 		switch(id)
 		{
 			case 1:
-				top.move=0;
-				top.attack=0;
+				top.move=3;
+				top.attack=3;
 				top.initiative=48;
 				top.name="Feel The Love";
 				break;
@@ -37,7 +37,7 @@ public class CardsTest implements CardInterface {
 				break;
 				
 			case 5:
-				top.move=0;
+				top.move=3;
 				top.attack=3;
 				top.name="Reborn";
 				top.initiative=82;

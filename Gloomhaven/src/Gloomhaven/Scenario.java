@@ -246,6 +246,9 @@ public class Scenario {
 			//[Temp] Currently only moves then attacks
 			Point playerPoint=party.get(currentPlayer).getCoordinate();
 			room.setSelectionCoordinates(playerPoint);
+			String textTemp = "Move "+card.move+"     Attack: "+card.attack;
+			g.drawString(textTemp, 50, 400);
+			
 			if(card.move>0) {
 				state=State.PLAYER_MOVE;
 			}else if(card.attack>0) {

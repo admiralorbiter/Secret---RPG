@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements KeyListener{
 		if(state==GameState.TESTING_SETUP) {
 			initGame();
 		}
+		
 		repaint();	
 	}
 	
@@ -93,11 +94,13 @@ public class GamePanel extends JPanel implements KeyListener{
 		
 		if(!(state==GameState.TESTING_SETUP)) 
 			gameManager(g);
+
 	}
 	
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
 		key=e;
 		repaint();
 	}
@@ -105,13 +108,26 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
+		key=null;
+		repaint();
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		//key=e;
+		//repaint();
+	}
+	
+	//[Test] Function that delays for a certain amount of seconds
+	private void delayBySeconds(int sec) {
+		try {
+			TimeUnit.SECONDS.sleep(sec);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

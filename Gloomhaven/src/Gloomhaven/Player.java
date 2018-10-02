@@ -305,8 +305,10 @@ public class Player {
 	public void setPoint(Point point) {
 		//[Test]
 		System.out.println("Coordinate is being changed for player");
-		
-		this.coordinates=point;
+		Point temp = new Point();
+		temp = point;
+		//this.coordinates=point;
+		this.coordinates=temp;
 	}
 	
 	public Point getCoordinate() {return coordinates;}

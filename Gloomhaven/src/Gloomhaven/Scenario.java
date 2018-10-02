@@ -244,7 +244,8 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
 			card = party.get(currentPlayer).playCard();
 			//[Temp] Currently only moves then attacks
-			room.setSelectionCoordinates(party.get(currentPlayer).getCoordinate());
+			Point playerPoint=party.get(currentPlayer).getCoordinate();
+			room.setSelectionCoordinates(playerPoint);
 			if(card.move>0) {
 				state=State.PLAYER_MOVE;
 			}else if(card.attack>0) {
@@ -261,42 +262,40 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_MOVE) {
 			boolean finished=false;
-				
+			
+			
 			//Highlight tiles that players can move to
+			Point playerPoint=party.get(currentPlayer).getCoordinate();
 			for(int r=1; r<=card.move; r++)
-				room.drawRange(g, party.get(currentPlayer).getCoordinate(), r, Color.BLUE);
+				room.drawRange(g, playerPoint, r, Color.BLUE);
 	
 			room.drawSelectionHex(g);
-			
-			Point select = room.getSelectionCoordinates();			//[Rem] Probably more efficient to move in the if  and change it only if it is changed
-			
-			//[Test]
-			System.out.println(currentPlayer);
-			System.out.println(party.get(currentPlayer).getCoordinate());
-			
+			delayBy(100);											//Makes it feel more smoother
+			Point selectTemp=new Point(room.getSelectionCoordinates());			//[Rem] Probably more efficient to move in the if  and change it only if it is changed	
 			
 			if(k=='w') {
-				if(select.y-1>=0) {
-					select.y=select.y-1;
+				if(selectTemp.y-1>=0) {
+					selectTemp.y=selectTemp.y-1;
 				}
 				
 			}
 			if(k=='a') {
-				if(select.x-1>=0) {
-					select.x=select.x-1;
+				if(selectTemp.x-1>=0) {
+					selectTemp.x=selectTemp.x-1;
 				}
 			}
 			if(k=='s') {
-				if(select.y+1<=room.getDimensions().getY()) {
-					select.y=select.y+1;
+				if(selectTemp.y+1<room.getDimensions().getY()) {
+					selectTemp.y=selectTemp.y+1;
 				}
 			}
 			if(k=='d') {
-				if(select.x+1<=room.getDimensions().getY()) {
-					select.x=select.x+1;
+				if(selectTemp.x+1<room.getDimensions().getX()) {
+					selectTemp.x=selectTemp.x+1;
 				}
 			}
-			//room.setSelectionCoordinates(select);
+
+			room.setSelectionCoordinates(selectTemp);
 			
 			//Make the player move then flip the finished boolean
 			//[Temp]
@@ -382,9 +381,9 @@ public class Scenario {
 	}
 	
 	//[Test] Function that delays for a certain amount of seconds
-	private void delayBySeconds(int sec) {
+	private void delayBy(int time) {
 		try {
-			TimeUnit.SECONDS.sleep(sec);
+			TimeUnit.MILLISECONDS.sleep(time);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -408,6 +407,7 @@ public class Scenario {
 	private void parseKey(KeyEvent key) {
 		//[Rem] This feels like a super bad workaround
 		//Was getting null pointer if i tried to move the screen before typing in
+		k=Character.MIN_VALUE;
 		try{
 			k = key.getKeyChar();
 			}catch(NullPointerException ex){ // handle your exception

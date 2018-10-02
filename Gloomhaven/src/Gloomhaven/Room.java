@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -16,9 +17,17 @@ public class Room {
 	//[Rem] Need to make sure there are enough enemies created in setup scenario.
 	//Might want to combine the two classes
 	Point2D dimensions;
+	private Point selectionCoordinates;
+	
+	public void setSelectionCoordinates(Point newCoordinates) {selectionCoordinates=newCoordinates;}
+	public Point getSelectionCoordinates() {return selectionCoordinates;}
+	
 	
 	public Room(String id, List<Player> party, List<Enemy> enemies) {
-		Point2D point;
+		
+		selectionCoordinates = new Point(0, 0);
+		
+		Point point;
 		
 		
 		switch(id) {
@@ -28,16 +37,16 @@ public class Room {
 				idBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				resetBoard();
 				
-				point=new Point2D.Double(1, 1);
+				point=new Point(1, 1);
 				setTileEnemy(enemies.get(0), point);
 				
-				point = new Point2D.Double(3, 1);
+				point = new Point(3, 1);
 				setTileEnemy(enemies.get(1), point);
 				
-				point = new Point2D.Double(5, 1);
+				point = new Point(5, 1);
 				setTileEnemy(enemies.get(2), point);
 				
-				point = new Point2D.Double(3, 3);
+				point = new Point(3, 3);
 				setTilePlayer(party.get(0), point);
 				
 				break;
@@ -49,7 +58,7 @@ public class Room {
 	}
 	
 	//[Temp] Might want to do more than just P, put an object or the full name or identifer.
-	private void setTilePlayer(Player player, Point2D point) {
+	private void setTilePlayer(Player player, Point point) {
 		player.setPoint(point);
 		qBoard[(int) point.getX()][(int) point.getY()]="P";
 		idBoard[(int) point.getX()][(int) point.getY()]=player.getID();
@@ -76,6 +85,12 @@ public class Room {
 				drawHex(g, x, y);
 			}
 		}
+	}
+	
+	public void drawSelectionHex(Graphics g) {
+		g.setColor(Color.RED);
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		g.setColor(Color.MAGENTA);
 	}
 	
 	//[Rem] Needs to be fixed

@@ -33,7 +33,7 @@ public class Player {
 	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();
 	int turnNumber;
 	int startingAbilityCardCount;
-	Point2D coordinates;
+	Point coordinates;
 	Point2D dimensions;
 	int abilityDeckSize;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
@@ -301,11 +301,11 @@ public class Player {
 	
 	public int getTurnNumber() {return turnNumber;}
 	
-	public void setPoint(Point2D point) {
+	public void setPoint(Point point) {
 		this.coordinates=point;
 	}
 	
-	public Point2D getCoordinate() {return coordinates;}
+	public Point getCoordinate() {return coordinates;}
 	
 	public void setDimensions(Point2D dimensions) {
 		this.dimensions=dimensions;

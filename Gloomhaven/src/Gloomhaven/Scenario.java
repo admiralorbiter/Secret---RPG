@@ -244,6 +244,7 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
 			card = party.get(currentPlayer).playCard();
 			//[Temp] Currently only moves then attacks
+			room.setSelectionCoordinates(party.get(currentPlayer).getCoordinate());
 			if(card.move>0) {
 				state=State.PLAYER_MOVE;
 			}else if(card.attack>0) {
@@ -264,6 +265,32 @@ public class Scenario {
 			//Highlight tiles that players can move to
 			for(int r=1; r<=card.move; r++)
 				room.drawRange(g, party.get(currentPlayer).getCoordinate(), r, Color.BLUE);
+	
+			room.drawSelectionHex(g);
+			
+			Point select = room.getSelectionCoordinates();			//[Rem] Probably more efficient to move in the if  and change it only if it is changed
+			if(k=='w') {
+				if(select.getY()-1>=0) {
+					select.y=select.y-1;
+				}
+				
+			}
+			if(k=='a') {
+				if(select.x-1>=0) {
+					select.x=select.x-1;
+				}
+			}
+			if(k=='s') {
+				if(select.y+1<=room.getDimensions().getY()) {
+					select.y=select.y+1;
+				}
+			}
+			if(k=='d') {
+				if(select.x+1<=room.getDimensions().getY()) {
+					select.x=select.x+1;
+				}
+			}
+			room.setSelectionCoordinates(select);
 			
 			//Make the player move then flip the finished boolean
 			//[Temp]

@@ -40,8 +40,6 @@ public class Scenario {
 	State state;													//State of the scenario
 	boolean finished;												//Tells the gamepanel if the scenario is finished
 	List<Player> party = new ArrayList<Player>();					//Party
-	//List<Enemy> enemies = new ArrayList<Enemy>();
-	//AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	EnemyInfo enemyInfo;
 	Room room;
 	List<Player> targets;

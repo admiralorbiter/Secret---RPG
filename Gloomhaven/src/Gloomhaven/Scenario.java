@@ -102,10 +102,11 @@ public class Scenario {
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
 			g.drawString("Picking cards", 10, 50);
-			g.drawString("Take a long rest with 'r'", 10, 65);
+			if(party.get(currentPlayer).discardPileSize()>1)
+				g.drawString("Take a long rest with 'r'", 10, 65);
 			party.get(currentPlayer).drawAbilityCards(g);
 			
-			if(k=='r')
+			if((k=='r') && (party.get(currentPlayer).discardPileSize()>1))
 				party.get(currentPlayer).setLongRest();
 			else
 				party.get(currentPlayer).pickAbilityCards(num, g);
@@ -384,22 +385,26 @@ public class Scenario {
 		else if(state==State.ROUND_END_REST) {
 			//Look at win and finish conditions
 			boolean finished=false;
+			if(party.get(currentPlayer).discardPileSize()>1) {
 			
-			party.get(currentPlayer).shortRestInfo(g);
-
-			if(k=='y') {
-				party.get(currentPlayer).takeShortRest();
-				if((currentPlayer+1)!=party.size())
-					currentPlayer++;
-				else
-					finished=true;
-			}
-			
-			if(k=='n') {
-				if((currentPlayer+1)!=party.size())
-					currentPlayer++;
-				else
-					finished=true;
+				party.get(currentPlayer).shortRestInfo(g);
+	
+				if(k=='y') {
+					party.get(currentPlayer).takeShortRest();
+					if((currentPlayer+1)!=party.size())
+						currentPlayer++;
+					else
+						finished=true;
+				}
+				
+				if(k=='n') {
+					if((currentPlayer+1)!=party.size())
+						currentPlayer++;
+					else
+						finished=true;
+				}
+			}else {
+				finished=true;
 			}
 			
 			if(finished) {

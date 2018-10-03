@@ -354,6 +354,15 @@ public class Player {
 		}
 	}
 	
+	public int discardPileSize() {
+		int count=0;
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(abilityDeck.get(i).cardInDiscardPile())
+				count++;
+		}
+		return count;
+	}
+	
 	public void takeShortRest() {
 		collectDiscardPile();
 		Random rand = new Random();

@@ -33,6 +33,7 @@ public class Scenario {
 	    PLAYER_ATTACK_LOGIC,
 	    PLAYER_MOVE,
 	    PLAYER_ATTACK,
+	    LONG_REST,
 	    END;
 	}
 	
@@ -100,7 +101,15 @@ public class Scenario {
 		
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
-			party.get(currentPlayer).pickAbilityCards(num, g);
+			g.drawString("Picking cards", 10, 50);
+			g.drawString("Take a long rest with 'r'", 10, 65);
+			party.get(currentPlayer).drawAbilityCards(g);
+			
+			if(k=='r')
+				party.get(currentPlayer).setLongRest();
+			else
+				party.get(currentPlayer).pickAbilityCards(num, g);
+			
 			if(party.get(currentPlayer).cardsLocked()) {
 				if((currentPlayer+1)!=party.size())
 					currentPlayer++;
@@ -171,16 +180,36 @@ public class Scenario {
 			}
 			else {
 				
+				
 				for(int i=0; i<party.size(); i++) {					//Searches for a match on the turn and the players
 					if(party.get(i).getTurnNumber()==turn) {		//Once a match is found, sets the index, changes state, and breaks
-						playerIndex=i;
-						party.get(i).resetCardChoice();				//Resets card choice so it can be used in player choice when picking cards
-						state=State.PLAYER_CHOICE;
-						break;
+						if(party.get(i).onRest()) {
+							playerIndex=i;
+							party.get(i).resetCardChoice();
+							state=State.LONG_REST;
+							break;
+						}
+						else {
+							playerIndex=i;
+							party.get(i).resetCardChoice();				//Resets card choice so it can be used in player choice when picking cards
+							state=State.PLAYER_CHOICE;
+							break;
+						}
 					}
 				}
 				
 				System.out.println("In Scenario.java [Test] If you are seeing this, it shouldn't be possible");
+			}
+		}
+		else if(state==State.LONG_REST) {
+			boolean finished=false;
+			party.get(playerIndex).takeLongRest(g, num);
+			if(party.get(playerIndex).onRest()==false)
+				finished=true;
+			
+			if(finished) {
+				turn++;
+				state=State.ATTACK;
 			}
 		}
 		else if(state==State.ENEMY_ATTACK) {

@@ -40,7 +40,7 @@ public class Player {
 	
 	int firstCardChoice;
 	int secondCardChoice;
-	
+	boolean longRest;
 	int range;
 	int attack;
 	int health;
@@ -51,6 +51,7 @@ public class Player {
 	
 	public Player(int id, String character) {
 		coordinates= new Point(0, 0);
+		longRest=false;
 		this.id="P"+id;
 		initiative=-1;
 		firstCardChoice=0;
@@ -84,6 +85,12 @@ public class Player {
 		secondCardChoice=0;
 		cardChoice=true;
 	}
+	
+	public void setLongRest() {
+		longRest=true;
+		initiative=99;
+	}
+	
 	
 	public boolean discardForHealth(int key, Graphics g) {
 		g.drawString("Pick card to discard.", 10, 50);
@@ -255,13 +262,11 @@ public class Player {
 	//Picks the two cards needed for initiative
 	public void pickAbilityCards(int key, Graphics g) {
 		
-		g.drawString("Picking cards", 10, 50);
-		drawAbilityCards(g);
 		findAbilityCardsLeft();
 		
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
-				g.drawString("Choose top card.", 10, 75);
+				g.drawString("Choose top card.", 10, 80);
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
@@ -274,7 +279,7 @@ public class Player {
 				}
 			}
 			else {
-				g.drawString("Choose bottom card.", 10, 75);
+				g.drawString("Choose bottom card.", 10, 80);
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
@@ -291,7 +296,7 @@ public class Player {
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardFree())
-				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 90+i*15);
+				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 100+i*15);
 		}
 	}
 	
@@ -306,39 +311,46 @@ public class Player {
 	}
 	
 	public void endTurn() {
+		
 		cardChoice=true;
 		secondCardChoice=0;
 		firstCardChoice=0;
-		CardDataObject card= topCard.getTop();
-		int index = topCard.getIndex();
-		
-		if(card.continuous) {
-			inPlay.add(topCard);									//Need a way to track if i am using the top or bottom as a cont
-		}else if(card.lost) {
-			abilityDeck.get(index).lostPile();
-		}else {
-			abilityDeck.get(index).discardPile();
+		if(longRest==false) {
+			CardDataObject card= topCard.getTop();
+			int index = topCard.getIndex();
+			
+			if(card.continuous) {
+				inPlay.add(topCard);									//Need a way to track if i am using the top or bottom as a cont
+			}else if(card.lost) {
+				abilityDeck.get(index).lostPile();
+			}else {
+				abilityDeck.get(index).discardPile();
+			}
+			
+			card= bottomCard.getBottom();
+			index = bottomCard.getIndex();
+			
+			if(card.continuous) {
+				inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
+			}else if(card.lost) {
+				abilityDeck.get(index).lostPile();
+			}else {
+				abilityDeck.get(index).discardPile();
+			}
 		}
-		
-		card= bottomCard.getBottom();
-		index = bottomCard.getIndex();
-		
-		if(card.continuous) {
-			inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
-		}else if(card.lost) {
-			abilityDeck.get(index).lostPile();
-		}else {
-			abilityDeck.get(index).discardPile();
-		}
-		
+		longRest=false;
 	}
 	
 	public void shortRestInfo(Graphics g) {
 		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", 10, 100);
+		showDiscardPile(g);
+	}
+	
+	public void showDiscardPile(Graphics g) {
 		g.drawString("Discard Pile:", 10, 115);
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardInDiscardPile())
-				g.drawString(abilityDeck.get(i).getText(), 10, 130+i*15);
+				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 130+i*15);
 		}
 	}
 	
@@ -357,6 +369,26 @@ public class Player {
 		while(running);
 	}
 	
+	public void  takeLongRest(Graphics g, int key) {
+		showDiscardPile(g);
+		if(cardChoice) {
+			if(key>=0 && key<=abilityDeck.size()) {
+				if(abilityDeck.get(key).cardInDiscardPile()) {
+					abilityDeck.get(key).lostPile();
+					cardChoice=!cardChoice;
+				}
+			}
+		}else {
+			if(key>=0 && key<=abilityDeck.size()) {
+				if(abilityDeck.get(key).cardInDiscardPile()) {
+					abilityDeck.get(key).lostPile();
+					cardChoice=!cardChoice;
+					longRest=false;
+				}
+			}
+		}
+	}
+	
 	private void collectDiscardPile() {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardInDiscardPile())
@@ -366,11 +398,16 @@ public class Player {
 	
 	//Returns whether the two cards have been locked for initiative
 	public boolean cardsLocked() {
+		if(longRest)
+			return true;
+		
 		if(topCard!=null && bottomCard!=null)
 			return true;
 		else
 			return false;
 	}
+	
+	public boolean onRest() {return longRest;}
 	
 	public int getInitiative() {
 		return initiative;

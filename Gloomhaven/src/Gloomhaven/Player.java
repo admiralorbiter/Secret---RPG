@@ -333,6 +333,36 @@ public class Player {
 		
 	}
 	
+	public void shortRestInfo(Graphics g) {
+		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", 10, 100);
+		g.drawString("Discard Pile:", 10, 115);
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(abilityDeck.get(i).cardInDiscardPile())
+				g.drawString(abilityDeck.get(i).getText(), 10, 130+i*15);
+		}
+	}
+	
+	public void takeShortRest() {
+		collectDiscardPile();
+		Random rand = new Random();
+		boolean running=true;
+		do
+		{
+		 int pick = rand.nextInt(abilityDeck.size());
+		 if(abilityDeck.get(pick).cardFree()) {
+			 abilityDeck.get(pick).lostPile();
+			 running=false;
+		 }
+		}
+		while(running);
+	}
+	
+	private void collectDiscardPile() {
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(abilityDeck.get(i).cardInDiscardPile())
+				abilityDeck.get(i).takeOutOfDiscard();
+		}
+	}
 	
 	//Returns whether the two cards have been locked for initiative
 	public boolean cardsLocked() {

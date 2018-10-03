@@ -28,7 +28,8 @@ public class Scenario {
 	    PLAYER_DISCARD,
 	    ENEMY_DEFENSE,
 	    PLAYER_CARD,
-	    ROUND_FINISHED,
+	    ROUND_END_DISCARD,
+	    ROUND_END_REST,
 	    PLAYER_ATTACK_LOGIC,
 	    PLAYER_MOVE,
 	    PLAYER_ATTACK,
@@ -256,7 +257,7 @@ public class Scenario {
 			}else {
 				//if turn is over
 				if(turn==party.size())
-					state=State.ROUND_FINISHED;
+					state=State.ROUND_END_DISCARD;
 				else {
 					turn++;
 					state=State.ATTACK;
@@ -290,7 +291,7 @@ public class Scenario {
 				}else {
 					//if turn is over
 					if(turn==party.size())
-						state=State.ROUND_FINISHED;
+						state=State.ROUND_END_DISCARD;
 					else {
 						turn++;
 						state=State.ATTACK;
@@ -329,7 +330,7 @@ public class Scenario {
 				}else {
 					//if turn is over
 					if(turn==party.size())
-						state=State.ROUND_FINISHED;
+						state=State.ROUND_END_DISCARD;
 					else {
 						turn++;
 						state=State.ATTACK;
@@ -338,9 +339,7 @@ public class Scenario {
 			}
 		}
 		//State decides if scenario is over or another round should begin
-		else if(state==State.ROUND_FINISHED) {
-			//Look at win and finish conditions
-			
+		else if(state==State.ROUND_END_DISCARD) {
 			for(int i=0; i<party.size(); i++)
 				party.get(i).endTurn();
 			
@@ -350,11 +349,37 @@ public class Scenario {
 			if(enemyInfo.getCount()==0)
 				System.exit(1);
 			
-			for(int i=0; i<party.size(); i++)
-				party.get(i).resetCards();
-			turn=0;
 			currentPlayer=0;
-			state=State.CARD_SELECTION;
+			state=State.ROUND_END_REST;
+		}
+		else if(state==State.ROUND_END_REST) {
+			//Look at win and finish conditions
+			boolean finished=false;
+			
+			party.get(currentPlayer).shortRestInfo(g);
+
+			if(k=='y') {
+				party.get(currentPlayer).takeShortRest();
+				if((currentPlayer+1)!=party.size())
+					currentPlayer++;
+				else
+					finished=true;
+			}
+			
+			if(k=='n') {
+				if((currentPlayer+1)!=party.size())
+					currentPlayer++;
+				else
+					finished=true;
+			}
+			
+			if(finished) {
+				for(int i=0; i<party.size(); i++)
+					party.get(i).resetCards();
+				turn=0;
+				currentPlayer=0;
+				state=State.CARD_SELECTION;
+			}
 		}
 		//[Temp] Press t to end the scenario
 		else if(k=='t') {
@@ -401,7 +426,7 @@ public class Scenario {
 		//If it has gone through all the enemies, go to next state
 		if(enemyTurnIndex==(enemyInfo.getCount()-1)) {
 			if(turn==party.size())
-				state=State.ROUND_FINISHED;
+				state=State.ROUND_END_DISCARD;
 			else {
 				turn++;
 				state=State.ATTACK;

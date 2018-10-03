@@ -24,6 +24,12 @@ public class PlayerAbilityCards {
 		}
 	}
 	
+	public boolean cardInDiscardPile() {return discard;}
+	
+	public void takeOutOfDiscard() {
+		discard=false;
+	}
+	
 	CardDataObject getTop() {return top;}
 	CardDataObject getBottom() {return bottom;}
 	

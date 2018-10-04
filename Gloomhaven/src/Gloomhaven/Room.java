@@ -162,45 +162,46 @@ public class Room {
 				
 				System.out.println(rangeY+", "+x);
 				*/
-				
-				if(y-rangeY>0) {
-					
-					if(start.distance(x, y-rangeY)<=rangeTemp)
-						drawHex(g, x, y-rangeY);
-				}
-				
-				if(y+rangeY<dimensions.getY()) {
-					if(start.distance(x, y+rangeY)<=rangeTemp)
-						drawHex(g, x, y+rangeY);
-				}
-				//if(!(rangeY>=0 && rangeX==range)) {
-				if(x-rangeX>0) {
-					if(start.distance(x-rangeX, y)<=rangeTemp)
-						drawHex(g, x-rangeX, y);
-					
+				if(!(rangeY==range && rangeX==range)) {
 					if(y-rangeY>0) {
-						//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
-						if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-							drawHex(g, x-rangeX, y-rangeY);
+						
+						if(start.distance(x, y-rangeY)<=rangeTemp)
+							drawHex(g, x, y-rangeY);
 					}
-					if(y+rangeY<dimensions.getY()) {
-						if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-							drawHex(g, x-rangeX, y+rangeY);
-					}	
-				}
-				
-				
-				if(x+rangeX<dimensions.getX()) {
-					if(start.distance(x+rangeX, y)<=rangeTemp)
-						drawHex(g, x+rangeX, y);
 					
-					if(y-rangeY>0) {
-						if(start.distance(x+rangeX, y-rangeY)<=rangeTemp)
-							drawHex(g, x+rangeX, y-rangeY);
-					}
 					if(y+rangeY<dimensions.getY()) {
-						if(start.distance(x+rangeX, y+rangeY)<=rangeTemp)
-							drawHex(g, x+rangeX, y+rangeY);
+						if(start.distance(x, y+rangeY)<=rangeTemp)
+							drawHex(g, x, y+rangeY);
+					}
+					//if(!(rangeY>=0 && rangeX==range)) {
+					if(x-rangeX>0) {
+						if(start.distance(x-rangeX, y)<=rangeTemp)
+							drawHex(g, x-rangeX, y);
+						
+						if(y-rangeY>0) {
+							//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
+							if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+								drawHex(g, x-rangeX, y-rangeY);
+						}
+						if(y+rangeY<dimensions.getY()) {
+							if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+								drawHex(g, x-rangeX, y+rangeY);
+						}	
+					}
+					
+					
+					if(x+rangeX<dimensions.getX()) {
+						if(start.distance(x+rangeX, y)<=rangeTemp)
+							drawHex(g, x+rangeX, y);
+						
+						if(y-rangeY>0) {
+							if(start.distance(x+rangeX, y-rangeY)<=rangeTemp)
+								drawHex(g, x+rangeX, y-rangeY);
+						}
+						if(y+rangeY<dimensions.getY()) {
+							if(start.distance(x+rangeX, y+rangeY)<=rangeTemp)
+								drawHex(g, x+rangeX, y+rangeY);
+						}
 					}
 				}
 			}

@@ -9,7 +9,7 @@ import java.util.List;
 public class Room {
 
 	//Constants
-	int SIZE_OF_HEX=100;
+	int SIZE_OF_HEX=60;
 	
 	String qBoard[][];
 	String idBoard[][]; 											//Eventually want this to hold objects, not just lookup ids
@@ -142,15 +142,30 @@ public class Room {
 		int nPoints=7;
 		int offsetY=0;
 		int offsetX=400;
-		if(x%2!=0) {
-			offsetY=50;
+		int bufferY=-20;
+		int bufferX=0;
+		if(y%2!=0) {
+			offsetX=430;
+			//offsetY=-40;
 		}
+		else {
+			bufferY=-20;
+		}
+		/*
+		if(x%2!=0) {
+			offsetY=40;
+			bufferX=0;
+			bufferY=20;
+		}*/
+
+		//int[] tX = {0+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 150+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 0+x*SIZE_OF_HEX+offsetX};
+		//int[] tY = {50+y*SIZE_OF_HEX+offsetY, 0+y*SIZE_OF_HEX+offsetY,  0+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY};
 		
-		int[] tX = {0+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 150+x*SIZE_OF_HEX+offsetX, 100+x*SIZE_OF_HEX+offsetX, 50+x*SIZE_OF_HEX+offsetX, 0+x*SIZE_OF_HEX+offsetX};
-		int[] tY = {50+y*SIZE_OF_HEX+offsetY, 0+y*SIZE_OF_HEX+offsetY,  0+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 100+y*SIZE_OF_HEX+offsetY, 50+y*SIZE_OF_HEX+offsetY};
+		int[] tX = {0+x*(SIZE_OF_HEX+bufferX)+offsetX, 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 60+x*(SIZE_OF_HEX+bufferX)+offsetX, 60+x*(SIZE_OF_HEX+bufferX)+offsetX, 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 0+x*(SIZE_OF_HEX+bufferX)+offsetX, 0+x*(SIZE_OF_HEX+bufferX)+offsetX};
+		int[] tY = {20+y*(SIZE_OF_HEX+bufferY)+offsetY, 0+y*(SIZE_OF_HEX+bufferY)+offsetY,  20+y*(SIZE_OF_HEX+bufferY)+offsetY, 40+y*(SIZE_OF_HEX+bufferY)+offsetY, 60+y*(SIZE_OF_HEX+bufferY)+offsetY, 40+y*(SIZE_OF_HEX+bufferY)+offsetY, 20+y*(SIZE_OF_HEX+bufferY)+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
-		g.drawString(qBoard[x][y], 75+x*SIZE_OF_HEX+offsetX, 50+y*SIZE_OF_HEX+offsetY);
-		g.drawString(x+", "+y, 70+x*SIZE_OF_HEX+offsetX, 65+y*SIZE_OF_HEX+offsetY);
+		g.drawString(qBoard[x][y], 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 35+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		g.drawString(x+", "+y, 20+x*(SIZE_OF_HEX+bufferX)+offsetX, 20+y*(SIZE_OF_HEX+bufferY)+offsetY);
 	}
 	
 	public void highlightTargets(List<Point> targets, Graphics g) {

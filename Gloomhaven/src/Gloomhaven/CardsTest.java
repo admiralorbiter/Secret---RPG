@@ -80,7 +80,7 @@ public class CardsTest implements CardInterface {
 				
 		}
 		//[Test]
-		top.text=top.name;
+		top.text=top.name+"  "+top.attack+" attack and "+top.move+" move.";
 		return top;
 	}
 
@@ -153,7 +153,7 @@ public class CardsTest implements CardInterface {
 		}
 		
 		//[Test]
-		bottom.text="Bottom Text";
+		bottom.text=bottom.attack+" attack and "+bottom.move+" move.";
 		return bottom;
 	}
 

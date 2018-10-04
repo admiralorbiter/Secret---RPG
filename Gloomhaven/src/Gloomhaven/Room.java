@@ -32,7 +32,7 @@ public class Room {
 		
 		switch(id) {
 			case "Test":
-				dimensions= new Point2D.Double(8, 8);
+				dimensions= new Point2D.Double(10, 10);
 				qBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				idBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				resetBoard();

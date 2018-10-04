@@ -199,20 +199,20 @@ public class Player {
 			if(firstCardChoice==1)
 				return getAbilityCardData("Top", 1);
 			else if(firstCardChoice==2)
-				playAlternative("Top");
+				return playAlternative("Top");
 			else if(firstCardChoice==3)
 				return getAbilityCardData("Bottom", 3);
 			else if(firstCardChoice==4)
-				playAlternative("Bottom");
+				return playAlternative("Bottom");
 		}else {
 			if(secondCardChoice==1)
 				return getAbilityCardData("Top", 1);
 			else if(secondCardChoice==2)
-				playAlternative("Top");
+				return playAlternative("Top");
 			else if(secondCardChoice==3)
 				return getAbilityCardData("Bottom", 3);
 			else if(secondCardChoice==4)
-				playAlternative("Bottom");
+				return playAlternative("Bottom");
 		}
 		
 		return null;
@@ -246,11 +246,19 @@ public class Player {
 		return card;
 	}
 	
-	public void playAlternative(String flag) {
+	public CardDataObject playAlternative(String flag) {
+		CardDataObject card = new CardDataObject();
 		if(flag=="Top")
 		{
 			//do the top alt of the ability card
+			card.attack=2;
+			card.move=0;
+			return card;
 		}
+		
+		card.attack=0;
+		card.move=2;
+		return card;
 		
 		//Play bottom alt of the ability card
 	}
@@ -266,7 +274,7 @@ public class Player {
 		
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
-				g.drawString("Choose top card.", 10, 80);
+				g.drawString("Choose top card.", 10, 530);
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
@@ -279,7 +287,7 @@ public class Player {
 				}
 			}
 			else {
-				g.drawString("Choose bottom card.", 10, 80);
+				g.drawString("Choose bottom card.", 10, 530);
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
@@ -296,12 +304,12 @@ public class Player {
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardFree())
-				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 100+i*15);
+				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 545+i*15);
 		}
 	}
 	
-	public void showPickedCards(Graphics g) {
-		int startingY=50;
+	private void showPickedCards(Graphics g) {
+		int startingY=530;
 		int offsetY=15;
 		g.drawString("Cards", 10, startingY+offsetY*0);
 		g.drawString("1: "+topCard.getText(), 10, startingY+offsetY*1);

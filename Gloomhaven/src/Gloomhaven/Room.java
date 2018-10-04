@@ -138,7 +138,80 @@ public class Room {
 		g.setColor(Color.MAGENTA);
 	}*/
 	
+	
+	/*
+	 * All I need to do is find the distance between the points. If it is <= range, then draw it.
+	 * 
+	 * 
+	 */
+	
 	public void drawRange(Graphics g, Point2D start, int range, Color color) {
+		
+		g.setColor(color);
+		int x=(int)start.getX();
+		int y=(int)start.getY();
+		double rangeTemp=range+1;
+		for(int rangeX=0; rangeX<=range; rangeX++) {
+			
+			for(int rangeY=0; rangeY<=range; rangeY++) {
+				/*
+				if(rangeY%2!=0)
+					start.setLocation(x+1, y);
+				else
+					start.setLocation(x, y);
+				
+				System.out.println(rangeY+", "+x);
+				*/
+				
+				if(y-rangeY>0) {
+					
+					if(start.distance(x, y-rangeY)<=rangeTemp)
+						drawHex(g, x, y-rangeY);
+				}
+				
+				if(y+rangeY<dimensions.getY()) {
+					if(start.distance(x, y+rangeY)<=rangeTemp)
+						drawHex(g, x, y+rangeY);
+				}
+				//if(!(rangeY>=0 && rangeX==range)) {
+				if(x-rangeX>0) {
+					if(start.distance(x-rangeX, y)<=rangeTemp)
+						drawHex(g, x-rangeX, y);
+					
+					if(y-rangeY>0) {
+						//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
+						if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+							drawHex(g, x-rangeX, y-rangeY);
+					}
+					if(y+rangeY<dimensions.getY()) {
+						if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+							drawHex(g, x-rangeX, y+rangeY);
+					}	
+				}
+				
+				
+				if(x+rangeX<dimensions.getX()) {
+					if(start.distance(x+rangeX, y)<=rangeTemp)
+						drawHex(g, x+rangeX, y);
+					
+					if(y-rangeY>0) {
+						if(start.distance(x+rangeX, y-rangeY)<=rangeTemp)
+							drawHex(g, x+rangeX, y-rangeY);
+					}
+					if(y+rangeY<dimensions.getY()) {
+						if(start.distance(x+rangeX, y+rangeY)<=rangeTemp)
+							drawHex(g, x+rangeX, y+rangeY);
+					}
+				}
+			}
+		}
+		start.setLocation(x, y);
+		g.setColor(Color.MAGENTA);
+	}
+	
+	/*
+	public void drawRange(Graphics g, Point2D start, int range, Color color) {
+		
 		
 		//[Test]
 		System.out.println(range);
@@ -186,7 +259,7 @@ public class Room {
 		}
 		g.setColor(Color.MAGENTA);
 	}
-
+*/
 	private void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;
 		int offsetY=0;

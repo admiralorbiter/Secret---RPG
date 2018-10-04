@@ -32,7 +32,7 @@ public class Room {
 		
 		switch(id) {
 			case "Test":
-				dimensions= new Point2D.Double(7, 5);
+				dimensions= new Point2D.Double(8, 8);
 				qBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				idBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				resetBoard();
@@ -102,7 +102,7 @@ public class Room {
 	}
 	
 	//[Rem] Needs to be fixed
-	public void drawRange(Graphics g, Point2D start, int range, Color color) {
+	/*public void drawRange(Graphics g, Point2D start, int range, Color color) {
 		int x=(int)start.getX();
 		int y=(int)start.getY();
 		
@@ -133,6 +133,55 @@ public class Room {
 			}
 			if(y+range<dimensions.getY()) {
 				drawHex(g, x+range, y+range);
+			}
+		}
+		g.setColor(Color.MAGENTA);
+	}*/
+	
+	public void drawRange(Graphics g, Point2D start, int range, Color color) {
+		
+		//[Test]
+		System.out.println(range);
+		
+		int x=(int)start.getX();
+		int y=(int)start.getY();
+		
+		g.setColor(color);
+		
+		for(int rangeX=0; rangeX<=range; rangeX++) {
+		
+			for(int rangeY=0; rangeY<=range; rangeY++) {
+				if(!(rangeX==range && rangeY==range) || range==1) {
+					if(y-rangeY>0) {
+						drawHex(g, x, y-rangeY);
+					}
+					
+					if(y+rangeY<dimensions.getY()) {
+						drawHex(g, x, y+rangeY);
+					}
+					
+					if(x-rangeX>0) {
+						drawHex(g, x-rangeX, y);
+						if(((y-rangeY)%2!=0)||(rangeX<range)) {
+							if(y-rangeY>0) {
+								drawHex(g, x-rangeX, y-rangeY);
+							}
+							if(y+rangeY<dimensions.getY()) {
+								drawHex(g, x-rangeX, y+rangeY);
+							}
+						}
+					}
+					
+					if(x+rangeX<dimensions.getX()) {
+						drawHex(g, x+rangeX, y);
+						if(y-rangeY>0) {
+							drawHex(g, x+rangeX, y-rangeY);
+						}
+						if(y+rangeY<dimensions.getY()) {
+							drawHex(g, x+rangeX, y+rangeY);
+						}
+					}
+				}
 			}
 		}
 		g.setColor(Color.MAGENTA);

@@ -101,50 +101,13 @@ public class Room {
 		g.setColor(Color.MAGENTA);
 	}
 	
-	//[Rem] Needs to be fixed
-	/*public void drawRange(Graphics g, Point2D start, int range, Color color) {
-		int x=(int)start.getX();
-		int y=(int)start.getY();
-		
-		g.setColor(color);
-		
-		if(y-range>0) {
-			drawHex(g, x, y-range);
-		}
-		
-		if(y+range<dimensions.getY()) {
-			drawHex(g, x, y+range);
-		}
-		
-		if(x-range>0) {
-			drawHex(g, x-range, y);
-			if(y-range>0) {
-				drawHex(g, x-range, y-range);
-			}
-			if(y+range<dimensions.getY()) {
-				drawHex(g, x-range, y+range);
-			}
-		}
-		
-		if(x+range<dimensions.getX()) {
-			drawHex(g, x+range, y);
-			if(y-range>0) {
-				drawHex(g, x+range, y-range);
-			}
-			if(y+range<dimensions.getY()) {
-				drawHex(g, x+range, y+range);
-			}
-		}
-		g.setColor(Color.MAGENTA);
-	}*/
-	
-	
 	/*
 	 * All I need to do is find the distance between the points. If it is <= range, then draw it.
 	 * 
 	 * 
 	 */
 	
+	/*
 	public void drawRange(Graphics g, Point2D start, int range, Color color) {
 		
 		g.setColor(color);
@@ -154,16 +117,9 @@ public class Room {
 		for(int rangeX=0; rangeX<=range; rangeX++) {
 			
 			for(int rangeY=0; rangeY<=range; rangeY++) {
-				/*
-				if(rangeY%2!=0)
-					start.setLocation(x+1, y);
-				else
-					start.setLocation(x, y);
-				
-				System.out.println(rangeY+", "+x);
-				*/
+
 				if(!(rangeY==range && rangeX==range)) {
-					if(y-rangeY>0) {
+					if(y-rangeY>=0) {
 						
 						if(start.distance(x, y-rangeY)<=rangeTemp)
 							drawHex(g, x, y-rangeY);
@@ -173,22 +129,23 @@ public class Room {
 						if(start.distance(x, y+rangeY)<=rangeTemp)
 							drawHex(g, x, y+rangeY);
 					}
-					//if(!(rangeY>=0 && rangeX==range)) {
-					if(x-rangeX>0) {
+		
+					if(x-rangeX>=0) {
 						if(start.distance(x-rangeX, y)<=rangeTemp)
 							drawHex(g, x-rangeX, y);
-						
-						if(y-rangeY>0) {
-							//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
-							if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-								drawHex(g, x-rangeX, y-rangeY);
-						}
-						if(y+rangeY<dimensions.getY()) {
-							if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-								drawHex(g, x-rangeX, y+rangeY);
+						if(!(rangeX==range)) {
+							if(y-rangeY>0) {
+								//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
+								if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+									drawHex(g, x-rangeX, y-rangeY);
+							}
+							if(y+rangeY<dimensions.getY()) {
+								if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
+									drawHex(g, x-rangeX, y+rangeY);
+							}
 						}	
-					}
-					
+						
+					}	
 					
 					if(x+rangeX<dimensions.getX()) {
 						if(start.distance(x+rangeX, y)<=rangeTemp)
@@ -209,58 +166,34 @@ public class Room {
 		start.setLocation(x, y);
 		g.setColor(Color.MAGENTA);
 	}
+	*/
 	
-	/*
 	public void drawRange(Graphics g, Point2D start, int range, Color color) {
 		
-		
-		//[Test]
-		System.out.println(range);
-		
-		int x=(int)start.getX();
-		int y=(int)start.getY();
-		
 		g.setColor(color);
-		
-		for(int rangeX=0; rangeX<=range; rangeX++) {
-		
-			for(int rangeY=0; rangeY<=range; rangeY++) {
-				if(!(rangeX==range && rangeY==range) || range==1) {
-					if(y-rangeY>0) {
-						drawHex(g, x, y-rangeY);
-					}
-					
-					if(y+rangeY<dimensions.getY()) {
-						drawHex(g, x, y+rangeY);
-					}
-					
-					if(x-rangeX>0) {
-						drawHex(g, x-rangeX, y);
-						if(((y-rangeY)%2!=0)||(rangeX<range)) {
-							if(y-rangeY>0) {
-								drawHex(g, x-rangeX, y-rangeY);
-							}
-							if(y+rangeY<dimensions.getY()) {
-								drawHex(g, x-rangeX, y+rangeY);
-							}
-						}
-					}
-					
-					if(x+rangeX<dimensions.getX()) {
-						drawHex(g, x+rangeX, y);
-						if(y-rangeY>0) {
-							drawHex(g, x+rangeX, y-rangeY);
-						}
-						if(y+rangeY<dimensions.getY()) {
-							drawHex(g, x+rangeX, y+rangeY);
-						}
+
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						System.out.println(x+","+y+","+z+"           "+(int)(x+start.getX())+","+(int) (y+start.getY()));
+						drawHex(g, (int)(x+start.getX()),(int) (y+start.getY()));
+						/*
+						if(x<0)
+							drawHex(g, (int)(x+start.getX()+1),(int) (z+start.getY()));
+						else if(x>0)
+							drawHex(g, (int)(x+start.getX()-1),(int) (z+start.getY()));
+						else
+							drawHex(g, (int)(x+start.getX()),(int) (z+start.getY()));
+						*/
 					}
 				}
 			}
 		}
+		
 		g.setColor(Color.MAGENTA);
 	}
-*/
+	
 	private void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;
 		int offsetY=0;

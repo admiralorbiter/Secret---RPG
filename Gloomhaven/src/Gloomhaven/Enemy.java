@@ -14,7 +14,8 @@ public class Enemy {
 	Point2D coordinates;
 	StatusEffectDataObject effects = new StatusEffectDataObject();
 	Point2D dimensions;
-
+	AttackModifierDeck attackModifierDeck = new AttackModifierDeck("Standard");
+	
 	int move;
 	int shield;
 	int range;

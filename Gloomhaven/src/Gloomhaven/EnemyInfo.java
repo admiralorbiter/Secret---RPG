@@ -34,11 +34,11 @@ public class EnemyInfo {
 		this.turnNumber=turnNumber;
 	}
 	
-	public void playerAttack(String id, CardDataObject attackData) {
+	public void playerAttack(String id, int damage) {
 		for(int i=0; i<enemies.size(); i++) {
 
 			if(enemies.get(i).getID()==id) {
-				enemies.get(i).takeDamage(attackData.attack);
+				enemies.get(i).takeDamage(damage);
 			}
 		}
 		
@@ -117,7 +117,8 @@ public class EnemyInfo {
 	}
 	
 	public int getAttack(int enemyTurnIndex) {
-		return enemies.get(enemyTurnIndex).getAttack()+abilityDeck.get(abilityCardIndex).getAttack();
+		AttackModifierCard card = enemies.get(enemyTurnIndex).attackModifierDeck.pickRandomModifierCard();
+		return card.multiplier*(enemies.get(enemyTurnIndex).getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.plusAttack);
 	}
 	
 	//[Test]

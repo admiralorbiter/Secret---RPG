@@ -244,7 +244,11 @@ public class Scenario {
 			int playerIndex = getTargetIndex();
 			
 			if((k=='h') || (party.get(playerIndex).abilityCardsLeft()==0)) {
+				int damage=enemyInfo.getAttack(enemyTurnIndex);
+				party.get(playerIndex).decreaseHealth(damage);
 				if(party.get(playerIndex).getHealth()<=0) {
+					//[Test]
+					System.out.println("Player is dead");
 					party.remove(playerIndex);						//Kill Player
 				}
 				enemyControlLogic();
@@ -303,11 +307,11 @@ public class Scenario {
 			for(int r=1; r<=card.move; r++)
 				room.drawRange(g, playerPoint, r, Color.BLUE);
 	
-			
+			g.drawString("Press m to move.", 10, 400);
 			selection(g);
-		
-			if(k==' ') {
-				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+			
+			if(k=='m') {
+				if(room.isSpaceEmpty(room.getSelectionCoordinates()) || room.isSpace(room.getSelectionCoordinates(), "P")) {
 					room.movePlayer(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates());
 					party.get(currentPlayer).movePlayer(new Point(room.getSelectionCoordinates()));
 					finished=true;
@@ -339,18 +343,23 @@ public class Scenario {
 					targets = party.get(currentPlayer).createTargetList(room.getqBoard(), range);
 			}
 			
-			room.highlightTargets(targets, g);
-			
-			selection(g);
-			
-			if(k==' ') {
-				if(room.isSpace(room.getSelectionCoordinates(), "E")) {
-					if(targets.contains(room.getSelectionCoordinates())){
-						String id = room.getID(room.getSelectionCoordinates());
-						enemyInfo.playerAttack(id, card);
-						finished=true;
+			if(targets.size()>0) {
+				room.highlightTargets(targets, g);
+				
+				selection(g);
+				
+				if(k==' ') {
+					if(room.isSpace(room.getSelectionCoordinates(), "E")) {
+						if(targets.contains(room.getSelectionCoordinates())){
+							String id = room.getID(room.getSelectionCoordinates());
+							int damage=party.get(currentPlayer).getAttack(card);
+							enemyInfo.playerAttack(id, damage);
+							finished=true;
+						}
 					}
 				}
+			}else {
+				finished=true;
 			}
 
 			

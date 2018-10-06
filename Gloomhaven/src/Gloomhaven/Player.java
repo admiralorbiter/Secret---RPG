@@ -24,8 +24,11 @@ public class Player {
 	String id;
 	String character;
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();
+	
 	//Card choice variable - if true pick top card, if false pick bottom card
 	//[Temp] Top card and bottom card should be card objects with an init variables
+	
+	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");
 	boolean cardChoice=true;
 	int initiative=-1;
 	PlayerAbilityCards topCard=null;
@@ -524,7 +527,12 @@ public class Player {
 	public int testGetBottomCardIndex() {return bottomCard.getIndex();}
 	
 	public String getID() {return id;}
-	public int getAttack() {return attack;}
+	public int getAttack(CardDataObject attackCard) {
+		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
+		int damage = (attackCard.attack+card.plusAttack)*card.multiplier;
+		
+		return damage;
+	}
 	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
 		health=health-damage;

@@ -116,7 +116,7 @@ public class Room {
 						
 						//Converts cube coord to a coord to plot
 						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(start.getX()%2!=0)
+						if(start.getY()%2!=0)
 							convertedPoint=cubeToCoordOdd(x, y, z);
 						else
 							convertedPoint=cubeToCoordEven(x, y, z);

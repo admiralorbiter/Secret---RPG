@@ -224,7 +224,6 @@ public class Player {
 
 	public int pickPlayCard(int key, Graphics g) {
 		showPickedCards(g);
-		
 		if(cardChoice) {
 			if(key>=1 && key<=4) {
 				cardChoice=!cardChoice;
@@ -255,24 +254,32 @@ public class Player {
 	}
 	
 	public CardDataObject playCard() {
-		if(firstCardChoice!=0) {
-			if(firstCardChoice==1)
+		if(!cardChoice) {
+			if(firstCardChoice==1) {
 				return getAbilityCardData("Top", 1);
-			else if(firstCardChoice==2)
+			}
+			else if(firstCardChoice==2) {
 				return playAlternative("Top");
-			else if(firstCardChoice==3)
+			}
+			else if(firstCardChoice==3) {
 				return getAbilityCardData("Bottom", 3);
-			else if(firstCardChoice==4)
+			}
+			else if(firstCardChoice==4) {
 				return playAlternative("Bottom");
+			}
 		}else {
-			if(secondCardChoice==1)
+			if(secondCardChoice==1) {
 				return getAbilityCardData("Top", 1);
-			else if(secondCardChoice==2)
+			}
+			else if(secondCardChoice==2) {
 				return playAlternative("Top");
-			else if(secondCardChoice==3)
+			}
+			else if(secondCardChoice==3) {
 				return getAbilityCardData("Bottom", 3);
-			else if(secondCardChoice==4)
+			}
+			else if(secondCardChoice==4) {
 				return playAlternative("Bottom");
+			}
 		}
 		
 		return null;
@@ -307,6 +314,7 @@ public class Player {
 	}
 	
 	public CardDataObject playAlternative(String flag) {
+	
 		CardDataObject card = new CardDataObject();
 		if(flag=="Top")
 		{

@@ -96,7 +96,7 @@ public class Scenario {
 		g.drawString("State of Scenario", 50, 485);
 		g.drawString(state.toString(), 50, 500);
 		room.drawRoom(g);
-		
+
 		parseKey(key);
 		if(state==State.CARD_SELECTION) {
 			g.drawString("Picking cards", 10, 50);
@@ -251,7 +251,10 @@ public class Scenario {
 					System.out.println("Player is dead");
 					party.remove(playerIndex);						//Kill Player
 				}
-				enemyControlLogic();
+				if(party.size()==0)
+					state=State.ROUND_END_DISCARD;
+				else
+					enemyControlLogic();
 			}
 			if(k=='d') {
 				state=State.PLAYER_DISCARD;
@@ -311,14 +314,21 @@ public class Scenario {
 			selection(g);
 			
 			if(k=='m') {
-				if(room.isSpaceEmpty(room.getSelectionCoordinates()) || room.isSpace(room.getSelectionCoordinates(), "P")) {
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 					room.movePlayer(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates());
 					party.get(currentPlayer).movePlayer(new Point(room.getSelectionCoordinates()));
+					finished=true;
+				}
+				
+				if(room.isSpace(room.getSelectionCoordinates(), "P")) {
 					finished=true;
 				}
 			}
 
 			if(finished) {
+				//[Test]
+				System.out.println(card.attack);
+				
 				if(card.attack>0) {
 					room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));
 					state=State.PLAYER_ATTACK;

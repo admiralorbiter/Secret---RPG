@@ -263,7 +263,7 @@ public class Scenario {
 			
 			//[Test]
 			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 1, Color.GREEN);
-			room.drawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
+			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
 			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 3, Color.GREEN);
 			
 			

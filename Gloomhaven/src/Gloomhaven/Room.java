@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+
 public class Room {
 
 	//Constants
@@ -32,7 +33,7 @@ public class Room {
 		
 		switch(id) {
 			case "Test":
-				dimensions= new Point2D.Double(10, 10);
+				dimensions= new Point2D.Double(9, 9);
 				qBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				idBoard = new String[(int) dimensions.getX()][(int) dimensions.getY()];
 				resetBoard();
@@ -101,97 +102,54 @@ public class Room {
 		g.setColor(Color.MAGENTA);
 	}
 	
-	/*
-	 * All I need to do is find the distance between the points. If it is <= range, then draw it.
-	 * 
-	 * 
-	 */
-	
-	/*
+	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
+	//https://www.redblobgames.com/grids/hexagons/
 	public void drawRange(Graphics g, Point2D start, int range, Color color) {
 		
 		g.setColor(color);
-		int x=(int)start.getX();
-		int y=(int)start.getY();
-		double rangeTemp=range+1;
-		for(int rangeX=0; rangeX<=range; rangeX++) {
-			
-			for(int rangeY=0; rangeY<=range; rangeY++) {
-
-				if(!(rangeY==range && rangeX==range)) {
-					if(y-rangeY>=0) {
-						
-						if(start.distance(x, y-rangeY)<=rangeTemp)
-							drawHex(g, x, y-rangeY);
-					}
-					
-					if(y+rangeY<dimensions.getY()) {
-						if(start.distance(x, y+rangeY)<=rangeTemp)
-							drawHex(g, x, y+rangeY);
-					}
 		
-					if(x-rangeX>=0) {
-						if(start.distance(x-rangeX, y)<=rangeTemp)
-							drawHex(g, x-rangeX, y);
-						if(!(rangeX==range)) {
-							if(y-rangeY>0) {
-								//System.out.println(rangeX+","+rangeY+"   "+start.distance(x-rangeX, y-rangeY));
-								if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-									drawHex(g, x-rangeX, y-rangeY);
-							}
-							if(y+rangeY<dimensions.getY()) {
-								if(start.distance(x-rangeX, y-rangeY)<=rangeTemp)
-									drawHex(g, x-rangeX, y+rangeY);
-							}
-						}	
-						
-					}	
-					
-					if(x+rangeX<dimensions.getX()) {
-						if(start.distance(x+rangeX, y)<=rangeTemp)
-							drawHex(g, x+rangeX, y);
-						
-						if(y-rangeY>0) {
-							if(start.distance(x+rangeX, y-rangeY)<=rangeTemp)
-								drawHex(g, x+rangeX, y-rangeY);
-						}
-						if(y+rangeY<dimensions.getY()) {
-							if(start.distance(x+rangeX, y+rangeY)<=rangeTemp)
-								drawHex(g, x+rangeX, y+rangeY);
-						}
-					}
-				}
-			}
-		}
-		start.setLocation(x, y);
-		g.setColor(Color.MAGENTA);
-	}
-	*/
-	
-	public void drawRange(Graphics g, Point2D start, int range, Color color) {
-		
-		g.setColor(color);
-
 		for(int x=-range; x<=range; x++) {
 			for(int y=-range; y<=range; y++) {
 				for(int z=-range; z<=range; z++) {
 					if(x+y+z==0) {
-						System.out.println(x+","+y+","+z+"           "+(int)(x+start.getX())+","+(int) (y+start.getY()));
-						drawHex(g, (int)(x+start.getX()),(int) (y+start.getY()));
-						/*
-						if(x<0)
-							drawHex(g, (int)(x+start.getX()+1),(int) (z+start.getY()));
-						else if(x>0)
-							drawHex(g, (int)(x+start.getX()-1),(int) (z+start.getY()));
+						Point convertedPoint = new Point();
+						
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(start.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
 						else
-							drawHex(g, (int)(x+start.getX()),(int) (z+start.getY()));
-						*/
+							convertedPoint=cubeToCoordOdd(x, y, z);
+
+						drawHex(g, (int)(convertedPoint.getX()+start.getX()),(int) (convertedPoint.getY()+start.getY()));
+
 					}
 				}
 			}
 		}
 		
 		g.setColor(Color.MAGENTA);
+	}
+	
+	
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordEven(int x, int y, int z ) {
+		x=x+(z-(z&1))/2;
+		y=z;
+
+		Point point = new Point(x, y);
+		return point;
+	}
+	
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordOdd(int x, int y, int z) {
+		x=x+(z+(z&1))/2;
+		y=z;
+		
+		Point point = new Point(x, y);
+		return point;
 	}
 	
 	private void drawHex(Graphics g, int x, int y) {

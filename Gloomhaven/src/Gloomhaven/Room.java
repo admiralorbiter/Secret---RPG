@@ -119,10 +119,14 @@ public class Room {
 						if(start.getX()%2!=0)
 							convertedPoint=cubeToCoordOdd(x, y, z);
 						else
-							convertedPoint=cubeToCoordOdd(x, y, z);
-
-						drawHex(g, (int)(convertedPoint.getX()+start.getX()),(int) (convertedPoint.getY()+start.getY()));
-
+							convertedPoint=cubeToCoordEven(x, y, z);
+						
+						int xToPlot=(int)(convertedPoint.getX()+start.getX());
+						int yToPlot=(int) (convertedPoint.getY()+start.getY());
+						
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								drawHex(g, xToPlot,  yToPlot);
 					}
 				}
 			}

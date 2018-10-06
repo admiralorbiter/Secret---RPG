@@ -117,6 +117,7 @@ public class Player {
 		return false;
 	}
 	
+	/*
 	public List<Point> createTargetList(String qBoard[][], int range){
 		List<Point> targets = new ArrayList<Point>();
 		
@@ -160,6 +161,62 @@ public class Player {
 		}
 		
 		return targets;
+	}*/
+	
+	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
+	//https://www.redblobgames.com/grids/hexagons/
+	public List<Point> createTargetList(String qBoard[][], int range) {
+		List<Point> targets = new ArrayList<Point>();
+		
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						Point convertedPoint = new Point();
+			
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(coordinates.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
+						else
+							convertedPoint=cubeToCoordEven(x, y, z);
+
+						int xToPlot=(int)(convertedPoint.getX()+coordinates.getX());
+						int yToPlot=(int) (convertedPoint.getY()+coordinates.getY());
+
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								if(qBoard[xToPlot][yToPlot]=="E"){
+									targets.add(new Point(xToPlot,yToPlot));
+						}
+
+					}
+				}
+			}
+		}
+		
+		return targets;
+	}
+		
+		
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordEven(int x, int y, int z ) {
+		x=x+(z-(z&1))/2;
+		y=z;
+
+		Point point = new Point(x, y);
+		return point;
+	}
+	
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordOdd(int x, int y, int z) {
+		x=x+(z+(z&1))/2;
+		y=z;
+		
+		Point point = new Point(x, y);
+		return point;
 	}
 
 	public int pickPlayCard(int key, Graphics g) {

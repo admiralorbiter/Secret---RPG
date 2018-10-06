@@ -137,50 +137,6 @@ public class Enemy {
 		List<Player> targets = new ArrayList<Player>();
 		checkRange(qBoard, idBoard, "P", 1, party, targets);
 		
-		/*List<String> idList = new ArrayList<String>();
-		
-		int x=(int) coordinates.getX();
-		int y=(int) coordinates.getY();
-	
-		if(x-1>0) {
-			if(qBoard[x-1][y]=="P")
-				idList.add(idBoard[x-1][y]);
-			if(y-1>0) {
-				if(qBoard[x-1][y-1]=="P") {
-					idList.add(idBoard[x-1][y-1]);
-				}
-			}
-			if(y+1<dimensions.getY()) {
-				if(qBoard[x-1][y+1]=="P") {
-					idList.add(idBoard[x-1][y+1]);
-				}
-			}
-		}
-		
-		if(x+1<dimensions.getX()) {
-			if(qBoard[x+1][y]=="P")
-				idList.add(idBoard[x+1][y]);
-			if(y-1>0) {
-				if(qBoard[x+1][y-1]=="P") {
-					idList.add(idBoard[x+1][y-1]);
-				}
-			}
-			if(y+1<dimensions.getY()) {
-				if(qBoard[x+1][y+1]=="P") {
-					idList.add(idBoard[x+1][y+1]);
-				}
-			}
-		}
-
-		for(int idIndex=0; idIndex<idList.size(); idIndex++) {
-			for(int i=0; i<party.size(); i++) {
-				if(party.get(i).getID()==idList.get(idIndex)) {
-					targets.add(party.get(i));
-					break;											//[Rem] Worried this will cause a bug.
-				}
-			}
-		}*/
-		
 		return targets;
 	}
 	
@@ -196,54 +152,38 @@ public class Enemy {
 		
 		return targets;
 	}
-	
+
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	public void checkRange(String qBoard[][], String idBoard[][], String lookingForID, int range, List<Player> party, List<Player> targets) {
 		List<String> idList = new ArrayList<String>();
 		
-		int x=(int) coordinates.getX();
-		int y=(int) coordinates.getY();
-	
-		if(y-range>0) {
-			if(qBoard[x][y-range]==lookingForID)
-				idList.add(idBoard[x][y-range]);
-		}
-		
-		if(y+range<dimensions.getY()) {
-			if(qBoard[x][y+range]==lookingForID)
-				idList.add(idBoard[x][y+range]);
-		}
-		
-		if(x-range>0) {
-			if(qBoard[x-range][y]==lookingForID)
-				idList.add(idBoard[x-range][y]);
-			if(y-range>0) {
-				if(qBoard[x-range][y-range]==lookingForID) {
-					idList.add(idBoard[x-range][y-range]);
-				}
-			}
-			if(y+range<dimensions.getY()) {
-				if(qBoard[x-range][y+range]==lookingForID) {
-					idList.add(idBoard[x-range][y+range]);
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						Point convertedPoint = new Point();
+			
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(coordinates.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
+						else
+							convertedPoint=cubeToCoordEven(x, y, z);
+						
+						int xToPlot=(int)(convertedPoint.getX()+coordinates.getX());
+						int yToPlot=(int) (convertedPoint.getY()+coordinates.getY());
+						
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								if(qBoard[xToPlot][yToPlot]==lookingForID)
+									idList.add(idBoard[xToPlot][yToPlot]);
+						
+					}
 				}
 			}
 		}
 		
-		if(x+range<dimensions.getX()) {
-			if(qBoard[x+range][y]==lookingForID)
-				idList.add(idBoard[x+range][y]);
-			if(y-range>0) {
-				if(qBoard[x+range][y-range]==lookingForID) {
-					idList.add(idBoard[x+range][y-range]);
-				}
-			}
-			if(y+range<dimensions.getY()) {
-				if(qBoard[x+range][y+range]==lookingForID) {
-					idList.add(idBoard[x+range][y+range]);
-				}
-			}
-		}
-
+		
 		for(int idIndex=0; idIndex<idList.size(); idIndex++) {
 			for(int i=0; i<party.size(); i++) {
 				if(party.get(i).getID()==idList.get(idIndex)) {
@@ -252,6 +192,26 @@ public class Enemy {
 				}
 			}
 		}
+	}
+
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordEven(int x, int y, int z ) {
+		x=x+(z-(z&1))/2;
+		y=z;
+
+		Point point = new Point(x, y);
+		return point;
+	}
+	
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private Point cubeToCoordOdd(int x, int y, int z) {
+		x=x+(z+(z&1))/2;
+		y=z;
+		
+		Point point = new Point(x, y);
+		return point;
 	}
 	
 	//[Need to Do] Remove players that can't be reached

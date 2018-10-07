@@ -16,8 +16,6 @@ import javax.swing.JPanel;
 
 public class Player {
 
-	//List<AbilityCards> deck = new ArrayList<AbilityCards>();
-	
 	//Player Variables
 	//[Rem] Will need to implement a system that creates a unique id since it is possible
 	//to have multiple parties.
@@ -543,7 +541,8 @@ public class Player {
 	}
 	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
-		health=health-damage;
+		if(damage>0)
+			health=health-damage;
 		
 		//[Test]
 		System.out.println("Player was attacked for "+damage+" making thier health "+health);

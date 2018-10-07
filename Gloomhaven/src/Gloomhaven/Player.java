@@ -16,62 +16,51 @@ import javax.swing.JPanel;
 
 public class Player {
 
-	//Player Variables
-	//[Rem] Will need to implement a system that creates a unique id since it is possible
-	//to have multiple parties.
-	String id;
-	String character;
-	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();
+	//Player Variables - Get set and don't change
+	//[Rem] Will need to implement a system that creates a unique id since it is possible parties
+	String id;																						//Unique ID
+	String characterClass;																			//Class
+	int startingAbilityCardCount;																	//Sets how many ability cards are allowed in the deck ( probably depends on level)
+	int maxHealth;																					//Sets what the max health of the player can be
 	
-	//Card choice variable - if true pick top card, if false pick bottom card
-	//[Temp] Top card and bottom card should be card objects with an init variables
+	//Player variables
+	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
+	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
+	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();							//List of cards in play
+	StatusEffectDataObject effects = new StatusEffectDataObject();                                  //Status Effects and Conditions of the Player
 	
-	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");
-	boolean cardChoice=true;
-	int initiative=-1;
-	PlayerAbilityCards topCard=null;
-	PlayerAbilityCards bottomCard=null;
-	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();
-	int turnNumber;
-	int startingAbilityCardCount;
-	private Point coordinates;
-	Point2D dimensions;
-	int abilityDeckSize;
-	StatusEffectDataObject effects = new StatusEffectDataObject();
+	//Card choice variables
+	boolean cardChoice=true;																		//Cardchoice variable used when selecting a first then second card
+	int initiative=-1;																				//Initiative value based on cards, deciedes order in the game
+	PlayerAbilityCards topCard=null;																//Top ability card choosen, used for the initiative score
+	PlayerAbilityCards bottomCard=null;																//Bottom ability card
+	int firstCardChoice=0;																			//Card picked first during the turn			
+	int secondCardChoice=0;																			//Card picked second during the turn
 	
-	int firstCardChoice;
-	int secondCardChoice;
-	boolean longRest;
-	int range;
-	int attack;
-	int health;
-	
-	int TEST_HEALTH=12;
-	int TEST_ATTACK=3;
-	int TEST_RANGE=3;
+	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
+	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
+	Point2D dimensions;																				//dimension of the current room																	
+	boolean longRest=false;																			//Indicates if the player is currently taking a long rest
+	int health;																						//Current health of the player
+	int xp;																							//Current experience of the player
 	
 	public Player(int id, String character) {
-		coordinates= new Point(0, 0);
-		longRest=false;
-		this.id="P"+id;
-		initiative=-1;
-		firstCardChoice=0;
-		secondCardChoice=0;
-		topCard=null;
-		bottomCard=null;
-		this.character=character;
-		startingAbilityCardCount=10;
-		
+		//Set constant variables
+		switch(character) {
+			default:
+				this.id="P"+id;
+				this.characterClass=character;
+				startingAbilityCardCount=10;
+				int maxHealth=10;
+		}
+	
+		//Create ability deck
 		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new PlayerAbilityCards(1, i+1, character));
 		
-		//[Test]
-		range=TEST_RANGE;
-		attack=TEST_ATTACK;
-		health=TEST_HEALTH;
 	}
 	
-	//[Rem] This isn't currently being used, but might be useful to have a state before round that resets cards
+	//Resets card variables at beginning of the round
 	public void resetCards(){
 		initiative=-1;
 		firstCardChoice=0;
@@ -81,24 +70,27 @@ public class Player {
 		bottomCard=null;
 	}
 	
+	//Resets card choice during the round for making more choices
 	public void resetCardChoice() {
 		firstCardChoice=0;
 		secondCardChoice=0;
 		cardChoice=true;
 	}
 	
+	//Sets the player on a long rest and creates an initiative of 99
+	//Used during the beginning of the round, then during their turn they take the long rest
 	public void setLongRest() {
 		longRest=true;
 		initiative=99;
 	}
 	
-	
+	//Choose to discard a card instead of taking damage
 	public boolean discardForHealth(int key, Graphics g) {
 		g.drawString("Pick card to discard.", 10, 50);
 		drawAbilityCards(g);
-		findAbilityCardsLeft();
+		int currentAbilityDeckSize=abilityCardsLeft();
 		
-		if(abilityDeckSize==1) {
+		if(currentAbilityDeckSize==1) {
 			for(int i=0; i<abilityDeck.size(); i++) {
 				if(abilityDeck.get(i).cardFree()) {
 					abilityDeck.get(i).discardPile();
@@ -118,55 +110,9 @@ public class Player {
 		return false;
 	}
 	
-	/*
-	public List<Point> createTargetList(String qBoard[][], int range){
-		List<Point> targets = new ArrayList<Point>();
-		
-		int x=(int)coordinates.getX();
-		int y=(int)coordinates.getY();
-
-		if(y-range>0) {
-			if(qBoard[x][y-range]=="E")
-				targets.add(new Point(x, y-range));
-		}
-		
-		if(y+range<dimensions.getY()) {
-			if(qBoard[x][y+range]=="E")
-				targets.add(new Point(x, y+range));
-		}
-		
-		if(x-range>0) {
-			if(qBoard[x-range][y]=="E")
-				targets.add(new Point(x-range, y));
-			if(y-range>0) {
-				if(qBoard[x-range][y-range]=="E")
-					targets.add(new Point(x-range, y-range));
-			}
-			if(y+range<dimensions.getY()) {
-				if(qBoard[x-range][y+range]=="E")
-					targets.add(new Point(x-range, y+range));
-			}
-		}
-		
-		if(x+range<dimensions.getX()) {
-			if(qBoard[x+range][y]=="E")
-				targets.add(new Point(x+range, y));
-			if(y-range>0) {
-				if(qBoard[x+range][y-range]=="E")
-					targets.add(new Point(x+range, y-range));
-			}
-			if(y+range<dimensions.getY()) {
-				if(qBoard[x+range][y+range]=="E")
-					targets.add(new Point(x+range, y+range));
-			}
-		}
-		
-		return targets;
-	}*/
-	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public List<Point> createTargetList(String qBoard[][], int range) {
+	public List<Point> createTargetList(Hex board[][], int range) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -187,7 +133,7 @@ public class Player {
 
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(qBoard[xToPlot][yToPlot]=="E"){
+								if(board[xToPlot][yToPlot].getQuickID()=="E"){
 									targets.add(new Point(xToPlot,yToPlot));
 						}
 
@@ -336,7 +282,7 @@ public class Player {
 	//Picks the two cards needed for initiative
 	public void pickAbilityCards(int key, Graphics g) {
 		
-		findAbilityCardsLeft();
+		abilityCardsLeft();
 		
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
@@ -512,16 +458,12 @@ public class Player {
 		this.dimensions=dimensions;
 	}
 	public int abilityCardsLeft() {
-		
-		return abilityDeckSize;
-	}
-	
-	private void findAbilityCardsLeft() {
-		abilityDeckSize=0;
+		int currentAbilityDeckSize=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardFree())
-				abilityDeckSize++;
+				currentAbilityDeckSize++;
 		}
+		return currentAbilityDeckSize;
 	}
 	
 	public void movePlayer(Point space) {

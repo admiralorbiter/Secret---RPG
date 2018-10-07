@@ -85,37 +85,37 @@ public class Enemy {
 	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
-	public boolean checkMeleeRange(String board[][], String lookingForID) {
+	public boolean checkMeleeRange(Hex board[][], String lookingForID) {
 		
 		
 		int x=(int) coordinates.getX();
 		int y=(int) coordinates.getY();
 	
 		if(x-1>0) {
-			if(board[x-1][y]==lookingForID)
+			if(board[x-1][y].getQuickID()==lookingForID)
 				return true;
 			if(y-1>0) {
-				if(board[x-1][y-1]==lookingForID) {
+				if(board[x-1][y-1].getQuickID()==lookingForID) {
 					return true;
 				}
 			}
 			if(y+1<dimensions.getY()) {
-				if(board[x-1][y+1]==lookingForID) {
+				if(board[x-1][y+1].getQuickID()==lookingForID) {
 					return true;
 				}
 			}
 		}
 		
 		if(x+1<dimensions.getX()) {
-			if(board[x+1][y]==lookingForID)
+			if(board[x+1][y].getQuickID()==lookingForID)
 				return true;
 			if(y-1>0) {
-				if(board[x+1][y-1]==lookingForID) {
+				if(board[x+1][y-1].getQuickID()==lookingForID) {
 					return true;
 				}
 			}
 			if(y+1<dimensions.getY()) {
-				if(board[x+1][y+1]==lookingForID) {
+				if(board[x+1][y+1].getQuickID()==lookingForID) {
 					return true;
 				}
 			}
@@ -134,28 +134,28 @@ public class Enemy {
 	}
 	
 	//[Rem] This has to be a way to abstract this for both player and enemies
-	public List<Player> createMeleeTargetList(String qBoard[][], String idBoard[][], List<Player> party){
+	public List<Player> createMeleeTargetList(Hex board[][],List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
-		checkRange(qBoard, idBoard, "P", 1, party, targets);
+		checkRange(board, "P", 1, party, targets);
 		
 		return targets;
 	}
 	
-	public List<Player> playersInRangeEstimate(String qBoard[][], String idBoard[][], List<Player> party){
+	public List<Player> playersInRangeEstimate(Hex board[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
 		
 		if(range<=1)
 			return targets;
 		
 		for(int r=2; r<=range; r++) {
-			checkRange(qBoard, idBoard, "P", r, party, targets);
+			checkRange(board, "P", r, party, targets);
 		}
 		
 		return targets;
 	}
 
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
-	public void checkRange(String qBoard[][], String idBoard[][], String lookingForID, int range, List<Player> party, List<Player> targets) {
+	public void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets) {
 		List<String> idList = new ArrayList<String>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -176,8 +176,8 @@ public class Enemy {
 						
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(qBoard[xToPlot][yToPlot]==lookingForID)
-									idList.add(idBoard[xToPlot][yToPlot]);
+								if(board[xToPlot][yToPlot].getQuickID()==lookingForID)
+									idList.add(board[xToPlot][yToPlot].getID());
 						
 					}
 				}

@@ -350,7 +350,7 @@ public class Scenario {
 			List<Point> targets = new ArrayList<Point>();
 			if(card.range>0) {
 				for(int range=1; range<card.range; range++)
-					targets = party.get(currentPlayer).createTargetList(room.getqBoard(), range);
+					targets = party.get(currentPlayer).createTargetList(room.getBoard(), range);
 			}
 			
 			if(targets.size()>0) {

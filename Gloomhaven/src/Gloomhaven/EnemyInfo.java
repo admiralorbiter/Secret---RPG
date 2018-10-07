@@ -78,15 +78,15 @@ public class EnemyInfo {
 		
 		if(canAttack) {
 			
-			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getqBoard(), "P");
+			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P");
 			
 			if(meleeRange) {
-				targets=enemies.get(index).createMeleeTargetList(room.getqBoard(), room.getIDBoard(), party);
+				targets=enemies.get(index).createMeleeTargetList(room.getBoard(), party);
 				return targets;
 			}
 			else {
 
-				targets=enemies.get(index).playersInRangeEstimate(room.getqBoard(), room.getIDBoard(), party);
+				targets=enemies.get(index).playersInRangeEstimate(room.getBoard(), party);
 				if(targets.size()>0) {
 					
 					targets=enemies.get(index).playersInRange(targets);

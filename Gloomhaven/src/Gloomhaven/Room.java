@@ -3,34 +3,19 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Room {
 
 	//Constants
-	int SIZE_OF_HEX=60;
-	Point dimensions;
-	
-	Hex board[][];
-	
-	
-	//String qBoard[][];
-	//String idBoard[][]; 											//Eventually want this to hold objects, not just lookup ids
-	
-	//[Rem] Need to make sure there are enough enemies created in setup scenario.
-	//Might want to combine the two classes
-	
-	
-	private Point selectionCoordinates;
+	private Setting setting = new Setting();
+	private Point dimensions;																							//Dimensions of the room
+	private Hex board[][];																								//Room board made of hexs
+	private Point selectionCoordinates = new Point(0, 0);																//Where the selection icon is located
 	
 	public Room(String id, List<Player> party, List<Enemy> enemies) {
-		
-		selectionCoordinates = new Point(0, 0);
-		
-		Point point;
-		
+		Point point;																									//Temp point used to set enemy
 		
 		switch(id) {
 			case "Test":
@@ -38,23 +23,35 @@ public class Room {
 				board=new Hex[9][9];
 				resetBoard();
 				
+				//Create enemy 1
 				point=new Point(1, 1);
 				setTileEnemy(enemies.get(0), point);
 				
+				//Create enemy 2
 				point = new Point(3, 1);
 				setTileEnemy(enemies.get(1), point);
 				
+				//Create enemy 3
 				point = new Point(5, 1);
 				setTileEnemy(enemies.get(2), point);
 				
+				//Create player
 				point = new Point(3, 3);
 				setTilePlayer(party.get(0), point);
-				
 				break;
+				
 			default:
-				dimensions= new Point(8, 8);
+				dimensions= new Point(0, 0);
+				board=new Hex[0][0];
+				resetBoard();
 		}
 	}
+	
+	//Getter Functions
+	public String getID(Point point) {return board[(int)point.getX()][(int)point.getY()].getID();}
+	public Point getDimensions() {return dimensions;}
+	public boolean isSpaceEmpty(Point space) {return board[(int) space.getX()][(int) space.getY()].getSpaceFree();}
+	public Hex[][] getBoard(){return board;}
 	
 	//Creates and resets the room board
 	private void resetBoard() {
@@ -77,9 +74,16 @@ public class Room {
 		board[(int) point.getX()][(int) point.getY()].setHex("E", enemy.getID());
 	}
 	
+	//Hex Selection Functions
 	public void setSelectionCoordinates(Point newCoordinates) {selectionCoordinates=newCoordinates;}
 	public Point getSelectionCoordinates() {return selectionCoordinates;}
-		
+	public void drawSelectionHex(Graphics g) {
+		g.setColor(Color.RED);
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		g.setColor(Color.MAGENTA);
+	}
+	
+	//Draws the current room
 	public void drawRoom(Graphics g) {
 		for(int x=0; x<dimensions.getX(); x++) {
 			for(int y=0; y<dimensions.getY(); y++) {
@@ -88,40 +92,37 @@ public class Room {
 		}
 	}
 	
-	public void movePlayer(Point starting, Point ending) {
-		
+	//Moves the player from one point to another
+	public void movePlayer(Point starting, Point ending) {	
 		board[(int) ending.getX()][(int) ending.getY()]=board[(int) starting.getX()][(int) starting.getY()];
 		board[(int) starting.getX()][(int) starting.getY()].reset();
 	}
 	
-	public void drawSelectionHex(Graphics g) {
-		g.setColor(Color.RED);
-		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
-		g.setColor(Color.MAGENTA);
-	}
 	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
 	public void drawRange(Graphics g, Point start, int range, Color color) {
 		
-		g.setColor(color);
+		g.setColor(color);																			//Sets the color of the hex
 		
 		for(int x=-range; x<=range; x++) {
 			for(int y=-range; y<=range; y++) {
 				for(int z=-range; z<=range; z++) {
-					if(x+y+z==0) {
+					if(x+y+z==0) {																	//If the x,y,z axial coordinate's are equal to zero
 						Point convertedPoint = new Point();
 						
 						//Converts cube coord to a coord to plot
 						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(start.getY()%2!=0)
+						if(start.getY()%2!=0)														//If the column is odd use odd conversion
 							convertedPoint=cubeToCoordOdd(x, y, z);
 						else
-							convertedPoint=cubeToCoordEven(x, y, z);
+							convertedPoint=cubeToCoordEven(x, y, z);								//If the column is even use even conversion
 						
-						int xToPlot=(int)(convertedPoint.getX()+start.getX());
+						//Plotted point is equal to the converted point + player point
+						int xToPlot=(int)(convertedPoint.getX()+start.getX());					
 						int yToPlot=(int) (convertedPoint.getY()+start.getY());
 						
+						//Checks that the plotted x and y are inside the dimensions
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())
 								drawHex(g, xToPlot,  yToPlot);
@@ -129,10 +130,9 @@ public class Room {
 				}
 			}
 		}
-		
-		g.setColor(Color.MAGENTA);
+		//[Rem] Move default color to settings
+		g.setColor(setting.getDefaultColor());																	//Resets the color
 	}
-	
 	
 	//Converts cube coord to a coord to plot
 	//https://www.redblobgames.com/grids/hexagons/#conversions
@@ -154,39 +154,34 @@ public class Room {
 		return point;
 	}
 	
+	//Draws the hex given an x, y coordinate, Draws the quick id of the hex, Draws the x, y coordinate in the hex
 	private void drawHex(Graphics g, int x, int y) {
-		int nPoints=7;
-		int offsetY=0;
-		int offsetX=400;
-		int bufferY=-20;
-		int bufferX=0;
+		int nPoints=7;												//Points in a hex
+		int SIZE_OF_HEX=setting.getSizeOfHex();
+		int offsetY=setting.getOffsetY();
+		int offsetX=setting.getOffsetX();
+		int bufferY=-1*setting.getSizeOfHex()/3;
 		if(y%2!=0) {
-			offsetX=430;
-			//offsetY=-40;
+			offsetX=offsetX+setting.getSizeOfHex()/2;
 		}
-		else {
-			bufferY=-20;
-		}
-
-		int[] tX = {0+x*(SIZE_OF_HEX+bufferX)+offsetX, 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 60+x*(SIZE_OF_HEX+bufferX)+offsetX, 60+x*(SIZE_OF_HEX+bufferX)+offsetX, 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 0+x*(SIZE_OF_HEX+bufferX)+offsetX, 0+x*(SIZE_OF_HEX+bufferX)+offsetX};
-		int[] tY = {20+y*(SIZE_OF_HEX+bufferY)+offsetY, 0+y*(SIZE_OF_HEX+bufferY)+offsetY,  20+y*(SIZE_OF_HEX+bufferY)+offsetY, 40+y*(SIZE_OF_HEX+bufferY)+offsetY, 60+y*(SIZE_OF_HEX+bufferY)+offsetY, 40+y*(SIZE_OF_HEX+bufferY)+offsetY, 20+y*(SIZE_OF_HEX+bufferY)+offsetY};
+		
+		int[] tX = {0+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX};
+		int[] tY = {SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, 0+y*(SIZE_OF_HEX+bufferY)+offsetY,  SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
-		g.drawString(board[x][y].getQuickID(), 30+x*(SIZE_OF_HEX+bufferX)+offsetX, 35+y*(SIZE_OF_HEX+bufferY)+offsetY);
-		g.drawString(x+", "+y, 20+x*(SIZE_OF_HEX+bufferX)+offsetX, 20+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		g.drawString(board[x][y].getQuickID(), SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+5+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		g.drawString(x+", "+y, SIZE_OF_HEX/3+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY);
 	}
 	
+	//Highlights are the target points in a list
 	public void highlightTargets(List<Point> targets, Graphics g) {
 		for(int i=0; i<targets.size(); i++) {
-			g.setColor(Color.GREEN);
+			g.setColor(setting.getHighlightColor());
 			drawHex(g, (int)targets.get(i).getX(), (int)targets.get(i).getY());
-			g.setColor(Color.MAGENTA);
+			g.setColor(setting.getDefaultColor());
 		}
 	}
 	
-	public String getID(Point point) {
-		return board[(int)point.getX()][(int)point.getY()].getID();
-	}
-	
+	//Checks if a space is occupied by the string
 	public boolean isSpace(Point point, String check) {
 		if(board[(int)point.getX()][(int)point.getY()].getQuickID()==check)
 			return true;
@@ -194,6 +189,7 @@ public class Room {
 		return false;
 	}
 	
+	//[Test] Displays room in console
 	public void testDisplayRoom() {
 		System.out.println("Quick Room");
 		for(int x=0; x<dimensions.getX(); x++) {
@@ -202,7 +198,6 @@ public class Room {
 			}
 			System.out.println();
 		}
-		
 		System.out.println("ID Room");
 		for(int x=0; x<dimensions.getX(); x++) {
 			for(int y=0; y<dimensions.getY();  y++) {
@@ -211,14 +206,4 @@ public class Room {
 			System.out.println();
 		}
 	}
-	
-	public Point getDimensions() {
-		return dimensions;
-	}
-	
-	public boolean isSpaceEmpty(Point space) {
-		return board[(int) space.getX()][(int) space.getY()].getSpaceFree();
-	}
-	
-	public Hex[][] getBoard(){return board;}
 }

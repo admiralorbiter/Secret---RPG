@@ -36,43 +36,41 @@ public class Scenario {
 	    END;
 	}
 	
-	private State state;											//State of the scenario
-	private List<Player> party = new ArrayList<Player>();			//Current party of players
-	private EnemyInfo enemyInfo;									//Holds the info about the enemies in the scenario
-	private Room room;												//Holds the room data including where enemies and players are											
+	private State state;																			//State of the scenario
+	private List<Player> party = new ArrayList<Player>();											//Current party of players
+	private EnemyInfo enemyInfo;																	//Holds the info about the enemies in the scenario
+	private Room room;																				//Holds the room data including where enemies and players are											
+	private Setting setting = new Setting();
 	
 	//Key variables
-	private char k=' ';												//Character from key
-	private int num=-1;												//Number from Key
+	private char k=' ';																				//Character from key
+	private int num=-1;																				//Number from Key
 	
 	//Variables that are global due to having to refresh and keep the state the same
-	private int currentPlayer;										//Current Player's turn (Used before the round, during initiative and closing the round)
-	private int playerIndex;										//Player being targeted
-	private int turn;												//Turn number (Used during the battle/attack phases so enemies are involved)				
-	private Point dimensions;										//Dimensions of the room
-	private List<Player> targets;									//Target list created by the enemy
-	private String targetID;										//Player being targeted by the enemy						
-	private CardDataObject card = new CardDataObject();				//Card object used by the player's attack
+	private int currentPlayer;																		//Current Player's turn (Used before the round, during initiative and closing the round)
+	private int playerIndex;																		//Player being targeted
+	private int turn;																				//Turn number (Used during the battle/attack phases so enemies are involved)				
+	private Point dimensions;																		//Dimensions of the room
+	private List<Player> targets;																	//Target list created by the enemy
+	private String targetID;																		//Player being targeted by the enemy						
+	private CardDataObject card = new CardDataObject();												//Card object used by the player's attack
 	
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
 	
 	public Scenario(String sceneID, List<Player> party) {			
 		
-		this.party=party;											//imports the party into the scenarios
+		this.party=party;																			//imports the party into the scenarios
 		//Setups up the room and enemies based on the scene id
 		SetupScenario setup = new SetupScenario(sceneID);			
 		room = new Room(setup.getRoomID(), party, setup.getEnemies());
 		enemyInfo=new EnemyInfo(setup.getEnemies(), room);
 		
 		
-		currentPlayer=0;											//sets current player to 0 for the card selection around
-		enemyInfo.orderEnemies();									//orders the enemies in list
-		
-		//[Temp]
-		dimensions=room.getDimensions();							//Sets dimensions from room
-		enemyInfo.passDimensions();
-		passDimensions();									//passes dimension to enemies and party
+		currentPlayer=0;																			//sets current player to 0 for the card selection around
+		enemyInfo.orderEnemies();																	//orders the enemies in list
+		dimensions=room.getDimensions();															//Sets dimensions from room
+		passDimensions();																			//passes dimension to party
 		
 		state=State.CARD_SELECTION;
 	}
@@ -85,27 +83,37 @@ public class Scenario {
 	}
 	
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
+	//[Rem] Else ifs in order to have the graphics update
 	public void playRound(KeyEvent key, Graphics g) {
 
+		//[Test]
+		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYBottom());
+		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYBottom()+15);
 		
 		
-		//[Rem] Might need else ifs in order to have the graphics update
-		g.drawString("State of Scenario", 50, 485);
-		g.drawString(state.toString(), 50, 500);
-		room.drawRoom(g);
-
-		parseKey(key);
+		room.drawRoom(g);																			//Draws current room
+		parseKey(key);																				//Parses the input key as either a character or number
+	
+		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)
 		if(state==State.CARD_SELECTION) {
-			g.drawString("Picking cards", 10, 50);
-			if(party.get(currentPlayer).discardPileSize()>1)
-				g.drawString("Take a long rest with 'r'", 10, 65);
-			party.get(currentPlayer).drawAbilityCards(g);
 			
+			g.drawString("Picking Cards for your turn.", setting.getGraphicsX(), setting.getGraphicsYTop());
+			
+			//Allows the user to take a long rest if they have enough in the discard pile 
+			if(party.get(currentPlayer).discardPileSize()>1)	
+				g.drawString("Take a long rest with 'r'", setting.getGraphicsX(), setting.getGraphicsX()+15);
+			
+			//Draw's the player's available ability cards
+			party.get(currentPlayer).drawAbilityCards(g);			
+			
+			//Player enters long rest or picks ability cards
 			if((k=='r') && (party.get(currentPlayer).discardPileSize()>1))
 				party.get(currentPlayer).setLongRest();
 			else
 				party.get(currentPlayer).pickAbilityCards(num, g);
 			
+			//Cycles through the players then the enemy picks an ability card
+			//Next State: Initiative
 			if(party.get(currentPlayer).cardsLocked()) {
 				if((currentPlayer+1)!=party.size())
 					currentPlayer++;
@@ -116,17 +124,17 @@ public class Scenario {
 				}
 			}
 		}
-		else if(state==State.INITIATIVE) {//State sets initiative and orders players based on it
+		//State: INITIATIVE: Everyone is ordered based on their initiative
+		else if(state==State.INITIATIVE) {
 
-			enemyInit=enemyInfo.getInitiative();					//Pick enemy card for initiative
-			orderPlayers();											//order players
+			int enemyInit=enemyInfo.getInitiative();												//Collect enemy initiative from ability card
+			party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
 			
-			g.drawString("Initiatives:", 50, 380);
-			g.drawString("Enemy: "+String.valueOf(enemyInit), 50, 400);
+			//List of all the initiatives for the round
+			g.drawString("Initiatives:", 50, 380);											
+			g.drawString("Enemy: "+String.valueOf(enemyInit), 50, 400);								
 			for(int i=0; i<party.size();  i++) {
-				g.drawString("Player: "+String.valueOf(party.get(i).getInitiative()), 50, 420+20*i);
-				//[Test]
-				//g.drawString(String.valueOf(party.get(i).testGetTopCardIndex())+"  "+String.valueOf(party.get(i).testGetBottomCardIndex()), 50, 440+20*i);
+				g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()+15*i);
 			}
 			
 			
@@ -440,6 +448,23 @@ public class Scenario {
 		
 	}
 	
+	//Parses key event into either a character or a number to be used
+	private void parseKey(KeyEvent key) {
+		k=Character.MIN_VALUE;
+		try{
+			k = key.getKeyChar();
+			}catch(NullPointerException ex){ 						// handle null pointers for getKeyChar
+			   System.out.println("");
+			}
+		
+		num = -1;
+		try{
+			num=Integer.parseInt(String.valueOf(k));  
+			}catch(NumberFormatException ex){ 						// handle if it isn't a number character
+			   System.out.println("");
+			}
+	}
+
 	private void selection(Graphics g) {
 		room.drawSelectionHex(g);
 		delayBy(100);											//Makes it feel more smoother
@@ -505,42 +530,6 @@ public class Scenario {
 		}
 		else
 			return false;
-	}
-	
-	/*
-	 * [Rem] Should be used in a class that handles functions that will be used in other places
-	 * Takes in key event and turns it into a character or a number
-	 * Catches exceptions so it doesn't give errors
-	 */
-	private void parseKey(KeyEvent key) {
-		//[Rem] This feels like a super bad workaround
-		//Was getting null pointer if i tried to move the screen before typing in
-		k=Character.MIN_VALUE;
-		try{
-			k = key.getKeyChar();
-			}catch(NullPointerException ex){ // handle your exception
-			   System.out.println("");
-			}
-		
-		num = -1;
-		try{
-			num=Integer.parseInt(String.valueOf(k));  
-			}catch(NumberFormatException ex){ // handle your exception
-			   System.out.println("");
-			}
-	}
-	
-	//[Rem] This will only sort the players based on initiative. The enemy init will need to be taken into account during the battle phase
-	private List<Player> orderPlayers() {
-		List<Player> order = new ArrayList<Player>();
-
-		order=party;
-		
-		//Sorts the party comparing the initiative which is based on the top card
-		//[Rem] That at the moment initiative is based on top card number, not actual init
-		order.sort(Comparator.comparingInt(Player::getInitiative));
-
-		return order;
 	}
 	
 	//[Test] Function to print order of the init

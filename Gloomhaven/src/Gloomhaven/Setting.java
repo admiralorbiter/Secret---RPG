@@ -23,9 +23,11 @@ public class Setting {
 	public Color getDefaultColor() {return DEFAULT_COLOR;}
 	
 	private int offsetXGraphics=10;
-	private int offsetYGraphics=25;
+	private int offsetYGraphicsTop=25;
 	public int getGraphicsX() {return offsetXGraphics;}
-	public int getGraphicsY() {return offsetYGraphics;}
+	public int getGraphicsYTop() {return offsetYGraphicsTop;}
+	private int offsetYGraphicsBottom=500;
+	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
 	
 	
 	//[Testing]
@@ -36,11 +38,12 @@ public class Setting {
 	
 	//Functions
 	//[Test] Function that delays for a certain amount of seconds
-		private void delayBySeconds(int sec) {
-			try {
-				TimeUnit.SECONDS.sleep(sec);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+	private void delayBySeconds(int sec) {
+		try {
+			TimeUnit.SECONDS.sleep(sec);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+	}
+	
 }

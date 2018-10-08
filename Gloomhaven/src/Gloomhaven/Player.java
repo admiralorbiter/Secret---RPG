@@ -1,18 +1,11 @@
 package Gloomhaven;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 
 public class Player {
 
@@ -22,6 +15,7 @@ public class Player {
 	String characterClass;																			//Class
 	int startingAbilityCardCount;																	//Sets how many ability cards are allowed in the deck ( probably depends on level)
 	int maxHealth;																					//Sets what the max health of the player can be
+	int name;																						//Name of the character
 	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck

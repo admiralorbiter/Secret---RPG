@@ -14,6 +14,7 @@ public class EnemyInfo {
 	Room room;
 	int startingAbilityCardCount;
 	int abilityCardIndex;
+	private int enemyInit;
 	
 	public EnemyInfo(List<Enemy> enemies, Room room) {
 		this.enemies=enemies;

@@ -18,7 +18,6 @@ import Gloomhaven.GamePanel.GameState;
 public class Scenario {
 
 	public enum State {
-	    SETUP,
 	    CARD_SELECTION,
 	    INITIATIVE,
 	    ATTACK,
@@ -37,53 +36,49 @@ public class Scenario {
 	    END;
 	}
 	
-	State state;													//State of the scenario
-	boolean finished;												//Tells the gamepanel if the scenario is finished
-	List<Player> party = new ArrayList<Player>();					//Party
-	EnemyInfo enemyInfo;
-	Room room;
-	List<Player> targets;
-	String targetID;
-	
-	SetupScenario setup;
+	private State state;											//State of the scenario
+	private List<Player> party = new ArrayList<Player>();			//Current party of players
+	private EnemyInfo enemyInfo;									//Holds the info about the enemies in the scenario
+	private Room room;												//Holds the room data including where enemies and players are											
 	
 	//Key variables
-	char k;															//Character from key
-	int num;														//Number from Key
+	private char k=' ';												//Character from key
+	private int num=-1;												//Number from Key
 	
-	private CardDataObject card = new CardDataObject();
-	private int currentPlayer;
-	private int enemyInit;
-	private int turn;
-	private int playerIndex;
-	private int enemyTurnIndex;
-	private Point2D dimensions;
-	public Scenario(String sceneID, List<Player> party) {
-		List<Enemy> enemies = new ArrayList<Enemy>();
+	//Variables that are global due to having to refresh and keep the state the same
+	private int currentPlayer;										//Current Player's turn (Used before the round, during initiative and closing the round)
+	private int playerIndex;										//Player being targeted
+	private int turn;												//Turn number (Used during the battle/attack phases so enemies are involved)				
+	private Point dimensions;										//Dimensions of the room
+	private List<Player> targets;									//Target list created by the enemy
+	private String targetID;										//Player being targeted by the enemy						
+	private CardDataObject card = new CardDataObject();				//Card object used by the player's attack
+	
+	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
+	private int enemyTurnIndex;		
+	
+	public Scenario(String sceneID, List<Player> party) {			
 		
-		state=State.SETUP;											//Not sure this is necessary, flags the state for setup inside that state so...
-		finished=false;												//Flag that tells whether the scenario is finished - Sets it to false
 		this.party=party;											//imports the party into the scenarios
-
-		setup = new SetupScenario(sceneID);							//creates the setup based on the scene id
-		enemies = setup.getEnemies();								//gets the enemies form the setup
+		//Setups up the room and enemies based on the scene id
+		SetupScenario setup = new SetupScenario(sceneID);			
+		room = new Room(setup.getRoomID(), party, setup.getEnemies());
+		enemyInfo=new EnemyInfo(setup.getEnemies(), room);
+		
 		
 		currentPlayer=0;											//sets current player to 0 for the card selection around
-		num=-1;														//sets the num variable to -1 but will be changed to what the user types in
-		room = new Room(setup.getRoomID(), party, enemies);			//sets the room based on the scene id
-		enemyInfo=new EnemyInfo(enemies, room);							//Creates enemy tracking object
 		enemyInfo.orderEnemies();									//orders the enemies in list
-		room.testDisplayRoom();
 		
 		//[Temp]
 		dimensions=room.getDimensions();							//Sets dimensions from room
-		passDimensions(enemies);									//passes dimension to enemies and party
+		enemyInfo.passDimensions();
+		passDimensions();									//passes dimension to enemies and party
 		
 		state=State.CARD_SELECTION;
 	}
 	
 	//[Temp] Should handle the party the same way i do with enemies with an object that holds all the info
-	private void passDimensions(List<Enemy> enemies) {		
+	private void passDimensions() {		
 		for(int i=0; i<party.size(); i++) {
 			party.get(i).setDimensions(dimensions);
 		}
@@ -92,6 +87,8 @@ public class Scenario {
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
 	public void playRound(KeyEvent key, Graphics g) {
 
+		
+		
 		//[Rem] Might need else ifs in order to have the graphics update
 		g.drawString("State of Scenario", 50, 485);
 		g.drawString(state.toString(), 50, 500);

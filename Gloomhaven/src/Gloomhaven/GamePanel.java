@@ -2,20 +2,14 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements KeyListener{
-
-	//Testing Variables
-	int NUMPLAYERS=1;
 	
 	public enum GameState {
 	    TITLE_STATE,
@@ -26,7 +20,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	    SCENARIO,
 	    END;
 	}
-	
+	Setting setting = new Setting();
 	GameState state=GameState.TESTING_SETUP;						//State of the Game
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
@@ -39,95 +33,61 @@ public class GamePanel extends JPanel implements KeyListener{
 		setFocusable(true);
 		if(state==GameState.TESTING_SETUP) {
 			initGame();
-		}
-		
+		}	
 		repaint();	
 	}
 	
 	//Initials Scenario, Town Event, Road Event
 	void initGame() {
-		//[Temp] Will have a phase for party setup
-		//Adds the players to the party
-		for(int id=0; id<NUMPLAYERS; id++)
-			party.add(new Player(id, "Test"));
-		
-		//[Temp] Need to randomly pick town event, road event
-		//[Temp] Need to pick scenario during party setup
-		String sceneID="Test";
-		scene= new Scenario(sceneID, party);
-		
-		state=GameState.TOWN;
+		//[Temp] Need unique IDs and class 
+		for(int id=0; id<setting.getNumPlayers(); id++)
+			party.add(new Player(id, "Test"));						//Adds the players to the party
+		scene= new Scenario(setting.getSceneID(), party);			//Creates the scenario
+		state=GameState.TOWN;										//Init Phase -> Town Phase
 	}
 	
-	public void gameManager(Graphics g) {
-		
-		//[Temp] Prints the Current State of the Game
-		System.out.println(state);															
-		
-		//[Rem] Did if/else so it has to go back and paint screen every state
+	public void gameManager(Graphics g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
-			g.drawString("Town", 10, 25);
+			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsY());
+			//Insert Town State Stuff Here
 			state=GameState.ROAD_EVENT;
 		}else if(state==GameState.ROAD_EVENT) {
-			g.drawString("Road Event", 10, 25);
+			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsY());
+			//Insert Road Event Stuff here
 			state=GameState.SCENARIO;
 		}else if(state==GameState.SCENARIO) {
-			g.drawString("Scenario", 10, 25);
-			
-			//Play a round
-			scene.playRound(key, g);
-			
-			//If the scenario is over, end
-			if(scene.finished())
+			g.drawString("Scenario", setting.getGraphicsX(),  setting.getGraphicsY());
+			scene.playRound(key, g);								//Play Round
+			if(scene.finished())									//If scenario is off, end state of game
 				state=GameState.END;
 		}else if(state==GameState.END) {
-			
-			System.exit(0);
+			System.exit(0);											//[Temp] End of the game, just exit program
 		}
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.MAGENTA);
-		
-		if(!(state==GameState.TESTING_SETUP)) 
+		g.setColor(setting.getDefaultColor());						//Sets the paint component to the default color	
+		if(!(state==GameState.TESTING_SETUP)) 						//If it isn't in the setup, then go through game manager
 			gameManager(g);
-
 	}
 	
-	
+	//Repaints if key is pressed and uses that key
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
 		key=e;
 		repaint();
 	}
 
+	//repaints if key released, but sets the key to null just to repaint graphics
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-
 		key=null;
 		repaint();
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//key=e;
-		//repaint();
-	}
-	
-	//[Test] Function that delays for a certain amount of seconds
-	private void delayBySeconds(int sec) {
-		try {
-			TimeUnit.SECONDS.sleep(sec);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	//Does nothing
+	@Override public void keyTyped(KeyEvent e) {}
 }

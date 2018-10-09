@@ -49,15 +49,15 @@ public class GamePanel extends JPanel implements KeyListener{
 	public void gameManager(Graphics g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
-			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsY());
+			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsYTop());
 			//Insert Town State Stuff Here
 			state=GameState.ROAD_EVENT;
 		}else if(state==GameState.ROAD_EVENT) {
-			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsY());
+			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here
 			state=GameState.SCENARIO;
 		}else if(state==GameState.SCENARIO) {
-			g.drawString("Scenario", setting.getGraphicsX(),  setting.getGraphicsY());
+			g.drawString("Scenario", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			scene.playRound(key, g);								//Play Round
 			if(scene.finished())									//If scenario is off, end state of game
 				state=GameState.END;

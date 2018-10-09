@@ -75,13 +75,12 @@ public class Scenario {
 		state=State.CARD_SELECTION;
 	}
 	
-	//[Temp] Should handle the party the same way i do with enemies with an object that holds all the info
-	private void passDimensions() {		
-		for(int i=0; i<party.size(); i++) {
-			party.get(i).setDimensions(dimensions);
-		}
+	//Returns if the round is finished or still being played
+	//[Rem] Needs to be fleshed out
+	public boolean finished() {
+		return false;
 	}
-	
+		
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
 	//[Rem] Else ifs in order to have the graphics update
 	public void playRound(KeyEvent key, Graphics g) {
@@ -94,7 +93,7 @@ public class Scenario {
 		room.drawRoom(g);																			//Draws current room
 		parseKey(key);																				//Parses the input key as either a character or number
 	
-		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)
+		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)--------------------------------------------------------------------------------
 		if(state==State.CARD_SELECTION) {
 			
 			g.drawString("Picking Cards for your turn.", setting.getGraphicsX(), setting.getGraphicsYTop());
@@ -124,7 +123,7 @@ public class Scenario {
 				}
 			}
 		}
-		//State: INITIATIVE: Everyone is ordered based on their initiative
+		//State: INITIATIVE: Everyone is ordered based on their initiative-----------------------------------------------------------------------------------------------
 		else if(state==State.INITIATIVE) {
 
 			int enemyInit=enemyInfo.getInitiative();												//Collect enemy initiative from ability card
@@ -136,7 +135,6 @@ public class Scenario {
 			for(int i=0; i<party.size();  i++) {
 				g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()+15*i);
 			}
-			
 			
 			//[Temp] Couldn't get the order right so players go first, enemies last
 			for(int i=0; i<party.size(); i++)
@@ -169,25 +167,25 @@ public class Scenario {
 				}
 			}*/
 			
-			playerIndex=-1;
-			turn=0;
-			state=State.ATTACK;										//change state to attack
+			playerIndex=-1;																			//playerIndex is reset so it can be used instead of current player
+			turn=0;																					//Sets the turn number to 0 and will cyle through all players/enemies
+			state=State.ATTACK;																		//Next State: ATTACK
 		}
-		//State has the logic for who should be attacking and setting the state for enemy attack, player defense, etc
+		//State: ATTACK: has the logic for who should be attacking and setting the state for enemy attack, player defense, etc-------------------------------------------
 		//Also should know the end state of when attacks are over and round is done
 		else if(state==State.ATTACK) {
-		
-			if(enemyInfo.getTurnNumber()==turn) {					//If enemy turns, do enemy stuff
-				//do enemy stuff
-				enemyTurnIndex=0;
-				state=State.ENEMY_ATTACK;
+			
+			//Next State: Enemy Attack
+			if(enemyInfo.getTurnNumber()==turn) {													//If enemy turns, do enemy attack
+				enemyTurnIndex=0;																	//Resets enemy turn index
+				state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
 			}
 			else {
 				
-				
-				for(int i=0; i<party.size(); i++) {					//Searches for a match on the turn and the players
-					if(party.get(i).getTurnNumber()==turn) {		//Once a match is found, sets the index, changes state, and breaks
-						if(party.get(i).onRest()) {
+				//Next State: Long Rest or Player Choice
+				for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
+					if(party.get(i).getTurnNumber()==turn) {										//Once a match is found, sets the index, changes state, and breaks
+						if(party.get(i).onRest()) {					
 							playerIndex=i;
 							party.get(i).resetCardChoice();
 							state=State.LONG_REST;
@@ -195,103 +193,84 @@ public class Scenario {
 						}
 						else {
 							playerIndex=i;
-							party.get(i).resetCardChoice();				//Resets card choice so it can be used in player choice when picking cards
+							party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
 							state=State.PLAYER_CHOICE;
 							break;
 						}
 					}
 				}
-				
-				System.out.println("In Scenario.java [Test] If you are seeing this, it shouldn't be possible");
 			}
 		}
+		//State: LONG_REST: Player takes long rest and picks a card to discard-------------------------------------------------------------------------------------------
 		else if(state==State.LONG_REST) {
-			boolean finished=false;
-			party.get(playerIndex).takeLongRest(g, num);
-			if(party.get(playerIndex).onRest()==false)
+			
+			boolean finished=false;																	//Indicates if the round is over
+			party.get(playerIndex).takeLongRest(g, num);											//Draws discard pile and has player pick a card and sets long rest to false
+			if(party.get(playerIndex).onRest()==false)												//If long rest is over, then the turn is over
 				finished=true;
 			
 			if(finished) {
-				turn++;
-				state=State.ATTACK;
+				turn++;																				//Moves to the next player
+				state=State.ATTACK;																	//Next State: Attack
 			}
 		}
+		//State: ENEMY_ATTACK: Goes through all the enemy procedure for attack for all enemies---------------------------------------------------------------------------
 		else if(state==State.ENEMY_ATTACK) {
-			//Do Enemy Attack Stuff
-			//Enemies ordered at the beginning of the scenario
-			//Goes through all the enemies and sets distance and range flags
-			//if no one is next, move and attack
-			//if none are in distance, move to the next
-			//if turn is over
-			
-			//turn variable will keep track of whose turn it is
-			//This will allow me to move them one by one so it shows up in the graphics
-			int enemyCount=enemyInfo.getCount();
-			targets = new ArrayList<Player>();
-			
-			
-			//Goes through the enemies and sets range / distance flags
-			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);
+
+			targets = new ArrayList<Player>();														//Resets the target list
+			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);							//Goes through the enemies and sets range / distance flags
 			
 			if(targets.size()>0) {
-				//Picks first one on the list
-				//[Temp]
-				targetID=targets.get(0).getID();
-				
-				state=State.PLAYER_DEFENSE;
+				targetID=targets.get(0).getID();													//[Temp] Picks first one on the list
+				state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 			}else {
-				enemyControlLogic();
+				enemyControlLogic();																//Next State: Attack, Enemy Attack, Round End
 			}
-		
 		}
+		//State: PLAYER_DEFENSE: Player chooses to discard or take the damage--------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_DEFENSE) {
-			g.drawString("Press d to discard card or h to take damage.", 50, 550);
-			int playerIndex = getTargetIndex();
 			
-			if((k=='h') || (party.get(playerIndex).abilityCardsLeft()==0)) {
-				int damage=enemyInfo.getAttack(enemyTurnIndex);
-				party.get(playerIndex).decreaseHealth(damage);
-				if(party.get(playerIndex).getHealth()<=0) {
-					//[Test]
-					System.out.println("Player is dead");
-					party.remove(playerIndex);						//Kill Player
+			g.drawString("Press d to discard card or h to take damage.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			int playerIndex = getTargetIndex();														//Sets target
+			
+			if((k=='h') || (party.get(playerIndex).abilityCardsLeft()==0)) {						//If player doesn't discard (or can't), take damage
+				int damage=enemyInfo.getAttack(enemyTurnIndex);										//Retrieves enemy's attack
+				party.get(playerIndex).decreaseHealth(damage);										//Decreases player health
+				if(party.get(playerIndex).getHealth()<=0) {											//If player's health is below 0, kill player
+					party.remove(playerIndex);
 				}
 				if(party.size()==0)
-					state=State.ROUND_END_DISCARD;
+					state=State.ROUND_END_DISCARD;													//If dead, Next State: Round End
 				else
-					enemyControlLogic();
+					enemyControlLogic();															//Next State: Attack, Enemy Attack, Round End
 			}
+			
 			if(k=='d') {
-				state=State.PLAYER_DISCARD;
+				state=State.PLAYER_DISCARD;															//Next State: Player Discard
 			}
 		}
+		//State: PLAYER_DISCARD: Player discards a card instead of taking damage
 		else if(state==State.PLAYER_DISCARD) {
-			if(party.get(playerIndex).discardForHealth(num, g))
-				enemyControlLogic();
+			
+			if(party.get(playerIndex).discardForHealth(num, g))										//Prints ability cards then waits until one is picked. 
+				enemyControlLogic();																//Next State: Attack, Enemy Attack, Round End
 		}
+		//State: PLAYER_CHOICE: Player chooses their card
 		else if(state==State.PLAYER_CHOICE) {
-			//Do player stuff
-			card = new CardDataObject();
-			
-			//[Test]
-			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 1, Color.GREEN);
-			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 2, Color.BLUE);
-			//room.drawRange(g, party.get(currentPlayer).getCoordinate(), 3, Color.GREEN);
-			
-			
-			int cardPick=party.get(currentPlayer).pickPlayCard(num, g);
+
+			int cardPick=party.get(playerIndex).pickPlayCard(num, g);								//Prints ability cards then waits for one to pick
 			if(cardPick>=1 && cardPick<=4)
-				state=State.PLAYER_ATTACK_LOGIC;
-		
+				state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
 		}
+		//State: PLAYER_ATTACK_LOGIC: Player picks card, then uses data for next state-----------------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
-			card = party.get(currentPlayer).playCard();
-			//[Temp] Currently only moves then attacks
-			Point playerPoint=party.get(currentPlayer).getCoordinate();
-			room.setSelectionCoordinates(playerPoint);
-			String textTemp = "Move "+card.move+"     Attack: "+card.attack;
-			g.drawString(textTemp, 50, 400);
 			
+			card = new CardDataObject();															//Resets card
+			card = party.get(playerIndex).playCard();												//Card Picked by the player
+			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
+			g.drawString("Move "+card.move+"     Attack: "+card.attack, 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			
+			//Next State: Player Move, Player attack, Back to Attack, or End Turn
 			if(card.move>0) {
 				state=State.PLAYER_MOVE;
 			}else if(card.attack>0) {
@@ -306,22 +285,25 @@ public class Scenario {
 				}
 			}
 		}
+		//State: PLAYER_MOVE: Player moves to a new hex or stays there---------------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_MOVE) {
+			
 			boolean finished=false;
 			
-			
 			//Highlight tiles that players can move to
-			Point playerPoint=party.get(currentPlayer).getCoordinate();
+			Point playerPoint=party.get(playerIndex).getCoordinate();
 			for(int r=1; r<=card.move; r++)
 				room.drawRange(g, playerPoint, r, Color.BLUE);
 	
-			g.drawString("Press m to move.", 10, 400);
+			//Moves selection highlight
+			g.drawString("Press m to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 			selection(g);
 			
+			//Player moves if the space is empty or the space hasn't changed
 			if(k=='m') {
 				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
-					room.movePlayer(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates());
-					party.get(currentPlayer).movePlayer(new Point(room.getSelectionCoordinates()));
+					room.movePlayer(party.get(playerIndex).getCoordinate(), room.getSelectionCoordinates());
+					party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
 					finished=true;
 				}
 				
@@ -330,15 +312,12 @@ public class Scenario {
 				}
 			}
 
+			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
-				//[Test]
-				System.out.println(card.attack);
-				
 				if(card.attack>0) {
-					room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));
+					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
 				}else {
-					//if turn is over
 					if(turn==party.size())
 						state=State.ROUND_END_DISCARD;
 					else {
@@ -348,36 +327,40 @@ public class Scenario {
 				}
 			}
 		}
+		//State: PLAYER_ATTACK: Creates target list and has player select a target to attack-----------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK) {
-			boolean finished=false;
-			//make the player attack
 			
+			boolean finished=false;
+			
+			//Creates target list of enemy coordinates
 			List<Point> targets = new ArrayList<Point>();
 			if(card.range>0) {
 				for(int range=1; range<card.range; range++)
 					targets = party.get(currentPlayer).createTargetList(room.getBoard(), range);
 			}
 			
+			//If there are targets, highlight the targets and wait for selection
 			if(targets.size()>0) {
+
 				room.highlightTargets(targets, g);
-				
 				selection(g);
 				
+				//Space is used for selection of target
 				if(k==' ') {
-					if(room.isSpace(room.getSelectionCoordinates(), "E")) {
-						if(targets.contains(room.getSelectionCoordinates())){
-							String id = room.getID(room.getSelectionCoordinates());
-							int damage=party.get(currentPlayer).getAttack(card);
-							enemyInfo.playerAttack(id, damage);
-							finished=true;
+					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+							String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
+							int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
+							enemyInfo.playerAttack(id, damage);										//Damage enemy based on player
+							finished=true;													
 						}
 					}
 				}
-			}else {
+			}else {																					//If there are no enemies in target range
 				finished=true;
 			}
 
-			
+			//Next State: Next card, Attack Logic, End Round
 			if(finished) {
 				if(party.get(currentPlayer).getCardChoice()==false) {
 					state=State.PLAYER_CHOICE;
@@ -392,36 +375,39 @@ public class Scenario {
 				}
 			}
 		}
-		//State decides if scenario is over or another round should begin
+		//State: ROUND_END_DISCARD: Decides if scenario is over or another round should begin----------------------------------------------------------------------------
 		else if(state==State.ROUND_END_DISCARD) {
+			
 			for(int i=0; i<party.size(); i++)
-				party.get(i).endTurn();
+				party.get(i).endTurn();																//End of turn clean up for each player
 			
 			if(party.size()==0) 
-				System.exit(1);
+				System.exit(1);																		//If party is dead, end program
 			
 			if(enemyInfo.getCount()==0)
-				System.exit(1);
+				System.exit(1);																		//If all enemies are dead, end program
 			
-			currentPlayer=0;
-			state=State.ROUND_END_REST;
+			currentPlayer=0;																		//Resets current player to use in round end rest state
+			state=State.ROUND_END_REST;																//If game isn't immediately over, next state: round end rest
 		}
-		else if(state==State.ROUND_END_REST) {
-			//Look at win and finish conditions
-			boolean finished=false;
-			if(party.get(currentPlayer).discardPileSize()>1) {
+		//State: ROUND_END_REST:Gives the player an option of a short rest-----------------------------------------------------------------------------------------------
+		else if(state==State.ROUND_END_REST) { 	
 			
-				party.get(currentPlayer).shortRestInfo(g);
+			boolean finished=false;
+			
+			//If player has enough in the discard pile give option of short rest
+			if(party.get(currentPlayer).discardPileSize()>1) {
+				party.get(currentPlayer).shortRestInfo(g);											//Short rest shuffles back discard pile and randomly discards a card
 				
-				if(k=='y') {
+				if(k=='y') {																		//Takes rest, moves on to next player or finishes round
 					party.get(currentPlayer).takeShortRest();
-					if((currentPlayer+1)!=party.size())
+					if((currentPlayer+1)!=party.size())	
 						currentPlayer++;
 					else
 						finished=true;
 				}
 				
-				if(k=='n') {
+				if(k=='n') {																		//Doesn't take rest, moves on to next player or finishes round
 					if((currentPlayer+1)!=party.size())
 						currentPlayer++;
 					else
@@ -433,19 +419,19 @@ public class Scenario {
 			
 			if(finished) {
 				for(int i=0; i<party.size(); i++)
-					party.get(i).resetCards();
-				turn=0;
-				currentPlayer=0;
-				state=State.CARD_SELECTION;
+					party.get(i).resetCards();														//Resets card variables for party
+				turn=0;																				//Resets turn
+				currentPlayer=0;																	//Resets currentPlayer
+				state=State.CARD_SELECTION;															//Next State: Card Selection (Back to beginning)
 			}
+		}	
+	}
+	
+	//[Temp] Should handle the party the same way i do with enemies with an object that holds all the info
+	private void passDimensions() {		
+		for(int i=0; i<party.size(); i++) {
+			party.get(i).setDimensions(dimensions);
 		}
-		//[Temp] Press t to end the scenario
-		else if(k=='t') {
-			state=State.END;
-		}
-		
-		//delayBySeconds(1);
-		
 	}
 	
 	//Parses key event into either a character or a number to be used
@@ -453,23 +439,25 @@ public class Scenario {
 		k=Character.MIN_VALUE;
 		try{
 			k = key.getKeyChar();
-			}catch(NullPointerException ex){ 						// handle null pointers for getKeyChar
+			}catch(NullPointerException ex){ 														// handle null pointers for getKeyChar
 			   System.out.println("");
 			}
 		
 		num = -1;
 		try{
 			num=Integer.parseInt(String.valueOf(k));  
-			}catch(NumberFormatException ex){ 						// handle if it isn't a number character
+			}catch(NumberFormatException ex){ 														// handle if it isn't a number character
 			   System.out.println("");
 			}
 	}
 
+	//Selection function: draws current hex selected and moves selection
 	private void selection(Graphics g) {
-		room.drawSelectionHex(g);
-		delayBy(100);											//Makes it feel more smoother
-		Point selectTemp=new Point(room.getSelectionCoordinates());			//[Rem] Probably more efficient to move in the if  and change it only if it is changed	
+		room.drawSelectionHex(g);																	//Draws selection hex
+		delayBy(100);																				//Makes it feel more smoother
+		Point selectTemp=new Point(room.getSelectionCoordinates());									//[Rem] Probably more efficient to move iff it is changed	
 		
+		//Checks that new coordinate is inside the current room
 		if(k=='w') {
 			if(selectTemp.y-1>=0) {
 				selectTemp.y=selectTemp.y-1;
@@ -492,28 +480,28 @@ public class Scenario {
 			}
 		}
 		
-
-		room.setSelectionCoordinates(selectTemp);
+		room.setSelectionCoordinates(selectTemp);													//Changes selection coordinate to new coordinate
 	}
 	
-	
+	//Controls the enemy logic at the end of the enemy round
 	private void enemyControlLogic() {
-		//If it has gone through all the enemies, go to next state
-		if(enemyTurnIndex==(enemyInfo.getCount()-1)) {
-			if(turn==party.size())
-				state=State.ROUND_END_DISCARD;
+		
+		if(enemyTurnIndex==(enemyInfo.getCount()-1)) {												//If it has gone through all the enemies, go to next state
+			if(turn==party.size())																	//If if it is on the last turn, End Round
+				state=State.ROUND_END_DISCARD;														
 			else {
-				turn++;
+				turn++;																				//End turn go back to attack logic state
 				state=State.ATTACK;
 			}	
 		}
 		else {
-			enemyTurnIndex++;
+			enemyTurnIndex++;																		//Cycle through enemies and go to enemy attack state
 			state=State.ENEMY_ATTACK;
 		}
 	}
 	
-	//[Test] Function that delays for a certain amount of seconds
+	//Function that delays for a certain amount of seconds
+	//Used to slow down the selection function
 	private void delayBy(int time) {
 		try {
 			TimeUnit.MILLISECONDS.sleep(time);
@@ -522,14 +510,15 @@ public class Scenario {
 			e.printStackTrace();
 		}
 	}
-	
-	//Returns if the round is finished or still being played
-	public boolean finished() {
-		if(state==State.END) {
-			return true;
+		
+	//Returns the playerIndex based on the targetID
+	private int getTargetIndex() {
+		for(int index=0; index<party.size(); index++) {												//Cycles through the party
+			if(party.get(index).getID()==targetID) {												//When it matches ID, sets the player index and returns
+				return index;
+			}
 		}
-		else
-			return false;
+		return -1;																					//Only returns a -1 if there is an error
 	}
 	
 	//[Test] Function to print order of the init
@@ -545,6 +534,7 @@ public class Scenario {
 		}
 	}
 	
+	//[Test] Function to print the enemy targets
 	private void testPrintEnemyTargets() {
 		//[Test]
 		System.out.println("Targets for Enemy "+enemyTurnIndex+":");
@@ -552,16 +542,6 @@ public class Scenario {
 			System.out.println(i+": "+targets);
 		}
 		System.out.println("");
-	}
-	
-	private int getTargetIndex() {
-		int playerIndex = -1;
-		for(int i=0; i<party.size(); i++) {
-			if(party.get(i).getID()==targetID) {
-				playerIndex=i;
-			}
-		}
-		return playerIndex;
 	}
 	
 	

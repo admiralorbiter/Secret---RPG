@@ -355,7 +355,7 @@ public class Scenario {
 							//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
 							//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
 							//enemyInfo.playerAttack(id, damage);
-							UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements);
+							UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements, room);
 							finished=true;													
 						}
 					}

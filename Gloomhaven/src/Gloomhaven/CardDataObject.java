@@ -9,12 +9,15 @@ public class CardDataObject {
 	int range;
 	int experience;
 	int heal;
+	int level;
 	
 	int lootRange;
 	
 	//Effects that change the in play or out of play
 	boolean lost;
 	boolean continuous;
+	
+	
 	boolean addNegativesToAttack;
 	
 	//Element Infusions

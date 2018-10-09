@@ -2,13 +2,7 @@ package Gloomhaven;
 
 public final class UtilitiesAB {
 
-	public static void resolveCard(Enemy enemy, Player player, CardDataObject card, InfusionTable elements) {
-		
-		int attack=card.getAttack();
-		if(card.getAddNegativeConditionsToAttack()) {
-			attack=attack+retrieveNegativeConditions(enemy);
-		}
-		enemy.takeDamage(attack);
+	public static void resolveCard(Enemy enemy, Player player, CardDataObject card, InfusionTable elements, Room room) {
 		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());
@@ -24,7 +18,31 @@ public final class UtilitiesAB {
 		
 		if(card.getHeal()>0)
 			player.heal(card.getHeal());
+		
+		if(card.lootRange>0)
+			room.loot(player, card.lootRange);
+		
+		resolveAttack(enemy, player, card);
 			
+	}
+	
+	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
+		int attack=card.getAttack();
+		if(card.getAddNegativeConditionsToAttack()) {
+			if(card.getName()=="Submissive Affliction")
+				attack=attack+retrieveNegativeConditions(enemy);
+			else if(card.getName()=="Perverse Edge") {
+				attack=attack+2*retrieveNegativeConditions(enemy);
+				player.increaseXP(retrieveNegativeConditions(enemy));
+				
+			}
+		}
+		
+		if(card.getPush()>0) {
+			enemy.takeDamage(attack);
+			enemy.push(player.getCoordinate(), card.getPush());
+		}
+		
 	}
 	
 	private static void negativeConditionOnEnemy(CardDataObject card, Enemy enemy) {

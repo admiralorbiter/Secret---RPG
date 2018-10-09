@@ -206,4 +206,8 @@ public class Room {
 			System.out.println();
 		}
 	}
+	
+	public void loot(Player player, int range) {
+		
+	}
 }

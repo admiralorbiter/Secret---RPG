@@ -285,4 +285,8 @@ public class Enemy {
 			effects.switchStun();
 			
 	}
+	
+	public void push(Point playerCoordinate, int pushRange) {
+		
+	}
 }

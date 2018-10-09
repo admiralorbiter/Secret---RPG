@@ -356,7 +356,12 @@ public class Player {
 		longRest=false;
 	}
 	
-	public void heal()
+	public void heal(int damageToHeal) {
+		health=health+damageToHeal;
+		if(health>maxHealth) {
+			health=maxHealth;
+		}
+	}
 	
 	public void shortRestInfo(Graphics g) {
 		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", 10, 100);

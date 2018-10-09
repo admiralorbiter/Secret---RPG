@@ -46,6 +46,7 @@ public class Player {
 				this.characterClass=character;
 				startingAbilityCardCount=10;
 				int maxHealth=10;
+				int xp=0;
 		}
 	
 		//Create ability deck
@@ -483,4 +484,6 @@ public class Player {
 		//[Test]
 		System.out.println("Player was attacked for "+damage+" making thier health "+health);
 	}
+	
+	public void increaseXP(int xpGained) {xp=xp+xpGained;}
 }

@@ -248,6 +248,8 @@ public class Enemy {
 		}
 	}
 	
+	public StatusEffectDataObject getStatusEffects() {return effects;}
+	
 	public void setDimensions(Point2D dimensions) {
 		this.dimensions=dimensions;
 	}
@@ -259,7 +261,4 @@ public class Enemy {
 
 	public int getAttack() {return attack;}
 	public String getID() {return id;}
-	public void decreaseHealth(int damage) {
-		health=health-damage;
-	}
 }

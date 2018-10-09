@@ -28,6 +28,8 @@ public class Setting {
 	public int getGraphicsYTop() {return offsetYGraphicsTop;}
 	private int offsetYGraphicsBottom=500;
 	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
+	private int offsetYGraphicsMid=300;
+	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
 	//[Testing]

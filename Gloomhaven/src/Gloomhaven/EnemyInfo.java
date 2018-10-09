@@ -30,6 +30,16 @@ public class EnemyInfo {
 			enemies.get(i).setDimensions(dimensions);
 		}
 	}
+	
+	public Enemy getEnemyFromID(String id) {
+		for(int i=0; i<enemies.size(); i++) {
+			if(enemies.get(i).getID()==id)
+				return enemies.get(i);
+		}
+		
+		return null;
+	}
+	
 	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiatve();}
 	public void setTurnNumber(int turnNumber) {
 		this.turnNumber=turnNumber;

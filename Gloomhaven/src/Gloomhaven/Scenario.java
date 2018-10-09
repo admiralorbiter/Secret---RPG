@@ -41,6 +41,7 @@ public class Scenario {
 	private EnemyInfo enemyInfo;																	//Holds the info about the enemies in the scenario
 	private Room room;																				//Holds the room data including where enemies and players are											
 	private Setting setting = new Setting();
+	private InfusionTable elements = new InfusionTable();
 	
 	//Key variables
 	private char k=' ';																				//Character from key
@@ -86,8 +87,8 @@ public class Scenario {
 	public void playRound(KeyEvent key, Graphics g) {
 
 		//[Test]
-		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYBottom());
-		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYBottom()+15);
+		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
+		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
 		
 		
 		room.drawRoom(g);																			//Draws current room
@@ -96,11 +97,11 @@ public class Scenario {
 		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)--------------------------------------------------------------------------------
 		if(state==State.CARD_SELECTION) {
 			
-			g.drawString("Picking Cards for your turn.", setting.getGraphicsX(), setting.getGraphicsYTop());
+			g.drawString("Picking Cards for your turn.", setting.getGraphicsX(), setting.getGraphicsYTop()+30);
 			
 			//Allows the user to take a long rest if they have enough in the discard pile 
 			if(party.get(currentPlayer).discardPileSize()>1)	
-				g.drawString("Take a long rest with 'r'", setting.getGraphicsX(), setting.getGraphicsX()+15);
+				g.drawString("Take a long rest with 'r'", setting.getGraphicsX(), setting.getGraphicsYTop()+45);
 			
 			//Draw's the player's available ability cards
 			party.get(currentPlayer).drawAbilityCards(g);			
@@ -130,8 +131,8 @@ public class Scenario {
 			party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
 			
 			//List of all the initiatives for the round
-			g.drawString("Initiatives:", 50, 380);											
-			g.drawString("Enemy: "+String.valueOf(enemyInit), 50, 400);								
+			g.drawString("Initiatives:", 5*setting.getGraphicsX(), setting.getGraphicsYBottom()-30);											
+			g.drawString("Enemy: "+String.valueOf(enemyInit), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()-15);								
 			for(int i=0; i<party.size();  i++) {
 				g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()+15*i);
 			}
@@ -268,12 +269,12 @@ public class Scenario {
 			card = new CardDataObject();															//Resets card
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
-			g.drawString("Move "+card.move+"     Attack: "+card.attack, 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack(), 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			
 			//Next State: Player Move, Player attack, Back to Attack, or End Turn
-			if(card.move>0) {
+			if(card.getMove()>0) {
 				state=State.PLAYER_MOVE;
-			}else if(card.attack>0) {
+			}else if(card.getAttack()>0) {
 				state=State.PLAYER_ATTACK;
 			}else {
 				//if turn is over
@@ -292,7 +293,7 @@ public class Scenario {
 			
 			//Highlight tiles that players can move to
 			Point playerPoint=party.get(playerIndex).getCoordinate();
-			for(int r=1; r<=card.move; r++)
+			for(int r=1; r<=card.getMove(); r++)
 				room.drawRange(g, playerPoint, r, Color.BLUE);
 	
 			//Moves selection highlight
@@ -314,7 +315,7 @@ public class Scenario {
 
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
-				if(card.attack>0) {
+				if(card.getAttack()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
 				}else {
@@ -334,9 +335,9 @@ public class Scenario {
 			
 			//Creates target list of enemy coordinates
 			List<Point> targets = new ArrayList<Point>();
-			if(card.range>0) {
-				for(int range=1; range<card.range; range++)
-					targets = party.get(currentPlayer).createTargetList(room.getBoard(), range);
+			if(card.getRange()>0) {
+				for(int range=1; range<card.getRange(); range++)
+					targets = party.get(playerIndex).createTargetList(room.getBoard(), range);
 			}
 			
 			//If there are targets, highlight the targets and wait for selection
@@ -349,9 +350,10 @@ public class Scenario {
 				if(k==' ') {
 					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
 						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-							String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
-							int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
-							enemyInfo.playerAttack(id, damage);										//Damage enemy based on player
+							//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
+							//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
+							//enemyInfo.playerAttack(id, damage);
+							UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements);
 							finished=true;													
 						}
 					}

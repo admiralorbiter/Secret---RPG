@@ -3,16 +3,20 @@ package Gloomhaven;
 public class StatusEffectDataObject{
 	
 	//conditions and effects
+	
+	//Positive
 	private boolean bless=false;
+	private boolean invisibility=false;
+	private boolean strengthen=false;
+	//Negative
 	private boolean curse=false;
 	private boolean disarm=false;
 	private boolean immobilize=false;
 	private boolean wound=false;
 	private boolean muddle=false;
 	private boolean poison=false;
-	private boolean invisibility=false;
 	private boolean stun=false;
-	private boolean strengthen=false;
+	//Attack Effects
 	private boolean addTarget=false;								//Might need to make this an int if a person can do multiple add targets
 	private int push=0;
 	private int pull=0;

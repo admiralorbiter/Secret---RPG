@@ -57,7 +57,7 @@ public class GamePanel extends JPanel implements KeyListener{
 			//Insert Road Event Stuff here
 			state=GameState.SCENARIO;
 		}else if(state==GameState.SCENARIO) {
-			g.drawString("Scenario", setting.getGraphicsX(),  setting.getGraphicsYTop());
+			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round
 			if(scene.finished())									//If scenario is off, end state of game
 				state=GameState.END;

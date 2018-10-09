@@ -356,6 +356,8 @@ public class Player {
 		longRest=false;
 	}
 	
+	public void heal()
+	
 	public void shortRestInfo(Graphics g) {
 		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", 10, 100);
 		showDiscardPile(g);
@@ -486,4 +488,15 @@ public class Player {
 	}
 	
 	public void increaseXP(int xpGained) {xp=xp+xpGained;}
+	
+	public void setCondition(String condition) {
+		if(condition=="Invisible" && effects.getInvisibility()!=true)
+			effects.switchInvisibility();
+		
+		if(condition=="Bless" && effects.getBless()!=true)
+			effects.switchBless();
+		
+		if(condition=="Strengthen" && effects.getStrengthen()!=true)
+			effects.switchStrengthen();
+	}
 }

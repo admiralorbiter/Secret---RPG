@@ -32,6 +32,8 @@ public class Scenario {
 	    PLAYER_ATTACK_LOGIC,
 	    PLAYER_MOVE,
 	    PLAYER_ATTACK,
+	    PLAYER_LOOT,
+	    PLAYER_HEAL,
 	    LONG_REST,
 	    END;
 	}
@@ -85,7 +87,7 @@ public class Scenario {
 	//Function called to play the around, technically plays part of the round so the graphics can be updated
 	//[Rem] Else ifs in order to have the graphics update
 	public void playRound(KeyEvent key, Graphics g) {
-
+	
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);

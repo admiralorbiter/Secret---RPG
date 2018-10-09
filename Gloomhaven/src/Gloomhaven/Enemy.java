@@ -261,4 +261,28 @@ public class Enemy {
 
 	public int getAttack() {return attack;}
 	public String getID() {return id;}
+	
+	public void setNegativeCondition(String condition) {
+		if(condition=="Wound" && effects.getWound()==false)
+			effects.switchWound();
+		
+		if(condition=="Curse" && effects.getCurse()==false)
+			effects.switchCurse();
+		
+		if(condition=="Disarm" && effects.getDisarm()==false)
+			effects.switchDisarm();
+		
+		if(condition=="Immobilize" && effects.getImmobilize()==false)
+			effects.switchImmobilize();
+		
+		if(condition=="Muddle" && effects.getMuddle()==false)
+			effects.switchMuddle();
+		
+		if(condition=="Poison" && effects.getPoison()==false)
+			effects.switchPoison();
+		
+		if(condition=="Stun" && effects.getStun()==false)
+			effects.switchStun();
+			
+	}
 }

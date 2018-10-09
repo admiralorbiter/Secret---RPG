@@ -27,5 +27,8 @@ public class InfusionTable {
 	
 	public void infuse(String element) {
 		//NEED TO DO
+		inert.remove(element);
+		wanning.remove(element);
+		strong.add(element);
 	}
 }

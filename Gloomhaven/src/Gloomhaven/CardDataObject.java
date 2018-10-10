@@ -10,6 +10,7 @@ public class CardDataObject {
 	int experience;
 	int heal;
 	int level;
+	int id;
 	
 	int lootRange;
 	
@@ -52,6 +53,7 @@ public class CardDataObject {
 	public CardDataObject() {
 		text="If you are seeing this, it is a mistake";
 		move=0;
+		id=0;
 		attack=0;
 		range=0;
 		experience=0;

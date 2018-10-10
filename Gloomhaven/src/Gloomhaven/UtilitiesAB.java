@@ -41,6 +41,9 @@ public final class UtilitiesAB {
 			}
 		}
 		
+		if(card.getAugment())
+			resolveNewAugmentedCard(player, card);
+		
 		if(player.isAugmented()) {
 			if(card.getName()=="Feedback Loop")
 				player.setShield(1);
@@ -51,14 +54,21 @@ public final class UtilitiesAB {
 				//If target is melle
 				player.heal(2);
 		}
-		//If augment is true
-		//Use augment card and do augment
 		
 		if(card.getPush()>0) {
 			enemy.takeDamage(attack);
 			enemy.push(player.getCoordinate(), card.getPush());
 		}
 		
+	}
+	
+	private static void resolveNewAugmentedCard(Player player, CardDataObject card) {
+		if(player.isAugmented()==false) {
+			player.setAugment(card);
+		}
+		else {
+			
+		}
 	}
 	
 	private static void negativeConditionOnEnemy(CardDataObject card, Enemy enemy) {

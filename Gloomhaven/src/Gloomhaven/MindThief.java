@@ -6,6 +6,8 @@ public class MindThief implements CardInterface {
 	public CardDataObject getTop(int id) {
 		CardDataObject top = new CardDataObject();
 		
+		top.id=id;
+		
 		switch(id) {
 			case 1:
 				top.name="Submissive Affliction";
@@ -96,6 +98,8 @@ public class MindThief implements CardInterface {
 	@Override
 	public CardDataObject getBottom(int id) {
 		CardDataObject bottom = new CardDataObject();
+		
+		bottom.id=id;
 		
 		switch(id) {
 			case 1:

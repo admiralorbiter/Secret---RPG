@@ -91,7 +91,9 @@ public class Scenario {
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
-		
+
+		if(party.get(0).isAugmented())
+			party.get(0).graphicsAugmentCard(g);
 		
 		room.drawRoom(g);																			//Draws current room
 		parseKey(key);																				//Parses the input key as either a character or number
@@ -139,11 +141,12 @@ public class Scenario {
 				g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()+15*i);
 			}
 			
+			enemyInfo.setTurnNumber(0);
 			//[Temp] Couldn't get the order right so players go first, enemies last
 			for(int i=0; i<party.size(); i++)
-				party.get(i).setTurnNumber(i);
+				party.get(i).setTurnNumber(i+1);
 			
-			enemyInfo.setTurnNumber(party.size());
+			//enemyInfo.setTurnNumber(party.size());
 			
 			/*
 			//Goes through the party and enemy and gives a turn number
@@ -221,7 +224,7 @@ public class Scenario {
 		else if(state==State.ENEMY_ATTACK) {
 
 			targets = new ArrayList<Player>();														//Resets the target list
-			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party);							//Goes through the enemies and sets range / distance flags
+			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
 			
 			if(targets.size()>0) {
 				targetID=targets.get(0).getID();													//[Temp] Picks first one on the list
@@ -316,6 +319,7 @@ public class Scenario {
 
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
+			
 				if(card.getAttack()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
@@ -331,13 +335,15 @@ public class Scenario {
 		}
 		//State: PLAYER_ATTACK: Creates target list and has player select a target to attack-----------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK) {
-			
 			boolean finished=false;
 			
 			//Creates target list of enemy coordinates
 			List<Point> targets = new ArrayList<Point>();
-			if(card.getRange()>0) {
-				for(int range=1; range<card.getRange(); range++)
+			int cardRange=card.getRange();
+			if(card.getRange()>=0) {
+				if(card.getRange()==0)
+					cardRange=1;
+				for(int range=1; range<=cardRange; range++)
 					targets = party.get(playerIndex).createTargetList(room.getBoard(), range);
 			}
 			
@@ -355,11 +361,13 @@ public class Scenario {
 							//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
 							//enemyInfo.playerAttack(id, damage);
 							UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements, room);
+							UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
 							finished=true;													
 						}
 					}
 				}
 			}else {																					//If there are no enemies in target range
+				UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements, room);
 				finished=true;
 			}
 
@@ -443,14 +451,14 @@ public class Scenario {
 		try{
 			k = key.getKeyChar();
 			}catch(NullPointerException ex){ 														// handle null pointers for getKeyChar
-			   System.out.println("");
+			   
 			}
 		
 		num = -1;
 		try{
 			num=Integer.parseInt(String.valueOf(k));  
 			}catch(NumberFormatException ex){ 														// handle if it isn't a number character
-			   System.out.println("");
+			   
 			}
 	}
 

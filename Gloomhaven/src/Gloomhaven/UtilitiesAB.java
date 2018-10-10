@@ -3,7 +3,7 @@ package Gloomhaven;
 public final class UtilitiesAB {
 
 	public static void resolveCard(Enemy enemy, Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
-		
+		System.out.println("Test");
 		CardDataObject card = new CardDataObject();
 		card=abilityCard.getData();
 		
@@ -15,25 +15,25 @@ public final class UtilitiesAB {
 		
 		if(card.positiveConditions())
 			positiveConditionOnPlayer(card, player);
-		
-		if(card.causesNegativeCondition())
-			negativeConditionOnEnemy(card, enemy);
-		
+				
 		if(card.getHeal()>0)
 			player.heal(card.getHeal());
 		
 		if(card.lootRange>0)
 			room.loot(player, card.lootRange);
-		
+
+
 		if(card.getAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
-		
-		resolveAttack(enemy, player, card);
-		
+	
 	}
 	
 	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
 		int attack=card.getAttack();
+		
+		if(card.causesNegativeCondition())
+			negativeConditionOnEnemy(card, enemy);
+		
 		if(card.getAddNegativeConditionsToAttack()) {
 			if(card.getName()=="Submissive Affliction")
 				attack=attack+retrieveNegativeConditions(enemy);
@@ -54,9 +54,10 @@ public final class UtilitiesAB {
 				//If target is melle
 				player.heal(2);
 		}
+	
+		enemy.takeDamage(attack);
 		
 		if(card.getPush()>0) {
-			enemy.takeDamage(attack);
 			enemy.push(player.getCoordinate(), card.getPush());
 		}
 		

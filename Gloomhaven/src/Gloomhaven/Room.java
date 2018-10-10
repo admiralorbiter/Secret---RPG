@@ -94,7 +94,10 @@ public class Room {
 	
 	//Moves the player from one point to another
 	public void movePlayer(Point starting, Point ending) {	
-		board[(int) ending.getX()][(int) ending.getY()]=board[(int) starting.getX()][(int) starting.getY()];
+		
+		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
+		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
+		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
 		board[(int) starting.getX()][(int) starting.getY()].reset();
 	}
 	

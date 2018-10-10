@@ -32,8 +32,13 @@ public class PlayerAbilityCards {
 			name=top.getName();
 			initiative=top.getInitiative();
 		}
+	}
 	
-
+	public PlayerAbilityCards() {
+		index=-1;
+		flag=-1;
+		altTop.attack=2;
+		altBottom.move=2;
 	}
 
 	public boolean cardInDiscardPile() {return discard;}
@@ -154,5 +159,16 @@ public class PlayerAbilityCards {
 			return 0;
 		
 		return 0;
+	}
+	
+	public boolean getAugment() {
+	
+		if(flag==0)
+			return top.getAugment();
+	
+		if(flag==1)
+			return bottom.getAugment();
+	
+		return false;
 	}
 }

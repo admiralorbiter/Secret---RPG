@@ -11,9 +11,9 @@ public class Enemy {
 	boolean eliteFlag;
 	String classID;
 	String id;
-	Point2D coordinates;
+	Point coordinates = new Point();
 	StatusEffectDataObject effects = new StatusEffectDataObject();
-	Point2D dimensions;
+	Point dimensions;
 	AttackModifierDeck attackModifierDeck = new AttackModifierDeck("Standard");
 	
 	int move;
@@ -77,11 +77,12 @@ public class Enemy {
 	public boolean isElite() {return eliteFlag;}
 	public String getClassID() {return classID;}
 	
-	public void setPoint(Point2D point) {
+	public void setPoint(Point point) {
 		this.coordinates=point;
+		System.out.println(coordinates);
 	}
 	
-	public Point2D getCoordinate() {return coordinates;}
+	public Point getCoordinate() {return coordinates;}
 	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
@@ -250,11 +251,11 @@ public class Enemy {
 	
 	public StatusEffectDataObject getStatusEffects() {return effects;}
 	
-	public void setDimensions(Point2D dimensions) {
+	public void setDimensions(Point dimensions) {
 		this.dimensions=dimensions;
 	}
 	
-	public Point2D getDimensions() {
+	public Point getDimensions() {
 		return dimensions;
 	}
 	

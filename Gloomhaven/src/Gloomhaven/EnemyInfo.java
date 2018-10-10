@@ -1,5 +1,7 @@
 package Gloomhaven;
 
+import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +21,7 @@ public class EnemyInfo {
 	public EnemyInfo(List<Enemy> enemies, Room room) {
 		this.enemies=enemies;
 		this.room=room;
-		Point2D dimensions=room.getDimensions();
+		Point dimensions=room.getDimensions();
 		
 		abilityCardIndex=0;
 		startingAbilityCardCount=8;
@@ -33,7 +35,7 @@ public class EnemyInfo {
 	
 	public Enemy getEnemyFromID(String id) {
 		for(int i=0; i<enemies.size(); i++) {
-			if(enemies.get(i).getID()==id)
+			if(enemies.get(i).getID().equals(id))
 				return enemies.get(i);
 		}
 		
@@ -81,9 +83,11 @@ public class EnemyInfo {
 	/*Algorithm:
 	 * Can enemy Attack -> is melee range -> quick range check
 	 */
-	public List<Player> enemyAttackProcedure(int index, List<Player> party) {
+	public List<Player> enemyAttackProcedure(int index, List<Player> party, Graphics g) {
 
 		List<Player> targets = new ArrayList<Player>();
+		
+		abilityDeck.get(abilityCardIndex).graphicsAbilityCard(g);
 		
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		

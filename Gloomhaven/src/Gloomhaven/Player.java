@@ -17,7 +17,7 @@ public class Player {
 	int maxHealth;																					//Sets what the max health of the player can be
 	int name;																						//Name of the character
 	Setting setting = new Setting();
-	PlayerAbilityCards augment = null;
+	PlayerAbilityCards augment = new PlayerAbilityCards();
 	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
@@ -53,7 +53,7 @@ public class Player {
 		}
 	
 		//Create ability deck
-		for(int i=1; i<=startingAbilityCardCount; i++)
+		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new PlayerAbilityCards(1, i+1, character));
 		
 	}
@@ -209,7 +209,7 @@ public class Player {
 					bottomCard=null;
 					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
 				}
-	
+				
 				return key;
 			}		
 		}
@@ -357,27 +357,39 @@ public class Player {
 	private void showPickedCards(Graphics g) {
 		int startingY=530;
 		int offsetY=15;
-		g.drawString("Cards", 10, startingY+offsetY*0);
-		g.drawString(topCard.getText(), 10, startingY+offsetY*1);
-		g.drawString("1: Top of Card", 10, startingY+offsetY*2);
-		g.drawString("2: Bottom of Card", 10, startingY+offsetY*3);
-		g.drawString("3: Top Alt - Attack +2", 10, startingY+offsetY*4);
-		g.drawString("4: Bottom Alt - Move +2", 10, startingY+offsetY*5);
-		g.drawString(bottomCard.getText(), 10, startingY+offsetY*6);
-		g.drawString("5: Top of Card", 10, startingY+offsetY*7);
-		g.drawString("6: Bottom of Card", 10, startingY+offsetY*8);
-		g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
-		g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
+		if(topCard!=null) {
+			g.drawString("Cards", 10, startingY+offsetY*0);
+			g.drawString(topCard.getText(), 10, startingY+offsetY*1);
+			g.drawString("1: Top of Card", 10, startingY+offsetY*2);
+			g.drawString("2: Bottom of Card", 10, startingY+offsetY*3);
+			g.drawString("3: Top Alt - Attack +2", 10, startingY+offsetY*4);
+			g.drawString("4: Bottom Alt - Move +2", 10, startingY+offsetY*5);
+		}
+		if(bottomCard!=null) {
+			g.drawString(bottomCard.getText(), 10, startingY+offsetY*6);
+			g.drawString("5: Top of Card", 10, startingY+offsetY*7);
+			g.drawString("6: Bottom of Card", 10, startingY+offsetY*8);
+			g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
+			g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
+		}
 	}
 	
 	public void endTurn() {
 		
 		cardChoice=true;
-		secondCardChoice=null;
-		firstCardChoice=null;
+
 		if(longRest==false) {
-			CardDataObject card= topCard.getTop();
-			int index = topCard.getIndex();
+			CardDataObject card = new CardDataObject();
+			int index=-1;
+			if(firstCardChoice.getFlag()==0 || firstCardChoice.getFlag()==2) {
+				card= firstCardChoice.getTop();
+				index = firstCardChoice.getIndex();
+			}
+			
+			if(secondCardChoice.getFlag()==0 || secondCardChoice.getFlag()==2) {
+				card= secondCardChoice.getTop();
+				index = secondCardChoice.getIndex();
+			}
 			
 			if(card.continuous) {
 				inPlay.add(topCard);									//Need a way to track if i am using the top or bottom as a cont
@@ -387,9 +399,16 @@ public class Player {
 				abilityDeck.get(index).discardPile();
 			}
 			
-			card= bottomCard.getBottom();
-			index = bottomCard.getIndex();
+			if(firstCardChoice.getFlag()==1 || firstCardChoice.getFlag()==3) {
+				card= firstCardChoice.getBottom();
+				index = firstCardChoice.getIndex();
+			}
 			
+			if(secondCardChoice.getFlag()==1 || secondCardChoice.getFlag()==3) {
+				card= secondCardChoice.getBottom();
+				index = secondCardChoice.getIndex();
+			}
+
 			if(card.continuous) {
 				inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost) {
@@ -398,11 +417,14 @@ public class Player {
 				abilityDeck.get(index).discardPile();
 			}
 		}
+		secondCardChoice=null;
+		firstCardChoice=null;
 		longRest=false;
 	}
 	
 	public void setAugment(PlayerAbilityCards card) {
 		augment=card;
+		System.out.println(augment);
 	}
 	
 	public void replaceAugmentCard(PlayerAbilityCards abilityCard) {
@@ -421,10 +443,8 @@ public class Player {
 	}
 	
 	public boolean isAugmented() {
-		if(augment!=null)
-			return true;
-		else
-			return false;
+		return augment.getAugment();
+
 	}
 	
 	public void setShield(int shield) {
@@ -544,7 +564,7 @@ public class Player {
 	}
 	
 	public void movePlayer(Point space) {
-		coordinates=new Point(space);
+		coordinates=space;
 	}
 	
 	//[Test]

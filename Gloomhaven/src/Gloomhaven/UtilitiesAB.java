@@ -4,6 +4,9 @@ public final class UtilitiesAB {
 
 	public static void resolveCard(Enemy enemy, Player player, CardDataObject card, InfusionTable elements, Room room) {
 		
+		if(card.augment)
+			player.setAugment(card);
+		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());
 		
@@ -37,6 +40,19 @@ public final class UtilitiesAB {
 				
 			}
 		}
+		
+		if(player.isAugmented()) {
+			if(card.getName()=="Feedback Loop")
+				player.setShield(1);
+			if(card.getName()=="The Mind's Weakness")
+				//If target is melee,
+				attack=attack+2;
+			if(card.getName()=="Parasitic influence")
+				//If target is melle
+				player.heal(2);
+		}
+		//If augment is true
+		//Use augment card and do augment
 		
 		if(card.getPush()>0) {
 			enemy.takeDamage(attack);

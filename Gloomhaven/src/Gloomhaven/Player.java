@@ -17,6 +17,8 @@ public class Player {
 	int maxHealth;																					//Sets what the max health of the player can be
 	int name;																						//Name of the character
 	
+	CardDataObject augment = new CardDataObject();
+	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
 	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
@@ -30,7 +32,7 @@ public class Player {
 	PlayerAbilityCards bottomCard=null;																//Bottom ability card
 	int firstCardChoice=0;																			//Card picked first during the turn			
 	int secondCardChoice=0;																			//Card picked second during the turn
-	
+	int shield;
 	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
 	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
 	Point2D dimensions;																				//dimension of the current room																	
@@ -47,6 +49,7 @@ public class Player {
 				startingAbilityCardCount=10;
 				int maxHealth=10;
 				int xp=0;
+				int shield=0;
 		}
 	
 		//Create ability deck
@@ -356,6 +359,17 @@ public class Player {
 		longRest=false;
 	}
 	
+	public void setAugment(CardDataObject card) {
+		augment=card;
+	}
+	public boolean isAugmented() {
+		return augment.augment;
+	}
+	
+	public void setShield(int shield) {
+		this.shield=shield;
+	}
+	
 	public void heal(int damageToHeal) {
 		health=health+damageToHeal;
 		if(health>maxHealth) {
@@ -486,7 +500,7 @@ public class Player {
 	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
 		if(damage>0)
-			health=health-damage;
+			health=health+shield-damage;
 		
 		//[Test]
 		System.out.println("Player was attacked for "+damage+" making thier health "+health);

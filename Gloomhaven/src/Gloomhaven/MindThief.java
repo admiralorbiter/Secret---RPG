@@ -34,7 +34,7 @@ public class MindThief implements CardInterface {
 				top.name="Feedback Loop";
 				top.level=1;
 				top.initiative=79;
-				top.text="Augument Shield +1 on Self (UNIMPLEMENTED). Attack +1. XP +1";
+				top.text="Augument Shield +1 on Self. Attack +1. XP +1";
 				top.augment=true;
 				top.attack=1;
 				top.experience=1;
@@ -156,7 +156,7 @@ public class MindThief implements CardInterface {
 			case 10:
 				bottom.name="Empathetic Assault";
 				bottom.level=1;
-				bottom.text="Move +2. Heal +2 (Self) UNIMPLEMENTED.";
+				bottom.text="Move +2. Heal +2 (Self)";
 				bottom.move=2;
 				bottom.heal=2;
 		}

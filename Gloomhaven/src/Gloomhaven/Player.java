@@ -16,8 +16,8 @@ public class Player {
 	int startingAbilityCardCount;																	//Sets how many ability cards are allowed in the deck ( probably depends on level)
 	int maxHealth;																					//Sets what the max health of the player can be
 	int name;																						//Name of the character
-	
-	CardDataObject augment = new CardDataObject();
+	Setting setting = new Setting();
+	PlayerAbilityCards augment = null;
 	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
@@ -30,8 +30,8 @@ public class Player {
 	int initiative=-1;																				//Initiative value based on cards, deciedes order in the game
 	PlayerAbilityCards topCard=null;																//Top ability card choosen, used for the initiative score
 	PlayerAbilityCards bottomCard=null;																//Bottom ability card
-	int firstCardChoice=0;																			//Card picked first during the turn			
-	int secondCardChoice=0;																			//Card picked second during the turn
+	PlayerAbilityCards firstCardChoice=null;																			//Card picked first during the turn			
+	PlayerAbilityCards secondCardChoice=null;																			//Card picked second during the turn
 	int shield;
 	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
 	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
@@ -53,7 +53,7 @@ public class Player {
 		}
 	
 		//Create ability deck
-		for(int i=0; i<startingAbilityCardCount; i++)
+		for(int i=1; i<=startingAbilityCardCount; i++)
 			abilityDeck.add(new PlayerAbilityCards(1, i+1, character));
 		
 	}
@@ -61,8 +61,8 @@ public class Player {
 	//Resets card variables at beginning of the round
 	public void resetCards(){
 		initiative=-1;
-		firstCardChoice=0;
-		secondCardChoice=0;
+		firstCardChoice=null;
+		secondCardChoice=null;
 		cardChoice=true;
 		topCard=null;
 		bottomCard=null;
@@ -70,8 +70,8 @@ public class Player {
 	
 	//Resets card choice during the round for making more choices
 	public void resetCardChoice() {
-		firstCardChoice=0;
-		secondCardChoice=0;
+		firstCardChoice=null;
+		secondCardChoice=null;
 		cardChoice=true;
 	}
 	
@@ -167,64 +167,100 @@ public class Player {
 	public int pickPlayCard(int key, Graphics g) {
 		showPickedCards(g);
 		if(cardChoice) {
-			if(key>=1 && key<=4) {
+			if(key>=1 && key<=8) {
 				cardChoice=!cardChoice;
-				firstCardChoice=key;
+				if(key==1) {
+					firstCardChoice=topCard;
+					topCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useTop();
+				}
+				else if(key==2) {
+					firstCardChoice=topCard;
+					topCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useBottom();
+				}
+				else if(key==3) {
+					firstCardChoice=topCard;
+					topCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useTopAlt();
+				}
+				else if(key==4) {
+					firstCardChoice=topCard;
+					topCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
+				}
+				else if(key==5) {
+					firstCardChoice=bottomCard;
+					bottomCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useTop();
+				}
+				else if(key==6) {
+					firstCardChoice=bottomCard;
+					bottomCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useBottom();
+				}
+				else if(key==7) {
+					firstCardChoice=bottomCard;
+					bottomCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useTopAlt();
+				}
+				else if(key==8) {
+					firstCardChoice=bottomCard;
+					bottomCard=null;
+					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
+				}
+	
 				return key;
 			}		
 		}
 		else {
-			if(key==4 || key==3) {
-				if(firstCardChoice==1 || firstCardChoice==2) {
-					cardChoice=!cardChoice;
-					secondCardChoice=key;
-					return key;
+			if(topCard==null && (key>=5 && key<=8)) {
+				cardChoice=!cardChoice;
+				secondCardChoice=bottomCard;
+				bottomCard=null;
+				if(key==5) {
+					abilityDeck.get(secondCardChoice.getIndex()).useTop();
 				}
-			}
-			else if(key==1 || key==2) {
-				if(firstCardChoice==3 || firstCardChoice==4) {
-					cardChoice=!cardChoice;
-					secondCardChoice=key;
-					return key;
+				else if(key==6) {
+					abilityDeck.get(secondCardChoice.getIndex()).useBottom();
 				}
+				else if(key==7) {
+					abilityDeck.get(secondCardChoice.getIndex()).useTopAlt();
+				}
+				else if(key==8) {
+					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
+				}
+				return key;
 			}
-		}
-
-		
-		return -1;
-		
+			
+			if(bottomCard==null && (key>=1 && key<=4)) {
+				cardChoice=!cardChoice;
+				secondCardChoice=topCard;
+				topCard=null;
+				if(key==5) {
+					abilityDeck.get(secondCardChoice.getIndex()).useTop();
+				}
+				else if(key==6) {
+					abilityDeck.get(secondCardChoice.getIndex()).useBottom();
+				}
+				else if(key==7) {
+					abilityDeck.get(secondCardChoice.getIndex()).useTopAlt();
+				}
+				else if(key==8) {
+					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
+				}
+				return key;
+			}
+		}	
+		return -1;	
 	}
 	
-	public CardDataObject playCard() {
+	public PlayerAbilityCards playCard() {
 		if(!cardChoice) {
-			if(firstCardChoice==1) {
-				return getAbilityCardData("Top", 1);
-			}
-			else if(firstCardChoice==2) {
-				return playAlternative("Top");
-			}
-			else if(firstCardChoice==3) {
-				return getAbilityCardData("Bottom", 3);
-			}
-			else if(firstCardChoice==4) {
-				return playAlternative("Bottom");
-			}
+			return firstCardChoice;
 		}else {
-			if(secondCardChoice==1) {
-				return getAbilityCardData("Top", 1);
-			}
-			else if(secondCardChoice==2) {
-				return playAlternative("Top");
-			}
-			else if(secondCardChoice==3) {
-				return getAbilityCardData("Bottom", 3);
-			}
-			else if(secondCardChoice==4) {
-				return playAlternative("Bottom");
-			}
+			return secondCardChoice;
 		}
-		
-		return null;
 	}
 	
 	//[Rem] I had to write this way because I was dumb and forgot that either card could be played as the top or bottom after init round
@@ -274,8 +310,8 @@ public class Player {
 	}
 	
 	public boolean getCardChoice() {return cardChoice;}
-	public int getFirstCardChoice() {return firstCardChoice;}
-	public int getSecondCardChoice() {return secondCardChoice;}
+	public PlayerAbilityCards getFirstCardChoice() {return firstCardChoice;}
+	public PlayerAbilityCards getSecondCardChoice() {return secondCardChoice;}
 	
 	//Picks the two cards needed for initiative
 	public void pickAbilityCards(int key, Graphics g) {
@@ -322,17 +358,23 @@ public class Player {
 		int startingY=530;
 		int offsetY=15;
 		g.drawString("Cards", 10, startingY+offsetY*0);
-		g.drawString("1: "+topCard.getText(), 10, startingY+offsetY*1);
-		g.drawString("2: Attack +2", 10, startingY+offsetY*2);
-		g.drawString("3: "+bottomCard.getText(), 10, startingY+offsetY*3);
-		g.drawString("4: Move +2", 10, startingY+offsetY*4);
+		g.drawString(topCard.getText(), 10, startingY+offsetY*1);
+		g.drawString("1: Top of Card", 10, startingY+offsetY*2);
+		g.drawString("2: Bottom of Card", 10, startingY+offsetY*3);
+		g.drawString("3: Top Alt - Attack +2", 10, startingY+offsetY*4);
+		g.drawString("4: Bottom Alt - Move +2", 10, startingY+offsetY*5);
+		g.drawString(bottomCard.getText(), 10, startingY+offsetY*6);
+		g.drawString("5: Top of Card", 10, startingY+offsetY*7);
+		g.drawString("6: Bottom of Card", 10, startingY+offsetY*8);
+		g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
+		g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
 	}
 	
 	public void endTurn() {
 		
 		cardChoice=true;
-		secondCardChoice=0;
-		firstCardChoice=0;
+		secondCardChoice=null;
+		firstCardChoice=null;
 		if(longRest==false) {
 			CardDataObject card= topCard.getTop();
 			int index = topCard.getIndex();
@@ -359,11 +401,30 @@ public class Player {
 		longRest=false;
 	}
 	
-	public void setAugment(CardDataObject card) {
+	public void setAugment(PlayerAbilityCards card) {
 		augment=card;
 	}
+	
+	public void replaceAugmentCard(PlayerAbilityCards abilityCard) {
+		abilityDeck.get(augment.getIndex()).lostPile();
+		augment=abilityCard;
+	}
+	
+	public void discardAugmentCard() {
+		abilityDeck.get(augment.getIndex()).lostPile();
+		augment=null;
+	}
+	
+	public void graphicsAugmentCard(Graphics g) {
+		g.drawString("Augment Active:", setting.getGraphicsXMid(), setting.getGraphicsYBottom());
+		g.drawString(augment.getText(), setting.getGraphicsXMid(), setting.getGraphicsYBottom()+15);
+	}
+	
 	public boolean isAugmented() {
-		return augment.augment;
+		if(augment!=null)
+			return true;
+		else
+			return false;
 	}
 	
 	public void setShield(int shield) {

@@ -10,20 +10,32 @@ public class PlayerAbilityCards {
 	CardDataObject top = new CardDataObject();
 	CardDataObject bottom = new CardDataObject();
 	CardInterface card;
+	private int flag;												//-1 not used. 0 top 1 bottom 2 alt top 3 alt bottom
+	CardDataObject altTop = new CardDataObject();
+	CardDataObject altBottom = new CardDataObject();
 	
 	public PlayerAbilityCards(int level, int id, String Class) {
 		index=id-1;
+		flag=-1;
+		altTop.attack=2;
+		altBottom.move=2;
 		if(Class=="Test") {
 			card = new CardsTest();
-			if(level==1) {
-				top=card.getTop(id);
-				bottom=card.getBottom(id);
-				name=top.name;
-				initiative=top.initiative;
-			}
 		}
-	}
+		else if(Class=="Mind Thief") {
+			card = new MindThief();
+		}
+		
+		if(level==1) {
+			top=card.getTop(id);
+			bottom=card.getBottom(id);
+			name=top.getName();
+			initiative=top.getInitiative();
+		}
 	
+
+	}
+
 	public boolean cardInDiscardPile() {return discard;}
 	
 	public void takeOutOfDiscard() {
@@ -41,6 +53,12 @@ public class PlayerAbilityCards {
 	int getInitiative() {
 		return initiative;
 	}
+	
+	public int getFlag() {return flag;}
+	public void useTop() {flag=0;}
+	public void useBottom() {flag=1;}
+	public void useTopAlt() {flag=2;}
+	public void useBottomAlt() {flag=3;}
 	
 	public boolean cardFree() {
 		if(lost)
@@ -72,4 +90,69 @@ public class PlayerAbilityCards {
 	}
 	
 	public int getIndex() {return index;}
+	
+	public CardDataObject getData() {
+		if(flag==0)
+			return top;
+	
+		if(flag==1)
+			return bottom;
+		
+		if(flag==2)
+			return altTop;
+		
+		if(flag==3)
+			return altBottom;
+		
+		return null;
+	}
+	
+	//[Temp]
+	public int getMove() {
+		if(flag==0)
+			return top.getMove();
+	
+		if(flag==1)
+			return bottom.getMove();
+		
+		if(flag==2)
+			return 0;
+		
+		if(flag==3)
+			return 2;
+		
+		return 0;
+	}
+	
+	public int getAttack() {
+		if(flag==0)
+			return top.getAttack();
+	
+		if(flag==1)
+			return bottom.getAttack();
+		
+		if(flag==2)
+			return 2;
+		
+		if(flag==3)
+			return 0;
+		
+		return 0;
+	}
+	
+	public int getRange() {
+		if(flag==0)
+			return top.getRange();
+	
+		if(flag==1)
+			return bottom.getRange();
+		
+		if(flag==2)
+			return 0;
+		
+		if(flag==3)
+			return 0;
+		
+		return 0;
+	}
 }

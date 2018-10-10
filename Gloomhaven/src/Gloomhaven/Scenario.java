@@ -56,7 +56,7 @@ public class Scenario {
 	private Point dimensions;																		//Dimensions of the room
 	private List<Player> targets;																	//Target list created by the enemy
 	private String targetID;																		//Player being targeted by the enemy						
-	private CardDataObject card = new CardDataObject();												//Card object used by the player's attack
+	private PlayerAbilityCards card = null;											//Card object used by the player's attack
 	
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
@@ -262,13 +262,12 @@ public class Scenario {
 		else if(state==State.PLAYER_CHOICE) {
 
 			int cardPick=party.get(playerIndex).pickPlayCard(num, g);								//Prints ability cards then waits for one to pick
-			if(cardPick>=1 && cardPick<=4)
+			if(cardPick>=1 && cardPick<=8)
 				state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
 		}
 		//State: PLAYER_ATTACK_LOGIC: Player picks card, then uses data for next state-----------------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
 			
-			card = new CardDataObject();															//Resets card
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
 			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack(), 5*setting.getGraphicsX(), setting.getGraphicsYBottom());

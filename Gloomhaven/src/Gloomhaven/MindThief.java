@@ -7,7 +7,6 @@ public class MindThief implements CardInterface {
 		CardDataObject top = new CardDataObject();
 		
 		top.id=id;
-		
 		switch(id) {
 			case 1:
 				top.name="Submissive Affliction";
@@ -52,7 +51,7 @@ public class MindThief implements CardInterface {
 				top.name="The Mind's Weakness";
 				top.level=1;
 				top.initiative=75;
-				top.text="Augument On Melee Attack +2 (UNIMPLEMENTED). Attack +1. XP +1";
+				top.text="Augument On Melee Attack +2. Attack +1. XP +1";
 				top.augment=true;
 				top.attack=1;
 				top.experience=1;
@@ -60,7 +59,7 @@ public class MindThief implements CardInterface {
 				top.name="Parasitic Influence";
 				top.level=1;
 				top.initiative=71;
-				top.text="Augument On Melee Attack Heal +2 (UNIMPLEMENTED). Attack +1. XP +1";
+				top.text="Augument On Melee Attack Heal +2. Attack +1. XP +1";
 				top.augment=true;
 				top.attack=1;
 				top.experience=1;
@@ -89,10 +88,12 @@ public class MindThief implements CardInterface {
 				top.iceInfusion=true;
 				top.experience=2;
 				top.lost=true;
+			default:
+				top.name="If you see this, it is a mistake.";
 		}
 		
 		
-		return null;
+		return top;
 	}
 
 	@Override
@@ -166,7 +167,7 @@ public class MindThief implements CardInterface {
 		}
 		
 		
-		return null;
+		return bottom;
 	}
 
 	@Override

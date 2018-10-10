@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	void initGame() {
 		//[Temp] Need unique IDs and class 
 		for(int id=0; id<setting.getNumPlayers(); id++)
-			party.add(new Player(id, "Test"));						//Adds the players to the party
+			party.add(new Player(id, "Mind Thief"));				//Adds the players to the party
 		scene= new Scenario(setting.getSceneID(), party);			//Creates the scenario
 		state=GameState.TOWN;										//Init Phase -> Town Phase
 	}

@@ -2,10 +2,10 @@ package Gloomhaven;
 
 public final class UtilitiesAB {
 
-	public static void resolveCard(Enemy enemy, Player player, CardDataObject card, InfusionTable elements, Room room) {
+	public static void resolveCard(Enemy enemy, Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
 		
-		if(card.augment)
-			player.setAugment(card);
+		CardDataObject card = new CardDataObject();
+		card=abilityCard.getData();
 		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());
@@ -25,8 +25,11 @@ public final class UtilitiesAB {
 		if(card.lootRange>0)
 			room.loot(player, card.lootRange);
 		
+		if(card.getAugment())
+			resolveNewAugmentedCard(player, card, abilityCard);
+		
 		resolveAttack(enemy, player, card);
-			
+		
 	}
 	
 	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
@@ -40,9 +43,6 @@ public final class UtilitiesAB {
 				
 			}
 		}
-		
-		if(card.getAugment())
-			resolveNewAugmentedCard(player, card);
 		
 		if(player.isAugmented()) {
 			if(card.getName()=="Feedback Loop")
@@ -62,12 +62,12 @@ public final class UtilitiesAB {
 		
 	}
 	
-	private static void resolveNewAugmentedCard(Player player, CardDataObject card) {
+	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCards abilityCard) {
 		if(player.isAugmented()==false) {
-			player.setAugment(card);
+			player.setAugment(abilityCard);
 		}
 		else {
-			
+			player.replaceAugmentCard(abilityCard);
 		}
 	}
 	

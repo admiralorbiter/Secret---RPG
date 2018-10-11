@@ -210,7 +210,10 @@ public class Room {
 		}
 	}
 	
-	public void loot(Player player, int range) {
-		
+	public void loot(Player player, List<Point> loot) {
+		for(int i=0; i<loot.size(); i++) {
+			player.addLoot(board[(int) loot.get(i).getX()][(int) loot.get(i).getY()]);
+			board[(int) loot.get(i).getX()][(int) loot.get(i).getY()].reset();
+		}
 	}
 }

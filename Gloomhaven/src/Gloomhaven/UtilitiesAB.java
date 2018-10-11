@@ -1,5 +1,9 @@
 package Gloomhaven;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
 public final class UtilitiesAB {
 
 	public static void resolveCard(Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
@@ -19,8 +23,11 @@ public final class UtilitiesAB {
 		if(card.getHeal()>0)
 			player.heal(card.getHeal());
 		
-		if(card.lootRange>0)
-			room.loot(player, card.lootRange);
+		if(card.lootRange>0) {
+			List<Point> loot = new ArrayList<Point>();
+			loot=createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinate(), "Loot", room.getDimensions());
+			room.loot(player, loot);
+		}
 
 
 		if(card.getAugment())
@@ -147,6 +154,62 @@ public final class UtilitiesAB {
 			count++;
 		
 		return count;	
+	}
+	
+	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
+	//https://www.redblobgames.com/grids/hexagons/
+	public static List<Point> createTargetList(Hex board[][], int range, Point starting, String quickID, Point dimensions) {
+		List<Point> targets = new ArrayList<Point>();
+		
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						Point convertedPoint = new Point();
+			
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(starting.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
+						else
+							convertedPoint=cubeToCoordEven(x, y, z);
+
+						int xToPlot=(int)(convertedPoint.getX()+starting.getX());
+						int yToPlot=(int) (convertedPoint.getY()+starting.getY());
+
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								if(board[xToPlot][yToPlot].getQuickID()=="E"){
+									targets.add(new Point(xToPlot,yToPlot));
+						}
+
+					}
+				}
+			}
+		}
+		
+		return targets;
+	}
+		
+		
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private static Point cubeToCoordEven(int x, int y, int z ) {
+		x=x+(z-(z&1))/2;
+		y=z;
+
+		Point point = new Point(x, y);
+		return point;
+	}
+	
+	//Converts cube coord to a coord to plot
+	//https://www.redblobgames.com/grids/hexagons/#conversions
+	private static Point cubeToCoordOdd(int x, int y, int z) {
+		x=x+(z+(z&1))/2;
+		y=z;
+		
+		Point point = new Point(x, y);
+		return point;
 	}
 	
 }

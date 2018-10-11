@@ -39,6 +39,7 @@ public class Player {
 	boolean longRest=false;																			//Indicates if the player is currently taking a long rest
 	int health;																						//Current health of the player
 	int xp;																							//Current experience of the player
+	List<String> lootInventory = new ArrayList<String>();
 	
 	public Player(int id, String character) {
 		//Set constant variables
@@ -167,6 +168,10 @@ public class Player {
 		
 		Point point = new Point(x, y);
 		return point;
+	}
+	
+	public void addLoot(Hex hex) {
+		lootInventory.add(hex.getID());
 	}
 
 	public int pickPlayCard(int key, Graphics g) {

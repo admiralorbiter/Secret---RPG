@@ -25,6 +25,8 @@ public class Setting {
 	private int offsetXGraphics=10;
 	private int offsetYGraphicsTop=25;
 	private int offsetXGraphicsMid=WIDTH/3;
+	private int offsetXGraphicsRight=WIDTH*2/3;
+	public int getGraphicsXRight() {return offsetXGraphicsRight;}
 	public int getGraphicsXMid() {return offsetXGraphicsMid;}
 	public int getGraphicsX() {return offsetXGraphics;}
 	public int getGraphicsYTop() {return offsetYGraphicsTop;}

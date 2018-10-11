@@ -88,6 +88,8 @@ public class Scenario {
 	//[Rem] Else ifs in order to have the graphics update
 	public void playRound(KeyEvent key, Graphics g) {
 	
+		System.out.println(state);
+		
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
@@ -141,14 +143,14 @@ public class Scenario {
 				g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), 5*setting.getGraphicsX(), setting.getGraphicsYBottom()+15*i);
 			}
 			
-			enemyInfo.setTurnNumber(0);
+			/*enemyInfo.setTurnNumber(0);
 			//[Temp] Couldn't get the order right so players go first, enemies last
 			for(int i=0; i<party.size(); i++)
 				party.get(i).setTurnNumber(i+1);
 			
-			//enemyInfo.setTurnNumber(party.size());
+			enemyInfo.setTurnNumber(party.size());
+			*/
 			
-			/*
 			//Goes through the party and enemy and gives a turn number
 			//The party is in order, so i just have to fit the enemy in
 			for(int i=0; i<party.size(); i++) {
@@ -163,6 +165,7 @@ public class Scenario {
 				}
 				else if(party.get(i).getInitiative()<enemyInit) {	//Sorts player's with lower init before enemy
 					party.get(i).setTurnNumber(i);
+					enemyInfo.setTurnNumber(i+1);
 				}
 				else if(party.get(i-1).getInitiative()<enemyInit){	//places the enemy between players if the previous one is lower, but the next is higher
 					enemyInfo.setTurnNumber(i);
@@ -171,7 +174,7 @@ public class Scenario {
 				else {												//Everyone else is placed after the enemy
 					party.get(i).setTurnNumber(i+1);
 				}
-			}*/
+			}
 			
 			playerIndex=-1;																			//playerIndex is reset so it can be used instead of current player
 			turn=0;																					//Sets the turn number to 0 and will cyle through all players/enemies
@@ -275,18 +278,23 @@ public class Scenario {
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
 			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack(), 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			
+			UtilitiesAB.resolveCard(party.get(playerIndex), card, elements, room);
 			//Next State: Player Move, Player attack, Back to Attack, or End Turn
 			if(card.getMove()>0) {
 				state=State.PLAYER_MOVE;
 			}else if(card.getAttack()>0) {
 				state=State.PLAYER_ATTACK;
 			}else {
-				//if turn is over
-				if(turn==party.size())
-					state=State.ROUND_END_DISCARD;
-				else {
-					turn++;
-					state=State.ATTACK;
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_END_DISCARD;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
 				}
 			}
 		}
@@ -324,14 +332,19 @@ public class Scenario {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
 				}else {
-					if(turn==party.size())
-						state=State.ROUND_END_DISCARD;
-					else {
-						turn++;
-						state=State.ATTACK;
+					if(party.get(currentPlayer).getCardChoice()==false) {
+						state=State.PLAYER_CHOICE;
+					}else {
+						//if turn is over
+						if(turn==party.size())
+							state=State.ROUND_END_DISCARD;
+						else {
+							turn++;
+							state=State.ATTACK;
+						}
 					}
 				}
-			}
+			}	
 		}
 		//State: PLAYER_ATTACK: Creates target list and has player select a target to attack-----------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK) {
@@ -360,14 +373,12 @@ public class Scenario {
 							//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
 							//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
 							//enemyInfo.playerAttack(id, damage);
-							UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements, room);
 							UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
 							finished=true;													
 						}
 					}
 				}
 			}else {																					//If there are no enemies in target range
-				UtilitiesAB.resolveCard(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card, elements, room);
 				finished=true;
 			}
 

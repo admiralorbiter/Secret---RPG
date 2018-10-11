@@ -2,8 +2,8 @@ package Gloomhaven;
 
 public final class UtilitiesAB {
 
-	public static void resolveCard(Enemy enemy, Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
-		System.out.println("Test");
+	public static void resolveCard(Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
+
 		CardDataObject card = new CardDataObject();
 		card=abilityCard.getData();
 		
@@ -30,14 +30,14 @@ public final class UtilitiesAB {
 	
 	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
 		int attack=card.getAttack();
-		
+		System.out.println("Utility Class Damage: "+attack);
 		if(card.causesNegativeCondition())
 			negativeConditionOnEnemy(card, enemy);
 		
 		if(card.getAddNegativeConditionsToAttack()) {
-			if(card.getName()=="Submissive Affliction")
+			if(card.getName().equals("Submissive Affliction"))
 				attack=attack+retrieveNegativeConditions(enemy);
-			else if(card.getName()=="Perverse Edge") {
+			else if(card.getName().equals("Perverse Edge")) {
 				attack=attack+2*retrieveNegativeConditions(enemy);
 				player.increaseXP(retrieveNegativeConditions(enemy));
 				
@@ -45,16 +45,16 @@ public final class UtilitiesAB {
 		}
 		
 		if(player.isAugmented()) {
-			if(card.getName()=="Feedback Loop")
+			if(player.getAugmentCard().getName().equals("Feedback Loop"))
 				player.setShield(1);
-			if(card.getName()=="The Mind's Weakness")
+			if(player.getAugmentCard().getName().equals("The Mind's Weakness"))
 				//If target is melee,
 				attack=attack+2;
-			if(card.getName()=="Parasitic influence")
+			if(player.getAugmentCard().getName().equals("Parasitic influence"))
 				//If target is melle
 				player.heal(2);
 		}
-	
+		System.out.println("Utility Class Damage 2: "+attack);
 		enemy.takeDamage(attack);
 		
 		if(card.getPush()>0) {

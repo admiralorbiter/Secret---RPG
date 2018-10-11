@@ -33,7 +33,7 @@ public class PlayerAbilityCards {
 			initiative=top.getInitiative();
 		}
 	}
-	
+	public String getName() {return top.name;}
 	public PlayerAbilityCards() {
 		index=-1;
 		flag=-1;

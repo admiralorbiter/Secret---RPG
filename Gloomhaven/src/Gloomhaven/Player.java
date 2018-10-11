@@ -30,8 +30,8 @@ public class Player {
 	int initiative=-1;																				//Initiative value based on cards, deciedes order in the game
 	PlayerAbilityCards topCard=null;																//Top ability card choosen, used for the initiative score
 	PlayerAbilityCards bottomCard=null;																//Bottom ability card
-	PlayerAbilityCards firstCardChoice=null;																			//Card picked first during the turn			
-	PlayerAbilityCards secondCardChoice=null;																			//Card picked second during the turn
+	PlayerAbilityCards firstCardChoice=new PlayerAbilityCards();																			//Card picked first during the turn			
+	PlayerAbilityCards secondCardChoice=new PlayerAbilityCards();																			//Card picked second during the turn
 	int shield;
 	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
 	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
@@ -47,9 +47,10 @@ public class Player {
 				this.id="P"+id;
 				this.characterClass=character;
 				startingAbilityCardCount=10;
-				int maxHealth=10;
-				int xp=0;
-				int shield=0;
+				maxHealth=10;
+				health=10;
+				xp=0;
+				shield=0;
 		}
 	
 		//Create ability deck
@@ -73,6 +74,10 @@ public class Player {
 		firstCardChoice=null;
 		secondCardChoice=null;
 		cardChoice=true;
+	}
+	
+	public PlayerAbilityCards getAugmentCard() {
+		return augment;
 	}
 	
 	//Sets the player on a long rest and creates an initiative of 99
@@ -230,6 +235,7 @@ public class Player {
 				else if(key==8) {
 					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
 				}
+				System.out.println(secondCardChoice.getIndex()+","+secondCardChoice.getAttack());
 				return key;
 			}
 			
@@ -237,16 +243,16 @@ public class Player {
 				cardChoice=!cardChoice;
 				secondCardChoice=topCard;
 				topCard=null;
-				if(key==5) {
+				if(key==1) {
 					abilityDeck.get(secondCardChoice.getIndex()).useTop();
 				}
-				else if(key==6) {
+				else if(key==2) {
 					abilityDeck.get(secondCardChoice.getIndex()).useBottom();
 				}
-				else if(key==7) {
+				else if(key==3) {
 					abilityDeck.get(secondCardChoice.getIndex()).useTopAlt();
 				}
-				else if(key==8) {
+				else if(key==4) {
 					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
 				}
 				return key;
@@ -377,18 +383,16 @@ public class Player {
 	public void endTurn() {
 		
 		cardChoice=true;
-
+		
 		if(longRest==false) {
 			CardDataObject card = new CardDataObject();
 			int index=-1;
 			if(firstCardChoice.getFlag()==0 || firstCardChoice.getFlag()==2) {
 				card= firstCardChoice.getTop();
 				index = firstCardChoice.getIndex();
-			}
-			
-			if(secondCardChoice.getFlag()==0 || secondCardChoice.getFlag()==2) {
-				card= secondCardChoice.getTop();
-				index = secondCardChoice.getIndex();
+			} else if(firstCardChoice.getFlag()==1 || firstCardChoice.getFlag()==3) {
+				card= firstCardChoice.getBottom();
+				index = firstCardChoice.getIndex();
 			}
 			
 			if(card.continuous) {
@@ -399,15 +403,14 @@ public class Player {
 				abilityDeck.get(index).discardPile();
 			}
 			
-			if(firstCardChoice.getFlag()==1 || firstCardChoice.getFlag()==3) {
-				card= firstCardChoice.getBottom();
-				index = firstCardChoice.getIndex();
-			}
-			
-			if(secondCardChoice.getFlag()==1 || secondCardChoice.getFlag()==3) {
+			if(secondCardChoice.getFlag()==0 || secondCardChoice.getFlag()==2) {
+				card= secondCardChoice.getTop();
+				index = secondCardChoice.getIndex();
+			}else if(secondCardChoice.getFlag()==1 || secondCardChoice.getFlag()==3) {
 				card= secondCardChoice.getBottom();
 				index = secondCardChoice.getIndex();
 			}
+			
 
 			if(card.continuous) {
 				inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
@@ -424,12 +427,14 @@ public class Player {
 	
 	public void setAugment(PlayerAbilityCards card) {
 		augment=card;
-		System.out.println(augment);
+		inPlay.add(augment);
 	}
 	
 	public void replaceAugmentCard(PlayerAbilityCards abilityCard) {
 		abilityDeck.get(augment.getIndex()).lostPile();
+		inPlay.remove(augment);
 		augment=abilityCard;
+		inPlay.add(augment);
 	}
 	
 	public void discardAugmentCard() {

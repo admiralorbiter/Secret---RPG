@@ -6,14 +6,14 @@ public class MindThief implements CardInterface {
 	public CardDataObject getTop(int id) {
 		CardDataObject top = new CardDataObject();
 		
-		top.id=id;
+		top.id=id; 
 		switch(id) {
 			case 1:
 				top.name="Submissive Affliction";
 				top.level=1;
 				top.initiative=48;
 				top.text="Attack +2 and add +1 Attack for each negative condition on target. XP +1";
-				top.attack=3;
+				top.attack=2;
 				top.addNegativesToAttack=true;
 				top.experience=1;
 				break;
@@ -40,6 +40,7 @@ public class MindThief implements CardInterface {
 				top.initiative=79;
 				top.text="Augument Shield +1 on Self. Attack +1. XP +1";
 				top.augment=true;
+				top.continuous=true;
 				top.attack=1;
 				top.experience=1;
 				break;
@@ -58,6 +59,7 @@ public class MindThief implements CardInterface {
 				top.initiative=75;
 				top.text="Augument On Melee Attack +2. Attack +1. XP +1";
 				top.augment=true;
+				top.continuous=true;
 				top.attack=1;
 				top.experience=1;
 				break;
@@ -67,6 +69,7 @@ public class MindThief implements CardInterface {
 				top.initiative=71;
 				top.text="Augument On Melee Attack Heal +2. Attack +1. XP +1";
 				top.augment=true;
+				top.continuous=true;
 				top.attack=1;
 				top.experience=1;
 				break;

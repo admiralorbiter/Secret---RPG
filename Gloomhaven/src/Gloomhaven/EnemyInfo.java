@@ -139,7 +139,7 @@ public class EnemyInfo {
 	//[Test]
 	public void testPrintEnemies() {
 		for(int i=0; i<enemies.size(); i++) {
-			System.out.println(enemies.get(i).getClassID());
+			System.out.println(enemies.get(i).getClassID()+"  "+enemies.get(i).getCoordinate());
 		}
 	}
 	

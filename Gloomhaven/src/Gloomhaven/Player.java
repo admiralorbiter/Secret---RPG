@@ -52,8 +52,8 @@ public class Player {
 				this.id="P"+id;
 				this.characterClass=character;
 				startingAbilityCardCount=10;
-				maxHealth=10;
-				health=10;
+				maxHealth=50;
+				health=50;
 				xp=0;
 				shield=0;
 				level=1;

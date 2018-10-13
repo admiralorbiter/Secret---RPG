@@ -8,4 +8,8 @@ public class SimpleCards {
 	public SimpleCards() {
 		
 	}
+	
+	public int getAttack() {return attack;}
+	public int getMove() {return move;}
+	public int getRange() {return range;}
 }

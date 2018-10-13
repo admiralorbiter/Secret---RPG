@@ -47,6 +47,16 @@ public final class UtilitiesAB {
 	
 	}
 	
+	public static void resolveAttackEnemyOnEnemy(Enemy enemy, Enemy attacker, int attack) {
+		int enemyShield=enemy.getShield();
+		if(enemyShield>0){
+			attack=attack-enemyShield;
+			if(attack<0)
+				attack=0;
+		}
+		enemy.takeDamage(attack);
+	}
+	
 	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
 		
 		int attack=card.getAttack();

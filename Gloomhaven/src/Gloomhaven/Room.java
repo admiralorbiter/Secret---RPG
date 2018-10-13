@@ -112,6 +112,7 @@ public class Room {
 	
 	public void moveEnemy(Enemy enemy, Point ending) {
 		Point starting=enemy.getCoordinate();
+		System.out.println(starting+","+ending);
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
 		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);

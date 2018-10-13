@@ -36,7 +36,7 @@ public class Setting {
 	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
 	private int offsetYGraphicsMid=300;
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
-	private String playerClass="Brute";
+	private String playerClass="Mind Thief";
 	public String getPlayerClass() {return playerClass;}
 	private Color playerColor = Color.GREEN;
 	public Color getPlayerColor() {return playerColor;}

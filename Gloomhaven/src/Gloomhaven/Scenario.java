@@ -35,6 +35,7 @@ public class Scenario {
 	    PLAYER_LOOT,
 	    PLAYER_HEAL,
 	    LONG_REST,
+	    MINDCONTROL,
 	    END;
 	}
 	
@@ -57,19 +58,20 @@ public class Scenario {
 	private List<Player> targets;																	//Target list created by the enemy
 	private String targetID;																		//Player being targeted by the enemy						
 	private PlayerAbilityCards card = null;											//Card object used by the player's attack
-	
+	private Enemy enemyControlled = null;
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
 	
 	public Scenario(String sceneID, List<Player> party) {			
 		
-		this.party=party;																			//imports the party into the scenarios
+		this.party=party;		//imports the party into the scenarios
+		SetupScenario setup = new SetupScenario(sceneID);	
 		//Setups up the room and enemies based on the scene id
-		SetupScenario setup = new SetupScenario(sceneID);			
-		room = new Room(setup.getRoomID(), party, setup.getEnemies());
-		enemyInfo=new EnemyInfo(setup.getEnemies(), room);
-		
-		
+		List<Enemy> enemies = new ArrayList<Enemy>();
+		enemies=setup.getEnemies();		
+		room = new Room(setup.getRoomID(), party, enemies);
+		enemyInfo=new EnemyInfo(enemies, room);
+	
 		currentPlayer=0;																			//sets current player to 0 for the card selection around
 		enemyInfo.orderEnemies();																	//orders the enemies in list
 		dimensions=room.getDimensions();															//Sets dimensions from room
@@ -104,7 +106,6 @@ public class Scenario {
 	
 		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)--------------------------------------------------------------------------------
 		if(state==State.CARD_SELECTION) {
-			
 			g.drawString("Picking Cards for your turn.", setting.getGraphicsX(), setting.getGraphicsYTop()+30);
 			
 			//Allows the user to take a long rest if they have enough in the discard pile 
@@ -134,7 +135,7 @@ public class Scenario {
 		}
 		//State: INITIATIVE: Everyone is ordered based on their initiative-----------------------------------------------------------------------------------------------
 		else if(state==State.INITIATIVE) {
-
+	
 			int enemyInit=enemyInfo.getInitiative();												//Collect enemy initiative from ability card
 			party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
 			
@@ -185,7 +186,6 @@ public class Scenario {
 		//State: ATTACK: has the logic for who should be attacking and setting the state for enemy attack, player defense, etc-------------------------------------------
 		//Also should know the end state of when attacks are over and round is done
 		else if(state==State.ATTACK) {
-			
 			//Next State: Enemy Attack
 			if(enemyInfo.getTurnNumber()==turn) {													//If enemy turns, do enemy attack
 				enemyTurnIndex=0;																	//Resets enemy turn index
@@ -275,7 +275,6 @@ public class Scenario {
 		}
 		//State: PLAYER_ATTACK_LOGIC: Player picks card, then uses data for next state-----------------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
-			
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
 			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack(), 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
@@ -400,6 +399,8 @@ public class Scenario {
 				
 				//Space is used for selection of target
 				if(k=='t') {
+					
+
 					if(card.getTargetHeal()) {
 						if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
 							if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
@@ -420,9 +421,10 @@ public class Scenario {
 								//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
 								//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
 								//enemyInfo.playerAttack(id, damage);
-								if(card.getMindControl())
-									mindControl(party.get(playerIndex), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), g);
-									//UtilitiesAB.resolveMindControl(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
+								if(card.getMindControl()) {
+									enemyControlled=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
+									state=State.MINDCONTROL;
+								}
 								else {
 									UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
 									finished=true;	
@@ -434,7 +436,29 @@ public class Scenario {
 			}else {																					//If there are no enemies in target range
 				finished=true;
 			}
-
+			//Next State: Next card, Attack Logic, End Round
+			if(finished) {
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_END_DISCARD;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
+				}
+			}
+		}
+		else if(state==State.MINDCONTROL) {
+			boolean finished=false;
+			if(card.getData().getMindControData().getMove()>0)
+				finished=mindControlMove(party.get(playerIndex), enemyControlled, g);
+			
+			if(card.getData().getMindControData().getAttack()>0)
+				finished=mindControlAttack(party.get(playerIndex), enemyControlled, g);
+			
 			//Next State: Next card, Attack Logic, End Round
 			if(finished) {
 				if(party.get(currentPlayer).getCardChoice()==false) {
@@ -619,22 +643,24 @@ public class Scenario {
 		System.out.println("");
 	}
 	
-	private boolean mindControl(Player player, Enemy enemy, Graphics g) {
+	private boolean mindControlMove(Player player, Enemy enemy, Graphics g) {
 		boolean finished=false;
 
 		
 		//Highlight tiles that players can move to
 		Point enemyPoint=enemy.getCoordinate();
-		for(int r=1; r<=card.getMove(); r++) {
+		SimpleCards cardData = card.getData().getMindControData();
+		
+		for(int r=1; r<=cardData.range; r++) {
 			room.drawRange(g, enemyPoint, r, Color.BLUE);
 		}
 
 		//Moves selection highlight
-		g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		g.drawString("Press m to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 		selection(g);
 		
 		//Player moves if the space is empty or the space hasn't changed
-		if(k=='t') {
+		if(k=='m') {
 			if(room.isSpace(room.getSelectionCoordinates(), "E")) {
 				return true;
 			}
@@ -664,5 +690,44 @@ public class Scenario {
 		return false;
 	}
 	
+	private boolean mindControlAttack(Player player, Enemy enemy, Graphics g) {
+		boolean finished=false;
+		
+		g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		
+		//Creates target list of enemy coordinates
+		List<Point> targets = new ArrayList<Point>();
+		int cardRange=card.getData().getMindControData().getRange();
+		if(cardRange>=0) {
+			if(cardRange==0)
+				cardRange=1;
+	
+				for(int range=1; range<=cardRange; range++)
+					targets = enemy.createTargetList(room.getBoard(), range, "E");	
+		}
+		
+		//If there are targets, highlight the targets and wait for selection
+		if(targets.size()>0) {
+
+			room.highlightTargets(targets, g);
+			selection(g);
+			
+			//Space is used for selection of target
+			if(k=='t') {
+				if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+					if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+							UtilitiesAB.resolveAttackEnemyOnEnemy(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), enemy, card.getData().getMindControData().getAttack());
+							return true;
+					}
+				}
+				return false;
+			}
+			else {
+				return false;
+			}
+		}else {																					//If there are no enemies in target range
+			return true;
+		}
+	}
 	
 }

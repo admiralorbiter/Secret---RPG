@@ -166,11 +166,12 @@ public class MindThief implements CardInterface {
 			case 7:
 				bottom.name="Parasitic Influence";
 				bottom.level=1;
-				bottom.text="Force enemy to move with player control of range 4. Move +1.(UNIMPLEMENTED).";
+				bottom.text="Force enemy to move with player control of range 4. Move +1.";
 				bottom.mindControl=true;
 				bottom.range=4;
 				bottom.mindControlData.move=1;
 				bottom.mindControlData.attack=0;
+				bottom.mindControlData.range=1;
 				break;
 			case 8:
 				bottom.name="Scurry";

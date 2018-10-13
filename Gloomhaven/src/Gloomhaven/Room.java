@@ -38,6 +38,9 @@ public class Room {
 				//Create player
 				point = new Point(3, 3);
 				setTilePlayer(party.get(0), point);
+				
+				point = new Point(5, 5);
+				board[5][5].setHex("Loot", "Gold");
 				break;
 				
 			default:
@@ -49,6 +52,8 @@ public class Room {
 	
 	//Getter Functions
 	public String getID(Point point) {return board[(int)point.getX()][(int)point.getY()].getID();}
+	public String getQuickID(Point point) {return board[(int)point.getX()][(int)point.getY()].getQuickID();}
+	public String getLootID(Point point) {return board[(int)point.getX()][(int)point.getY()].getLootID();}
 	public Point getDimensions() {return dimensions;}
 	public boolean isSpaceEmpty(Point space) {return board[(int) space.getX()][(int) space.getY()].getSpaceFree();}
 	public Hex[][] getBoard(){return board;}
@@ -93,8 +98,20 @@ public class Room {
 	}
 	
 	//Moves the player from one point to another
-	public void movePlayer(Point starting, Point ending) {	
-		
+	public void movePlayer(Player player, Point ending) {	
+		Point starting=player.getCoordinate();
+		if(board[(int) ending.getX()][(int) ending.getY()].getQuickID().equals("Loot")) {
+			player.addLoot(board[(int) ending.getY()][(int) ending.getY()]);
+		}
+				
+		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
+		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
+		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
+		board[(int) starting.getX()][(int) starting.getY()].reset();
+	}
+	
+	public void moveEnemy(Enemy enemy, Point ending) {
+		Point starting=enemy.getCoordinate();
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
 		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
@@ -105,9 +122,7 @@ public class Room {
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
 	public void drawRange(Graphics g, Point start, int range, Color color) {
-		
-		g.setColor(color);																			//Sets the color of the hex
-		
+				
 		for(int x=-range; x<=range; x++) {
 			for(int y=-range; y<=range; y++) {
 				for(int z=-range; z<=range; z++) {
@@ -127,8 +142,10 @@ public class Room {
 						
 						//Checks that the plotted x and y are inside the dimensions
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY())
+							if(yToPlot>=0 && yToPlot<dimensions.getY()) {
+								g.setColor(color);
 								drawHex(g, xToPlot,  yToPlot);
+							}
 					}
 				}
 			}
@@ -171,8 +188,24 @@ public class Room {
 		int[] tX = {0+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX};
 		int[] tY = {SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, 0+y*(SIZE_OF_HEX+bufferY)+offsetY,  SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
-		g.drawString(board[x][y].getQuickID(), SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+5+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		if(board[x][y].getQuickID()=="P")
+			g.setColor(setting.getPlayerColor());
+		else if(board[x][y].getQuickID()=="E")
+		{
+			if(board[x][y].getID().contains("Elite"))
+				g.setColor(setting.getEliteEnemyColor());
+			else
+				g.setColor(setting.getEnemyColor());
+			
+		}
+		if(board[x][y].getQuickID()=="Loot") {
+			g.setColor(Color.ORANGE);
+			g.drawString(board[x][y].getLootID(), SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX-15, SIZE_OF_HEX/2+5+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		}
+		else
+			g.drawString(board[x][y].getQuickID(), SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+5+y*(SIZE_OF_HEX+bufferY)+offsetY);
 		g.drawString(x+", "+y, SIZE_OF_HEX/3+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY);
+		g.setColor(setting.getDefaultColor());
 	}
 	
 	//Highlights are the target points in a list
@@ -215,5 +248,10 @@ public class Room {
 			player.addLoot(board[(int) loot.get(i).getX()][(int) loot.get(i).getY()]);
 			board[(int) loot.get(i).getX()][(int) loot.get(i).getY()].reset();
 		}
+	}
+	
+	public void loot(Player player, Point loot) {
+		player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
+		board[(int) loot.getX()][(int) loot.getY()].reset();
 	}
 }

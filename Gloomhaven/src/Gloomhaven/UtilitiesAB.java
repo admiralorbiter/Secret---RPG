@@ -1,5 +1,7 @@
 package Gloomhaven;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,21 +25,33 @@ public final class UtilitiesAB {
 		if(card.getHeal()>0)
 			player.heal(card.getHeal());
 		
-		if(card.lootRange>0) {
+		if(card.getLootRange()>0) {
 			List<Point> loot = new ArrayList<Point>();
 			loot=createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinate(), "Loot", room.getDimensions());
 			room.loot(player, loot);
+		}
+		
+		if(card.getContinuous()) {
+			if(card.name.equals("Warding Strength"))
+			{
+				player.persistanceBonus(1, "Warding Strength");
+			}
 		}
 
 
 		if(card.getAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
+		
+		if(card.getSheild()>0)
+			player.setShield(card.getSheild());
 	
 	}
 	
 	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
+		
 		int attack=card.getAttack();
 		System.out.println("Utility Class Damage: "+attack);
+		
 		if(card.causesNegativeCondition())
 			negativeConditionOnEnemy(card, enemy);
 		
@@ -60,6 +74,17 @@ public final class UtilitiesAB {
 			if(player.getAugmentCard().getName().equals("Parasitic influence"))
 				//If target is melle
 				player.heal(2);
+		}
+		
+		int enemyShield=enemy.getShield();
+		if(enemyShield>0){
+			int playerPierce=card.getPierce();
+			if(playerPierce>0) {
+				if(enemyShield>playerPierce)
+					attack=attack+playerPierce;
+				else
+					attack=attack+enemyShield;
+			}
 		}
 		System.out.println("Utility Class Damage 2: "+attack);
 		enemy.takeDamage(attack);
@@ -179,7 +204,7 @@ public final class UtilitiesAB {
 
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(board[xToPlot][yToPlot].getQuickID()=="E"){
+								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
 									targets.add(new Point(xToPlot,yToPlot));
 						}
 

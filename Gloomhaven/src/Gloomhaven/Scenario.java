@@ -93,9 +93,11 @@ public class Scenario {
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
-
-		if(party.get(0).isAugmented())
-			party.get(0).graphicsAugmentCard(g);
+		
+		
+		party.get(0).graphicsPlayerInfo(g);
+		elements.graphicsDrawTable(g);
+		party.get(0).graphicsDrawCardsInPlay(g);
 		
 		room.drawRoom(g);																			//Draws current room
 		parseKey(key);																				//Parses the input key as either a character or number
@@ -282,7 +284,9 @@ public class Scenario {
 			//Next State: Player Move, Player attack, Back to Attack, or End Turn
 			if(card.getMove()>0) {
 				state=State.PLAYER_MOVE;
-			}else if(card.getAttack()>0) {
+			//if there is range? that way it hits all targed attacks
+			//}else if(card.getAttack()>0 || card.getTargetHeal()==true) {
+			}else if(card.getRange()>0 || card.getAttack()>0) {
 				state=State.PLAYER_ATTACK;
 			}else {
 				if(party.get(currentPlayer).getCardChoice()==false) {
@@ -305,30 +309,48 @@ public class Scenario {
 			
 			//Highlight tiles that players can move to
 			Point playerPoint=party.get(playerIndex).getCoordinate();
-			for(int r=1; r<=card.getMove(); r++)
+			for(int r=1; r<=card.getMove(); r++) {
 				room.drawRange(g, playerPoint, r, Color.BLUE);
+			}
 	
 			//Moves selection highlight
-			g.drawString("Press m to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+			g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 			selection(g);
 			
 			//Player moves if the space is empty or the space hasn't changed
-			if(k=='m') {
-				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
-					room.movePlayer(party.get(playerIndex).getCoordinate(), room.getSelectionCoordinates());
+			if(k=='t') {
+				if(room.isSpace(room.getSelectionCoordinates(), "P")) {
+					finished=true;
+				}
+				else if(card.getFlying()) {
+					//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
+					room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
 					party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
 					finished=true;
 				}
-				
-				if(room.isSpace(room.getSelectionCoordinates(), "P")) {
-					finished=true;
+				else if(card.getJump()) {
+					if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+						if(room.getQuickID(room.getSelectionCoordinates())=="Loot")
+							room.loot(party.get(playerIndex), room.getSelectionCoordinates());
+						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
+						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+						finished=true;
+					}
+
+				}else {
+					//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
+					if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
+						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+						finished=true;
+					}
 				}
 			}
 
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
 			
-				if(card.getAttack()>0) {
+				if(card.getRange()>0 || card.getAttack()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
 				}else {
@@ -350,14 +372,24 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK) {
 			boolean finished=false;
 			
+			g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+			
 			//Creates target list of enemy coordinates
 			List<Point> targets = new ArrayList<Point>();
 			int cardRange=card.getRange();
 			if(card.getRange()>=0) {
 				if(card.getRange()==0)
 					cardRange=1;
-				for(int range=1; range<=cardRange; range++)
-					targets = party.get(playerIndex).createTargetList(room.getBoard(), range);
+	
+				if(card.getTargetHeal()) {
+					for(int range=1; range<=cardRange; range++)
+						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P");
+					targets.add(party.get(playerIndex).getCoordinate());
+				}
+				else {
+					for(int range=1; range<=cardRange; range++)
+						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
+				}
 			}
 			
 			//If there are targets, highlight the targets and wait for selection
@@ -367,14 +399,35 @@ public class Scenario {
 				selection(g);
 				
 				//Space is used for selection of target
-				if(k==' ') {
-					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
-						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-							//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
-							//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
-							//enemyInfo.playerAttack(id, damage);
-							UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
-							finished=true;													
+				if(k=='t') {
+					if(card.getTargetHeal()) {
+						if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
+							if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+								String id = room.getID(room.getSelectionCoordinates());
+								for(int i=0; i<party.size(); i++)
+								{
+									if(party.get(i).getID()==id) {
+										party.get(i).heal(card.getHeal());
+										finished=true;
+									}
+								}
+							}
+						}
+					}
+					else {
+						if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+							if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+								//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
+								//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
+								//enemyInfo.playerAttack(id, damage);
+								if(card.getMindControl())
+									mindControl(party.get(playerIndex), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), g);
+									//UtilitiesAB.resolveMindControl(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
+								else {
+									UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
+									finished=true;	
+								}
+							}
 						}
 					}
 				}
@@ -564,6 +617,51 @@ public class Scenario {
 			System.out.println(i+": "+targets);
 		}
 		System.out.println("");
+	}
+	
+	private boolean mindControl(Player player, Enemy enemy, Graphics g) {
+		boolean finished=false;
+
+		
+		//Highlight tiles that players can move to
+		Point enemyPoint=enemy.getCoordinate();
+		for(int r=1; r<=card.getMove(); r++) {
+			room.drawRange(g, enemyPoint, r, Color.BLUE);
+		}
+
+		//Moves selection highlight
+		g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		selection(g);
+		
+		//Player moves if the space is empty or the space hasn't changed
+		if(k=='t') {
+			if(room.isSpace(room.getSelectionCoordinates(), "E")) {
+				return true;
+			}
+			else if(card.getFlying()) {
+				//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
+				room.moveEnemy(enemy, room.getSelectionCoordinates());
+				enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+				return true;
+			}
+			else if(card.getJump()) {
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+					room.moveEnemy(enemy, room.getSelectionCoordinates());
+					enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+					return true;
+				}
+
+			}else {
+				//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+					room.moveEnemy(enemy, room.getSelectionCoordinates());
+					enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
 	}
 	
 	

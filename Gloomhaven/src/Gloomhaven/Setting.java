@@ -5,10 +5,12 @@ import java.util.concurrent.TimeUnit;
 
 public class Setting {
 	private int SIZE_OF_HEX=60;
-	private Color DEFAULT_COLOR = Color.magenta;
+	private Color DEFAULT_COLOR = Color.WHITE;
 	private int offsetY=0;
 	private int offsetX=400;
 	private Color HIGHLIGHT_COLOR = Color.GREEN;
+	private Color GUI_COLOR = Color.WHITE;
+	public Color getGUIColor() {return GUI_COLOR;}
 	private int WIDTH=1400;
 	private int HEIGHT=800;
 	private String TITLE="Gloomhaven";
@@ -25,7 +27,7 @@ public class Setting {
 	private int offsetXGraphics=10;
 	private int offsetYGraphicsTop=25;
 	private int offsetXGraphicsMid=WIDTH/3;
-	private int offsetXGraphicsRight=WIDTH*2/3;
+	private int offsetXGraphicsRight=WIDTH*5/6;
 	public int getGraphicsXRight() {return offsetXGraphicsRight;}
 	public int getGraphicsXMid() {return offsetXGraphicsMid;}
 	public int getGraphicsX() {return offsetXGraphics;}
@@ -34,8 +36,14 @@ public class Setting {
 	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
 	private int offsetYGraphicsMid=300;
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
-	
-	
+	private String playerClass="Brute";
+	public String getPlayerClass() {return playerClass;}
+	private Color playerColor = Color.GREEN;
+	public Color getPlayerColor() {return playerColor;}
+	private Color enemyEliteColor = Color.yellow;
+	public Color getEliteEnemyColor() {return enemyEliteColor;}
+	private Color enemyColor = Color.CYAN;
+	public Color getEnemyColor() {return enemyColor;}
 	//[Testing]
 	private int NUM_PLAYERS=1;
 	private String SCENE_ID="Test";

@@ -21,7 +21,7 @@ public class MindThief implements CardInterface {
 				top.name="Into the Night";
 				top.level=1;
 				top.initiative=14;
-				top.text="Loot +1.(UNIMPLEMENTED) Infuse Dark";
+				top.text="Loot +1. Infuse Dark";
 				top.lootRange=1;
 				top.darkInfusion=true;
 				break;
@@ -39,6 +39,7 @@ public class MindThief implements CardInterface {
 				top.level=1;
 				top.initiative=79;
 				top.text="Augument Shield +1 on Self. Attack +1. XP +1";
+				top.augmentText="Shield +1 on Self";
 				top.augment=true;
 				top.continuous=true;
 				top.attack=1;
@@ -51,13 +52,14 @@ public class MindThief implements CardInterface {
 				top.text="Summon Rat Swarm. Xp +2. Cont. Then consumed on discard. (UNIMPLEMENTED)";
 				top.experience=2;
 				top.continuous=true;
-				top.lost=true;
+				top.complex=true;
 				break;
 			case 6:
 				top.name="The Mind's Weakness";
 				top.level=1;
 				top.initiative=75;
 				top.text="Augument On Melee Attack +2. Attack +1. XP +1";
+				top.augmentText="On Melee Attack +2";
 				top.augment=true;
 				top.continuous=true;
 				top.attack=1;
@@ -68,6 +70,7 @@ public class MindThief implements CardInterface {
 				top.level=1;
 				top.initiative=71;
 				top.text="Augument On Melee Attack Heal +2. Attack +1. XP +1";
+				top.augmentText="On Melee Attack Heal +2";
 				top.augment=true;
 				top.continuous=true;
 				top.attack=1;
@@ -119,7 +122,11 @@ public class MindThief implements CardInterface {
 				bottom.name="Submissive Affliction";
 				bottom.level=1;
 				//Force one enemy within 5 range to do 2 attack to melee
-				bottom.text="Force enemy to target another enemy (UNIMPLEMENTED)";
+				bottom.text="Force enemy to target another enemy at Range 5. Attack +2 Range +0 (UNIMPLEMENTED)";
+				bottom.mindControl=true;
+				bottom.range=5;
+				bottom.mindControlData.attack=2;
+				bottom.mindControlData.range=0;
 				break;
 			case 2:
 				bottom.name="Into the Night";
@@ -139,7 +146,7 @@ public class MindThief implements CardInterface {
 			case 4:
 				bottom.name="Feedback Loop";
 				bottom.level=1;
-				bottom.text="Move +3. Jump. (UNIMPLEMENTED) If you end in the same hex. Perform muddle on all target enemies moved through. (UNIMPLEMENTED";
+				bottom.text="Move +3. Jump. If you end in the same hex. Perform muddle on all target enemies moved through. (UNIMPLEMENTED";
 				bottom.move=3;
 				bottom.jump=true;
 				break;
@@ -159,7 +166,11 @@ public class MindThief implements CardInterface {
 			case 7:
 				bottom.name="Parasitic Influence";
 				bottom.level=1;
-				bottom.text="Force enemy to move with player control (UNIMPLEMENTED).";
+				bottom.text="Force enemy to move with player control of range 4. Move +1.(UNIMPLEMENTED).";
+				bottom.mindControl=true;
+				bottom.range=4;
+				bottom.mindControlData.move=1;
+				bottom.mindControlData.attack=0;
 				break;
 			case 8:
 				bottom.name="Scurry";

@@ -17,7 +17,7 @@ public class CardDataObject {
 	//Effects that change the in play or out of play
 	boolean lost;
 	boolean continuous;
-	
+	boolean roundBonus;
 	
 	boolean addNegativesToAttack;
 	
@@ -49,7 +49,19 @@ public class CardDataObject {
 	int pull;
 	
 	boolean augment;
+	String augmentText;
 	
+	int pierce;
+	boolean retaliate;
+	boolean taunt;
+	int shield;
+	boolean flying;
+	
+	int targetNum;
+	boolean complex;
+	boolean mindControl;
+	SimpleCards forEachTargetedData = new SimpleCards();
+	SimpleCards mindControlData = new SimpleCards();
 	public CardDataObject() {
 		text="If you are seeing this, it is a mistake";
 		move=0;
@@ -87,8 +99,26 @@ public class CardDataObject {
 		pull=0;
 		
 		augment=false;
+		augmentText="None";
+		
+		pierce=0;
+		retaliate=false;
+		taunt=false;
+		shield=0;
+		flying=false;
+		roundBonus=false;
+		
+		targetNum=1;
+		complex=false;
+		mindControl=false;
 	}
-	
+	public SimpleCards getMindControData() {return mindControlData;}
+	public boolean getMindControl() {return mindControl;}
+	public boolean getComplex() {return complex;}
+	public boolean getRoundBonus() {return roundBonus;}
+	public boolean getFlying() {return flying;}
+	public int getSheild() {return shield;}
+	public int getPierce() {return pierce;}
 	public int getHeal() {return heal;}
 	public String getText() {return text;}
 	public String getName() {return name;}
@@ -115,7 +145,9 @@ public class CardDataObject {
 	public boolean getMuddle() {return muddle;}
 	public boolean getPoison() {return poison;}
 	public boolean getStun() {return stun;}
-	
+	public boolean getRetaliate() {return retaliate;}
+	public boolean getTaunt() {return taunt;}
+	public int getTargetNum() {return targetNum;}
 	public boolean causesNegativeCondition() {
 		if(wound)
 			return true;
@@ -166,5 +198,9 @@ public class CardDataObject {
 			return true;
 		
 		return false;
+	}
+	
+	public String getAugmentText() {
+		return augmentText;
 	}
 }

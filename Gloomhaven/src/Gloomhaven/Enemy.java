@@ -290,4 +290,10 @@ public class Enemy {
 	public void push(Point playerCoordinate, int pushRange) {
 		
 	}
+	
+	public int getShield() {return shield;}
+	
+	public void moveEnemy(Point newCoordinate) {
+		coordinates=newCoordinate;
+	}
 }

@@ -25,6 +25,9 @@ public class PlayerAbilityCards {
 		else if(Class=="Mind Thief") {
 			card = new MindThief();
 		}
+		else if(Class=="Brute") {
+			card = new Brute();
+		}
 		
 		if(level==1) {
 			top=card.getTop(id);
@@ -32,8 +35,21 @@ public class PlayerAbilityCards {
 			name=top.getName();
 			initiative=top.getInitiative();
 		}
+		
 	}
-	public String getName() {return top.name;}
+	
+	PlayerAbilityCards(PlayerAbilityCards a) {
+		this.name=a.name;
+		this.initiative=a.initiative;
+		this.lost=a.lost;
+		this.discard=a.discard;
+		this.inPlay=a.inPlay;
+		this.index=a.index;
+		this.top=a.top;
+		this.bottom=a.bottom;
+		this.flag=flag;
+	}
+	public String getName() {return name;}
 	public PlayerAbilityCards() {
 		index=-1;
 		flag=-1;
@@ -168,6 +184,68 @@ public class PlayerAbilityCards {
 	
 		if(flag==1)
 			return bottom.getAugment();
+	
+		return false;
+	}
+
+	public boolean getJump() {
+		if(flag==0)
+			return top.getJump();
+	
+		if(flag==1)
+			return bottom.getJump();
+	
+		return false;
+	}
+	
+	public boolean getFlying() {
+		if(flag==0)
+			return top.getFlying();
+	
+		if(flag==1)
+			return bottom.getFlying();
+	
+		return false;
+	}
+	
+	public int getPierce() {
+		if(flag==0)
+			return top.getPierce();
+	
+		if(flag==1)
+			return bottom.getPierce();
+	
+		return 0;
+	}
+	
+	public boolean getTargetHeal() {
+		if(flag==0)
+			if(top.getHeal()>0 && top.getRange()>0)
+				return true;
+	
+		if(flag==1)
+			if(bottom.getHeal()>0 && bottom.getRange()>0)
+				return true;
+	
+		return false;
+	}
+	
+	public int getHeal() {
+		if(flag==0)
+			return top.getHeal();
+	
+		if(flag==1)
+			return bottom.getHeal();
+	
+		return 0;
+	}
+	
+	public boolean getMindControl() {
+		if(flag==0)
+			return top.getMindControl();
+		
+		if(flag==1)
+			return bottom.getMindControl();
 	
 		return false;
 	}

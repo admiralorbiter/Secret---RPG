@@ -6,7 +6,7 @@ public class Hex {
 	
 	String quickID="-";
 	String id=" ";
-	
+	String lootID=" ";
 	boolean empty=true;
 	boolean loot=false;
 	Point coordinate;
@@ -17,11 +17,20 @@ public class Hex {
 	
 	public void setHex(String quickID, String id) {
 		this.quickID=quickID;
-		this.id=id;
-		if(quickID=="Loot")
-			loot=true;
-		empty=false;
+		
+		if(quickID.equals("Loot")) {
+			if(id.equals("Gold")) {
+				this.lootID="Gold";
+				this.id="lootGold";
+				loot=true;
+			}
+		}else {
+			this.id=id;
+			empty=false;
+		}
 	}
+	
+	public String getLootID() {return lootID;}
 	
 	public void reset() {
 		quickID="-";

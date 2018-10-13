@@ -1,5 +1,8 @@
 package Gloomhaven;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StatusEffectDataObject{
 	
 	//conditions and effects
@@ -56,4 +59,31 @@ public class StatusEffectDataObject{
 	public void resetPush() {push=0;}
 	public void resetPull() {pull=0;}
 	public void resetPierce() {pierce=0;}
+	
+	public List<String> getNegativeConditions(){
+		List<String> list = new ArrayList<String>();
+
+		if(curse)
+			list.add("Curse");
+		
+		if(disarm)
+			list.add("Disarm");
+		
+		if(immobilize)
+			list.add("Immoiblize");
+		
+		if(wound)
+			list.add("Wound");
+		
+		if(muddle)
+			list.add("Muddle");
+		
+		if(poison)
+			list.add("Poison");
+		
+		if(stun)
+			list.add("Stun");
+		
+		return list;
+	}
 }

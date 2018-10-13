@@ -1,5 +1,6 @@
 package Gloomhaven;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -15,9 +16,10 @@ public class Player {
 	String characterClass;																			//Class
 	int startingAbilityCardCount;																	//Sets how many ability cards are allowed in the deck ( probably depends on level)
 	int maxHealth;																					//Sets what the max health of the player can be
-	int name;																						//Name of the character
+	String name;																						//Name of the character
 	Setting setting = new Setting();
 	PlayerAbilityCards augment = new PlayerAbilityCards();
+	int level;
 	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
@@ -40,6 +42,8 @@ public class Player {
 	int health;																						//Current health of the player
 	int xp;																							//Current experience of the player
 	List<String> lootInventory = new ArrayList<String>();
+	int gold;
+	List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
 	
 	public Player(int id, String character) {
 		//Set constant variables
@@ -52,6 +56,9 @@ public class Player {
 				health=10;
 				xp=0;
 				shield=0;
+				level=1;
+				name="Jon";
+				gold=0;
 		}
 	
 		//Create ability deck
@@ -69,6 +76,8 @@ public class Player {
 		topCard=null;
 		bottomCard=null;
 	}
+	
+	
 	
 	//Resets card choice during the round for making more choices
 	public void resetCardChoice() {
@@ -116,7 +125,7 @@ public class Player {
 	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public List<Point> createTargetList(Hex board[][], int range) {
+	public List<Point> createTargetList(Hex board[][], int range, String quickID) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -137,7 +146,7 @@ public class Player {
 
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(board[xToPlot][yToPlot].getQuickID()=="E"){
+								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
 									targets.add(new Point(xToPlot,yToPlot));
 						}
 
@@ -171,7 +180,10 @@ public class Player {
 	}
 	
 	public void addLoot(Hex hex) {
-		lootInventory.add(hex.getID());
+		if(hex.getLootID().equals("Gold"))
+			gold++;
+		else
+			lootInventory.add(hex.getLootID());
 	}
 
 	public int pickPlayCard(int key, Graphics g) {
@@ -400,8 +412,13 @@ public class Player {
 				index = firstCardChoice.getIndex();
 			}
 			
+			//This is for brute: shield bash - Not sure it will always hold true
+			if(card.roundBonus && card.shield>0) {
+				shield=shield-1;
+			}
+			
 			if(card.continuous) {
-				inPlay.add(topCard);									//Need a way to track if i am using the top or bottom as a cont
+				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost) {
 				abilityDeck.get(index).lostPile();
 			}else {
@@ -418,7 +435,7 @@ public class Player {
 			
 
 			if(card.continuous) {
-				inPlay.add(bottomCard);									//Need a way to track if i am using the top or bottom as a cont
+				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost) {
 				abilityDeck.get(index).lostPile();
 			}else {
@@ -446,10 +463,47 @@ public class Player {
 		abilityDeck.get(augment.getIndex()).lostPile();
 		augment=null;
 	}
-	
+	/*
 	public void graphicsAugmentCard(Graphics g) {
 		g.drawString("Augment Active:", setting.getGraphicsXMid(), setting.getGraphicsYBottom());
-		g.drawString(augment.getText(), setting.getGraphicsXMid(), setting.getGraphicsYBottom()+15);
+		g.drawString(augment.getTop().getAugmentText(), setting.getGraphicsXMid(), setting.getGraphicsYBottom()+15);
+	}*/
+	
+	public void graphicsDrawCardsInPlay(Graphics g) {
+		g.drawString("Cards in play.", setting.getGraphicsXRight(), setting.getGraphicsYTop());
+		for(int i=0; i<inPlay.size(); i++) {
+			g.drawString(inPlay.get(i).getName(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+15+15*i);
+		}
+	}
+	
+	public void graphicsPlayerInfo(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
+		g.drawString(name+"  "+characterClass, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
+		g.drawString("Level "+level, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
+		g.drawString("Health "+health+"  XP"+xp+"  Shield "+shield, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		if(isAugmented()) {
+			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
+			g.drawString(augment.getTop().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
+		}
+		List<String> negativeConditions = effects.getNegativeConditions();
+		if(negativeConditions.size()>0) {
+			g.drawString("Negative Conditions", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+90);
+			for(int i=0; i<negativeConditions.size(); i++)
+				g.drawString(negativeConditions.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
+		}
+		g.drawString("Gold: "+gold, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
+		
+		
+		
+		/*
+		g.drawString("Discard Deck Size and Lost Deck Size (Need to do)", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
+		g.drawString("Hand Size", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
+		g.drawString("Goal", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+90);
+		g.drawString("Scenario Goal", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105);
+		g.drawString("Gold", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+120);
+		g.drawString("Items", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+135);*/
+		g.setColor(setting.getDefaultColor());
 	}
 	
 	public boolean isAugmented() {
@@ -590,11 +644,27 @@ public class Player {
 	}
 	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
+		
+		if(triggers.size()>0) {
+			for(int i=0; i<triggers.size(); i++) {
+				if(triggers.get(i).getFlag().equals("PlayerTarget") && triggers.get(i).getFinished()==false)
+					triggers.get(i).addToTrigger();
+					if(triggers.get(i).getFinished()) {
+						removePersistanceBonus(i);
+						triggers.remove(i);
+					}
+			}
+		}
 		if(damage>0)
 			health=health+shield-damage;
 		
 		//[Test]
 		System.out.println("Player was attacked for "+damage+" making thier health "+health);
+	}
+	
+	public void removePersistanceBonus(int index) {
+		if(triggers.get(index).getName()=="Warding Strength")
+			shield=shield-1;
 	}
 	
 	public void increaseXP(int xpGained) {xp=xp+xpGained;}
@@ -608,5 +678,16 @@ public class Player {
 		
 		if(condition=="Strengthen" && effects.getStrengthen()!=true)
 			effects.switchStrengthen();
+	}
+	
+	public void persistanceBonus(int flag, String name) {
+		triggers.add(new PersistanceTriggers(flag, name));
+	}
+	
+	//[Test] Print Loot
+	public void testPrintLoot() {
+		System.out.println("Loost List:");
+		for(int i=0; i<lootInventory.size(); i++)
+			System.out.println(lootInventory.get(i));
 	}
 }

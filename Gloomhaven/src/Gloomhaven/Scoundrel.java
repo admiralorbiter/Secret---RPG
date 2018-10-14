@@ -7,23 +7,27 @@ public class Scoundrel implements CardInterface{
 		CardDataObject card = new CardDataObject();
 		
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=8)
 			card.level=1;
 		
 		switch(id) {
 			case 1:
 				card.name="Single Out";
 				card.initiative=86;
-				card.text="Attack +3. Add +2 and XP +1 when target is adj to allies. Persistent. (UNIMPLEMENTED)";
+				card.text="Attack +3. Add +2 and XP +1 when target is adj to allies.";
 				card.attack=3;
-				card.continuous=true;
+				card.adjacentBonus=true;
+				card.adjacentBonusData.attack=2;
+				card.adjacentBonusData.experience=1;
 				break;
 			case 2:
 				card.name="Flanking Strike";
 				card.initiative=4;
-				card.text="Attack +3. Add +2 and XP +1 when target is adj to allies. Persistent. (UNIMPLEMENTED)";
+				card.text="Attack +3. Add +2 and XP +1 when target is adj to allies.";
 				card.attack=3;
-				card.continuous=true;
+				card.adjacentBonus=true;
+				card.adjacentBonusData.attack=2;
+				card.adjacentBonusData.experience=1;
 				break;
 			case 3:
 				card.name="Smoke Bomb";
@@ -31,13 +35,20 @@ public class Scoundrel implements CardInterface{
 				card.text="Invisible on self. Infuse dark. On your next attack while you have invisbile, double the value of the attack. Persistent. (UNIMPLEMENTED). ";
 				card.invisible=true;
 				card.darkInfusion=true;
+				card.complex=true;
 				card.continuous=true;
 				break;
 			case 4:
 				card.name="Backstab";
 				card.initiative=6;
-				card.text="Attack +3. Add +2 Attack and gain XP +1 when target is adj to your allies. Add +2 Attack and gain XP +1 when target is adj is no adj to allies.(UNimplemented) Consumed on use.";
+				card.text="Attack +3. Add +2 Attack and gain XP +1 when target is adj to your allies. Add +2 Attack and gain XP +1 when target is adj is not adj to allies. Consumed on use.";
 				card.attack=3;
+				card.adjacentBonus=true;
+				card.adjacentBonusData.attack=2;
+				card.adjacentBonusData.experience=1;
+				card.aloneBonus=true;
+				card.aloneBonusData.attack=2;
+				card.aloneBonusData.experience=1;
 				card.lost=true;
 				break;
 			case 5:
@@ -49,7 +60,7 @@ public class Scoundrel implements CardInterface{
 			case 6:
 				card.name="Venom Shiv";
 				card.initiative=60;
-				card.text="Attack +3. Poison (Not implemented). XP +1";
+				card.text="Attack +3. Poison. XP +1";
 				card.attack=3;
 				card.poison=true;
 				card.experience=1;
@@ -86,13 +97,19 @@ public class Scoundrel implements CardInterface{
 		CardDataObject card = new CardDataObject();
 		
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=8)
 			card.level=1;
 		
 		switch(id) {
 			case 1:
 				card.name="Single Out";
-				card.text="On the next 4 attacks target enemies that aren't adj to allies, add +2 attack. (UNIMPLEMENTED)";
+				card.text="On the next 4 attacks target enemies that aren't adj to allies, add +2 attack. Persistent";
+				card.triggerFlag=true;
+				card.trigger.triggerCount=4;
+				card.trigger.name=card.name;
+				card.trigger.triggerName="OnTargetEnemyAlone";
+				card.trigger.aloneBonus=true;
+				card.trigger.aloneBonusData.attack=2;
 				card.continuous=true;
 				break;
 			case 2:
@@ -134,7 +151,7 @@ public class Scoundrel implements CardInterface{
 				break;
 			case 9:
 				card.name="Special Mixture";
-				card.text="Move +3. Poison (Not implemented). Target one adjacent enemy (No Implemented)";
+				card.text="Move +3. Poison. Target one adjacent enemy (No Implemented)";
 				card.move=3;
 				card.poison=true;
 				break;

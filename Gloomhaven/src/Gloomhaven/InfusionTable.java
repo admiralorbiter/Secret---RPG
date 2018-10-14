@@ -26,12 +26,58 @@ public class InfusionTable {
 		inert.add(water);
 		inert.add(light);
 		inert.add(dark);
+		
+		testingStrong();
+	}
+	
+	private void testingStrong() {
+		inert = new ArrayList<String>();
+		strong.add(fire);
+		strong.add(ice);
+		strong.add(air);
+		strong.add(water);
+		strong.add(light);
+		strong.add(dark);
 	}
 	
 	public void infuse(String element) {
 		inert.remove(element);
 		wanning.remove(element);
 		strong.add(element);
+	}
+	
+	public boolean consume(String element) {
+		System.out.println("Trying to consume "+element);
+		
+		if(element.equals("Any")) {
+			if(strong.size()>0) {
+				inert.add(strong.get(0));
+				strong.remove(0);
+				return true;
+			}
+			
+			if(wanning.size()>0) {
+				inert.add(wanning.get(0));
+				wanning.remove(0);
+				return true;
+			}
+			return false;
+		}
+		
+		if(strong.contains(element)) {
+			strong.remove(element);
+			inert.add(element);
+			return true;
+		}
+		else if(wanning.contains(element)) {
+			wanning.remove(element);
+			inert.add(element);
+			return true;
+		}
+		else
+			return false;
+		
+		
 	}
 	
 	public void graphicsDrawTable(Graphics g) {

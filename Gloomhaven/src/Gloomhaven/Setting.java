@@ -55,8 +55,19 @@ public class Setting {
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
-	private String playerClass="Brute";
+	private String playerClass="Spellweaver";
 	
+	
+	public int getStartingAbilityCardCount() {
+		if(playerClass=="Brute" || playerClass=="Mind Thief")
+			return 10;
+		if(playerClass=="Scoundrel" || playerClass=="Spellweaver")
+			return 9;
+		if(playerClass=="Cragheart")
+			return 11;
+		
+		return 0;
+	}
 	
 	
 	public String getPlayerClass() {return playerClass;}

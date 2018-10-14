@@ -6,7 +6,7 @@ public class Cragheart implements CardInterface{
 	public CardDataObject getTop(int id) {
 		CardDataObject card = new CardDataObject();
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=11)
 			card.level=1;
 		
 		switch(id) {
@@ -100,7 +100,7 @@ public class Cragheart implements CardInterface{
 	public CardDataObject getBottom(int id) {
 		CardDataObject card = new CardDataObject();
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=11)
 			card.level=1;
 		
 		switch(id) {

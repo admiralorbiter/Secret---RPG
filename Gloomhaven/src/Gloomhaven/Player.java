@@ -43,7 +43,8 @@ public class Player {
 	int xp;																							//Current experience of the player
 	List<String> lootInventory = new ArrayList<String>();
 	int gold;
-	List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
+	//List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
+	List<Trigger> triggers = new ArrayList<Trigger>();
 	SimpleCards retaliate = new SimpleCards();
 	public Player(int id, String character) {
 		//Set constant variables
@@ -51,9 +52,9 @@ public class Player {
 			default:
 				this.id="P"+id;
 				this.characterClass=character;
-				startingAbilityCardCount=10;
+				startingAbilityCardCount=setting.getStartingAbilityCardCount();
 				maxHealth=50;
-				health=50;
+				health=500;
 				xp=0;
 				shield=0;
 				level=1;
@@ -252,7 +253,6 @@ public class Player {
 				else if(key==8) {
 					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
 				}
-				System.out.println(secondCardChoice.getIndex()+","+secondCardChoice.getAttack());
 				return key;
 			}
 			
@@ -444,7 +444,20 @@ public class Player {
 			if(card.roundBonus && card.retaliateFlag==true) {
 				retaliate= new SimpleCards();
 			}
-			
+
+			//If persistant card trigger is finished, removes from play and removes from trigger deck
+			if(triggers.size()>0) {
+				for(int i=0; i<triggers.size(); i++) {
+					if(triggers.get(i).isFinished()) {
+						
+						for(int j=0; j<inPlay.size(); j++)
+							if(triggers.get(i).getName().equals(inPlay.get(j).getName()))
+								inPlay.remove(j);
+						triggers.remove(i);
+					}
+				}
+			}
+			 
 			if(card.continuous) {
 				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost) {
@@ -557,9 +570,13 @@ public class Player {
 	}
 	
 	public void heal(int damageToHeal) {
-		health=health+damageToHeal;
-		if(health>maxHealth) {
-			health=maxHealth;
+		if(effects.getPoison()) {
+			effects.switchPoison();
+		}else {
+			health=health+damageToHeal;
+			if(health>maxHealth) {
+				health=maxHealth;
+			}
 		}
 	}
 	
@@ -681,31 +698,51 @@ public class Player {
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
 		int damage = (attackCard.attack+card.plusAttack)*card.multiplier;
 		
+		if(triggers.size()>0) {
+			for(int i=0; i<triggers.size(); i++) {
+				if(triggers.get(i).getTriggerName().equals("OnTargetEnemyAlone")) {
+					damage=damage+triggers.get(i).getAloneBonusData().getAttack();
+					xp=xp+triggers.get(i).getAloneBonusData().getExperience();
+					triggers.get(i).addToTrigger();
+				}
+			}
+		}
+		
 		return damage;
 	}
 	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
-		
+		boolean needToReset=false;
 		if(triggers.size()>0) {
 			for(int i=0; i<triggers.size(); i++) {
-				if(triggers.get(i).getFlag().equals("PlayerTarget") && triggers.get(i).getFinished()==false)
+				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
+					shield=shield+triggers.get(i).getShield();
+					needToReset=true;
 					triggers.get(i).addToTrigger();
-					if(triggers.get(i).getFinished()) {
-						removePersistanceBonus(i);
-						triggers.remove(i);
-					}
+				}
 			}
 		}
+		if(effects.getPoison())
+			damage=damage+1;
+		
 		if(damage>0)
 			health=health+shield-damage;
+		
+		if(needToReset) {
+			for(int i=0; i<triggers.size(); i++) {
+				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
+					shield=shield-triggers.get(i).getShield();
+				}
+			}
+		}
 		
 		//[Test]
 		System.out.println("Player was attacked for "+damage+" making thier health "+health);
 	}
 	
 	public void removePersistanceBonus(int index) {
-		if(triggers.get(index).getName()=="Warding Strength")
-			shield=shield-1;
+		//if(triggers.get(index).getName()=="Warding Strength")
+			//shield=shield-1;
 	}
 	
 	public void increaseXP(int xpGained) {xp=xp+xpGained;}
@@ -721,8 +758,8 @@ public class Player {
 			effects.switchStrengthen();
 	}
 	
-	public void persistanceBonus(int flag, String name) {
-		triggers.add(new PersistanceTriggers(flag, name));
+	public void addPersistanceBonus(CardDataObject card) {
+		triggers.add(card.getTriggerData());
 	}
 	
 	public void setNegativeCondition(String condition) {

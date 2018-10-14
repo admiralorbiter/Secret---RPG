@@ -5,6 +5,10 @@ public class SimpleCards {
 	int move=0;
 	int range=0;
 	int experience=0;
+	int shield=0;
+	
+	String elemental="";
+	boolean wound=false;
 	public SimpleCards() {
 		
 	}
@@ -13,4 +17,7 @@ public class SimpleCards {
 	public int getMove() {return move;}
 	public int getRange() {return range;}
 	public int getExperience() {return experience;}
+	public int getShield() {return shield;}
+	public String getElementalConsumed() {return elemental;}
+	public boolean getWound() {return wound;}
 }

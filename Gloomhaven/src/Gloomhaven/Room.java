@@ -36,8 +36,15 @@ public class Room {
 				setTileEnemy(enemies.get(2), point);
 				
 				//Create player
-				point = new Point(3, 3);
+				point = new Point(3, 2);
 				setTilePlayer(party.get(0), point);
+				
+				//Create player 2
+				if(party.size()==2) {
+					point = new Point(4, 2);
+					setTilePlayer(party.get(1), point);
+				}
+				
 				
 				point = new Point(5, 5);
 				board[5][5].setHex("Loot", "Gold");

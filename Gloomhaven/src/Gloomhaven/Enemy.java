@@ -21,12 +21,14 @@ public class Enemy {
 	int range;
 	int attack;
 	int health;
+	int maxHealth=health;
 	
-	int TEST_HEALTH=6;
+	int TEST_HEALTH=50;
 	int TEST_ATTACK=3;
 	int TEST_RANGE=3;
 	int TEST_MOVE=2;
 	int TEST_SHIELD=0;
+	int TEST_MAXHEALTH=TEST_HEALTH;
 	
 	public Enemy(String classID, int id, int scenarioLevel) {
 		this.classID=classID;
@@ -48,6 +50,7 @@ public class Enemy {
 				health=TEST_HEALTH+scenarioLevel;
 				move=TEST_MOVE+scenarioLevel;
 				shield=TEST_SHIELD+scenarioLevel;
+				maxHealth=maxHealth+scenarioLevel;
 				break;
 			default:
 				eliteFlag=true;
@@ -133,12 +136,26 @@ public class Enemy {
 	}
 	
 	public void takeDamage(int damage) {
+		if(effects.getPoison())
+			damage=damage+1;
+		
 		damage=damage-shield;
 		if(damage>0)
 			health=health-damage;
 		
 		//[Test]
 		System.out.println("Enemy "+id+" took "+damage+" and is now at "+health);
+	}
+	
+	public void heal(int heal) {
+		if(effects.getPoison()) {
+			effects.switchPoison();
+		}else {
+			health=health+heal;
+			if(health>maxHealth) {
+				health=maxHealth;
+			}
+		}
 	}
 	
 	//[Rem] This has to be a way to abstract this for both player and enemies

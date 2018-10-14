@@ -28,6 +28,12 @@ public class PlayerAbilityCards {
 		else if(Class=="Brute") {
 			card = new Brute();
 		}
+		else if(Class=="Scoundrel") {
+			card = new Scoundrel();
+		}
+		else if(Class=="Spellweaver") {
+			card = new Spellweaver();
+		}
 		
 		if(level==1) {
 			top=card.getTop(id);

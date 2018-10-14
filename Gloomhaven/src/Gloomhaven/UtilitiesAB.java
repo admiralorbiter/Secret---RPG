@@ -32,10 +32,12 @@ public final class UtilitiesAB {
 		}
 		
 		if(card.getContinuous()) {
+			player.addPersistanceBonus(card);
+			/*
 			if(card.name.equals("Warding Strength"))
 			{
 				player.persistanceBonus(1, "Warding Strength");
-			}
+			}*/
 		}
 
 
@@ -49,6 +51,35 @@ public final class UtilitiesAB {
 			player.setRetaliate(card.getRetaliateData());
 		}
 	
+	}
+	
+	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
+		
+		List<Point> targets = new ArrayList<Point>();
+		targets=enemy.createTargetList(room.getBoard(), 1, "P");
+
+		if(targets.size()>0) {
+			for(int i=0; i<targets.size(); i++) {
+				if(targets.get(i).equals(party.get(playerIndex).getCoordinate())) {
+					targets.remove(i);
+				}
+			}
+		}
+
+		if(targets.size()>0)
+			return true;
+		else
+			return false;
+	}
+	
+	private static boolean targetAloneToAlly(Enemy enemy, Room room) {
+		List<Point> targets = new ArrayList<Point>();
+		targets=enemy.createTargetList(room.getBoard(), 1, "E");
+		
+		if(targets.size()>0)
+			return false;
+		
+		return true;
 	}
 	
 	public static void resolveRetalaite(Enemy enemy, Player player) {
@@ -66,9 +97,10 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 	}
 	
-	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card) {
+	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card, Room room, boolean adjacentBonus, InfusionTable elements) {
 		
-		int attack=card.getAttack();
+		//int attack=card.getAttack();
+		int attack = player.getAttack(card);
 		System.out.println("Utility Class Damage: "+attack);
 		
 		if(card.causesNegativeCondition())
@@ -81,6 +113,36 @@ public final class UtilitiesAB {
 				attack=attack+2*retrieveNegativeConditions(enemy);
 				player.increaseXP(retrieveNegativeConditions(enemy));
 				
+			}
+		}
+		
+		if(card.getAloneBonus()) {
+			if(targetAloneToAlly(enemy, room)) {
+				if(card.getAloneBonusData().getAttack()>0)
+					attack=attack+card.getAdjacentBonusData().getAttack();
+				
+				if(card.getAloneBonusData().getExperience()>0)
+					player.increaseXP(card.getAdjacentBonusData().getExperience());
+			}
+		}
+		
+		if(adjacentBonus) {
+			if(card.getAdjacentBonusData().getAttack()>0)
+				attack=attack+card.getAdjacentBonusData().getAttack();
+			
+			if(card.getAdjacentBonusData().getExperience()>0)
+				player.increaseXP(card.getAdjacentBonusData().getExperience());
+		}
+		
+		if(card.getElementalConsumed()) {
+			String element=card.getElementalConsumedData().getElementalConsumed();
+			
+			if(elements.consume(element)) {
+				if(card.getElementalConsumedData().getAttack()>0)
+					attack=attack+card.getElementalConsumedData().getAttack();
+				
+				if(card.getElementalConsumedData().getExperience()>0)
+					player.increaseXP(card.getElementalConsumedData().getExperience());
 			}
 		}
 		

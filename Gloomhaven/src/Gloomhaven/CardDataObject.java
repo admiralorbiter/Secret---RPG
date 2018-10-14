@@ -63,6 +63,19 @@ public class CardDataObject {
 	boolean mindControl;
 	SimpleCards forEachTargetedData = new SimpleCards();
 	SimpleCards mindControlData = new SimpleCards();
+	
+	boolean adjacentBonus;
+	SimpleCards adjacentBonusData = new SimpleCards();
+	
+	boolean aloneBonus;
+	SimpleCards aloneBonusData = new SimpleCards();
+	
+	boolean triggerFlag;
+	Trigger trigger = new Trigger();
+	
+	boolean elementalConsumed;
+	SimpleCards elementalConsumedData = new SimpleCards();
+	
 	public CardDataObject() {
 		text="If you are seeing this, it is a mistake";
 		move=0;
@@ -112,8 +125,21 @@ public class CardDataObject {
 		complex=false;
 		mindControl=false;
 		retaliateFlag=false;
+		
+		adjacentBonus=false;
+		aloneBonus=false;
+		triggerFlag=false;
+		elementalConsumed=false;
 	}
-
+	
+	public SimpleCards getElementalConsumedData() {return elementalConsumedData;}
+	public boolean getElementalConsumed() {return elementalConsumed;}
+	public Trigger getTriggerData(){return trigger;}
+	public boolean getTriggerFlag() {return triggerFlag;}
+	public SimpleCards getAloneBonusData() {return aloneBonusData;}
+	public boolean getAloneBonus() {return aloneBonus;}
+	public SimpleCards getAdjacentBonusData() {return adjacentBonusData;}
+	public boolean getAdjacentBonus() {return adjacentBonus;}
 	public boolean getRetaliateFlag() {return retaliateFlag;}
 	public SimpleCards getRetaliateData() {return retaliate;}
 	public SimpleCards getMindControData() {return mindControlData;}

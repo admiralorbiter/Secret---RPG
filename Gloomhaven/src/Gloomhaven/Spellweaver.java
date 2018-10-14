@@ -7,7 +7,7 @@ public class Spellweaver implements CardInterface {
 		CardDataObject card = new CardDataObject();
 		
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=8)
 			card.level=1;
 		
 		switch(id) {
@@ -38,30 +38,44 @@ public class Spellweaver implements CardInterface {
 			case 4:
 				card.name="Freezing Nova";
 				card.initiative=21;
-				card.text="Attack +2. Target all adj enemies.(Unimplemented) Immobilize. If you consume ice, +1 Attack (Unimplemented)";
+				card.text="Attack +2. Target all adj enemies.(Unimplemented) Immobilize. If you consume ice, +1 Attack";
 				card.attack=2;
+				card.elementalConsumed=true;
+				card.elementalConsumedData.elemental="Ice";
+				card.elementalConsumedData.attack=1;
 				card.immoblize=true;
 				break;
 			case 5:
 				card.name="Mana Bolt";
 				card.initiative=7;
-				card.text="Attack +2 Range +3. If you can consume any element, Attack +1 XP+1 (Unimplemented)";
+				card.text="Attack +2 Range +3. If you can consume any element, Attack +1 XP+1";
 				card.attack=2;
 				card.range=3;
+				card.elementalConsumed=true;
+				card.elementalConsumedData.elemental="Any";
+				card.elementalConsumedData.attack=1;
+				card.elementalConsumedData.experience=1;
 				break;
 			case 6:
 				card.name="Frost Armor";
 				card.initiative=20;
-				card.text="Attack +2 Range +3. If you can consume any element, Attack +1 XP+1 (Unimplemented)";
+				card.text="Attack +2 Range +3. If you can consume any element, Attack +1 XP+1";
 				card.attack=2;
 				card.range=3;
+				card.elementalConsumed=true;
+				card.elementalConsumedData.elemental="Any";
+				card.elementalConsumedData.attack=1;
+				card.elementalConsumedData.experience=1;
 				break;
 			case 7:
 				card.name="Flame Strike";
 				card.initiative=36;
-				card.text="Attack +3 Range 2. If you consume fire, Wound (Unimplemented)";
+				card.text="Attack +3 Range 2. If you consume fire, Wound";
 				card.attack=3;
 				card.range=2;
+				card.elementalConsumed=true;
+				card.elementalConsumedData.elemental="Fire";
+				card.elementalConsumedData.wound=true;
 				break;
 			case 8:
 				card.name="Ride the Wind";
@@ -80,7 +94,7 @@ public class Spellweaver implements CardInterface {
 		CardDataObject card = new CardDataObject();
 		
 		card.id=id;
-		if(id>=1 && id<=10)
+		if(id>=1 && id<=8)
 			card.level=1;
 		
 		switch(id) {
@@ -115,7 +129,13 @@ public class Spellweaver implements CardInterface {
 				break;
 			case 6:
 				card.name="Frost Armor";
-				card.text="Consume Ice. On the next two sources of damage on you, suffer no damage. (Persistent) (Unimplemented)";
+				card.text="Infuse Ice. On the next two sources of damage on you, suffer no damage. (Persistent)";
+				card.iceInfusion=true;
+				card.triggerFlag=true;
+				card.trigger.name=card.name;
+				card.trigger.triggerCount=2;
+				card.trigger.triggerName="PlayerTarget";
+				card.trigger.shield=100;				//A hack
 				card.continuous=true;
 				break;
 			case 7:

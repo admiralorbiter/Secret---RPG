@@ -90,7 +90,8 @@ public class Scenario {
 	//[Rem] Else ifs in order to have the graphics update
 	public void playRound(KeyEvent key, Graphics g) {
 	
-		System.out.println(state);
+		//System.out.println(state);
+		
 		
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
@@ -156,6 +157,7 @@ public class Scenario {
 			
 			//Goes through the party and enemy and gives a turn number
 			//The party is in order, so i just have to fit the enemy in
+			//[Rem] Doesn't work if the players have the same init
 			for(int i=0; i<party.size(); i++) {
 
 				if(enemyInit==party.get(i).getInitiative()) {
@@ -180,7 +182,7 @@ public class Scenario {
 
 			}
 			
-			playerIndex=-1;																			//playerIndex is reset so it can be used instead of current player
+			playerIndex=0;																			//playerIndex is reset so it can be used instead of current player
 			turn=0;																					//Sets the turn number to 0 and will cyle through all players/enemies
 			state=State.ATTACK;																		//Next State: ATTACK
 		}
@@ -433,7 +435,12 @@ public class Scenario {
 										state=State.MINDCONTROL;
 									}
 									else {
-										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
+										boolean adjacentBonus=card.getData().getAdjacentBonus();
+							
+										if(adjacentBonus)
+											adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
+									
+										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData(), room, adjacentBonus, elements);
 										finished=true;	
 									}
 								}

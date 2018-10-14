@@ -19,7 +19,7 @@ public class Brute implements CardInterface {
 				card.name="Eye for an Eye";
 				card.level=1;
 				card.initiative=18;
-				card.text="Retaliate +2. XP +1 for each Retaliate (UNIMPLEMENTED) Round Bonus";
+				card.text="Retaliate +2. XP +1 for each Retaliate. Round Bonus";
 				card.retaliateFlag=true;
 				card.retaliate.attack=2;
 				card.retaliate.experience=1;
@@ -148,7 +148,11 @@ public class Brute implements CardInterface {
 				card.name="Warding Strength";
 				card.level=1;
 				card.text="On the next 6 sources of damage from attacks targeting you (UNIMPLEMENTED, gain shield +1. Continous. Conusmed on use.";
-				card.shield=1;
+				card.triggerFlag=true;
+				card.trigger.name=card.name;
+				card.trigger.triggerName="PlayerTarget";
+				card.trigger.triggerCount=6;
+				card.trigger.shield=1;
 				card.continuous=true;
 				//card.lost=true;
 				break;

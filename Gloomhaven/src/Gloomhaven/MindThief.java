@@ -122,7 +122,7 @@ public class MindThief implements CardInterface {
 				bottom.name="Submissive Affliction";
 				bottom.level=1;
 				//Force one enemy within 5 range to do 2 attack to melee
-				bottom.text="Force enemy to target another enemy at Range 5. Attack +2 Range +0 (UNIMPLEMENTED)";
+				bottom.text="Force enemy to target another enemy at Range 5. Attack +2 Range +0";
 				bottom.mindControl=true;
 				bottom.range=5;
 				bottom.mindControlData.attack=2;

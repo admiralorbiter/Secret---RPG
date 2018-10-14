@@ -80,6 +80,18 @@ public class EnemyInfo {
 	
 	public int getCount() {return enemies.size();}
 	
+	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
+		
+		if(enemies.get(index).canMove()) {
+			int move = enemies.get(index).getMove();
+			List<Point> points=enemies.get(index).createTargetList(room.getBoard(), move, "P");
+			if(points.size()>0) {
+				//Move Closer
+				
+			}
+		}
+	}
+	
 	/*Algorithm:
 	 * Can enemy Attack -> is melee range -> quick range check
 	 */

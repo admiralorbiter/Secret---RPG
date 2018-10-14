@@ -73,7 +73,15 @@ public class Enemy {
 		
 		return true;
 	}
-	
+	public boolean canMove() {
+		if(effects.getStun())
+			return false;
+		if(effects.getImmobilize())
+			return false;
+		
+		return true;
+	}
+	public int getMove() {return move;}
 	public boolean isElite() {return eliteFlag;}
 	public String getClassID() {return classID;}
 	

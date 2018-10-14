@@ -177,6 +177,7 @@ public class Scenario {
 				else {												//Everyone else is placed after the enemy
 					party.get(i).setTurnNumber(i+1);
 				}
+
 			}
 			
 			playerIndex=-1;																			//playerIndex is reset so it can be used instead of current player
@@ -228,6 +229,8 @@ public class Scenario {
 		//State: ENEMY_ATTACK: Goes through all the enemy procedure for attack for all enemies---------------------------------------------------------------------------
 		else if(state==State.ENEMY_ATTACK) {
 
+			enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
+			
 			targets = new ArrayList<Player>();														//Resets the target list
 			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
 			
@@ -303,49 +306,51 @@ public class Scenario {
 		}
 		//State: PLAYER_MOVE: Player moves to a new hex or stays there---------------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_MOVE) {
-			
 			boolean finished=false;
-			
-			//Highlight tiles that players can move to
-			Point playerPoint=party.get(playerIndex).getCoordinate();
-			for(int r=1; r<=card.getMove(); r++) {
-				room.drawRange(g, playerPoint, r, Color.BLUE);
-			}
+			if(party.get(playerIndex).canMove()){
+				//Highlight tiles that players can move to
+				Point playerPoint=party.get(playerIndex).getCoordinate();
+				for(int r=1; r<=card.getMove(); r++) {
+					room.drawRange(g, playerPoint, r, Color.BLUE);
+				}
+		
+				//Moves selection highlight
+				g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+				selection(g);
+				
+				//Player moves if the space is empty or the space hasn't changed
+				if(k=='t') {
+					if(room.isSpace(room.getSelectionCoordinates(), "P")) {
+						finished=true;
+					}
+					else if(card.getFlying()) {
+						//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
+						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
+						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+						finished=true;
+					}
+					else if(card.getJump()) {
+						if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+							if(room.getQuickID(room.getSelectionCoordinates())=="Loot")
+								room.loot(party.get(playerIndex), room.getSelectionCoordinates());
+							room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
+							party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+							finished=true;
+						}
 	
-			//Moves selection highlight
-			g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
-			selection(g);
-			
-			//Player moves if the space is empty or the space hasn't changed
-			if(k=='t') {
-				if(room.isSpace(room.getSelectionCoordinates(), "P")) {
-					finished=true;
-				}
-				else if(card.getFlying()) {
-					//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
-					room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-					party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
-					finished=true;
-				}
-				else if(card.getJump()) {
-					if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
-						if(room.getQuickID(room.getSelectionCoordinates())=="Loot")
-							room.loot(party.get(playerIndex), room.getSelectionCoordinates());
-						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
-						finished=true;
-					}
-
-				}else {
-					//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
-					if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
-						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
-						finished=true;
+					}else {
+						//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
+						if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+							room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
+							party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+							finished=true;
+						}
 					}
 				}
 			}
-
+			else {
+				finished=true;
+			}
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
 			
@@ -370,70 +375,74 @@ public class Scenario {
 		//State: PLAYER_ATTACK: Creates target list and has player select a target to attack-----------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK) {
 			boolean finished=false;
-			
-			g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
-			
-			//Creates target list of enemy coordinates
-			List<Point> targets = new ArrayList<Point>();
-			int cardRange=card.getRange();
-			if(card.getRange()>=0) {
-				if(card.getRange()==0)
-					cardRange=1;
-	
-				if(card.getTargetHeal()) {
-					for(int range=1; range<=cardRange; range++)
-						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P");
-					targets.add(party.get(playerIndex).getCoordinate());
-				}
-				else {
-					for(int range=1; range<=cardRange; range++)
-						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
-				}
-			}
-			
-			//If there are targets, highlight the targets and wait for selection
-			if(targets.size()>0) {
-
-				room.highlightTargets(targets, g);
-				selection(g);
+			if(party.get(playerIndex).canAttack()) {
+				g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 				
-				//Space is used for selection of target
-				if(k=='t') {
-					
-
+				//Creates target list of enemy coordinates
+				List<Point> targets = new ArrayList<Point>();
+				int cardRange=card.getRange();
+				if(card.getRange()>=0) {
+					if(card.getRange()==0)
+						cardRange=1;
+		
 					if(card.getTargetHeal()) {
-						if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
-							if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-								String id = room.getID(room.getSelectionCoordinates());
-								for(int i=0; i<party.size(); i++)
-								{
-									if(party.get(i).getID()==id) {
-										party.get(i).heal(card.getHeal());
-										finished=true;
+						for(int range=1; range<=cardRange; range++)
+							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P");
+						targets.add(party.get(playerIndex).getCoordinate());
+					}
+					else {
+						for(int range=1; range<=cardRange; range++)
+							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
+					}
+				}
+				
+				//If there are targets, highlight the targets and wait for selection
+				if(targets.size()>0) {
+	
+					room.highlightTargets(targets, g);
+					selection(g);
+					
+					//Space is used for selection of target
+					if(k=='t') {
+						
+	
+						if(card.getTargetHeal()) {
+							if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
+								if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+									String id = room.getID(room.getSelectionCoordinates());
+									for(int i=0; i<party.size(); i++)
+									{
+										if(party.get(i).getID()==id) {
+											party.get(i).heal(card.getHeal());
+											finished=true;
+										}
+									}
+								}
+							}
+						}
+						else {
+							if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+								if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+									//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
+									//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
+									//enemyInfo.playerAttack(id, damage);
+									if(card.getMindControl()) {
+										enemyControlled=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
+										state=State.MINDCONTROL;
+									}
+									else {
+										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
+										finished=true;	
 									}
 								}
 							}
 						}
 					}
-					else {
-						if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
-							if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-								//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
-								//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
-								//enemyInfo.playerAttack(id, damage);
-								if(card.getMindControl()) {
-									enemyControlled=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
-									state=State.MINDCONTROL;
-								}
-								else {
-									UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData());
-									finished=true;	
-								}
-							}
-						}
-					}
+				}else {																					//If there are no enemies in target range
+					finished=true;
 				}
-			}else {																					//If there are no enemies in target range
+			}
+			else {
 				finished=true;
 			}
 			//Next State: Next card, Attack Logic, End Round

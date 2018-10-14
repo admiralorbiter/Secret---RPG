@@ -399,6 +399,30 @@ public class Player {
 	
 	public void endTurn() {
 		
+		if(effects.getDisarm()) {
+			effects.switchDisarm();
+		}
+		
+		if(effects.getStun()) {
+			effects.switchStun();
+		}
+		
+		if(effects.getMuddle()) {
+			effects.switchMuddle();
+		}
+		
+		if(effects.getInvisibility()) {
+			effects.switchInvisibility();
+		}
+		
+		if(effects.getStrengthen()) {
+			effects.switchStrengthen();
+		}
+		
+		if(effects.getImmobilize()) {
+			effects.switchImmobilize();
+		}
+		
 		cardChoice=true;
 		
 		if(longRest==false) {
@@ -682,6 +706,54 @@ public class Player {
 	
 	public void persistanceBonus(int flag, String name) {
 		triggers.add(new PersistanceTriggers(flag, name));
+	}
+	
+	public void setNegativeCondition(String condition) {
+		if(condition=="Wound" && effects.getWound()==false)
+			effects.switchWound();
+		
+		if(condition=="Curse" && effects.getCurse()==false)
+			effects.switchCurse();
+		
+		if(condition=="Disarm" && effects.getDisarm()==false)
+			effects.switchDisarm();
+		
+		if(condition=="Immobilize" && effects.getImmobilize()==false)
+			effects.switchImmobilize();
+		
+		if(condition=="Muddle" && effects.getMuddle()==false)
+			effects.switchMuddle();
+		
+		if(condition=="Poison" && effects.getPoison()==false)
+			effects.switchPoison();
+		
+		if(condition=="Stun" && effects.getStun()==false)
+			effects.switchStun();
+			
+	}
+	
+	public boolean canAttack() {
+
+		if(effects.getDisarm()) {
+			return false;
+		}
+		else if(effects.getStun()) {
+			return false;
+		}
+		else if(effects.getImmobilize()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean canMove() {
+		if(effects.getStun())
+			return false;
+		if(effects.getImmobilize())
+			return false;
+		
+		return true;
 	}
 	
 	//[Test] Print Loot

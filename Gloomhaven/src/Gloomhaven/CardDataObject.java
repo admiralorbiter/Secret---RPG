@@ -52,7 +52,8 @@ public class CardDataObject {
 	String augmentText;
 	
 	int pierce;
-	boolean retaliate;
+	boolean retaliateFlag;
+	SimpleCards retaliate = new SimpleCards();
 	boolean taunt;
 	int shield;
 	boolean flying;
@@ -102,7 +103,6 @@ public class CardDataObject {
 		augmentText="None";
 		
 		pierce=0;
-		retaliate=false;
 		taunt=false;
 		shield=0;
 		flying=false;
@@ -111,7 +111,11 @@ public class CardDataObject {
 		targetNum=1;
 		complex=false;
 		mindControl=false;
+		retaliateFlag=false;
 	}
+
+	public boolean getRetaliateFlag() {return retaliateFlag;}
+	public SimpleCards getRetaliateData() {return retaliate;}
 	public SimpleCards getMindControData() {return mindControlData;}
 	public boolean getMindControl() {return mindControl;}
 	public boolean getComplex() {return complex;}
@@ -145,7 +149,6 @@ public class CardDataObject {
 	public boolean getMuddle() {return muddle;}
 	public boolean getPoison() {return poison;}
 	public boolean getStun() {return stun;}
-	public boolean getRetaliate() {return retaliate;}
 	public boolean getTaunt() {return taunt;}
 	public int getTargetNum() {return targetNum;}
 	public boolean causesNegativeCondition() {

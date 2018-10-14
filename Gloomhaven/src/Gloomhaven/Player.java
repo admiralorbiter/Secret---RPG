@@ -44,7 +44,7 @@ public class Player {
 	List<String> lootInventory = new ArrayList<String>();
 	int gold;
 	List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
-	
+	SimpleCards retaliate = new SimpleCards();
 	public Player(int id, String character) {
 		//Set constant variables
 		switch(character) {
@@ -441,6 +441,10 @@ public class Player {
 				shield=shield-1;
 			}
 			
+			if(card.roundBonus && card.retaliateFlag==true) {
+				retaliate= new SimpleCards();
+			}
+			
 			if(card.continuous) {
 				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost) {
@@ -457,6 +461,15 @@ public class Player {
 				index = secondCardChoice.getIndex();
 			}
 			
+			
+			//This is for brute: shield bash - Not sure it will always hold true
+			if(card.roundBonus && card.shield>0) {
+				shield=shield-1;
+			}
+			
+			if(card.roundBonus && card.retaliateFlag==true) {
+				retaliate= new SimpleCards();
+			}
 
 			if(card.continuous) {
 				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
@@ -505,7 +518,7 @@ public class Player {
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
 		g.drawString(name+"  "+characterClass, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
 		g.drawString("Level "+level, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
-		g.drawString("Health "+health+"  XP"+xp+"  Shield "+shield, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		g.drawString("Health "+health+"  XP"+xp+"  Shield "+shield+" Ret: "+retaliate.getAttack(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
 		if(isAugmented()) {
 			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
 			g.drawString(augment.getTop().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
@@ -528,6 +541,10 @@ public class Player {
 		g.drawString("Gold", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+120);
 		g.drawString("Items", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+135);*/
 		g.setColor(setting.getDefaultColor());
+	}
+	
+	public void setRetaliate(SimpleCards retCard) {
+		this.retaliate=retCard;
 	}
 	
 	public boolean isAugmented() {
@@ -754,6 +771,17 @@ public class Player {
 			return false;
 		
 		return true;
+	}
+	
+	public boolean hasRetaliate() {
+		if(retaliate.attack>0)
+			return true;
+		else
+			return false;
+	}
+	
+	public SimpleCards getRetaliate() {
+		return retaliate;
 	}
 	
 	//[Test] Print Loot

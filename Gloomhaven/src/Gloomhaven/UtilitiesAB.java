@@ -44,7 +44,16 @@ public final class UtilitiesAB {
 		
 		if(card.getSheild()>0)
 			player.setShield(card.getSheild());
+		
+		if(card.getRetaliateFlag()) {
+			player.setRetaliate(card.getRetaliateData());
+		}
 	
+	}
+	
+	public static void resolveRetalaite(Enemy enemy, Player player) {
+		enemy.takeDamage(player.getRetaliate().getAttack());
+		player.increaseXP(player.getRetaliate().getExperience());
 	}
 	
 	public static void resolveAttackEnemyOnEnemy(Enemy enemy, Enemy attacker, int attack) {

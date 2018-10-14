@@ -110,13 +110,13 @@ public class Scenario {
 			
 			//Allows the user to take a long rest if they have enough in the discard pile 
 			if(party.get(currentPlayer).discardPileSize()>1)	
-				g.drawString("Take a long rest with 'r'", setting.getGraphicsX(), setting.getGraphicsYTop()+45);
+				g.drawString("Take a long rest with "+setting.getRestKey(), setting.getGraphicsX(), setting.getGraphicsYTop()+45);
 			
 			//Draw's the player's available ability cards
 			party.get(currentPlayer).drawAbilityCards(g);			
 			
 			//Player enters long rest or picks ability cards
-			if((k=='r') && (party.get(currentPlayer).discardPileSize()>1))
+			if((k==setting.getRestKey()) && (party.get(currentPlayer).discardPileSize()>1))
 				party.get(currentPlayer).setLongRest();
 			else
 				party.get(currentPlayer).pickAbilityCards(num, g);
@@ -233,9 +233,11 @@ public class Scenario {
 			
 			targets = new ArrayList<Player>();														//Resets the target list
 			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
-			
+			//once i have enemy pick target, need to change this code slightly.
 			if(targets.size()>0) {
 				targetID=targets.get(0).getID();													//[Temp] Picks first one on the list
+				if(targets.get(0).hasRetaliate())
+					UtilitiesAB.resolveRetalaite(enemyInfo.getEnemy(enemyTurnIndex), party.get(0));
 				state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 			}else {
 				enemyControlLogic();																//Next State: Attack, Enemy Attack, Round End
@@ -244,10 +246,10 @@ public class Scenario {
 		//State: PLAYER_DEFENSE: Player chooses to discard or take the damage--------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_DEFENSE) {
 			
-			g.drawString("Press d to discard card or h to take damage.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			g.drawString("Press "+setting.getDiscardKey()+" to discard card or "+setting.getHealKey()+" to take damage.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			int playerIndex = getTargetIndex();														//Sets target
 			
-			if((k=='h') || (party.get(playerIndex).abilityCardsLeft()==0)) {						//If player doesn't discard (or can't), take damage
+			if((k==setting.getHealKey()) || (party.get(playerIndex).abilityCardsLeft()==0)) {						//If player doesn't discard (or can't), take damage
 				int damage=enemyInfo.getAttack(enemyTurnIndex);										//Retrieves enemy's attack
 				party.get(playerIndex).decreaseHealth(damage);										//Decreases player health
 				if(party.get(playerIndex).getHealth()<=0) {											//If player's health is below 0, kill player
@@ -259,7 +261,7 @@ public class Scenario {
 					enemyControlLogic();															//Next State: Attack, Enemy Attack, Round End
 			}
 			
-			if(k=='d') {
+			if(k==setting.getDiscardKey()) {
 				state=State.PLAYER_DISCARD;															//Next State: Player Discard
 			}
 		}
@@ -315,11 +317,11 @@ public class Scenario {
 				}
 		
 				//Moves selection highlight
-				g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+				g.drawString("Press "+setting.getMoveKey()+" to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 				selection(g);
 				
 				//Player moves if the space is empty or the space hasn't changed
-				if(k=='t') {
+				if(k==setting.getMoveKey()) {
 					if(room.isSpace(room.getSelectionCoordinates(), "P")) {
 						finished=true;
 					}
@@ -376,7 +378,7 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK) {
 			boolean finished=false;
 			if(party.get(playerIndex).canAttack()) {
-				g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+				g.drawString("Press "+setting.getTargetKey()+" to target.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 				
 				//Creates target list of enemy coordinates
 				List<Point> targets = new ArrayList<Point>();
@@ -403,7 +405,7 @@ public class Scenario {
 					selection(g);
 					
 					//Space is used for selection of target
-					if(k=='t') {
+					if(k==setting.getTargetKey()) {
 						
 	
 						if(card.getTargetHeal()) {
@@ -566,23 +568,23 @@ public class Scenario {
 		Point selectTemp=new Point(room.getSelectionCoordinates());									//[Rem] Probably more efficient to move iff it is changed	
 		
 		//Checks that new coordinate is inside the current room
-		if(k=='w') {
+		if(k==setting.up()) {
 			if(selectTemp.y-1>=0) {
 				selectTemp.y=selectTemp.y-1;
 			}
 			
 		}
-		if(k=='a') {
+		if(k==setting.left()) {
 			if(selectTemp.x-1>=0) {
 				selectTemp.x=selectTemp.x-1;
 			}
 		}
-		if(k=='s') {
+		if(k==setting.down()) {
 			if(selectTemp.y+1<room.getDimensions().getY()) {
 				selectTemp.y=selectTemp.y+1;
 			}
 		}
-		if(k=='d') {
+		if(k==setting.right()) {
 			if(selectTemp.x+1<room.getDimensions().getX()) {
 				selectTemp.x=selectTemp.x+1;
 			}
@@ -665,11 +667,11 @@ public class Scenario {
 		}
 
 		//Moves selection highlight
-		g.drawString("Press m to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		g.drawString("Press "+setting.getMoveKey()+"to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 		selection(g);
 		
 		//Player moves if the space is empty or the space hasn't changed
-		if(k=='m') {
+		if(k==setting.getMoveKey()) {
 			if(room.isSpace(room.getSelectionCoordinates(), "E")) {
 				return true;
 			}
@@ -702,7 +704,7 @@ public class Scenario {
 	private boolean mindControlAttack(Player player, Enemy enemy, Graphics g) {
 		boolean finished=false;
 		
-		g.drawString("Press t to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		g.drawString("Press "+setting.getTargetKey()+" to target.", setting.getGraphicsX(), setting.getGraphicsYBottom());
 		
 		//Creates target list of enemy coordinates
 		List<Point> targets = new ArrayList<Point>();
@@ -722,7 +724,7 @@ public class Scenario {
 			selection(g);
 			
 			//Space is used for selection of target
-			if(k=='t') {
+			if(k==setting.getTargetKey()) {
 				if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
 					if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
 							UtilitiesAB.resolveAttackEnemyOnEnemy(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), enemy, card.getData().getMindControData().getAttack());

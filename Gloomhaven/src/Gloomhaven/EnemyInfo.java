@@ -91,7 +91,7 @@ public class EnemyInfo {
 			}
 		}
 	}
-	
+		
 	/*Algorithm:
 	 * Can enemy Attack -> is melee range -> quick range check
 	 */

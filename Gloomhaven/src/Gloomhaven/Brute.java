@@ -19,9 +19,11 @@ public class Brute implements CardInterface {
 				card.name="Eye for an Eye";
 				card.level=1;
 				card.initiative=18;
-				card.text="Retaliate +2. XP +1 for each Retaliate (UNIMPLEMENTED) Continuous";
-				card.retaliate=true;
-				card.continuous=true;
+				card.text="Retaliate +2. XP +1 for each Retaliate (UNIMPLEMENTED) Round Bonus";
+				card.retaliateFlag=true;
+				card.retaliate.attack=2;
+				card.retaliate.experience=1;
+				card.roundBonus=true;
 				break;
 			case 3:
 				card.name="Sweeping Blow";

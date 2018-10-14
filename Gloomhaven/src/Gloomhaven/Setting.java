@@ -23,7 +23,24 @@ public class Setting {
 	public int getOffsetX() {return offsetX;}
 	public int getSizeOfHex(){return SIZE_OF_HEX;}
 	public Color getDefaultColor() {return DEFAULT_COLOR;}
-	
+	char targetKey = 't';
+	public char getTargetKey() {return targetKey;}
+	char moveKey = 'm';
+	public char getMoveKey() {return moveKey;}
+	char restKey='r';
+	public char getRestKey() {return restKey;}
+	char healKey='h';
+	public char getHealKey() {return healKey;}
+	char discardKey='d';
+	public char getDiscardKey() {return discardKey;}
+	char up = 'w';
+	char left = 'a';
+	char right = 'd';
+	char down = 's';
+	public char up() {return up;}
+	public char left() {return left;}
+	public char right() {return right;}
+	public char down() {return down;}
 	private int offsetXGraphics=10;
 	private int offsetYGraphicsTop=25;
 	private int offsetXGraphicsMid=WIDTH/3;
@@ -36,7 +53,12 @@ public class Setting {
 	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
 	private int offsetYGraphicsMid=300;
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
-	private String playerClass="Mind Thief";
+	
+	
+	private String playerClass="Brute";
+	
+	
+	
 	public String getPlayerClass() {return playerClass;}
 	private Color playerColor = Color.GREEN;
 	public Color getPlayerColor() {return playerColor;}

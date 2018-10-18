@@ -97,8 +97,8 @@ public class Room {
 	
 	//Draws the current room
 	public void drawRoom(Graphics g) {
-		for(int x=0; x<dimensions.getX(); x++) {
-			for(int y=0; y<dimensions.getY(); y++) {
+		for(int y=0; y<dimensions.getY(); y++) {
+			for(int x=0; x<dimensions.getX(); x++) {
 				drawHex(g, x, y);
 			}
 		}
@@ -119,6 +119,7 @@ public class Room {
 	
 	public void moveEnemy(Enemy enemy, Point ending) {
 		Point starting=enemy.getCoordinate();
+		enemy.moveEnemy(ending);
 		System.out.println(starting+","+ending);
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();

@@ -312,7 +312,27 @@ public class Enemy {
 	}
 	
 	public void push(Point playerCoordinate, int pushRange) {
-		
+		//If player is above it on the x axis, push down
+		//if player same level, push right or left
+		//if plyaer is below it on the x axis, push up
+		if(playerCoordinate.getY()<coordinates.getY()) {
+			//Push Down
+			for(int i=0; i<pushRange; i++) {
+				//Note need to know if the hex is free
+			}
+				
+			
+		}else if(playerCoordinate.getY()>coordinates.getY()) {
+			//Push Up
+			
+		}else {
+			if(playerCoordinate.getX()<coordinates.getX()) {
+				//Push Right
+			}else {
+				//Push Left
+				
+			}
+		}
 	}
 	
 	public int getShield() {return shield;}

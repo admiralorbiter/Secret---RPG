@@ -39,8 +39,7 @@ public final class UtilitiesAB {
 				player.persistanceBonus(1, "Warding Strength");
 			}*/
 		}
-
-
+		
 		if(card.getAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
 		
@@ -51,6 +50,54 @@ public final class UtilitiesAB {
 			player.setRetaliate(card.getRetaliateData());
 		}
 	
+	}
+	
+	//Note need to have the player choose which direction out of the 3 possible ones to push.
+	public static void push(Player player, Enemy enemy, int pushRange, Room room) {
+		Point playerCoordinate = player.getCoordinate();
+		Point coordinates = new Point(enemy.getCoordinate());
+		//If player is above it on the x axis, push down
+		//if player same level, push right or left
+		//if plyaer is below it on the x axis, push up
+		if(playerCoordinate.getY()<coordinates.getY()) {
+			//Push Down
+			for(int i=0; i<pushRange; i++) {
+				coordinates.translate(0, 1);
+				if(room.isSpaceEmpty(coordinates))
+					room.moveEnemy(enemy, coordinates);
+				System.out.println(coordinates+","+enemy.getCoordinate());
+			}
+				
+			
+		}else if(playerCoordinate.getY()>coordinates.getY()) {
+			//Push Up
+			for(int i=0; i<pushRange; i++) {
+				coordinates.translate(0, -1);
+				if(room.isSpaceEmpty(coordinates))
+					room.moveEnemy(enemy, coordinates);
+				System.out.println(coordinates+","+enemy.getCoordinate());
+			}
+			
+		}else {
+			if(playerCoordinate.getX()<coordinates.getX()) {
+				//Push Right
+				for(int i=0; i<pushRange; i++) {
+					coordinates.translate(1, 0);
+					if(room.isSpaceEmpty(coordinates))
+						room.moveEnemy(enemy, coordinates);
+					System.out.println(coordinates+","+enemy.getCoordinate());
+				}
+			}else {
+				//Push Left
+				for(int i=0; i<pushRange; i++) {
+					coordinates.translate(-1, 0);
+					if(room.isSpaceEmpty(coordinates))
+						room.moveEnemy(enemy, coordinates);
+					System.out.println(coordinates+","+enemy.getCoordinate());
+				}
+				
+			}
+		}
 	}
 	
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
@@ -171,7 +218,7 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 		
 		if(card.getPush()>0) {
-			enemy.push(player.getCoordinate(), card.getPush());
+			push(player, enemy, card.getPush(), room);
 		}
 		
 	}

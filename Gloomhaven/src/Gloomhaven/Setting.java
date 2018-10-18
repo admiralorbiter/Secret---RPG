@@ -55,7 +55,7 @@ public class Setting {
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
-	private String playerClass="Spellweaver";
+	private String playerClass="Brute";
 	
 	
 	public int getStartingAbilityCardCount() {

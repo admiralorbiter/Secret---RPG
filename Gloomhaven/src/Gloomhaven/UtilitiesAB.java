@@ -53,6 +53,46 @@ public final class UtilitiesAB {
 	}
 	
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
+	public static void drawPush(Point oppPoint, Room room, Graphics g) {
+		
+		room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
+	}
+	
+	public static Point findOppHex(Player player, Enemy enemy) {
+		Point playerCoordinate = player.getCoordinate();
+		Point coordinates = new Point(enemy.getCoordinate());
+		
+		if(playerCoordinate.getX()==coordinates.getX()) {
+			if(playerCoordinate.getY()==coordinates.getY()) {
+				playerCoordinate.translate(2, 0);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()<coordinates.getY()) {
+				playerCoordinate.translate(1, 2);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()>coordinates.getY()) {
+				playerCoordinate.translate(1, -2);
+				return playerCoordinate;
+			}
+		}else {
+			if(playerCoordinate.getY()==coordinates.getY()) {
+				playerCoordinate.translate(-2, 0);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()<coordinates.getY()) {
+				playerCoordinate.translate(-1, 2);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()>coordinates.getY()) {
+				playerCoordinate.translate(-1, -2);
+				return playerCoordinate;
+			}
+		}
+		return coordinates;
+	}
+	/*
+	//Note need to have the player choose which direction out of the 3 possible ones to push.
 	public static void push(Player player, Enemy enemy, int pushRange, Room room) {
 		Point playerCoordinate = player.getCoordinate();
 		Point coordinates = new Point(enemy.getCoordinate());
@@ -98,7 +138,7 @@ public final class UtilitiesAB {
 				
 			}
 		}
-	}
+	}*/
 	
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
 		
@@ -216,11 +256,6 @@ public final class UtilitiesAB {
 		}
 		System.out.println("Utility Class Damage 2: "+attack);
 		enemy.takeDamage(attack);
-		
-		if(card.getPush()>0) {
-			push(player, enemy, card.getPush(), room);
-		}
-		
 	}
 	
 	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCards abilityCard) {

@@ -36,6 +36,8 @@ public class Scenario {
 	    PLAYER_HEAL,
 	    LONG_REST,
 	    MINDCONTROL,
+	    PLAYER_PUSH_SELECTION,
+	    PLAYER_PUSH,
 	    END;
 	}
 	
@@ -46,6 +48,8 @@ public class Scenario {
 	private Setting setting = new Setting();
 	private InfusionTable elements = new InfusionTable();
 	
+	private Point oppPoint;
+	
 	//Key variables
 	private char k=' ';																				//Character from key
 	private int num=-1;																				//Number from Key
@@ -55,7 +59,7 @@ public class Scenario {
 	private int playerIndex;																		//Player being targeted
 	private int turn;																				//Turn number (Used during the battle/attack phases so enemies are involved)				
 	private Point dimensions;																		//Dimensions of the room
-	private List<Player> targets;																	//Target list created by the enemy
+	//private List<Player> targets;																	//Target list created by the enemy
 	private String targetID;																		//Player being targeted by the enemy						
 	private PlayerAbilityCards card = null;											//Card object used by the player's attack
 	private Enemy enemyControlled = null;
@@ -233,7 +237,7 @@ public class Scenario {
 
 			enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
 			
-			targets = new ArrayList<Player>();														//Resets the target list
+			List<Player> targets = new ArrayList<Player>();														//Resets the target list
 			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
 			//once i have enemy pick target, need to change this code slightly.
 			if(targets.size()>0) {
@@ -456,6 +460,75 @@ public class Scenario {
 			}
 			//Next State: Next card, Attack Logic, End Round
 			if(finished) {
+				if(card.getData().getPush()>0) {
+					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
+					state=State.PLAYER_PUSH_SELECTION;
+				}else {
+					if(party.get(currentPlayer).getCardChoice()==false) {
+						state=State.PLAYER_CHOICE;
+					}else {
+						//if turn is over
+						if(turn==party.size())
+							state=State.ROUND_END_DISCARD;
+						else {
+							turn++;
+							state=State.ATTACK;
+						}
+					}
+				}
+			}
+		}
+		else if(state==State.PLAYER_PUSH_SELECTION) {
+			boolean finished=false;
+			//Creates target list of enemy coordinates
+			List<Point> targets = new ArrayList<Point>();
+			int cardRange=card.getRange();
+			if(card.getRange()>=0) {
+				if(card.getRange()==0)
+					cardRange=1;
+	
+					for(int range=1; range<=cardRange; range++)
+						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
+			}
+			
+			//If there are targets, highlight the targets and wait for selection
+			if(targets.size()>0) {
+				
+				room.highlightTargets(targets, g);
+				selection(g);
+				//Space is used for selection of target
+				if(k==setting.getTargetKey()) {
+					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+							oppPoint = new Point(UtilitiesAB.findOppHex(party.get(currentPlayer), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()))));
+							state=State.PLAYER_PUSH;
+						}
+					}
+				}
+			}
+			else {
+				finished=true;
+			}
+			if(finished) {
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_END_DISCARD;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
+				}
+			}
+		}
+		else if(state==State.PLAYER_PUSH) {
+			boolean finished=false;
+			g.setColor(Color.MAGENTA);
+			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
+			System.out.println(oppPoint);
+			if(finished) {
 				if(party.get(currentPlayer).getCardChoice()==false) {
 					state=State.PLAYER_CHOICE;
 				}else {
@@ -652,7 +725,7 @@ public class Scenario {
 	}
 	
 	//[Test] Function to print the enemy targets
-	private void testPrintEnemyTargets() {
+	private void testPrintEnemyTargets(List<Player> targets) {
 		//[Test]
 		System.out.println("Targets for Enemy "+enemyTurnIndex+":");
 		for(int i=0; i<targets.size(); i++) {

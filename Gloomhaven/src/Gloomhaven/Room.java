@@ -184,7 +184,7 @@ public class Room {
 	}
 	
 	//Draws the hex given an x, y coordinate, Draws the quick id of the hex, Draws the x, y coordinate in the hex
-	private void drawHex(Graphics g, int x, int y) {
+	public void drawHex(Graphics g, int x, int y) {
 		int nPoints=7;												//Points in a hex
 		int SIZE_OF_HEX=setting.getSizeOfHex();
 		int offsetY=setting.getOffsetY();

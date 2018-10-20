@@ -400,4 +400,49 @@ public final class UtilitiesAB {
 		return point;
 	}
 	
+	public static void drawArrows(Graphics g, Point player, Point opposite) {
+		/*
+		if(player.getX()==opposite.getX()) {
+			if(player.getY()==opposite.getY()) {
+				player.translate(2,0);
+				g.drawLine((int)player.getX(),(int) player.getY(), (int)opposite.getX(),(int) opposite.getY());
+			}
+			else if(player.getY()<opposite.getY()) {
+				player.translate(1, 2);
+				return player;
+			}
+			else if(player.getY()>opposite.getY()) {
+				player.translate(1, -2);
+				return player;
+			}
+		}else {
+			if(player.getY()==opposite.getY()) {
+				player.translate(-2, 0);
+				return player;
+			}
+			else if(player.getY()<opposite.getY()) {
+				player.translate(-1, 2);
+				return player;
+			}
+			else if(player.getY()>opposite.getY()) {
+				player.translate(-1, -2);
+				return player;
+			}
+		}*/
+		Setting setting = new Setting();
+		int SIZE_OF_HEX=setting.getSizeOfHex();
+		int offsetY=setting.getOffsetY();
+		int offsetX=setting.getOffsetX();
+		int bufferY=-1*setting.getSizeOfHex()/3;
+		if(player.getY()%2!=0) {
+			offsetX=offsetX+setting.getSizeOfHex()/2;
+		}
+		
+		
+		
+		g.setColor(Color.MAGENTA);
+		g.drawLine((int)player.getX()*(SIZE_OF_HEX)+offsetX,(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY, (int)opposite.getX()*(SIZE_OF_HEX)+offsetX,(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
+		System.out.println((int)player.getX()*(SIZE_OF_HEX)+offsetX+","+(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY+"     "+ (int)opposite.getX()*(SIZE_OF_HEX)+offsetX+","+(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
+	}
+	
 }

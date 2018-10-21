@@ -59,7 +59,7 @@ public final class UtilitiesAB {
 	}
 	
 	public static Point findOppHex(Player player, Enemy enemy) {
-		Point playerCoordinate = player.getCoordinate();
+		Point playerCoordinate = new Point(player.getCoordinate());
 		Point coordinates = new Point(enemy.getCoordinate());
 		
 		if(playerCoordinate.getX()==coordinates.getX()) {
@@ -401,48 +401,49 @@ public final class UtilitiesAB {
 	}
 	
 	public static void drawArrows(Graphics g, Point player, Point opposite) {
-		/*
+		
+		Setting setting = new Setting();
+		int SIZE_OF_HEX=setting.getSizeOfHex();
+		int offsetY=setting.getOffsetY()-SIZE_OF_HEX+SIZE_OF_HEX/3;
+		int offsetXP=setting.getOffsetX()+SIZE_OF_HEX+SIZE_OF_HEX/3;
+		int offsetXO=setting.getOffsetX()+SIZE_OF_HEX+SIZE_OF_HEX/3;
+		int bufferY=-1*setting.getSizeOfHex()/3;
+	
+		
 		if(player.getX()==opposite.getX()) {
 			if(player.getY()==opposite.getY()) {
-				player.translate(2,0);
-				g.drawLine((int)player.getX(),(int) player.getY(), (int)opposite.getX(),(int) opposite.getY());
+				player.translate(1,0);
 			}
 			else if(player.getY()<opposite.getY()) {
-				player.translate(1, 2);
-				return player;
+				player.translate(0, 1);
 			}
 			else if(player.getY()>opposite.getY()) {
-				player.translate(1, -2);
-				return player;
+				player.translate(0, -1);
 			}
 		}else {
 			if(player.getY()==opposite.getY()) {
-				player.translate(-2, 0);
-				return player;
+				player.translate(-1, 0);
 			}
 			else if(player.getY()<opposite.getY()) {
-				player.translate(-1, 2);
-				return player;
+				player.translate(-1, 1);
 			}
 			else if(player.getY()>opposite.getY()) {
-				player.translate(-1, -2);
-				return player;
+				player.translate(0, -1);
 			}
-		}*/
-		Setting setting = new Setting();
-		int SIZE_OF_HEX=setting.getSizeOfHex();
-		int offsetY=setting.getOffsetY();
-		int offsetX=setting.getOffsetX();
-		int bufferY=-1*setting.getSizeOfHex()/3;
-		if(player.getY()%2!=0) {
-			offsetX=offsetX+setting.getSizeOfHex()/2;
 		}
 		
+		if(player.getY()%2!=0) {
+			offsetXP=offsetXP+setting.getSizeOfHex()/2;
+		}
 		
-		
+		if(opposite.getY()%2!=0) {
+			offsetXO=offsetXO+setting.getSizeOfHex()/2;
+		}
+	
 		g.setColor(Color.MAGENTA);
-		g.drawLine((int)player.getX()*(SIZE_OF_HEX)+offsetX,(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY, (int)opposite.getX()*(SIZE_OF_HEX)+offsetX,(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
-		System.out.println((int)player.getX()*(SIZE_OF_HEX)+offsetX+","+(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY+"     "+ (int)opposite.getX()*(SIZE_OF_HEX)+offsetX+","+(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
+		g.drawLine((int)player.getX()*(SIZE_OF_HEX)+offsetXP,(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY, (int)opposite.getX()*(SIZE_OF_HEX)+offsetXO-15,(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY+15);
+		//System.out.println(player+","+SIZE_OF_HEX+","+offsetX+","+offsetY+","+bufferY+","+opposite);
+		//System.out.println((int)player.getX()*(SIZE_OF_HEX)+offsetX+","+(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY+"     "+ (int)opposite.getX()*(SIZE_OF_HEX)+offsetX+","+(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
 	}
 	
 }

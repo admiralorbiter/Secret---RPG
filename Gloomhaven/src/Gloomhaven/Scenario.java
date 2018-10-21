@@ -527,7 +527,8 @@ public class Scenario {
 			boolean finished=false;
 			g.setColor(Color.MAGENTA);
 			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
-			UtilitiesAB.drawArrows(g, party.get(currentPlayer).getCoordinate(), oppPoint);
+
+			UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
 			if(finished) {
 				if(party.get(currentPlayer).getCardChoice()==false) {
 					state=State.PLAYER_CHOICE;

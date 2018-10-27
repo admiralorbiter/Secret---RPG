@@ -63,11 +63,7 @@ public final class UtilitiesAB {
 		Point coordinates = new Point(enemy.getCoordinate());
 		
 		if(playerCoordinate.getX()==coordinates.getX()) {
-			if(playerCoordinate.getY()==coordinates.getY()) {
-				playerCoordinate.translate(2, 0);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()<coordinates.getY()) {
+			if(playerCoordinate.getY()<coordinates.getY()) {
 				playerCoordinate.translate(1, 2);
 				return playerCoordinate;
 			}
@@ -75,7 +71,7 @@ public final class UtilitiesAB {
 				playerCoordinate.translate(1, -2);
 				return playerCoordinate;
 			}
-		}else {
+		}else if(playerCoordinate.getX()>coordinates.getX()) {
 			if(playerCoordinate.getY()==coordinates.getY()) {
 				playerCoordinate.translate(-2, 0);
 				return playerCoordinate;
@@ -88,9 +84,16 @@ public final class UtilitiesAB {
 				playerCoordinate.translate(-1, -2);
 				return playerCoordinate;
 			}
+		}else {
+			if(playerCoordinate.getY()==coordinates.getY()) {
+				playerCoordinate.translate(2, 0);
+				return playerCoordinate;
+			}
 		}
 		return coordinates;
 	}
+	
+	
 	/*
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
 	public static void push(Player player, Enemy enemy, int pushRange, Room room) {
@@ -411,16 +414,13 @@ public final class UtilitiesAB {
 	
 		
 		if(player.getX()==opposite.getX()) {
-			if(player.getY()==opposite.getY()) {
-				player.translate(1,0);
-			}
-			else if(player.getY()<opposite.getY()) {
+			if(player.getY()<opposite.getY()) {
 				player.translate(0, 1);
 			}
 			else if(player.getY()>opposite.getY()) {
 				player.translate(0, -1);
 			}
-		}else {
+		}else if(player.getX()>opposite.getX()){
 			if(player.getY()==opposite.getY()) {
 				player.translate(-1, 0);
 			}
@@ -429,6 +429,10 @@ public final class UtilitiesAB {
 			}
 			else if(player.getY()>opposite.getY()) {
 				player.translate(0, -1);
+			}
+		}else {
+			if(player.getY()==opposite.getY()) {
+				player.translate(1,0);
 			}
 		}
 		
@@ -444,6 +448,32 @@ public final class UtilitiesAB {
 		g.drawLine((int)player.getX()*(SIZE_OF_HEX)+offsetXP,(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY, (int)opposite.getX()*(SIZE_OF_HEX)+offsetXO-15,(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY+15);
 		//System.out.println(player+","+SIZE_OF_HEX+","+offsetX+","+offsetY+","+bufferY+","+opposite);
 		//System.out.println((int)player.getX()*(SIZE_OF_HEX)+offsetX+","+(int) player.getY()*(SIZE_OF_HEX+bufferY)+offsetY+"     "+ (int)opposite.getX()*(SIZE_OF_HEX)+offsetX+","+(int) opposite.getY()*(SIZE_OF_HEX+bufferY)+offsetY);
+	}
+	
+	public static int getPointFlag(Point player, Point opponent){
+		if(player.getX()==opponent.getX()) {
+			if(player.getY()<opponent.getY()) {
+				return 0;
+			}
+			else if(player.getY()>opponent.getY()) {
+				return 2;
+			}
+		}else if(player.getX()>player.getX()){
+			if(player.getY()==opponent.getY()) {
+				return 4;
+			}
+			else if(player.getY()<opponent.getY()) {
+				return 5;
+			}
+			else if(player.getY()>opponent.getY()) {
+				return 3;
+			}
+		}else {
+			if(player.getY()==opponent.getY()) {
+				return 1;
+			}
+		}
+		return -1;
 	}
 	
 }

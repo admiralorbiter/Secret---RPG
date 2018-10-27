@@ -36,7 +36,7 @@ public class Room {
 				setTileEnemy(enemies.get(2), point);
 				
 				//Create player
-				point = new Point(3, 4);
+				point = new Point(2, 3);
 				setTilePlayer(party.get(0), point);
 				
 				//Create player 2

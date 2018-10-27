@@ -63,6 +63,7 @@ public class Scenario {
 	private String targetID;																		//Player being targeted by the enemy						
 	private PlayerAbilityCards card = null;											//Card object used by the player's attack
 	private Enemy enemyControlled = null;
+	private Enemy enemyTarget = null;
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
 	
@@ -501,6 +502,7 @@ public class Scenario {
 					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
 						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
 							oppPoint = new Point(UtilitiesAB.findOppHex(party.get(currentPlayer), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()))));
+							enemyTarget=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
 							state=State.PLAYER_PUSH;
 						}
 					}
@@ -525,11 +527,91 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_PUSH) {
 			boolean finished=false;
+			Point pointToMove = null;
+			int pointFlag = -1;
 			g.setColor(Color.MAGENTA);
 			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
 
-			UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
+			//UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
+			
+			pointFlag=UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), oppPoint);
+			System.out.println(pointFlag+","+k);
+			if(num>=1 && num<=3) {
+				
+				if(pointFlag==0) {
+					if(num==1) {
+						pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY());
+						finished=true;
+					}
+					else if(num==2) {
+						pointToMove = new Point(oppPoint);
+						finished=true;
+					}
+					else if(num==3) {
+						pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+						finished=true;
+					}
+				}
+				if(pointFlag==1) {
+					if(num==1) {
+						pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY());
+						finished=true;
+					}
+					else if(num==2) {
+						pointToMove=new Point(oppPoint);
+						finished=true;
+					}
+					else if(num==3) {
+						pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+						finished=true;
+					}
+				}
+				else if(pointFlag==2) {
+					if(num==1) {
+						pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()-1);
+						finished=true;
+					}
+					else if(num==2) {
+						pointToMove=new Point(oppPoint);
+						finished=true;
+					}
+					else if(num==3) {
+						pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY());
+						finished=true;
+					}
+				}
+				else if(pointFlag==4) {
+					if(num==1) {
+						pointToMove=new Point((int)oppPoint.getX()-1, (int)oppPoint.getY()-1);
+						finished=true;
+					}
+					else if(num==2) {
+						pointToMove=new Point(oppPoint);
+						finished=true;
+					}
+					else if(num==3) {
+						pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY()+1);
+						finished=true;
+					}
+				}
+				else if(pointFlag==3 || pointFlag==5) {
+					if(num==1) {
+						pointToMove=new Point((int)oppPoint.getX()-1, (int)oppPoint.getY());
+						finished=true;
+					}
+					else if(num==2) {
+						pointToMove=new Point(oppPoint);
+						finished=true;
+					}
+					else if(num==3) {
+						pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+						finished=true;
+					}
+				}
+			}
+			
 			if(finished) {
+				room.moveEnemy(enemyTarget, pointToMove);
 				if(party.get(currentPlayer).getCardChoice()==false) {
 					state=State.PLAYER_CHOICE;
 				}else {

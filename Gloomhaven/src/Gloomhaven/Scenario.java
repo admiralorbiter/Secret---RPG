@@ -533,7 +533,7 @@ public class Scenario {
 			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
 
 			//UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
-			
+			g.drawString("Press 1, 2, 3.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			pointFlag=UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), oppPoint);
 			System.out.println(pointFlag+","+k);
 			if(num>=1 && num<=3) {
@@ -541,6 +541,7 @@ public class Scenario {
 				if(pointFlag==0) {
 					if(num==1) {
 						pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY());
+						//oppPoint=new Point((int)pointToMove.getX()+1, (int)pointToMove.getY());
 						finished=true;
 					}
 					else if(num==2) {
@@ -611,16 +612,23 @@ public class Scenario {
 			}
 			
 			if(finished) {
+				card.getData().increasePush();
 				room.moveEnemy(enemyTarget, pointToMove);
-				if(party.get(currentPlayer).getCardChoice()==false) {
-					state=State.PLAYER_CHOICE;
+				if(card.getData().getPush()>card.getData().getPushCount())
+				{
+					oppPoint=new Point(pointToMove);
+					state=State.PLAYER_PUSH;
 				}else {
-					//if turn is over
-					if(turn==party.size())
-						state=State.ROUND_END_DISCARD;
-					else {
-						turn++;
-						state=State.ATTACK;
+					if(party.get(currentPlayer).getCardChoice()==false) {
+						state=State.PLAYER_CHOICE;
+					}else {
+						//if turn is over
+						if(turn==party.size())
+							state=State.ROUND_END_DISCARD;
+						else {
+							turn++;
+							state=State.ATTACK;
+						}
 					}
 				}
 			}

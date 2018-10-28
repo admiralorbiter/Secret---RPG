@@ -46,6 +46,7 @@ public class CardDataObject {
 	
 	//Card effects
 	int push;
+	int pushCount;
 	int pull;
 	
 	boolean augment;
@@ -110,6 +111,7 @@ public class CardDataObject {
 		stun=false;
 		
 		push=0;
+		pushCount=0;
 		pull=0;
 		
 		augment=false;
@@ -165,6 +167,8 @@ public class CardDataObject {
 	public boolean getBless() {return bless;}
 	public boolean getStrengthen() {return strengthen;}
 	public int getPush() {return push;}
+	public void increasePush() {pushCount++;}
+	public int getPushCount() {return pushCount;}
 	public int getPull() {return pull;}
 	public boolean getAugment() {return augment;}
 	public boolean getJump() {return jump;}

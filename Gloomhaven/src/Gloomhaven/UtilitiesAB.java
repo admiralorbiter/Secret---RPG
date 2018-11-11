@@ -93,6 +93,39 @@ public final class UtilitiesAB {
 		return coordinates;
 	}
 	
+	public static Point findOppHex(Point playerCoordinate, Point coordinates) {
+		
+		if(playerCoordinate.getX()==coordinates.getX()) {
+			if(playerCoordinate.getY()<coordinates.getY()) {
+				playerCoordinate.translate(1, 2);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()>coordinates.getY()) {
+				playerCoordinate.translate(1, -2);
+				return playerCoordinate;
+			}
+		}else if(playerCoordinate.getX()>coordinates.getX()) {
+			if(playerCoordinate.getY()==coordinates.getY()) {
+				playerCoordinate.translate(-2, 0);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()<coordinates.getY()) {
+				playerCoordinate.translate(-1, 2);
+				return playerCoordinate;
+			}
+			else if(playerCoordinate.getY()>coordinates.getY()) {
+				playerCoordinate.translate(-1, -2);
+				return playerCoordinate;
+			}
+		}else {
+			if(playerCoordinate.getY()==coordinates.getY()) {
+				playerCoordinate.translate(2, 0);
+				return playerCoordinate;
+			}
+		}
+		return coordinates;
+	}
+	
 	
 	/*
 	//Note need to have the player choose which direction out of the 3 possible ones to push.

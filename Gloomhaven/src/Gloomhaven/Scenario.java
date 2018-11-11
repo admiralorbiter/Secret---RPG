@@ -366,6 +366,9 @@ public class Scenario {
 				if(card.getRange()>0 || card.getAttack()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
+				}else if(card.getData().getPush()>0) {
+					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
+					state=State.PLAYER_PUSH_SELECTION;
 				}else {
 					if(party.get(currentPlayer).getCardChoice()==false) {
 						state=State.PLAYER_CHOICE;
@@ -614,6 +617,9 @@ public class Scenario {
 			if(finished) {
 				card.getData().increasePush();
 				room.moveEnemy(enemyTarget, pointToMove);
+				System.out.println(oppPoint+" "+pointToMove);
+				oppPoint = new Point(UtilitiesAB.findOppHex(oppPoint, pointToMove));
+				System.out.println("oppPoint "+oppPoint);
 				if(card.getData().getPush()>card.getData().getPushCount())
 				{
 					oppPoint=new Point(pointToMove);

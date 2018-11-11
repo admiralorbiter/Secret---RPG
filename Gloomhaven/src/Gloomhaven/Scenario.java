@@ -66,7 +66,7 @@ public class Scenario {
 	private Enemy enemyTarget = null;
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
-	
+	private Point tempHoldVar= null;
 	public Scenario(String sceneID, List<Player> party) {			
 		
 		this.party=party;		//imports the party into the scenarios
@@ -506,6 +506,7 @@ public class Scenario {
 						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
 							oppPoint = new Point(UtilitiesAB.findOppHex(party.get(currentPlayer), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()))));
 							enemyTarget=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
+							tempHoldVar=new Point(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinate());
 							state=State.PLAYER_PUSH;
 						}
 					}
@@ -534,11 +535,10 @@ public class Scenario {
 			int pointFlag = -1;
 			g.setColor(Color.MAGENTA);
 			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
-
 			//UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
 			g.drawString("Press 1, 2, 3.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			pointFlag=UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), oppPoint);
-			System.out.println(pointFlag+","+k);
+			
 			if(num>=1 && num<=3) {
 				
 				if(pointFlag==0) {
@@ -617,12 +617,13 @@ public class Scenario {
 			if(finished) {
 				card.getData().increasePush();
 				room.moveEnemy(enemyTarget, pointToMove);
-				System.out.println(oppPoint+" "+pointToMove);
-				oppPoint = new Point(UtilitiesAB.findOppHex(oppPoint, pointToMove));
-				System.out.println("oppPoint "+oppPoint);
+
+				oppPoint = new Point(UtilitiesAB.findOppHex(tempHoldVar, pointToMove));
+				tempHoldVar=new Point(pointToMove);
+
 				if(card.getData().getPush()>card.getData().getPushCount())
 				{
-					oppPoint=new Point(pointToMove);
+					//oppPoint=new Point(pointToMove);
 					state=State.PLAYER_PUSH;
 				}else {
 					if(party.get(currentPlayer).getCardChoice()==false) {

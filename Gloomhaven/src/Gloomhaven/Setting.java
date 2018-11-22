@@ -55,7 +55,7 @@ public class Setting {
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
-	private String playerClass="Brute";
+	private String playerClass="Tinkerer";
 	
 	
 	public int getStartingAbilityCardCount() {
@@ -65,6 +65,8 @@ public class Setting {
 			return 9;
 		if(playerClass=="Cragheart")
 			return 11;
+		if(playerClass=="Tinkerer")
+			return 12;
 		
 		return 0;
 	}

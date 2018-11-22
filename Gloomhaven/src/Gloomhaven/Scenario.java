@@ -417,7 +417,7 @@ public class Scenario {
 					//Space is used for selection of target
 					if(k==setting.getTargetKey()) {
 						
-	
+						
 						if(card.getTargetHeal()) {
 							if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
 								if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
@@ -431,6 +431,139 @@ public class Scenario {
 									}
 								}
 							}
+						}
+						else if(card.getData().getSemiCircle() || card.getData().getSortOfSemiCircle()) {
+							
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							Point selectionCoordinates = room.getSelectionCoordinates();
+							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
+							if(pointFlag==0)
+							{
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1), targets);
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()), targets);
+							}
+							else if(pointFlag==1) {
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1), targets);
+							}
+							else if(pointFlag==2) {
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()), targets);
+							}
+							else if(pointFlag==3) {
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
+							}
+							else if(pointFlag==4) {
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
+							}
+							else if(pointFlag==5) {
+					
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
+								if(card.getData().getSemiCircle())
+									attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
+							}
+							finished=true;
+						}
+						else if(card.getData().getOpposingAttack()) {
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							Point selectionCoordinates = room.getSelectionCoordinates();
+							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
+							if(pointFlag==0)
+							{
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+2), targets);
+							}
+							else if(pointFlag==1) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()+2, (int)selectionCoordinates.getY()), targets);
+							}
+							else if(pointFlag==2) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-2), targets);
+							}
+							else if(pointFlag==3) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-2), targets);
+							}
+							else if(pointFlag==4) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()-2, (int)selectionCoordinates.getY()), targets);
+							}
+							else if(pointFlag==5) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+2), targets);
+							}
+							finished=true;
+						}
+						else if(card.getData().getCircle()) {
+							Point start = room.getSelectionCoordinates();
+							int range=1;
+							for(int x=-range; x<=range; x++) {
+								for(int y=-range; y<=range; y++) {
+									for(int z=-range; z<=range; z++) {
+										if(x+y+z==0) {																	//If the x,y,z axial coordinate's are equal to zero
+											Point convertedPoint = new Point();
+											
+											//Converts cube coord to a coord to plot
+											//https://www.redblobgames.com/grids/hexagons/#conversions
+											if(start.getY()%2!=0) {													//If the column is odd use odd conversion
+												int tempx=x+(z+(z&1))/2;
+												int tempy=z;
+												
+												convertedPoint=new Point(tempx, tempy);;
+											}
+											else {
+												int tempx=x+(z-(z&1))/2;
+												int tempy=z;
+											
+												convertedPoint=new Point(tempx, tempy);;
+											}							
+											
+											//Plotted point is equal to the converted point + player point
+											int xToPlot=(int)(convertedPoint.getX()+start.getX());					
+											int yToPlot=(int) (convertedPoint.getY()+start.getY());
+											
+											//Checks that the plotted x and y are inside the dimensions
+											if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+												if(yToPlot>=0 && yToPlot<dimensions.getY()) {
+													attackProcedure(new Point(xToPlot, yToPlot),targets);
+												}
+										}
+									}
+								}
+							}
+						}
+						else if(card.getData().getTriangle()) {
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							Point selectionCoordinates = room.getSelectionCoordinates();
+							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
+							if(pointFlag==0)
+							{
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
+							}
+							else if(pointFlag==1) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
+							}
+							else if(pointFlag==2) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
+							}
+							else if(pointFlag==3) {
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1), targets);
+							}
+							else if(pointFlag==4) {
+								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-1), targets);
+							}
+							else if(pointFlag==5) {
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
+								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-1), targets);
+							}
+							finished=true;
 						}
 						else {
 							if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
@@ -741,7 +874,23 @@ public class Scenario {
 
 	//Selection function: draws current hex selected and moves selection
 	private void selection(Graphics g) {
-		room.drawSelectionHex(g);																	//Draws selection hex
+		//room.drawSelectionHex(g);																	//Draws selection hex
+		
+		//String direction = "north";
+		//room.drawSelectionHex(g, 2, UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates()));
+		if(card.getData().getSemiCircle())
+			room.drawSelectionHexSemiCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+		else if(card.getData().getSortOfSemiCircle())
+			room.drawSelectionHexAdjCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+		else if(card.getData().getOpposingAttack()) 
+			room.drawSelectionHexAdjOpposing(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+		else if(card.getData().getCircle())
+			room.drawRange(g, room.getSelectionCoordinates(), 1, Color.BLUE);
+		else if(card.getData().getTriangle())
+			room.drawSelectionHexTriangle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+		else
+			room.drawSelectionHex(g);
+		
 		delayBy(100);																				//Makes it feel more smoother
 		Point selectTemp=new Point(room.getSelectionCoordinates());									//[Rem] Probably more efficient to move iff it is changed	
 		
@@ -916,6 +1065,21 @@ public class Scenario {
 			}
 		}else {																					//If there are no enemies in target range
 			return true;
+		}
+	}
+	
+	private void attackProcedure(Point attackCoordinate, List<Point> targets) {
+		if(room.isSpace(attackCoordinate, "E")) {							//If the space selected has an enemy
+			if(targets.contains(attackCoordinate)){						//If the target is in range
+	
+				boolean adjacentBonus=card.getData().getAdjacentBonus();
+	
+				if(adjacentBonus)
+					adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
+			
+				UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(attackCoordinate)), party.get(playerIndex), card.getData(), room, adjacentBonus, elements);
+			
+			}
 		}
 	}
 	

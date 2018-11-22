@@ -29,8 +29,9 @@ public class Brute implements CardInterface {
 				card.name="Sweeping Blow";
 				card.level=1;
 				card.initiative=64;
-				card.text="Attack +2. Semi Circle of 3 tiles (UNIMPLEMENTED).";
+				card.text="Attack +2. Semi Circle of 3 tiles.";
 				card.attack=2;
+				card.semicircle=true;
 				break;
 			case 4:
 				card.name="Provoking Roar";
@@ -59,7 +60,7 @@ public class Brute implements CardInterface {
 				card.name="Warding Strength";
 				card.level=1;
 				card.initiative=32;
-				card.text="Attack +3. Push +2 (Unimplemented).";
+				card.text="Attack +3. Push +2.";
 				card.attack=3;
 				card.push=2;
 				break;
@@ -77,8 +78,9 @@ public class Brute implements CardInterface {
 				card.name="Leaping Cleave";
 				card.level=1;
 				card.initiative=54;
-				card.text="Attack +3 at 2 connected tiles (Unimplemented). XP +1";
+				card.text="Attack +3 at 2 connected tiles. XP +1";
 				card.attack=3;
+				card.sortOfSemiCircle=true;
 				card.experience=1;
 				break;
 			case 10:
@@ -134,7 +136,7 @@ public class Brute implements CardInterface {
 			case 5:
 				card.name="Overwhelming Assault";
 				card.level=1;
-				card.text="Move +3. Push +2. (UNIMPLEMENTED). Target one adjacent enemy (UNIMPLEMENTED)";
+				card.text="Move +3. Push +2. Target one adjacent enemy (UNIMPLEMENTED)";
 				card.move=3;
 				card.push=2;
 				break;
@@ -147,7 +149,7 @@ public class Brute implements CardInterface {
 			case 7:
 				card.name="Warding Strength";
 				card.level=1;
-				card.text="On the next 6 sources of damage from attacks targeting you (UNIMPLEMENTED, gain shield +1. Continous. Conusmed on use.";
+				card.text="On the next 6 sources of damage from attacks targeting you (Maybe implemented)., gain shield +1. Continous. Conusmed on use.";
 				card.triggerFlag=true;
 				card.trigger.name=card.name;
 				card.trigger.triggerName="PlayerTarget";

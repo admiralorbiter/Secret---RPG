@@ -95,6 +95,174 @@ public class Room {
 		g.setColor(Color.MAGENTA);
 	}
 	
+	public void drawSelectionHexSemiCircle(Graphics g, int pointFlag) {
+		g.setColor(Color.BLUE);
+	
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		
+		if(pointFlag==0)
+		{
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==1) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1);
+		}
+		else if(pointFlag==2) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==3) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY());
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+		}
+		else if(pointFlag==4) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+		}
+		else if(pointFlag==5) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY());
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1);
+		}
+		
+
+		g.setColor(Color.MAGENTA);
+	}
+	
+	/*
+	 * Note: There needs to be a way to have two options for the first hex so it can give the player all the options.
+	 */
+	public void drawSelectionHexAdjCircle(Graphics g, int pointFlag) {
+		g.setColor(Color.RED);
+	
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		
+		if(pointFlag==0)
+		{
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1);
+		}
+		else if(pointFlag==1) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1);
+		}
+		else if(pointFlag==2) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==3) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+		}
+		else if(pointFlag==4) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+		}
+		else if(pointFlag==5) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY());
+		}
+		
+
+		g.setColor(Color.MAGENTA);
+	}
+	
+	public void drawSelectionHexTriangle(Graphics g, int pointFlag) {
+		g.setColor(Color.RED);
+	
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		
+		if(pointFlag==0)
+		{
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==1) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1);
+		}
+		else if(pointFlag==2) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY());
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1);
+		}
+		else if(pointFlag==3) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY());
+			
+		}
+		else if(pointFlag==4) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1);
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-1);
+		}
+		else if(pointFlag==5) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY());
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-1);
+		}
+		
+
+		g.setColor(Color.MAGENTA);
+	}
+	
+	public void drawSelectionHexAdjOpposing(Graphics g, int pointFlag) {
+		g.setColor(Color.RED);
+	
+		drawHex(g, (int)selectionCoordinates.getX(), (int)selectionCoordinates.getY());
+		
+		if(pointFlag==0)
+		{
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+2);
+		}
+		else if(pointFlag==1) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+2, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==2) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-2);
+		}
+		else if(pointFlag==3) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-2);
+		}
+		else if(pointFlag==4) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-2, (int)selectionCoordinates.getY());
+		}
+		else if(pointFlag==5) {
+			g.setColor(Color.BLUE);
+			drawHex(g, (int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+2);
+		}
+		
+
+		g.setColor(Color.MAGENTA);
+	}
+	
 	//Draws the current room
 	public void drawRoom(Graphics g) {
 		for(int y=0; y<dimensions.getY(); y++) {
@@ -197,6 +365,7 @@ public class Room {
 		int[] tX = {0+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX+x*(SIZE_OF_HEX)+offsetX, SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX, 0+x*(SIZE_OF_HEX)+offsetX};
 		int[] tY = {SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, 0+y*(SIZE_OF_HEX+bufferY)+offsetY,  SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX*2/3+y*(SIZE_OF_HEX+bufferY)+offsetY, SIZE_OF_HEX/3+y*(SIZE_OF_HEX+bufferY)+offsetY};
 		g.drawPolygon(tX, tY, nPoints);
+		
 		if(board[x][y].getQuickID()=="P")
 			g.setColor(setting.getPlayerColor());
 		else if(board[x][y].getQuickID()=="E")

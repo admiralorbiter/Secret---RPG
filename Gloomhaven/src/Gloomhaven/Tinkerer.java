@@ -26,7 +26,8 @@ public class Tinkerer implements CardInterface {
 		case 3:
 			card.name="Flamethrower";
 			card.initiative=47;
-			card.text="Attack +3 for 3 hex triangle (Unimplemented). Wound. XP +2. Infuse Fire. Card consumed on use. ";
+			card.text="Attack +3 for 3 hex triangle. Wound. XP +2. Infuse Fire. Card consumed on use. ";
+			card.triangle=true;
 			card.attack=3;
 			card.wound=true;
 			card.experience=2;
@@ -44,6 +45,7 @@ public class Tinkerer implements CardInterface {
 			card.name="Ink Bomb";
 			card.initiative=74;
 			card.text="Attack +4 Range +3 for a 3 hex triangle. Gain XP +1 for each enemy targeted (Unimplemented). Infuse dark. Card consumed on use. ";
+			card.triangle=true;
 			card.attack=4;
 			card.range=3;
 			card.darkInfusion=true;
@@ -52,7 +54,8 @@ public class Tinkerer implements CardInterface {
 		case 6:
 			card.name="Net Shooter";
 			card.initiative=19;
-			card.text="Attack +3 Range +3 for a 3 hex triangle (Unimplemented). Immobilize. Gain XP +1 for each target. (Unimplemented)";
+			card.text="Attack +3 Range +3 for a 3 hex triangle. Immobilize. Gain XP +1 for each target. (Unimplemented)";
+			card.triangle=true;
 			card.attack=3;
 			card.range=3;
 			card.immoblize=true;

@@ -34,6 +34,12 @@ public class PlayerAbilityCards {
 		else if(Class=="Spellweaver") {
 			card = new Spellweaver();
 		}
+		else if(Class=="Cragheart") {
+			card = new Cragheart();
+		}
+		else if(Class=="Tinkerer") {
+			card = new Tinkerer();
+		}
 		
 		if(level==1) {
 			top=card.getTop(id);

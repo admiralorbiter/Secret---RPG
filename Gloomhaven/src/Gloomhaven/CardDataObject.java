@@ -77,6 +77,12 @@ public class CardDataObject {
 	boolean elementalConsumed;
 	SimpleCards elementalConsumedData = new SimpleCards();
 	
+	boolean semicircle;
+	boolean sortOfSemiCircle;
+	boolean opposingAttack;
+	boolean circle;
+	boolean triangle;
+	
 	public CardDataObject() {
 		text="If you are seeing this, it is a mistake";
 		move=0;
@@ -132,8 +138,18 @@ public class CardDataObject {
 		aloneBonus=false;
 		triggerFlag=false;
 		elementalConsumed=false;
+		
+		semicircle=false;
+		sortOfSemiCircle=false;
+		opposingAttack=false;
+		circle=false;
+		triangle=false;
 	}
-	
+	public boolean getTriangle() {return triangle;}
+	public boolean getCircle() {return circle;}
+	public boolean getOpposingAttack() {return opposingAttack;}
+	public boolean getSortOfSemiCircle() {return sortOfSemiCircle;}
+	public boolean getSemiCircle() {return semicircle;}
 	public SimpleCards getElementalConsumedData() {return elementalConsumedData;}
 	public boolean getElementalConsumed() {return elementalConsumed;}
 	public Trigger getTriggerData(){return trigger;}

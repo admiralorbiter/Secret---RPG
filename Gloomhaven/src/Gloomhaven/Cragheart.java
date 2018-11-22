@@ -13,7 +13,8 @@ public class Cragheart implements CardInterface{
 		case 1:
 			card.name="Opposing Strike";
 			card.initiative=46;
-			card.text="Attack +3 XP +1. Attack front and back hex (UNIMPLEMENTED)";
+			card.text="Attack +3 XP +1. Attack front and back hex";
+			card.opposingAttack=true;
 			card.attack=3;
 			card.experience=1;
 			break;
@@ -28,7 +29,8 @@ public class Cragheart implements CardInterface{
 		case 3:
 			card.name="Avalanche";
 			card.initiative=75;
-			card.text="Attack +4 XP +1 at 2 connected tiles (Unimplemented). If you consume earth, Attack +1 XP +1. (UNIMPLEMENTED) Card consumed on use.";
+			card.text="Attack +4 XP +1 at 2 connected tiles. If you consume earth, Attack +1 XP +1. (UNIMPLEMENTED) Card consumed on use.";
+			card.sortOfSemiCircle=true;
 			card.attack=4;
 			card.experience=1;
 			card.lost=true;
@@ -79,7 +81,8 @@ public class Cragheart implements CardInterface{
 		case 10:
 			card.name="Dirt Tornado";
 			card.initiative=82;
-			card.text="Attack +1. Range +2. Attack in a circle. (Unimplemented). If consume earth, Attack +1 XP+1. (UNimplemented). Muddle all allies and enemies in target area. (Unimplemented)";
+			card.text="Attack +1. Range +2. Attack in a circle. If consume earth, Attack +1 XP+1. (UNimplemented). Muddle all allies and enemies in target area. (Maybe implemented?)";
+			card.circle=true;
 			card.attack=1;
 			card.range=2;
 			card.muddle=true;

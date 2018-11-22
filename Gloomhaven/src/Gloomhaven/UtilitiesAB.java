@@ -491,7 +491,7 @@ public final class UtilitiesAB {
 			else if(player.getY()>opponent.getY()) {
 				return 2;
 			}
-		}else if(player.getX()>player.getX()){
+		}else if(player.getX()>opponent.getX()){
 			if(player.getY()==opponent.getY()) {
 				return 4;
 			}
@@ -508,5 +508,81 @@ public final class UtilitiesAB {
 		}
 		return -1;
 	}
-	
+	/*
+	public static Point function() {
+		
+		
+		if(pointFlag==0) {
+			if(num==1) {
+				pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY());
+				//oppPoint=new Point((int)pointToMove.getX()+1, (int)pointToMove.getY());
+				finished=true;
+			}
+			else if(num==2) {
+				pointToMove = new Point(oppPoint);
+				finished=true;
+			}
+			else if(num==3) {
+				pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+				finished=true;
+			}
+		}
+		if(pointFlag==1) {
+			if(num==1) {
+				pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY());
+				finished=true;
+			}
+			else if(num==2) {
+				pointToMove=new Point(oppPoint);
+				finished=true;
+			}
+			else if(num==3) {
+				pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+				finished=true;
+			}
+		}
+		else if(pointFlag==2) {
+			if(num==1) {
+				pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()-1);
+				finished=true;
+			}
+			else if(num==2) {
+				pointToMove=new Point(oppPoint);
+				finished=true;
+			}
+			else if(num==3) {
+				pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY());
+				finished=true;
+			}
+		}
+		else if(pointFlag==4) {
+			if(num==1) {
+				pointToMove=new Point((int)oppPoint.getX()-1, (int)oppPoint.getY()-1);
+				finished=true;
+			}
+			else if(num==2) {
+				pointToMove=new Point(oppPoint);
+				finished=true;
+			}
+			else if(num==3) {
+				pointToMove=new Point((int)oppPoint.getX()+1, (int)oppPoint.getY()+1);
+				finished=true;
+			}
+		}
+		else if(pointFlag==3 || pointFlag==5) {
+			if(num==1) {
+				pointToMove=new Point((int)oppPoint.getX()-1, (int)oppPoint.getY());
+				finished=true;
+			}
+			else if(num==2) {
+				pointToMove=new Point(oppPoint);
+				finished=true;
+			}
+			else if(num==3) {
+				pointToMove=new Point((int)oppPoint.getX(), (int)oppPoint.getY()+1);
+				finished=true;
+			}
+		}
+	}
+	*/
 }

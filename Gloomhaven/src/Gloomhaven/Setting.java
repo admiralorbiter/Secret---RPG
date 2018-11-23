@@ -7,7 +7,7 @@ public class Setting {
 	private int SIZE_OF_HEX=60;
 	private Color DEFAULT_COLOR = Color.WHITE;
 	private int offsetY=0;
-	private int offsetX=400;
+	private int offsetX=350;
 	private Color HIGHLIGHT_COLOR = Color.GREEN;
 	private Color GUI_COLOR = Color.WHITE;
 	public Color getGUIColor() {return GUI_COLOR;}
@@ -55,7 +55,7 @@ public class Setting {
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
-	private String playerClass="Tinkerer";
+	private String playerClass="Mind Thief";
 	
 	
 	public int getStartingAbilityCardCount() {

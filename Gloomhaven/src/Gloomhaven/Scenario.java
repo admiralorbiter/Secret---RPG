@@ -97,7 +97,6 @@ public class Scenario {
 	
 		//System.out.println(state);
 		
-		
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
@@ -107,7 +106,9 @@ public class Scenario {
 		elements.graphicsDrawTable(g);
 		party.get(0).graphicsDrawCardsInPlay(g);
 		
-		room.drawRoom(g);																			//Draws current room
+		room.drawBoard(g);																			//Draws current room
+		//room.drawRoom(g, party.get(currentPlayer).getCoordinate());
+		//room.drawRoom(g, party.get(currentPlayer).getCoordinate(), 2);
 		parseKey(key);																				//Parses the input key as either a character or number
 	
 		//STATE: CARD_SELECTION: Players pick their cards for initiative (or take a rest)--------------------------------------------------------------------------------

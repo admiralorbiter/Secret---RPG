@@ -29,7 +29,7 @@ public class MindThief implements CardInterface {
 				top.name="Fearsome Blade";
 				top.level=1;
 				top.initiative=27;
-				top.text="Attack +2. Push +3 (UNIMPLEMENTED) and XP +1";
+				top.text="Attack +2. Push +3 and XP +1";
 				top.attack=2;
 				top.push=3;
 				top.experience=1;

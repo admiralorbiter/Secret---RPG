@@ -238,7 +238,6 @@ public class Player {
 					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
 				}
 				
-				setDisplayCard();
 				
 				return key;
 			}		
@@ -364,7 +363,7 @@ public class Player {
 
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
-				g.drawString("Choose top card.", 10, 530);
+				g.drawString("Choose top card.", 10, setting.getGraphicsYBottom());
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -373,6 +372,7 @@ public class Player {
 							abilityDeck.get(displayCard).setInPlay();
 							initiative=abilityDeck.get(displayCard).getInitiative();
 							cardChoice=!cardChoice;
+							setDisplayCard();
 						}
 					}
 				}catch(NullPointerException ex){ }
@@ -384,11 +384,14 @@ public class Player {
 						abilityDeck.get(key).setInPlay();
 						initiative=abilityDeck.get(key).getInitiative();
 						cardChoice=!cardChoice;
+						setDisplayCard();
 					}
 				}
+				
+				
 			}
 			else {
-				g.drawString("Choose bottom card.", 10, 530);
+				g.drawString("Choose bottom card.", 10, setting.getGraphicsYBottom());
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -420,12 +423,12 @@ public class Player {
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardFree())
-				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 545+i*15);
+				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, setting.getGraphicsYBottom()+15+i*15);
 		}
 	}
 	
 	private void showPickedCards(KeyEvent e, Graphics g) {
-		int startingY=530;
+		int startingY=setting.getGraphicsYBottom();
 		int offsetY=15;
 		
 		try {

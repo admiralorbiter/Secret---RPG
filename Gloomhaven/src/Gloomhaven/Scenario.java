@@ -97,6 +97,8 @@ public class Scenario {
 	
 		//System.out.println(state);
 		
+		//List<Item> items = ItemLoader.testLoadAllItems();
+
 		//[Test]
 		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);

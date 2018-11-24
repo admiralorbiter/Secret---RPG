@@ -11,9 +11,12 @@ public class Setting {
 	private Color HIGHLIGHT_COLOR = Color.GREEN;
 	private Color GUI_COLOR = Color.WHITE;
 	public Color getGUIColor() {return GUI_COLOR;}
-	private int WIDTH=1400;
-	private int HEIGHT=800;
+	private int WIDTH=1680;
+	private int HEIGHT=1050;
 	private String TITLE="Gloomhaven";
+	
+	private int offsetYGraphicsBottom=HEIGHT*2/3;
+	private int offsetYGraphicsMid=HEIGHT*1/3;
 	
 	public String getTitle() {return TITLE;}
 	public int getWidth() {return WIDTH;}
@@ -49,9 +52,7 @@ public class Setting {
 	public int getGraphicsXMid() {return offsetXGraphicsMid;}
 	public int getGraphicsX() {return offsetXGraphics;}
 	public int getGraphicsYTop() {return offsetYGraphicsTop;}
-	private int offsetYGraphicsBottom=500;
 	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
-	private int offsetYGraphicsMid=300;
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	

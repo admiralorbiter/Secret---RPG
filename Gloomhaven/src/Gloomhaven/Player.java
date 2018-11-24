@@ -45,6 +45,12 @@ public class Player {
 	int xp;																							//Current experience of the player
 	List<String> lootInventory = new ArrayList<String>();
 	int gold;
+	List<Item> items = new ArrayList<Item>();
+	int smallItemTotal;
+	int smallItemCount;
+	boolean movementImmunity=false;
+	int bonusMove=0;
+	
 	//List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
 	List<Trigger> triggers = new ArrayList<Trigger>();
 	SimpleCards retaliate = new SimpleCards();
@@ -63,6 +69,22 @@ public class Player {
 				name="Jon";
 				gold=0;
 				displayCard=0;
+				
+				if(level%2==0)
+					smallItemTotal=level/2;
+				else
+					smallItemTotal=(level+1)/2;
+				
+				
+				items = ItemLoader.testLoadAllItems();
+				
+				/*
+				for(int i=0; i<items.size(); i++)
+				{
+					if(items.get(i).getID()==16)
+						smallItemTotal=smallItemTotal+2;
+				}*/
+
 		}
 	
 		//Create ability deck
@@ -71,6 +93,12 @@ public class Player {
 		
 	}
 	
+	public void setBonusMove(int bonus) {bonusMove=bonus;}
+	public void toggleMovementImmunity() {movementImmunity=!movementImmunity;}
+	public boolean getMovementImmunity() {return movementImmunity;}
+	public List<Item> getItems(){return items;}
+	public int getSmallItemTotal() {return smallItemTotal;}
+	public void setSmallItemTotal(int total) {smallItemTotal=total;}
 	//Resets card variables at beginning of the round
 	public void resetCards(){
 		initiative=-1;

@@ -67,9 +67,13 @@ public class Scenario {
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
 	private Point tempHoldVar= null;
+	
 	public Scenario(String sceneID, List<Player> party) {			
 		
 		this.party=party;		//imports the party into the scenarios
+		for(int i=0; i<party.size(); i++)
+			ItemLoader.continuousEffects(party.get(i));
+		
 		//SetupScenario setup = new SetupScenario(sceneID);	
 		//Setups up the room and enemies based on the scene id
 		List<Enemy> enemies = new ArrayList<Enemy>();

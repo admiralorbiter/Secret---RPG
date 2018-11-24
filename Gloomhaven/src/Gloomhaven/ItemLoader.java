@@ -1,0 +1,127 @@
+package Gloomhaven;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public final class ItemLoader {
+	public static Item Load(int id) {
+		
+		Item item = null;
+		
+		switch(id) {
+			case 15:
+				item = new Item(id, 30, "Boots of Speed", "Boots", "spent", "after_initiative");
+				item.inventoryTracker(2);
+				break;
+			case 16:
+				item = new Item(id, 20, "Cloak of Pockets", "Body", "continuous", "continuous");
+				item.inventoryTracker(2);
+				break;
+			case 17:
+				item = new Item(id, 45, "Empowering Talisman", "Head", "consumed", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 18:
+				item = new Item(id, 45, "Battle-Axe", "One-Hand", "consumed", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 19:
+				item = new Item(id, 20, "Weighted Net", "Two-Hand", "spent", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 20:
+				item = new Item(id, 10, "Minor Mana Potion", "Small Item", "consumed", "during_turn");
+				item.inventoryTracker(4);
+				break;
+			case 21:
+				item = new Item(id, 20, "Stun Powder", "Small Item", "consumed", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 22:
+				item = new Item(id, 20, "Heavy Greaves", "Boots", "continuous", "continuous");
+				item.inventoryTracker(2);
+				break;
+			case 23:
+				item = new Item(id, 20, "Chainmail", "Body", "spent", "when_attacked");
+				item.inventoryTracker(2);
+				break;
+			case 24:
+				item = new Item(id, 20, "Amulet of Life", "Head", "spent", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 25:
+				item = new Item(id, 30, "Jagged Sword", "One-Hand", "spent", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 26:
+				item = new Item(id, 30, "Long Spear", "Two-Hand", "spent", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 27:
+				item = new Item(id, 30, "Major Healing Potion", "Small Item", "consumed", "during_turn");
+				item.inventoryTracker(4);
+				break;
+			case 28:
+				item = new Item(id, 20, "Moon Earring", "Small Item", "consumed", "during_turn");
+				item.inventoryTracker(2);
+				break;
+			case 29:
+				item = new Item(id, 30, "Comfortable Shoes", "Boots", "continuous", "continuous");
+				item.inventoryTracker(2);
+				break;
+			case 30:
+				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked");
+				item.inventoryTracker(2);
+				break;
+		}
+		
+		return item;
+	}
+	
+	public static int maxUses(int id) {
+		
+		if(id==23)
+			return 3;
+		
+		return 1;
+	}
+	
+	public static List<Item> testLoadAllItems(){
+		
+		List<Item> items = new ArrayList<Item>();
+		
+		for(int i=15; i<=30; i++) {
+			if(i==20 || i==27) {
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(1);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(2);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(3);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(4);
+			}else {
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(1);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(2);
+			}
+		}
+		
+		return items;
+	}
+	
+	public static void continuousEffects(Player player) {
+		List<Item> items = player.getItems();
+		for(int i=0; i<items.size(); i++) {
+			if(items.get(i).getID()==16) {
+				player.setSmallItemTotal(player.getSmallItemTotal()+2);
+			}else if(items.get(i).getID()==22) {
+				if(!player.getMovementImmunity())
+					player.toggleMovementImmunity();
+			}else if(items.get(i).getID()==29) {
+				player.setBonusMove(1);
+			}
+		}
+	}
+}

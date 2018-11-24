@@ -15,12 +15,14 @@ public class Item {
 	int maxUses=0;
 	Point tracking;				//y is the total amount of items, x is where this card lies in that count
 	String equipSlot;
+	String playFlag;
 	
-	public Item(int id, int gold, String name, String equipSlot, String useFlag) {
+	public Item(int id, int gold, String name, String equipSlot, String useFlag, String playFlag) {
 		this.id=id;
 		this.gold=gold;
 		this.name=name;
 		this.equipSlot=equipSlot;
+		this.playFlag=playFlag;
 		
 		if(useFlag.equals("spent")) {
 			spent=true;

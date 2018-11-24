@@ -1,5 +1,12 @@
 package Gloomhaven;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 public class PlayerAbilityCards {
 	private String name;
 	private int initiative;
@@ -13,6 +20,7 @@ public class PlayerAbilityCards {
 	private int flag;												//-1 not used. 0 top 1 bottom 2 alt top 3 alt bottom
 	CardDataObject altTop = new CardDataObject();
 	CardDataObject altBottom = new CardDataObject();
+	BufferedImage image = null;
 	
 	public PlayerAbilityCards(int level, int id, String Class) {
 		index=id-1;
@@ -21,24 +29,31 @@ public class PlayerAbilityCards {
 		altBottom.move=2;
 		if(Class=="Test") {
 			card = new CardsTest();
+			image = CardImages.getMindThiefCard(id);
 		}
 		else if(Class=="Mind Thief") {
 			card = new MindThief();
+			image = CardImages.getMindThiefCard(id);
 		}
 		else if(Class=="Brute") {
 			card = new Brute();
+			image = CardImages.getBruteCard(id);
 		}
 		else if(Class=="Scoundrel") {
 			card = new Scoundrel();
+			image = CardImages.getScoundrelCard(id);
 		}
 		else if(Class=="Spellweaver") {
 			card = new Spellweaver();
+			image = CardImages.getSpellweaverCard(id);
 		}
 		else if(Class=="Cragheart") {
 			card = new Cragheart();
+			image = CardImages.getCragheartCard(id);
 		}
 		else if(Class=="Tinkerer") {
 			card = new Tinkerer();
+			image = CardImages.getTinkererCard(id);
 		}
 		
 		if(level==1) {
@@ -260,5 +275,10 @@ public class PlayerAbilityCards {
 			return bottom.getMindControl();
 	
 		return false;
+	}
+	
+	public void showCard(Graphics g) {
+		g.drawImage(image, 0, 70, 285, 425  , null);
+		g.drawString("Press Space to Select this card. Card selection "+Integer.toString(index), 50, 510);
 	}
 }

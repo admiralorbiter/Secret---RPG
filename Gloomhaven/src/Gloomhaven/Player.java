@@ -3,6 +3,7 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Player {
 	Setting setting = new Setting();
 	PlayerAbilityCards augment = new PlayerAbilityCards();
 	int level;
+	int displayCard;
 	
 	//Player variables
 	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
@@ -60,6 +62,7 @@ public class Player {
 				level=1;
 				name="Jon";
 				gold=0;
+				displayCard=0;
 		}
 	
 		//Create ability deck
@@ -187,9 +190,11 @@ public class Player {
 			lootInventory.add(hex.getLootID());
 	}
 
-	public int pickPlayCard(int key, Graphics g) {
-		showPickedCards(g);
+	public int pickPlayCard(KeyEvent e, int key, Graphics g) {
+		showPickedCards(e, g);
+		
 		if(cardChoice) {
+			
 			if(key>=1 && key<=8) {
 				cardChoice=!cardChoice;
 				if(key==1) {
@@ -232,6 +237,8 @@ public class Player {
 					bottomCard=null;
 					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
 				}
+				
+				setDisplayCard();
 				
 				return key;
 			}		
@@ -337,13 +344,38 @@ public class Player {
 	public PlayerAbilityCards getSecondCardChoice() {return secondCardChoice;}
 	
 	//Picks the two cards needed for initiative
-	public void pickAbilityCards(int key, Graphics g) {
+	public void pickAbilityCards(KeyEvent e, int key, Graphics g) {
+		
+		try {
+			if(e.getKeyCode()==KeyEvent.VK_LEFT){
+				displayCard=displayCard-1;
+				if(displayCard<0)
+					displayCard=abilityDeck.size()-1;
+			}
+			else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				displayCard=displayCard+1;
+				if(displayCard>=abilityDeck.size())
+					displayCard=0;
+			}
+		}catch(NullPointerException ex){ }
+		abilityDeck.get(displayCard).showCard(g);
 		
 		abilityCardsLeft();
-		
+
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
 				g.drawString("Choose top card.", 10, 530);
+				
+				try {
+					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+						if(abilityDeck.get(displayCard).cardFree()) {
+							topCard=abilityDeck.get(displayCard);
+							abilityDeck.get(displayCard).setInPlay();
+							initiative=abilityDeck.get(displayCard).getInitiative();
+							cardChoice=!cardChoice;
+						}
+					}
+				}catch(NullPointerException ex){ }
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
@@ -357,6 +389,17 @@ public class Player {
 			}
 			else {
 				g.drawString("Choose bottom card.", 10, 530);
+				
+				try {
+					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
+						if(abilityDeck.get(displayCard).cardFree()) {
+							bottomCard=abilityDeck.get(displayCard);
+							abilityDeck.get(displayCard).setInPlay();
+							cardChoice=!cardChoice;
+						}
+					}
+				}catch(NullPointerException ex){ }
+				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
 					if(abilityDeck.get(key).cardFree()) {
@@ -370,6 +413,10 @@ public class Player {
 		}
 	}
 	
+	public void setDisplayCard() {
+		displayCard=topCard.getIndex();
+	}
+	
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).cardFree())
@@ -377,9 +424,26 @@ public class Player {
 		}
 	}
 	
-	private void showPickedCards(Graphics g) {
+	private void showPickedCards(KeyEvent e, Graphics g) {
 		int startingY=530;
 		int offsetY=15;
+		
+		try {
+			if(e.getKeyCode()==KeyEvent.VK_LEFT){
+				if(displayCard==topCard.getIndex())
+					displayCard=bottomCard.getIndex();
+				else
+					displayCard=topCard.getIndex();
+			}
+			else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
+				if(displayCard==topCard.getIndex())
+					displayCard=bottomCard.getIndex();
+				else
+					displayCard=topCard.getIndex();
+			}
+		}catch(NullPointerException ex){ }
+		abilityDeck.get(displayCard).showCard(g);
+		
 		if(topCard!=null) {
 			g.drawString("Cards", 10, startingY+offsetY*0);
 			g.drawString(topCard.getText(), 10, startingY+offsetY*1);

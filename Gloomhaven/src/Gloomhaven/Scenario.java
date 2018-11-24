@@ -70,11 +70,11 @@ public class Scenario {
 	public Scenario(String sceneID, List<Player> party) {			
 		
 		this.party=party;		//imports the party into the scenarios
-		SetupScenario setup = new SetupScenario(sceneID);	
+		//SetupScenario setup = new SetupScenario(sceneID);	
 		//Setups up the room and enemies based on the scene id
 		List<Enemy> enemies = new ArrayList<Enemy>();
-		enemies=setup.getEnemies();		
-		room = new Room(setup.getRoomID(), party, enemies);
+			
+		room = new Room(sceneID, party, enemies);
 		enemyInfo=new EnemyInfo(enemies, room);
 	
 		currentPlayer=0;																			//sets current player to 0 for the card selection around
@@ -126,7 +126,7 @@ public class Scenario {
 			if((k==setting.getRestKey()) && (party.get(currentPlayer).discardPileSize()>1))
 				party.get(currentPlayer).setLongRest();
 			else
-				party.get(currentPlayer).pickAbilityCards(num, g);
+				party.get(currentPlayer).pickAbilityCards(key, num, g);
 			
 			//Cycles through the players then the enemy picks an ability card
 			//Next State: Initiative
@@ -282,7 +282,7 @@ public class Scenario {
 		//State: PLAYER_CHOICE: Player chooses their card
 		else if(state==State.PLAYER_CHOICE) {
 
-			int cardPick=party.get(playerIndex).pickPlayCard(num, g);								//Prints ability cards then waits for one to pick
+			int cardPick=party.get(playerIndex).pickPlayCard(key, num, g);								//Prints ability cards then waits for one to pick
 			if(cardPick>=1 && cardPick<=8)
 				state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
 		}
@@ -799,6 +799,8 @@ public class Scenario {
 		}
 		//State: ROUND_END_DISCARD: Decides if scenario is over or another round should begin----------------------------------------------------------------------------
 		else if(state==State.ROUND_END_DISCARD) {
+			
+			elements.endOfRound();
 			
 			for(int i=0; i<party.size(); i++)
 				party.get(i).endTurn();																//End of turn clean up for each player

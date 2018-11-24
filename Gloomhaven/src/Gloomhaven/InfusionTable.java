@@ -6,6 +6,7 @@ import java.util.List;
 
 public class InfusionTable {
 	
+	String earth = "Earth";
 	String fire="Fire";
 	String ice = "Ice";
 	String air = "Air";
@@ -20,6 +21,7 @@ public class InfusionTable {
 	Setting setting = new Setting();
 	
 	public InfusionTable() {
+		inert.add(earth);
 		inert.add(fire);
 		inert.add(ice);
 		inert.add(air);
@@ -27,11 +29,12 @@ public class InfusionTable {
 		inert.add(light);
 		inert.add(dark);
 		
-		testingStrong();
+		//testingStrong();
 	}
 	
 	private void testingStrong() {
 		inert = new ArrayList<String>();
+		strong.add(earth);
 		strong.add(fire);
 		strong.add(ice);
 		strong.add(air);
@@ -44,6 +47,19 @@ public class InfusionTable {
 		inert.remove(element);
 		wanning.remove(element);
 		strong.add(element);
+	}
+	
+	public void endOfRound() {
+		
+		for(int i=0; i<wanning.size(); i++) {
+			inert.add(wanning.get(0));
+			wanning.remove(0);
+		}
+		
+		for(int i=0; i<strong.size(); i++) {
+			wanning.add(strong.get(0));
+			strong.remove(0);
+		}
 	}
 	
 	public boolean consume(String element) {
@@ -85,20 +101,49 @@ public class InfusionTable {
 		//Earth
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33);
 		g.drawString("Earth:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33);
+		if(strong.contains("Earth"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33);
+		else if(wanning.contains("Earth"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33);
+		
 		//Air
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33*2);
 		g.drawString("Air:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33*2);
+		if(strong.contains("Air"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*2);
+		else if(wanning.contains("Air"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*2);
+		
 		//Fire
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33*3);
 		g.drawString("Fire:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33*3);
+		if(strong.contains("Fire"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*3);
+		else if(wanning.contains("Fire"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*3);
+		
 		//Water
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33*4);
 		g.drawString("Water:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33*4);
+		if(strong.contains("Water"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*4);
+		else if(wanning.contains("Water"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*4);
+		
 		//Dark
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33*5);
 		g.drawString("Dark:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33*5);
+		if(strong.contains("Dark"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*5);
+		else if(wanning.contains("Dark"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*5);
+		
 		//Light
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid()+215, 200, 33*6);
 		g.drawString("Light:", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+200+33*6);
+		if(strong.contains("Light"))
+			g.drawString("Strong", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*6);
+		else if(wanning.contains("Light"))
+			g.drawString("Wanning", setting.getGraphicsXRight()+50, setting.getGraphicsYMid()+200+33*6);
 	}
 }

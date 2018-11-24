@@ -11,8 +11,9 @@ public class Hex {
 	boolean loot=false;
 	Point coordinate;
 	boolean door=false;
+	boolean open=true;
 	int roomID=0;
-	boolean hidden=false;
+	boolean hidden=true;
 	boolean neverShown=false;
 	
 	public Hex(int x, int y) {
@@ -28,12 +29,9 @@ public class Hex {
 				this.id="lootGold";
 				loot=true;
 			}
-		}else if(quickID.equals("Door")) {
-			if(id.equals("Door")) {
-				this.id=id;
-				door=true;
-				//spaces counts as empty
-			}
+		}else if(quickID.equals("Obs")) {
+			this.id=id;
+			empty=false;
 		}
 		else {
 			this.id=id;
@@ -43,24 +41,10 @@ public class Hex {
 	
 	public void setHex(String quickID, String id, int room) {
 		this.quickID=quickID;
-		
-		if(quickID.equals("Loot")) {
-			if(id.equals("Gold")) {
-				this.lootID="Gold";
-				this.id="lootGold";
-				loot=true;
-			}
-		}else if(quickID.equals("Door")) {
-			if(id.equals("Door")) {
-				this.id=id;
-				door=true;
-				//spaces counts as empty
-			}
-		}
-		else {
-			this.id=id;
-			empty=false;
-		}
+		this.roomID=room;
+		this.id=id;
+		open=false;
+		door=true;
 	}
 	
 	
@@ -72,7 +56,7 @@ public class Hex {
 		loot=false;
 		empty=true;
 	}
-	
+	public boolean doorOpen() {return open;}
 	public String getQuickID() {return quickID;}
 	public String getID() {return id;}
 	public boolean getSpaceFree() {return empty;}
@@ -89,4 +73,5 @@ public class Hex {
 		return true;
 	}
 	public void disableHex() {neverShown=true;}
+	public int getRoomID() {return roomID;}
 }

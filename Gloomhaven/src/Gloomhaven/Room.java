@@ -26,7 +26,9 @@ public class Room {
 	
 	public Room(String id, List<Player> party, List<Enemy> enemies){
 		Point point;																									//Temp point used to set enemy
-		
+		//String id=setup.getRoomID();
+		//SetupScenario setup = new SetupScenario(sceneID);
+		//enemies=setup.getEnemies();	
 		switch(id) {
 			case "Test":
 				dimensions.add(new Point(9, 9));
@@ -39,7 +41,7 @@ public class Room {
 				roomIndex=0;
 				
 				// pass the path to the file as a parameter 
-			    File file = new File("src/Gloomhaven/room.txt"); 
+			    File file = new File("src/Gloomhaven/unusedspace.txt"); 
 				Scanner sc = null;
 				try {
 					sc = new Scanner(file);
@@ -60,12 +62,47 @@ public class Room {
 			    		board[x][y].disableHex();
 			    	}
 			    }
+			    
+			    file = new File("src/Gloomhaven/roomlayout.txt"); 
+				sc = null;
+				try {
+					sc = new Scanner(file);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				int enemyCount=0;
+			    while (sc.hasNextLine()) 
+			    {
+			    	String line = sc.nextLine();
+			    	int x=Integer.parseInt(line);
+			    	line=sc.nextLine();
+			    	int y=Integer.parseInt(line);
+			    	String quickIDtemp = sc.nextLine();
+			    	String idtemp = sc.nextLine();
+			    	point = new Point(x, y);
+			    	if(quickIDtemp.equals("Player")) {
+			    		setTilePlayer(party.get(0), point);
+			    	}else if(quickIDtemp.equals("Enemy")) {
+			    		enemies.add(new Enemy(idtemp, enemyCount, 1));
+			    		setTileEnemy(enemies.get(enemyCount), point);
+			    		enemyCount++;
+			    	}else if(quickIDtemp.equals("Door")) {
+			    		int doorID=Integer.parseInt(sc.nextLine());
+			    		board[x][y].setHex(quickIDtemp, idtemp, doorID);
+			    	}
+			    	else {
+			    		board[x][y].setHex(quickIDtemp, idtemp);
+			    	}
+			    		
+			    }
 			  
+			    /*
 				point = new Point(4, 7);
 				board[4][7].setHex("Door", "Door", 1);
 				
 				point  = new Point(8, 5);
-				board[8][5].setHex("Door", "Door",1);
+				board[8][5].setHex("Door", "Door",2);
 				
 				//Create enemy 1
 				point=new Point(3, 5);
@@ -92,6 +129,7 @@ public class Room {
 				
 				point = new Point(12, 7);
 				board[12][7].setHex("Loot", "Gold", 0);
+				*/
 				break;
 				
 			default:
@@ -129,11 +167,48 @@ public class Room {
 	}
 	
 	private void showRoom(int index) {
+		
+		File file = new File("src/Gloomhaven/test.txt"); 
+		Scanner sc = null;
+		try {
+			sc = new Scanner(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	  
+	    while (sc.hasNextLine()) 
+	    {
+	    	String line = sc.nextLine();
+	    	line=sc.nextLine();
+	    	
+	    	if(Integer.parseInt(line)==index) {
+
+	    		int startX=Integer.parseInt(sc.nextLine());
+	    		int endX=Integer.parseInt(sc.nextLine());
+	    		int startY=Integer.parseInt(sc.nextLine());
+	    		int endY=Integer.parseInt(sc.nextLine());
+	    		for(int x=startX; x<=endX; x++) {
+	    			for(int y=startY; y<=endY; y++) {
+	    				board[x][y].toggleShowHex();
+	    			}
+	    		}
+	    		int doorX=Integer.parseInt(sc.nextLine());
+	    		int doorY=Integer.parseInt(sc.nextLine());
+	    		if(doorX!=-1)
+	    			board[doorX][doorY].toggleShowHex();
+	    		break;
+	    	}else {
+	    		for(int i=0; i<6; i++)
+	    			sc.nextLine();
+	    	}
+	    }
+		/*
 		for(int x=0; x<dimensions.get(index).getX(); x++) {
 			for(int y=0; y<dimensions.get(index).getY(); y++) {
 				board[x][y].toggleShowHex();
 			}
-		}
+		}*/
 	}
 
 	//Sets the tile for the player
@@ -352,8 +427,8 @@ public class Room {
 			player.addLoot(board[(int) ending.getY()][(int) ending.getY()]);
 		}
 		
-		if(board[(int) ending.getX()][(int) ending.getY()].getDoor()) {
-			
+		if(board[(int) ending.getX()][(int) ending.getY()].getDoor() &&(board[(int) ending.getX()][(int) ending.getY()].doorOpen()==false)) {
+			showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
 		}
 				
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();

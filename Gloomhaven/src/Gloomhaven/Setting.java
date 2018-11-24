@@ -61,8 +61,10 @@ public class Setting {
 	public int getStartingAbilityCardCount() {
 		if(playerClass=="Brute" || playerClass=="Mind Thief")
 			return 10;
-		if(playerClass=="Scoundrel" || playerClass=="Spellweaver")
+		if(playerClass=="Scoundrel")
 			return 9;
+		if(playerClass=="Spellweaver")
+			return 8;
 		if(playerClass=="Cragheart")
 			return 11;
 		if(playerClass=="Tinkerer")

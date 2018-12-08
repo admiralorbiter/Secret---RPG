@@ -111,6 +111,17 @@ public final class ItemLoader {
 		return items;
 	}
 	
+	public static List<Item> testLoadItems(){
+		List<Item> items = new ArrayList<Item>();
+		
+		items.add(Load(24));
+		items.get(items.size()-1).setIndexNum(1);
+		items.add(Load(25));
+		items.get(items.size()-1).setIndexNum(1);
+		
+		return items;
+	}
+	
 	public static void continuousEffects(Player player) {
 		List<Item> items = player.getItems();
 		for(int i=0; i<items.size(); i++) {
@@ -139,7 +150,8 @@ public final class ItemLoader {
 	public static List<Item> onTurn(List<Item> items){
 		List<Item> onTurn = new ArrayList<Item>();
 		for(int i=0; i<items.size(); i++) {
-			if(items.get(i).getPlayFlag().equals("during_turn")) {
+			if(items.get(i).getPlayFlag().equals("during_turn") && items.get(i).getAvailable()) {
+				
 				onTurn.add(items.get(i));
 			}
 		}
@@ -183,15 +195,17 @@ public final class ItemLoader {
 			case 19: System.out.println(item.getName());
 			break;
 			//heal +1 Self
-			case 24: System.out.println(item.getName());
+			case 24: player.heal(1);
 			break;
 			//add wound to a single attack
-			case 25: System.out.println(item.getName());
+			case 25: player.setBonusNegativeConditions("Wound");
 			break;
 			//during a melee attack, turn it into two spaces in a line
 			case 26: System.out.println(item.getName());
 			break;
 		}
+		
+		player.spendItem(item);
 	}
 	
 }

@@ -80,7 +80,8 @@ public class Player {
 					smallItemTotal=(level+1)/2;
 				
 				
-				items = ItemLoader.testLoadAllItems();
+				//items = ItemLoader.testLoadAllItems();
+				items=ItemLoader.testLoadItems();
 				
 				/*
 				for(int i=0; i<items.size(); i++)
@@ -969,6 +970,12 @@ public class Player {
 	public void consumeItem(Item item) {
 		consumedItems.add(item);
 		items.remove(item);
+	}
+	
+	public void spendItem(Item item) {
+		int index=items.indexOf(item);
+		items.get(index).use();
+		
 	}
 	
 	public List<Item> getConsumedItems(){

@@ -13,6 +13,7 @@ public class Item {
 	boolean continuous=false;
 	int useCount=0;
 	int maxUses=0;
+	boolean available=true;
 	Point tracking;				//y is the total amount of items, x is where this card lies in that count
 	String equipSlot;
 	String playFlag;
@@ -40,9 +41,17 @@ public class Item {
 	public String getName() {return name;}
 	
 	public void refresh() {
-		spent=false;
 		useCount=0;
 	}
+	
+	public void use() {
+		useCount++;
+		if(maxUses==useCount) {
+			available=false;
+		}
+	}
+	
+	public boolean getAvailable() {return available;}
 	
 	public void inventoryTracker(int maxItems) {
 		tracking= new Point(0, maxItems);

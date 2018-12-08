@@ -57,5 +57,6 @@ public class Item {
 	}
 	
 	public boolean getConsumed() {return consumed;}
+	public boolean getSpent() {return spent;}
 	public String getPlayFlag() {return playFlag;}
 }

@@ -328,9 +328,12 @@ public class Scenario {
 		}
 		else if(state==State.PLAYER_ITEM) {
 			//picked item stored in itemUsed as an int
-			List<Item> usableItems = ItemLoader.consumedOnTurn(party.get(currentPlayer).getItems());
+			List<Item> usableItems = ItemLoader.onTurn(party.get(currentPlayer).getItems());
+			System.out.println(itemUsed+"   "+usableItems.get(itemUsed).getName());
 			if(usableItems.get(itemUsed).getConsumed()) {
 				ItemLoader.consumeItem(party.get(currentPlayer), usableItems.get(itemUsed));
+			}else if(usableItems.get(itemUsed).getSpent()) {
+				ItemLoader.spendItem(party.get(currentPlayer), usableItems.get(itemUsed));
 			}
 			state=State.PLAYER_CHOICE;
 		}

@@ -226,6 +226,11 @@ public final class UtilitiesAB {
 		int attack = player.getAttack(card);
 		System.out.println("Utility Class Damage: "+attack);
 		
+		if(player.getBonusNegativeConditions().causesNegativeCondition()) {
+			negativeConditionOnEnemy(player.getBonusNegativeConditions(), enemy);
+			player.resetBonusNegativeConditions();
+		}
+		
 		if(card.causesNegativeCondition())
 			negativeConditionOnEnemy(card, enemy);
 		

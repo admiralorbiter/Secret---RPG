@@ -90,7 +90,7 @@ public final class ItemLoader {
 		
 		List<Item> items = new ArrayList<Item>();
 		
-		for(int i=15; i<=30; i++) {
+		for(int i=20; i<=30; i++) {
 			if(i==20 || i==27) {
 				items.add(Load(i));
 				items.get(items.size()-1).setIndexNum(1);
@@ -136,13 +136,62 @@ public final class ItemLoader {
 		return consumedItems;
 	}
 	
-	public static void consumeItem(Player player, Item item) {
-		
-		if(item.getID()==20) {
-			//create any element
+	public static List<Item> onTurn(List<Item> items){
+		List<Item> onTurn = new ArrayList<Item>();
+		for(int i=0; i<items.size(); i++) {
+			if(items.get(i).getPlayFlag().equals("during_turn")) {
+				onTurn.add(items.get(i));
+			}
 		}
 		
-		player.removeItem(item);
+		return onTurn;
+	}
+	
+	public static void consumeItem(Player player, Item item) {
+		
+
+		switch(item.getID()) {
+			//Refresh one of your consumed items
+			case 17: player.randomlyRestoreConsumedItem();//randomly restore item, though eventually player will need to pick
+			break;
+			//during single-target melee, turn it into neighbor attack
+			case 18: System.out.println(item.getName());
+			break;
+			//creates element
+			case 20: System.out.println(item.getName());
+			break;
+			//during attack add stun to a single attack
+			//what if the attack has several targets?
+			case 21: player.setBonusNegativeConditions("Stun");
+			break;
+			//heal +5 Self
+			case 27: player.heal(5);
+			break;
+			//Refresh all your spent items
+			case 28: System.out.println(item.getName());
+			break;
+			
+			
+		}
+		player.consumeItem(item);
+	}
+	
+	public static void spendItem(Player player, Item item) {
+		
+		switch(item.getID()) {
+			//range attack add immobbilize to a single attack
+			case 19: System.out.println(item.getName());
+			break;
+			//heal +1 Self
+			case 24: System.out.println(item.getName());
+			break;
+			//add wound to a single attack
+			case 25: System.out.println(item.getName());
+			break;
+			//during a melee attack, turn it into two spaces in a line
+			case 26: System.out.println(item.getName());
+			break;
+		}
 	}
 	
 }

@@ -47,10 +47,13 @@ public class Player {
 	List<String> lootInventory = new ArrayList<String>();
 	int gold;
 	List<Item> items = new ArrayList<Item>();
+	List<Item> consumedItems = new ArrayList<Item>();
 	int smallItemTotal;
 	int smallItemCount;
 	boolean movementImmunity=false;
 	int bonusMove=0;
+	
+	CardDataObject negativeConditions=null;
 	
 	//List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
 	List<Trigger> triggers = new ArrayList<Trigger>();
@@ -108,6 +111,7 @@ public class Player {
 		cardChoice=true;
 		topCard=null;
 		bottomCard=null;
+		negativeConditions=null;
 	}
 	
 	
@@ -220,7 +224,7 @@ public class Player {
 	}
 
 	public int pickPlayCard(KeyEvent e, int key, char k, Graphics g) {
-		List<Item> usableItems = ItemLoader.consumedOnTurn(getItems());
+		List<Item> usableItems = ItemLoader.onTurn(getItems());
 		char buttons[] = buttons();
 		
 		showPickedCards(e, g);
@@ -228,8 +232,10 @@ public class Player {
 		
 		//returns 100+item index, then will subtract 100 to get the index
 		for(int i=0; i<usableItems.size(); i++) {
-			if(buttons[i]==k) {
-				return 100+i;
+			if(i<9) {
+				if(buttons[i]==k) {
+					return 100+i;
+				}
 			}
 		}
 		
@@ -959,6 +965,48 @@ public class Player {
 	public void removeItem(Item item) {
 		items.remove(item);
 	}
+	
+	public void consumeItem(Item item) {
+		consumedItems.add(item);
+		items.remove(item);
+	}
+	
+	public List<Item> getConsumedItems(){
+		return consumedItems;
+	}
+	
+	public void randomlyRestoreConsumedItem() {
+		Random r = new Random();
+		if(consumedItems.size()>0) {
+			int n = r.nextInt(consumedItems.size());
+			items.add(consumedItems.get(n));
+			consumedItems.remove(n);
+		}
+	}
+	
+	public void setBonusNegativeConditions(String name) {
+		negativeConditions = new CardDataObject();
+		if(name=="Wound")
+			negativeConditions.wound=true;
+		else if(name=="Curse")
+			negativeConditions.curse=true;
+		else if(name=="Disarm")
+			negativeConditions.disarm=true;
+		else if(name=="Immobilize")
+			negativeConditions.immoblize=true;
+		else if(name=="Muddle")
+			negativeConditions.muddle=true;
+		else if(name=="Poison")
+			negativeConditions.poison=true;
+		else if(name=="Stun")
+			negativeConditions.stun=true;
+	}
+	
+	public void resetBonusNegativeConditions() {
+		negativeConditions=null;
+	}
+	
+	public CardDataObject getBonusNegativeConditions() {return negativeConditions;}
 	
 	//[Test] Print Loot
 	public void testPrintLoot() {

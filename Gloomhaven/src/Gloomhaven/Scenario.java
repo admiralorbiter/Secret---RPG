@@ -38,6 +38,7 @@ public class Scenario {
 	    MINDCONTROL,
 	    PLAYER_PUSH_SELECTION,
 	    PLAYER_PUSH,
+	    PLAYER_ITEM,
 	    END;
 	}
 	
@@ -67,6 +68,7 @@ public class Scenario {
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
 	private int enemyTurnIndex;		
 	private Point tempHoldVar= null;
+	private int itemUsed;
 	
 	public Scenario(String sceneID, List<Player> party) {			
 		
@@ -288,9 +290,13 @@ public class Scenario {
 		//State: PLAYER_CHOICE: Player chooses their card
 		else if(state==State.PLAYER_CHOICE) {
 
-			int cardPick=party.get(playerIndex).pickPlayCard(key, num, g);								//Prints ability cards then waits for one to pick
+			int cardPick=party.get(playerIndex).pickPlayCard(key, num, k, g);								//Prints ability cards then waits for one to pick
 			if(cardPick>=1 && cardPick<=8)
 				state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
+			if(cardPick>=100) {
+				itemUsed=cardPick-100;
+				state=State.PLAYER_ITEM;
+			}
 		}
 		//State: PLAYER_ATTACK_LOGIC: Player picks card, then uses data for next state-----------------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
@@ -319,6 +325,14 @@ public class Scenario {
 					}
 				}
 			}
+		}
+		else if(state==State.PLAYER_ITEM) {
+			//picked item stored in itemUsed as an int
+			List<Item> usableItems = ItemLoader.consumedOnTurn(party.get(currentPlayer).getItems());
+			if(usableItems.get(itemUsed).getConsumed()) {
+				ItemLoader.consumeItem(party.get(currentPlayer), usableItems.get(itemUsed));
+			}
+			state=State.PLAYER_CHOICE;
 		}
 		//State: PLAYER_MOVE: Player moves to a new hex or stays there---------------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_MOVE) {

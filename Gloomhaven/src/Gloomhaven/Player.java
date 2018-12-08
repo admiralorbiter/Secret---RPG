@@ -219,11 +219,19 @@ public class Player {
 			lootInventory.add(hex.getLootID());
 	}
 
-	public int pickPlayCard(KeyEvent e, int key, Graphics g) {
-		List<Item> useableItems = ItemLoader.consumedOnTurn(getItems());
+	public int pickPlayCard(KeyEvent e, int key, char k, Graphics g) {
+		List<Item> usableItems = ItemLoader.consumedOnTurn(getItems());
+		char buttons[] = buttons();
 		
 		showPickedCards(e, g);
-		showDuringTurnItemCards(useableItems, g);
+		showDuringTurnItemCards(usableItems, g);
+		
+		//returns 100+item index, then will subtract 100 to get the index
+		for(int i=0; i<usableItems.size(); i++) {
+			if(buttons[i]==k) {
+				return 100+i;
+			}
+		}
 		
 		if(cardChoice) {
 			
@@ -499,6 +507,16 @@ public class Player {
 	private void showDuringTurnItemCards(List<Item> usableItems, Graphics g) {
 		int startingY=setting.getGraphicsYBottom()+15*13;
 		int offsetY=15;
+		char buttons[] = buttons();
+		
+		for(int i=0; i<usableItems.size(); i++) {
+			if(i==9)
+				break;
+			g.drawString(buttons[i]+": "+usableItems.get(i).getName(), 10, startingY+i*offsetY);
+		}
+	}
+	
+	private char[] buttons() {
 		char buttons[] = new char[10];
 		buttons[0]='q';
 		buttons[1]='w';
@@ -511,11 +529,7 @@ public class Player {
 		buttons[8]='o';
 		buttons[9]='p';
 		
-		for(int i=0; i<usableItems.size(); i++) {
-			if(i==9)
-				break;
-			g.drawString(buttons[i]+": "+usableItems.get(i).getName(), 10, startingY+i*offsetY);
-		}
+		return buttons;
 	}
 	
 	public void endTurn() {
@@ -940,6 +954,10 @@ public class Player {
 	
 	public SimpleCards getRetaliate() {
 		return retaliate;
+	}
+	
+	public void removeItem(Item item) {
+		items.remove(item);
 	}
 	
 	//[Test] Print Loot

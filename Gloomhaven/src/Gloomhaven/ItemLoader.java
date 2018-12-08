@@ -135,4 +135,14 @@ public final class ItemLoader {
 		
 		return consumedItems;
 	}
+	
+	public static void consumeItem(Player player, Item item) {
+		
+		if(item.getID()==20) {
+			//create any element
+		}
+		
+		player.removeItem(item);
+	}
+	
 }

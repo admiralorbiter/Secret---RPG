@@ -124,4 +124,15 @@ public final class ItemLoader {
 			}
 		}
 	}
+	
+	public static List<Item> consumedOnTurn(List<Item> items) {
+		List<Item> consumedItems = new ArrayList<Item>();
+		for(int i=0; i<items.size(); i++) {
+			if(items.get(i).getConsumed() && items.get(i).getPlayFlag().equals("during_turn")) {
+				consumedItems.add(items.get(i));
+			}
+		}
+		
+		return consumedItems;
+	}
 }

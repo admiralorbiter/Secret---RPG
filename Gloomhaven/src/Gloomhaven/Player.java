@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -219,7 +220,10 @@ public class Player {
 	}
 
 	public int pickPlayCard(KeyEvent e, int key, Graphics g) {
+		List<Item> useableItems = ItemLoader.consumedOnTurn(getItems());
+		
 		showPickedCards(e, g);
+		showDuringTurnItemCards(useableItems, g);
 		
 		if(cardChoice) {
 			
@@ -489,6 +493,28 @@ public class Player {
 			g.drawString("6: Bottom of Card", 10, startingY+offsetY*8);
 			g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
 			g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
+		}
+	}
+	
+	private void showDuringTurnItemCards(List<Item> usableItems, Graphics g) {
+		int startingY=setting.getGraphicsYBottom()+15*13;
+		int offsetY=15;
+		char buttons[] = new char[10];
+		buttons[0]='q';
+		buttons[1]='w';
+		buttons[2]='e';
+		buttons[3]='r';
+		buttons[4]='t';
+		buttons[5]='y';
+		buttons[6]='u';
+		buttons[7]='i';
+		buttons[8]='o';
+		buttons[9]='p';
+		
+		for(int i=0; i<usableItems.size(); i++) {
+			if(i==9)
+				break;
+			g.drawString(buttons[i]+": "+usableItems.get(i).getName(), 10, startingY+i*offsetY);
 		}
 	}
 	

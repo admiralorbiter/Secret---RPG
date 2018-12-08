@@ -55,4 +55,7 @@ public class Item {
 	public void testDisplay() {
 		System.out.println(name+"  Gold: "+gold+"     "+tracking.getX()+"/"+tracking.getY());
 	}
+	
+	public boolean getConsumed() {return consumed;}
+	public String getPlayFlag() {return playFlag;}
 }

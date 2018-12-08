@@ -15,7 +15,7 @@ public class Setting {
 	private int HEIGHT=1050;
 	private String TITLE="Gloomhaven";
 	
-	private int offsetYGraphicsBottom=HEIGHT*2/3;
+	private int offsetYGraphicsBottom=HEIGHT*6/10;
 	private int offsetYGraphicsMid=HEIGHT*1/3;
 	
 	public String getTitle() {return TITLE;}

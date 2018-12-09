@@ -685,6 +685,8 @@ public class Player {
 				g.drawString(negativeConditions.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
 		}
 		g.drawString("Gold: "+gold, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
+		if(getBonusNegativeConditions()!=null)
+			g.drawString("Bonus Condition on Attack: "+getBonusNegativeConditions().getNegativeCondition(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
 		
 		
 		

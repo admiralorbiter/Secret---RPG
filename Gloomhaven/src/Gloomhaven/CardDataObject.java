@@ -216,6 +216,25 @@ public class CardDataObject {
 		return false;
 	}
 	
+	public String getNegativeCondition() {
+		if(wound)
+			return "Wound";
+		if(curse)
+			return "Curse";
+		if(disarm)
+			return "Disarm";
+		if(immoblize)
+			return "Immobilize";
+		if(muddle)
+			return "Muddle";
+		if(poison)
+			return "Poison";
+		if(stun)
+			return "Stun";
+		
+		return "";
+	}
+	
 	public boolean infusion() {
 		if(darkInfusion)
 			return true;

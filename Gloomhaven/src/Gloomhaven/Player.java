@@ -52,7 +52,7 @@ public class Player {
 	int smallItemCount;
 	boolean movementImmunity=false;
 	int bonusMove=0;
-	
+	boolean createAnyElement=false;
 	CardDataObject negativeConditions=null;
 	
 	//List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
@@ -113,6 +113,7 @@ public class Player {
 		topCard=null;
 		bottomCard=null;
 		negativeConditions=null;
+		createAnyElement=false;
 	}
 	
 	
@@ -1023,4 +1024,7 @@ public class Player {
 		for(int i=0; i<lootInventory.size(); i++)
 			System.out.println(lootInventory.get(i));
 	}
+	
+	public void setCreateAnyElement(boolean flag) {createAnyElement=true;}
+	public boolean getCreateAnyElement() {return createAnyElement;}
 }

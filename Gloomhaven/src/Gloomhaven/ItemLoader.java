@@ -118,6 +118,8 @@ public final class ItemLoader {
 		items.get(items.size()-1).setIndexNum(1);
 		items.add(Load(25));
 		items.get(items.size()-1).setIndexNum(1);
+		items.add(Load(20));
+		items.get(items.size()-1).setIndexNum(2);
 		
 		return items;
 	}
@@ -170,7 +172,7 @@ public final class ItemLoader {
 			case 18: System.out.println(item.getName());
 			break;
 			//creates element
-			case 20: System.out.println(item.getName());
+			case 20: player.setCreateAnyElement(true);;
 			break;
 			//during attack add stun to a single attack
 			//what if the attack has several targets?

@@ -39,6 +39,7 @@ public class Scenario {
 	    PLAYER_PUSH_SELECTION,
 	    PLAYER_PUSH,
 	    PLAYER_ITEM,
+	    CREATE_INFUSION,
 	    END;
 	}
 	
@@ -335,7 +336,11 @@ public class Scenario {
 			}else if(usableItems.get(itemUsed).getSpent()) {
 				ItemLoader.spendItem(party.get(currentPlayer), usableItems.get(itemUsed));
 			}
-			state=State.PLAYER_CHOICE;
+			if(party.get(currentPlayer).getCreateAnyElement()) {
+				state=State.CREATE_INFUSION;
+			}else {
+				state=State.PLAYER_CHOICE;
+			}
 		}
 		//State: PLAYER_MOVE: Player moves to a new hex or stays there---------------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_MOVE) {
@@ -819,6 +824,41 @@ public class Scenario {
 					}
 				}
 			}
+		}
+		else if(state==State.CREATE_INFUSION) {
+			int startingY=setting.getGraphicsYBottom();
+			int offsetY=15;
+			
+			g.drawString("Pick an infusion", 10, startingY+offsetY*0);
+			g.drawString("1 Fire", 10, startingY+offsetY*1);
+			g.drawString("2 Ice", 10, startingY+offsetY*2);
+			g.drawString("3 Air", 10, startingY+offsetY*3);
+			g.drawString("4 Earth", 10, startingY+offsetY*4);
+			g.drawString("5 Light", 10, startingY+offsetY*5);
+			g.drawString("6 Dark", 10, startingY+offsetY*6);
+			
+			if(num>=1 && num<=6) {
+				String element="";
+				switch(num) {
+					case 1: element="Fire";
+					break;
+					case 2: element="Ice";
+					break;
+					case 3: element="Air";
+					break;
+					case 4: element="Earth";
+					break;
+					case 5: element="Light";
+					break;
+					case 6: element="Dark";
+					break;
+				}
+				elements.infuse(element);
+				
+				party.get(currentPlayer).setCreateAnyElement(false);
+				state=State.PLAYER_CHOICE;
+			}
+			
 		}
 		//State: ROUND_END_DISCARD: Decides if scenario is over or another round should begin----------------------------------------------------------------------------
 		else if(state==State.ROUND_END_DISCARD) {

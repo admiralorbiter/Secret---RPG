@@ -40,6 +40,7 @@ public class Scenario {
 	    PLAYER_PUSH,
 	    PLAYER_ITEM,
 	    CREATE_INFUSION,
+	    USE_ANY_INFUSION,
 	    END;
 	}
 	
@@ -859,6 +860,21 @@ public class Scenario {
 				state=State.PLAYER_CHOICE;
 			}
 			
+		}
+		else if(state==State.USE_ANY_INFUSION) {
+			if(elements.consumeAny(g, num)) {
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turn==party.size())
+						state=State.ROUND_END_DISCARD;
+					else {
+						turn++;
+						state=State.ATTACK;
+					}
+				}
+			}
 		}
 		//State: ROUND_END_DISCARD: Decides if scenario is over or another round should begin----------------------------------------------------------------------------
 		else if(state==State.ROUND_END_DISCARD) {

@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Scenario.State;
+
 public class InfusionTable {
 	
 	String earth = "Earth";
@@ -67,6 +69,7 @@ public class InfusionTable {
 		
 		if(element.equals("Any")) {
 			if(strong.size()>0) {
+				//consumeAny(g, num);
 				inert.add(strong.get(0));
 				strong.remove(0);
 				return true;
@@ -94,6 +97,81 @@ public class InfusionTable {
 			return false;
 		
 		
+	}
+	
+	public boolean consumeAny(Graphics g, int num) {
+		
+		int startingY=setting.getGraphicsYBottom();
+		int offsetY=15;
+		int index=0;
+		if(strong.contains("Fire") || wanning.contains("Fire")){
+			g.drawString("1 Fire", 10, startingY+offsetY*index);
+			index++;
+		}
+		else if(strong.contains("Ice") || wanning.contains("Ice")){
+			g.drawString("2 Ice", 10, startingY+offsetY*index);
+			index++;
+		}
+		else if(strong.contains("Air") || wanning.contains("Air")){
+			g.drawString("3 Air", 10, startingY+offsetY*index);
+			index++;
+		}
+		else if(strong.contains("Earth") || wanning.contains("Earth")){
+			g.drawString("4 Earth", 10, startingY+offsetY*index);
+			index++;
+		}
+		else if(strong.contains("Light") || wanning.contains("Light")){
+			g.drawString("5 Light", 10, startingY+offsetY*index);
+			index++;
+		}
+		else if(strong.contains("Dark") || wanning.contains("Dark")){
+			g.drawString("6 Dark", 10, startingY+offsetY*index);
+			index++;
+		}
+		
+		if(num>=1 && num<=6) {
+			String element="";
+			switch(num) {
+				case 1: if(strong.contains("Fire") || wanning.contains("Fire")) {
+					element="Fire";
+					consume(element);
+					return true;
+				}
+				break;
+				case 2: if(strong.contains("Ice") || wanning.contains("Ice")) {
+					element="Ice";
+					consume(element);
+					return true;
+				}
+				break;
+				case 3: if(strong.contains("Air") || wanning.contains("Air")) {
+					element="Air";
+					consume(element);
+					return true;
+				}
+				break;
+				case 4: if(strong.contains("Earth") || wanning.contains("Earth")) {
+					element="Earth";
+					consume(element);
+					return true;
+				}
+				break;
+				case 5: if(strong.contains("Light") || wanning.contains("Light")) {
+					element="Light";
+					consume(element);
+					return true;
+				}
+				break;
+				case 6: if(strong.contains("Dark") || wanning.contains("Dark")) {
+					element="Dark";
+					consume(element);
+					return true;
+				}
+				break;
+			}
+		}
+
+		return false;
 	}
 	
 	public void graphicsDrawTable(Graphics g) {

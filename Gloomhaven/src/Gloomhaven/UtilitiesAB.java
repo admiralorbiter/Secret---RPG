@@ -225,10 +225,11 @@ public final class UtilitiesAB {
 		//int attack=card.getAttack();
 		int attack = player.getAttack(card);
 		System.out.println("Utility Class Damage: "+attack);
-		
-		if(player.getBonusNegativeConditions().causesNegativeCondition()) {
-			negativeConditionOnEnemy(player.getBonusNegativeConditions(), enemy);
-			player.resetBonusNegativeConditions();
+		if(player.getBonusNegativeConditions()!=null) {
+			if(player.getBonusNegativeConditions().causesNegativeCondition()) {
+				negativeConditionOnEnemy(player.getBonusNegativeConditions(), enemy);
+				player.resetBonusNegativeConditions();
+			}
 		}
 		
 		if(card.causesNegativeCondition())
@@ -264,7 +265,7 @@ public final class UtilitiesAB {
 		
 		if(card.getElementalConsumed()) {
 			String element=card.getElementalConsumedData().getElementalConsumed();
-			
+
 			if(elements.consume(element)) {
 				if(card.getElementalConsumedData().getAttack()>0)
 					attack=attack+card.getElementalConsumedData().getAttack();

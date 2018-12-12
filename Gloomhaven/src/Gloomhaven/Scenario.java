@@ -312,6 +312,8 @@ public class Scenario {
 				state=State.PLAYER_MOVE;
 			//if there is range? that way it hits all targed attacks
 			//}else if(card.getAttack()>0 || card.getTargetHeal()==true) {
+			}else if(card.getData().getElementalConsumed()) {
+				state=State.USE_ANY_INFUSION;
 			}else if(card.getRange()>0 || card.getAttack()>0) {
 				state=State.PLAYER_ATTACK;
 			}else {
@@ -392,8 +394,10 @@ public class Scenario {
 			}
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
-			
-				if(card.getRange()>0 || card.getAttack()>0) {
+				if(card.getData().getElementalConsumed()) {
+					state=State.USE_ANY_INFUSION;
+				}
+				else if(card.getRange()>0 || card.getAttack()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
 				}else if(card.getData().getPush()>0) {
@@ -857,21 +861,30 @@ public class Scenario {
 				elements.infuse(element);
 				
 				party.get(currentPlayer).setCreateAnyElement(false);
+				
 				state=State.PLAYER_CHOICE;
 			}
 			
 		}
 		else if(state==State.USE_ANY_INFUSION) {
 			if(elements.consumeAny(g, num)) {
-				if(party.get(currentPlayer).getCardChoice()==false) {
-					state=State.PLAYER_CHOICE;
+				if(card.getRange()>0 || card.getAttack()>0) {
+					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
+					state=State.PLAYER_ATTACK;
+				}else if(card.getData().getPush()>0) {
+					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
+					state=State.PLAYER_PUSH_SELECTION;
 				}else {
-					//if turn is over
-					if(turn==party.size())
-						state=State.ROUND_END_DISCARD;
-					else {
-						turn++;
-						state=State.ATTACK;
+					if(party.get(currentPlayer).getCardChoice()==false) {
+						state=State.PLAYER_CHOICE;
+					}else {
+						//if turn is over
+						if(turn==party.size())
+							state=State.ROUND_END_DISCARD;
+						else {
+							turn++;
+							state=State.ATTACK;
+						}
 					}
 				}
 			}

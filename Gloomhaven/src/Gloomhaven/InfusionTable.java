@@ -22,6 +22,8 @@ public class InfusionTable {
 	
 	Setting setting = new Setting();
 	
+	boolean anyflag=false;
+	
 	public InfusionTable() {
 		inert.add(earth);
 		inert.add(fire);
@@ -66,10 +68,9 @@ public class InfusionTable {
 	
 	public boolean consume(String element) {
 		System.out.println("Trying to consume "+element);
-		
-		if(element.equals("Any")) {
-			if(strong.size()>0) {
-				//consumeAny(g, num);
+		//Note that it still goes through for any, but it doens't use anything
+		/*if(element.equals("Any")) {
+			if(strong.size()>0 || wanning.size()>0) {
 				inert.add(strong.get(0));
 				strong.remove(0);
 				return true;
@@ -81,6 +82,10 @@ public class InfusionTable {
 				return true;
 			}
 			return false;
+		}*/
+		if(anyflag) {
+			anyflag=false;
+			return true;
 		}
 		
 		if(strong.contains(element)) {
@@ -100,6 +105,8 @@ public class InfusionTable {
 	}
 	
 	public boolean consumeAny(Graphics g, int num) {
+		//if(strong.size()==0 && wanning.size()==0)
+			//return true;
 		
 		int startingY=setting.getGraphicsYBottom();
 		int offsetY=15;
@@ -135,36 +142,42 @@ public class InfusionTable {
 				case 1: if(strong.contains("Fire") || wanning.contains("Fire")) {
 					element="Fire";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;
 				case 2: if(strong.contains("Ice") || wanning.contains("Ice")) {
 					element="Ice";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;
 				case 3: if(strong.contains("Air") || wanning.contains("Air")) {
 					element="Air";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;
 				case 4: if(strong.contains("Earth") || wanning.contains("Earth")) {
 					element="Earth";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;
 				case 5: if(strong.contains("Light") || wanning.contains("Light")) {
 					element="Light";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;
 				case 6: if(strong.contains("Dark") || wanning.contains("Dark")) {
 					element="Dark";
 					consume(element);
+					anyflag=true;
 					return true;
 				}
 				break;

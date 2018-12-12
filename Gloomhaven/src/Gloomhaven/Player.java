@@ -840,7 +840,9 @@ public class Player {
 	
 	public String getID() {return id;}
 	public int getAttack(CardDataObject attackCard) {
+		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
+		System.out.println(attackCard.attack+"  "+card.plusAttack+"  "+card.multiplier);
 		int damage = (attackCard.attack+card.plusAttack)*card.multiplier;
 		
 		if(triggers.size()>0) {

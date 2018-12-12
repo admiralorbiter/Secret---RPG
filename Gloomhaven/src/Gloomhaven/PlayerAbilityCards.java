@@ -65,6 +65,8 @@ public class PlayerAbilityCards {
 		
 	}
 	
+	public boolean getLostFlag() {return lost;}
+	
 	PlayerAbilityCards(PlayerAbilityCards a) {
 		this.name=a.name;
 		this.initiative=a.initiative;
@@ -117,6 +119,12 @@ public class PlayerAbilityCards {
 			return false;
 		
 		return true;
+	}
+	
+	public void reset() {
+		inPlay=false;
+		lost=false;
+		discard=false;
 	}
 	
 	public void setInPlay() {

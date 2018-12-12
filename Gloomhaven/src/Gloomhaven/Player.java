@@ -1029,4 +1029,11 @@ public class Player {
 	
 	public void setCreateAnyElement(boolean flag) {createAnyElement=true;}
 	public boolean getCreateAnyElement() {return createAnyElement;}
+	
+	public void recoverLostCards() {
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(abilityDeck.get(i).getLostFlag())
+				abilityDeck.get(i).reset();
+		}
+	}
 }

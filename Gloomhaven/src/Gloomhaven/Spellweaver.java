@@ -14,24 +14,27 @@ public class Spellweaver implements CardInterface {
 			case 1:
 				card.name="Fire Orbs";
 				card.initiative=69;
-				card.text="Attack +3 Range 3 Targets +3 (Not implemented) Gain XP +1 for each Target (Not Implemented)";
+				card.text="Attack +3 Range 3 Targets +3 (Not implemented) Gain XP +1 for each Target (Not Implemented) Card consumed on use.";
 				card.attack=3;
 				card.range=3;
 				card.targetNum=3;
 				card.forEachTargetedData.experience=1;
+				card.lost=true;
 				break;
 			case 2:
 				card.name="Impaling Eruption";
 				card.initiative=70;
-				card.text="Attack +3. Range +4. Additionally, target all enemies on the path to primary target. Gain XP +1 for each one targeted. (Unimplemented)";
+				card.text="Attack +3. Range +4. Additionally, target all enemies on the path to primary target. Gain XP +1 for each one targeted. (Unimplemented) Card consumed on use.";
 				card.attack=3;
 				card.range=4;
 				card.forEachTargetedData.experience=1;
+				card.lost=true;
 				break;
 			case 3:
 				card.name="Reviving Ether";
 				card.initiative=80;
 				card.text="Recover all your lost cards. (Unimplemented) Infuse dark. Consume after use.";
+				card.recoverLostCards=true;
 				card.darkInfusion=true;
 				card.lost=true;
 				break;

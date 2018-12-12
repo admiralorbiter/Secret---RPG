@@ -83,6 +83,8 @@ public class CardDataObject {
 	boolean circle;
 	boolean triangle;
 	
+	boolean recoverLostCards;
+	
 	public CardDataObject() {
 		text="If you are seeing this, it is a mistake";
 		move=0;
@@ -144,7 +146,10 @@ public class CardDataObject {
 		opposingAttack=false;
 		circle=false;
 		triangle=false;
+		
+		recoverLostCards=false;
 	}
+	public boolean getRecoverLostCards() {return recoverLostCards;}
 	public boolean getTriangle() {return triangle;}
 	public boolean getCircle() {return circle;}
 	public boolean getOpposingAttack() {return opposingAttack;}

@@ -7,6 +7,7 @@ public class Item {
 	int id;
 	int gold;
 	String name;
+	int level;
 	
 	boolean consumed=false;
 	boolean spent=false;
@@ -18,7 +19,7 @@ public class Item {
 	String equipSlot;
 	String playFlag;
 	
-	public Item(int id, int gold, String name, String equipSlot, String useFlag, String playFlag) {
+	public Item(int id, int gold, String name, String equipSlot, String useFlag, String playFlag, int level) {
 		this.id=id;
 		this.gold=gold;
 		this.name=name;

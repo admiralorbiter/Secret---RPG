@@ -9,68 +9,123 @@ public final class ItemLoader {
 		Item item = null;
 		
 		switch(id) {
-			case 15:
-				item = new Item(id, 30, "Boots of Speed", "Boots", "spent", "after_initiative");
+			case 1:
+				item = new Item(id, 20, "Boots of Striding", "Boots", "spent", "during_turn", 1);
 				item.inventoryTracker(2);
 				break;
+			case 2:
+				item = new Item(id, 20, "Winged Shoes", "Boots", "spent", "during_turn", 1);
+				item.inventoryTracker(2);
+				break;
+			case 3:
+				item = new Item(id, 10, "Hide Armor", "Body", "continuous", "when_attacked", 1);
+				item.inventoryTracker(2);
+				break;
+			case 4:
+				item = new Item(id, 20, "Leather Armor", "Body", "spent", "when_attacked", 1);
+				item.inventoryTracker(2);
+				break;
+			case 5:
+				item = new Item(id, 20, "Cloak of Invisibility", "Body", "consumed", "during_turn", 1);
+				item.inventoryTracker(2);
+			case 6:
+				item = new Item(id, 30, "Eagle-Eye Goggles", "Head", "spent", "during_turn", 1);
+				item.inventoryTracker(2);
+				break;
+			case 7:
+				item=new Item(id, 10, "Iron Helmet", "Head", "continuous", "when_attacked", 1);
+				item.inventoryTracker(2);
+				break;
+			case 8:
+				item = new Item(id, 20, "Heater Shield", "One-Hand", "spent", "when_attacked", 1);
+				item.inventoryTracker(2);
+				break;
+			case 9:
+				item = new Item(id, 30, "Piercing Bow", "Two-Hands", "consumed", "during_turn", 1);
+				item.inventoryTracker(2);
+				break;
+			case 10:
+				item = new Item(id, 30, "War Hammer", "Two-Hands", "consumed", "during_turn", 1);
+				item.inventoryTracker(2);
+				break;
+			case 11:
+				item = new Item(id, 20, "Poison Dagger", "One-Hand", "spent", "during_turn", 1);
+				item.inventoryTracker(2);
+				break;
+			case 12:
+				item = new Item(id, 10, "Minor Healing Potion", "Small Item", "consumed", "during_turn", 1);
+				item.inventoryTracker(4);
+				break;
+			case 13:
+				item = new Item(id, 10, "Minor Stamina Potion", "Small_Item", "consumed", "during_turn", 1);
+				item.inventoryTracker(4);
+				break;
+			case 14:
+				item = new Item(id, 10, "Minor Power Potion", "Small_Item", "consumed", "during_turn", 1);
+				item.inventoryTracker(4);
+				break;
+			case 15:
+				item = new Item(id, 30, "Boots of Speed", "Boots", "spent", "after_initiative", 2);
+				item.inventoryTracker(4);
+				break;
 			case 16:
-				item = new Item(id, 20, "Cloak of Pockets", "Body", "continuous", "continuous");
+				item = new Item(id, 20, "Cloak of Pockets", "Body", "continuous", "continuous", 2);
 				item.inventoryTracker(2);
 				break;
 			case 17:
-				item = new Item(id, 45, "Empowering Talisman", "Head", "consumed", "during_turn");
+				item = new Item(id, 45, "Empowering Talisman", "Head", "consumed", "during_turn", 2);
 				item.inventoryTracker(2);
 				break;
 			case 18:
-				item = new Item(id, 45, "Battle-Axe", "One-Hand", "consumed", "during_turn");
+				item = new Item(id, 45, "Battle-Axe", "One-Hand", "consumed", "during_turn", 2);
 				item.inventoryTracker(2);
 				break;
 			case 19:
-				item = new Item(id, 20, "Weighted Net", "Two-Hand", "spent", "during_turn");
+				item = new Item(id, 20, "Weighted Net", "Two-Hand", "spent", "during_turn", 2);
 				item.inventoryTracker(2);
 				break;
 			case 20:
-				item = new Item(id, 10, "Minor Mana Potion", "Small Item", "consumed", "during_turn");
+				item = new Item(id, 10, "Minor Mana Potion", "Small Item", "consumed", "during_turn", 2);
 				item.inventoryTracker(4);
 				break;
 			case 21:
-				item = new Item(id, 20, "Stun Powder", "Small Item", "consumed", "during_turn");
+				item = new Item(id, 20, "Stun Powder", "Small Item", "consumed", "during_turn", 2);
 				item.inventoryTracker(2);
 				break;
 			case 22:
-				item = new Item(id, 20, "Heavy Greaves", "Boots", "continuous", "continuous");
+				item = new Item(id, 20, "Heavy Greaves", "Boots", "continuous", "continuous", 3);
 				item.inventoryTracker(2);
 				break;
 			case 23:
-				item = new Item(id, 20, "Chainmail", "Body", "spent", "when_attacked");
+				item = new Item(id, 20, "Chainmail", "Body", "spent", "when_attacked", 3);
 				item.inventoryTracker(2);
 				break;
 			case 24:
-				item = new Item(id, 20, "Amulet of Life", "Head", "spent", "during_turn");
+				item = new Item(id, 20, "Amulet of Life", "Head", "spent", "during_turn", 3);
 				item.inventoryTracker(2);
 				break;
 			case 25:
-				item = new Item(id, 30, "Jagged Sword", "One-Hand", "spent", "during_turn");
+				item = new Item(id, 30, "Jagged Sword", "One-Hand", "spent", "during_turn", 3);
 				item.inventoryTracker(2);
 				break;
 			case 26:
-				item = new Item(id, 30, "Long Spear", "Two-Hand", "spent", "during_turn");
+				item = new Item(id, 30, "Long Spear", "Two-Hand", "spent", "during_turn", 3);
 				item.inventoryTracker(2);
 				break;
 			case 27:
-				item = new Item(id, 30, "Major Healing Potion", "Small Item", "consumed", "during_turn");
+				item = new Item(id, 30, "Major Healing Potion", "Small Item", "consumed", "during_turn", 3);
 				item.inventoryTracker(4);
 				break;
 			case 28:
-				item = new Item(id, 20, "Moon Earring", "Small Item", "consumed", "during_turn");
+				item = new Item(id, 20, "Moon Earring", "Small Item", "consumed", "during_turn", 3);
 				item.inventoryTracker(2);
 				break;
 			case 29:
-				item = new Item(id, 30, "Comfortable Shoes", "Boots", "continuous", "continuous");
+				item = new Item(id, 30, "Comfortable Shoes", "Boots", "continuous", "continuous", 4);
 				item.inventoryTracker(2);
 				break;
 			case 30:
-				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked");
+				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked", 4);
 				item.inventoryTracker(2);
 				break;
 		}

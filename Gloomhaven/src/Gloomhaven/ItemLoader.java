@@ -78,6 +78,21 @@ public final class ItemLoader {
 		return item;
 	}
 	
+	public static void addAttackModifier(Player player, int id) {
+		switch(id) {
+		case 22:
+			player.addAttackModifierCard(new AttackModifierCard(1, -1));
+			break;
+		case 23:
+			player.addAttackModifierCard(new AttackModifierCard(1, -1));
+			player.addAttackModifierCard(new AttackModifierCard(1, -1));
+			player.addAttackModifierCard(new AttackModifierCard(1, -1));
+			break;
+			
+			
+		}
+	}
+	
 	public static int maxUses(int id) {
 		
 		if(id==23)

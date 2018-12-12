@@ -64,5 +64,9 @@ public class AttackModifierDeck {
 		for(int i=0; i<deck.size(); i++)
 			deck.get(i).setFree();
 	}
+	
+	public void addCard(AttackModifierCard card) {
+		deck.add(card);
+	}
 
 }

@@ -1039,4 +1039,8 @@ public class Player {
 				abilityDeck.get(i).reset();
 		}
 	}
+	
+	public void addAttackModifierCard(AttackModifierCard card) {
+		attackModifierDeck.addCard(card);
+	}
 }

@@ -33,7 +33,7 @@ public class Spellweaver implements CardInterface {
 			case 3:
 				card.name="Reviving Ether";
 				card.initiative=80;
-				card.text="Recover all your lost cards. (Unimplemented) Infuse dark. Consume after use.";
+				card.text="Recover all your lost cards. Infuse dark. Consume after use.";
 				card.recoverLostCards=true;
 				card.darkInfusion=true;
 				card.lost=true;

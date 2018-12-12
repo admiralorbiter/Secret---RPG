@@ -13,9 +13,6 @@ public final class UtilitiesAB {
 		CardDataObject card = new CardDataObject();
 		card=abilityCard.getData();
 		
-		if(card.getRecoverLostCards())
-			player.recoverLostCards();
-		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());
 		
@@ -52,6 +49,15 @@ public final class UtilitiesAB {
 		if(card.getRetaliateFlag()) {
 			player.setRetaliate(card.getRetaliateData());
 		}
+		
+		if(card.getRecoverLostCards()) {
+			player.recoverLostCards();
+		}
+		
+		if(card.getLost())
+			player.transferToLostPile(abilityCard);
+		
+		
 	
 	}
 	

@@ -603,8 +603,7 @@ public class Player {
 			 
 			if(card.continuous) {
 				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.lost) {
-				abilityDeck.get(index).lostPile();
+			}else if(card.lost){
 			}else {
 				abilityDeck.get(index).discardPile();
 			}
@@ -629,8 +628,7 @@ public class Player {
 
 			if(card.continuous) {
 				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.lost) {
-				abilityDeck.get(index).lostPile();
+			}else if(card.lost){
 			}else {
 				abilityDeck.get(index).discardPile();
 			}
@@ -638,6 +636,11 @@ public class Player {
 		secondCardChoice=null;
 		firstCardChoice=null;
 		longRest=false;
+	}
+	
+	public void transferToLostPile(PlayerAbilityCards card) {
+		int index=abilityDeck.indexOf(card);
+		abilityDeck.get(index).lostPile();
 	}
 	
 	public void setAugment(PlayerAbilityCards card) {

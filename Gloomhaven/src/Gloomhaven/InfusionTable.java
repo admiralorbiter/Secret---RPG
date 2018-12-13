@@ -136,6 +136,9 @@ public class InfusionTable {
 			index++;
 		}
 		
+		if(strong.size()==0 && wanning.size()==0)
+			return true;
+		
 		if(num>=1 && num<=6) {
 			String element="";
 			switch(num) {

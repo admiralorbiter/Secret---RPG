@@ -250,11 +250,21 @@ public class Scenario {
 			enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
 			
 			List<Player> targets = new ArrayList<Player>();														//Resets the target list
-			targets=enemyInfo.enemyAttackProcedure(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
+			targets=enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);							//Goes through the enemies and sets range / distance flags
 			//once i have enemy pick target, need to change this code slightly.
 			if(targets.size()>0) {
-				targetID=targets.get(0).getID();													//[Temp] Picks first one on the list
-				if(targets.get(0).hasRetaliate())
+				
+				int min=100;
+				int targetIndex=-1;
+				
+				for(int i=0; i<targets.size(); i++) {
+					if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinate(), party.get(currentPlayer).getCoordinate())<min) {
+						targetIndex=i;
+					}
+				}
+				
+				targetID=targets.get(targetIndex).getID();													//[Temp] Picks first one on the list
+				if(targets.get(targetIndex).hasRetaliate())
 					UtilitiesAB.resolveRetalaite(enemyInfo.getEnemy(enemyTurnIndex), party.get(0));
 				state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 			}else {

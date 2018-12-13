@@ -95,7 +95,7 @@ public class EnemyInfo {
 	/*Algorithm:
 	 * Can enemy Attack -> is melee range -> quick range check
 	 */
-	public List<Player> enemyAttackProcedure(int index, List<Player> party, Graphics g) {
+	public List<Player> createTargetListForEnemy(int index, List<Player> party, Graphics g) {
 
 		List<Player> targets = new ArrayList<Player>();
 		

@@ -1,6 +1,7 @@
 package Gloomhaven;
 
 import java.awt.Color;
+import javax.*;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -59,6 +60,10 @@ public final class UtilitiesAB {
 		
 		
 	
+	}
+	
+	public static void findClosestPlayer(Enemy enemy, List<Player> targets) {
+		
 	}
 	
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
@@ -451,6 +456,67 @@ public final class UtilitiesAB {
 		return point;
 	}
 	
+	private static int[] oddToCubeCoord(Point p) {
+		int cubeCoord[] = new int[3];
+		int x=0;
+		int y=1;
+		int z=2;
+		
+		cubeCoord[x]=p.x-(p.y-(p.y&1))/2;
+		cubeCoord[z]=p.y;
+		cubeCoord[y]=-cubeCoord[x]-cubeCoord[z];
+		
+		return cubeCoord;
+	}
+	
+	private static int[] evenToCubeCoord(Point p) {
+		int cubeCoord[] = new int[3];
+		int x=0;
+		int y=1;
+		int z=2;
+		
+		cubeCoord[x]=p.x-(p.y+(p.y&1))/2;
+		cubeCoord[z]=p.y;
+		cubeCoord[y]=-cubeCoord[x]-cubeCoord[z];
+		
+		return cubeCoord;
+	}
+	
+	/*
+	public static int distance(Point p1, Point p2) {
+		int distance=0;
+		int cubeCoord1[] = new int[3];
+		int cubeCoord2[] = new int[3];
+		int x=0, y=0, z=0;
+		System.out.println("Finding distance (Util -distance 447) "+p1+"   "+p2);
+		if(p1.x%2!=0)
+			cubeCoord1=oddToCubeCoord(p1);
+		else
+			cubeCoord1=evenToCubeCoord(p1);
+
+		if(p2.x%2!=0)
+			cubeCoord2=oddToCubeCoord(p2);
+		else
+			cubeCoord2=evenToCubeCoord(p2);
+		
+		//System.out.println(cubeCoord1+"   "+cubeCoord2);
+		distance=(Math.abs(cubeCoord1[x]-cubeCoord2[x])+Math.abs(cubeCoord1[y]-cubeCoord2[y])+Math.abs(cubeCoord1[z]-cubeCoord2[z]))/2;
+		return distance;
+	}*/
+	
+	public static int distance(Point p1, Point p2) {
+
+		int penalty=((p1.y%2==0)&&(p2.y%2!=0)&&(p1.x<p2.x))||((p2.y%2==0)&&(p2.y!=0)&&(p2.x<p1.x))?1:0;
+		
+		return (int) Math.max(Math.abs(p1.y-p2.y), Math.abs(p1.x-p2.x)+Math.floor(Math.abs(p1.y-p2.y)/2)+penalty)-1;
+		
+	}
+	
+	private static int[] cubeToCoordOdd(Point p1) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public static void drawArrows(Graphics g, Point player, Point opposite) {
 		
 		Setting setting = new Setting();

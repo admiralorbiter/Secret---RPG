@@ -25,7 +25,7 @@ public class Enemy {
 	
 	int TEST_HEALTH=50;
 	int TEST_ATTACK=3;
-	int TEST_RANGE=3;
+	int TEST_RANGE=5;
 	int TEST_MOVE=2;
 	int TEST_SHIELD=0;
 	int TEST_MAXHEALTH=TEST_HEALTH;

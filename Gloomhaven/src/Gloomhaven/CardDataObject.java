@@ -11,7 +11,7 @@ public class CardDataObject {
 	int heal;
 	int level;
 	int id;
-	
+	String flag;
 	int lootRange;
 	
 	//Effects that change the in play or out of play
@@ -86,6 +86,7 @@ public class CardDataObject {
 	boolean recoverLostCards;
 	
 	public CardDataObject() {
+		flag="";
 		text="If you are seeing this, it is a mistake";
 		move=0;
 		id=0;
@@ -149,6 +150,7 @@ public class CardDataObject {
 		
 		recoverLostCards=false;
 	}
+	public String getFlag() {return flag;}
 	public boolean getRecoverLostCards() {return recoverLostCards;}
 	public boolean getTriangle() {return triangle;}
 	public boolean getCircle() {return circle;}
@@ -165,6 +167,7 @@ public class CardDataObject {
 	public boolean getAdjacentBonus() {return adjacentBonus;}
 	public boolean getRetaliateFlag() {return retaliateFlag;}
 	public SimpleCards getRetaliateData() {return retaliate;}
+	public SimpleCards getforEachTargetedData() {return forEachTargetedData;}
 	public SimpleCards getMindControData() {return mindControlData;}
 	public boolean getMindControl() {return mindControl;}
 	public boolean getComplex() {return complex;}

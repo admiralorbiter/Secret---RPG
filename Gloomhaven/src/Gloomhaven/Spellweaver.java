@@ -17,6 +17,7 @@ public class Spellweaver implements CardInterface {
 				card.text="Attack +3 Range 3 Targets +3 (Not implemented) Gain XP +1 for each Target (Not Implemented) Card consumed on use.";
 				card.attack=3;
 				card.range=3;
+				card.flag="forEachTargeted";
 				card.targetNum=3;
 				card.forEachTargetedData.experience=1;
 				card.lost=true;
@@ -27,6 +28,7 @@ public class Spellweaver implements CardInterface {
 				card.text="Attack +3. Range +4. Additionally, target all enemies on the path to primary target. Gain XP +1 for each one targeted. (Unimplemented) Card consumed on use.";
 				card.attack=3;
 				card.range=4;
+				card.flag="forEachTargeted";
 				card.forEachTargetedData.experience=1;
 				card.lost=true;
 				break;

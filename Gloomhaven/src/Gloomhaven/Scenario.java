@@ -318,7 +318,8 @@ public class Scenario {
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
-			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack(), 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			
+			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack()+"  (Loc: Scenario -Player Attack Logic)", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			
 			UtilitiesAB.resolveCard(party.get(playerIndex), card, elements, room);
 			//Next State: Player Move, Player attack, Back to Attack, or End Turn
@@ -630,7 +631,22 @@ public class Scenario {
 											adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
 									
 										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData(), room, adjacentBonus, elements);
-										finished=true;	
+										
+										card.increaseCounter();
+										
+										if(card.getData().getTargetNum()>1 && card.getCounter()!=card.getData().getTargetNum()) {
+											System.out.println("1:  "+targets);
+											targets.remove(targets.indexOf(room.getSelectionCoordinates()));
+											System.out.println("2:  "+targets);
+										}else {
+											
+											if(card.getData().getFlag().equals("forEachTargeted")) {
+												
+											}
+											
+											card.resetCounter();
+											finished=true;	
+										}
 									}
 								}
 							}

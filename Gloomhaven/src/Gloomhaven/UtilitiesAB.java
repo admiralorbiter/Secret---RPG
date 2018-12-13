@@ -310,6 +310,12 @@ public final class UtilitiesAB {
 					attack=attack+enemyShield;
 			}
 		}
+		
+		if(card.getFlag().equals("forEachTargeted")) {
+			System.out.println("(Loc: Utilities.java -resolveAttack L315)  Gettings data for targeting" );
+			player.increaseXP(card.getforEachTargetedData().getExperience());
+		}
+		
 		System.out.println("Utility Class Damage 2: "+attack);
 		enemy.takeDamage(attack);
 	}

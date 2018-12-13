@@ -21,12 +21,14 @@ public class PlayerAbilityCards {
 	CardDataObject altTop = new CardDataObject();
 	CardDataObject altBottom = new CardDataObject();
 	BufferedImage image = null;
+	int counter;													//keep track of any counters on the card
 	
 	public PlayerAbilityCards(int level, int id, String Class) {
 		index=id-1;
 		flag=-1;
 		altTop.attack=2;
 		altBottom.move=2;
+		counter=0;
 		if(Class=="Test") {
 			card = new CardsTest();
 			image = CardImages.getMindThiefCard(id);
@@ -77,6 +79,7 @@ public class PlayerAbilityCards {
 		this.top=a.top;
 		this.bottom=a.bottom;
 		this.flag=flag;
+		this.counter=counter;
 	}
 	public String getName() {return name;}
 	public PlayerAbilityCards() {
@@ -84,6 +87,7 @@ public class PlayerAbilityCards {
 		flag=-1;
 		altTop.attack=2;
 		altBottom.move=2;
+		counter=0;
 	}
 
 	public boolean cardInDiscardPile() {return discard;}
@@ -109,7 +113,9 @@ public class PlayerAbilityCards {
 	public void useBottom() {flag=1;}
 	public void useTopAlt() {flag=2;}
 	public void useBottomAlt() {flag=3;}
-	
+	public int getCounter() {return counter;}
+	public void increaseCounter() {counter++;}
+	public void resetCounter() {counter=0;}
 	public boolean cardFree() {
 		if(lost)
 			return false;
@@ -125,6 +131,7 @@ public class PlayerAbilityCards {
 		inPlay=false;
 		lost=false;
 		discard=false;
+		counter=0;
 	}
 	
 	public void setInPlay() {

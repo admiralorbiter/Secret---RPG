@@ -260,6 +260,10 @@ public class Scenario {
 				for(int i=0; i<targets.size(); i++) {
 					if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinate(), party.get(currentPlayer).getCoordinate())<min) {
 						targetIndex=i;
+					}else if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinate(), party.get(currentPlayer).getCoordinate())==min) {
+						if(targets.get(targetIndex).getInitiative()>targets.get(i).getInitiative()) {
+							targetIndex=i;
+						}
 					}
 				}
 				

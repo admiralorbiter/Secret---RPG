@@ -14,7 +14,7 @@ public class Spellweaver implements CardInterface {
 			case 1:
 				card.name="Fire Orbs";
 				card.initiative=69;
-				card.text="Attack +3 Range 3 Targets +3 (Not implemented) Gain XP +1 for each Target (Not Implemented) Card consumed on use.";
+				card.text="Attack +3 Range 3 Targets +3 Gain XP +1 for each Target Card consumed on use.";
 				card.attack=3;
 				card.range=3;
 				card.flag="forEachTargeted";
@@ -25,7 +25,7 @@ public class Spellweaver implements CardInterface {
 			case 2:
 				card.name="Impaling Eruption";
 				card.initiative=70;
-				card.text="Attack +3. Range +4. Additionally, target all enemies on the path to primary target. Gain XP +1 for each one targeted. (Unimplemented) Card consumed on use.";
+				card.text="Attack +3. Range +4. Additionally, target all enemies on the path to primary target (Not implemented). Gain XP +1 for each one targeted. Card consumed on use.";
 				card.attack=3;
 				card.range=4;
 				card.flag="forEachTargeted";

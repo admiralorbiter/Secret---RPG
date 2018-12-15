@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class EnemyInfo {
 	
-	List<EnemyAbilityCards> abilityDeck = new ArrayList<EnemyAbilityCards>();
+	List<EnemyAbilityCard> abilityDeck = new ArrayList<EnemyAbilityCard>();
 	List<Enemy> enemies = new ArrayList<Enemy>();
 	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	int turnNumber;
@@ -26,7 +26,7 @@ public class EnemyInfo {
 		abilityCardIndex=0;
 		startingAbilityCardCount=8;
 		for(int i=0; i<startingAbilityCardCount; i++)
-			abilityDeck.add(new EnemyAbilityCards(1, i+1, "Test"));
+			abilityDeck.add(new EnemyAbilityCard("Test", i+1, 1));
 		
 		for(int i=0; i<enemies.size(); i++) {
 			enemies.get(i).setDimensions(dimensions);
@@ -42,7 +42,7 @@ public class EnemyInfo {
 		return null;
 	}
 	
-	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiatve();}
+	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
 	public void setTurnNumber(int turnNumber) {
 		this.turnNumber=turnNumber;
 	}
@@ -99,7 +99,8 @@ public class EnemyInfo {
 
 		List<Player> targets = new ArrayList<Player>();
 		
-		abilityDeck.get(abilityCardIndex).graphicsAbilityCard(g);
+		//abilityDeck.get(abilityCardIndex).graphicsAbilityCard(g);
+		//drawAbilityCard(g);
 		
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		
@@ -129,13 +130,19 @@ public class EnemyInfo {
 		}
 	}
 	
+	public void drawAbilityCard(Graphics g) {
+		Setting setting = new Setting();
+		g.drawString("Enemy Ability Card", setting.getGraphicsXMid(), setting.getGraphicsYBottom());
+		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), setting.getGraphicsXMid(), setting.getGraphicsYBottom()+15);
+	}
+	
 	public void pickRandomAbilityCard() {
 		Random rand = new Random();
 		boolean running=true;
 		do
 		{
 		 int pick = rand.nextInt(abilityDeck.size());
-		 if(abilityDeck.get(pick).cardFree()) {
+		 if(abilityDeck.get(pick).isCardFree()) {
 			 abilityCardIndex=pick;
 			 running=false;
 		 }

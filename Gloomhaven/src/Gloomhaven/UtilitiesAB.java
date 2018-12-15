@@ -11,7 +11,7 @@ public final class UtilitiesAB {
 	public static void resolveCard(Player player, PlayerAbilityCard abilityCard, InfusionTable elements, Room room) {
 
 		CardDataObject card = new CardDataObject();
-		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData();
+		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData()
 		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());

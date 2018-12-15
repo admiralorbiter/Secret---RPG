@@ -8,10 +8,10 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData();
 		
-		return null;
+		return new CardDataObject();
 	}
 	
 	public static int getMove(PlayerAbilityCard card) {
@@ -20,7 +20,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().getMove();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().getMove();
 		
 		if(flag=="AltTop")
@@ -37,7 +37,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().getAttack();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().getAttack();
 		
 		if(flag=="AltTop")
@@ -54,7 +54,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().getRange();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().getRange();
 		
 		return 0;
@@ -70,7 +70,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().hasAugment();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().hasAugment();
 		
 		return false;
@@ -81,7 +81,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().hasFlying();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().hasFlying();
 		
 		return false;
@@ -92,7 +92,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().hasJump();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().hasJump();
 		
 		return false;
@@ -103,7 +103,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().getPierce();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().getPierce();
 		
 		return 0;
@@ -115,7 +115,7 @@ public final class UsePlayerAbilityCard {
 			if(card.getTopData().getHeal()>0 && card.getTopData().getRange()>0)
 				return true;
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			if(card.getBottomData().getHeal()>0 && card.getBottomData().getRange()>0)
 				return true;
 		
@@ -127,7 +127,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().getHeal();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().getHeal();
 		
 		return 0;
@@ -138,7 +138,7 @@ public final class UsePlayerAbilityCard {
 		if(flag=="Top")
 			return card.getTopData().hasMindControl();
 		
-		if(flag=="Botom")
+		if(flag=="Bottom")
 			return card.getBottomData().hasMindControl();
 		
 		return false;

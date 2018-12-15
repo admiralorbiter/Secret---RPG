@@ -246,7 +246,7 @@ public class Scenario {
 		}
 		//State: ENEMY_ATTACK: Goes through all the enemy procedure for attack for all enemies---------------------------------------------------------------------------
 		else if(state==State.ENEMY_ATTACK) {
-
+			enemyInfo.drawAbilityCard(g);
 			enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
 			
 			List<Player> targets = new ArrayList<Player>();														//Resets the target list
@@ -277,7 +277,7 @@ public class Scenario {
 		}
 		//State: PLAYER_DEFENSE: Player chooses to discard or take the damage--------------------------------------------------------------------------------------------
 		else if(state==State.PLAYER_DEFENSE) {
-			
+			enemyInfo.drawAbilityCard(g);
 			g.drawString("Press "+setting.getDiscardKey()+" to discard card or "+setting.getHealKey()+" to take damage.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			int playerIndex = getTargetIndex();														//Sets target
 			

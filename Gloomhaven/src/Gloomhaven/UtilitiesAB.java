@@ -41,7 +41,7 @@ public final class UtilitiesAB {
 			}*/
 		}
 		
-		if(card.getAugment())
+		if(card.hasAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
 		
 		if(card.getSheild()>0)

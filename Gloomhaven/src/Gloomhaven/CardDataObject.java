@@ -169,10 +169,10 @@ public class CardDataObject {
 	public SimpleCards getRetaliateData() {return retaliate;}
 	public SimpleCards getforEachTargetedData() {return forEachTargetedData;}
 	public SimpleCards getMindControData() {return mindControlData;}
-	public boolean getMindControl() {return mindControl;}
+	public boolean hasMindControl() {return mindControl;}
 	public boolean getComplex() {return complex;}
 	public boolean getRoundBonus() {return roundBonus;}
-	public boolean getFlying() {return flying;}
+	public boolean hasFlying() {return flying;}
 	public int getSheild() {return shield;}
 	public int getPierce() {return pierce;}
 	public int getHeal() {return heal;}
@@ -194,8 +194,8 @@ public class CardDataObject {
 	public void increasePush() {pushCount++;}
 	public int getPushCount() {return pushCount;}
 	public int getPull() {return pull;}
-	public boolean getAugment() {return augment;}
-	public boolean getJump() {return jump;}
+	public boolean hasAugment() {return augment;}
+	public boolean hasJump() {return jump;}
 	public boolean getWound() {return wound;}
 	public boolean getCurse() {return curse;}
 	public boolean getDisarm() {return disarm;}

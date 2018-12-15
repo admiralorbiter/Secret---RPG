@@ -92,7 +92,7 @@ public class PlayerAbilityCards {
 
 	public boolean cardInDiscardPile() {return discard;}
 	
-	public void takeOutOfDiscard() {
+	public void takeOutOfDisc>ard() {
 		discard=false;
 	}
 	
@@ -100,7 +100,7 @@ public class PlayerAbilityCards {
 	CardDataObject getBottom() {return bottom;}
 	
 	String getText() {
-		String text=initiative+": "+top.text+" - "+bottom.text;
+		String text=initiative+":"+top.text+" - "+bottom.text;
 		return text;
 	}
 	
@@ -222,30 +222,30 @@ public class PlayerAbilityCards {
 	public boolean getAugment() {
 	
 		if(flag==0)
-			return top.getAugment();
+			return top.hasAugment();
 	
 		if(flag==1)
-			return bottom.getAugment();
+			return bottom.hasAugment();
 	
 		return false;
 	}
 
 	public boolean getJump() {
 		if(flag==0)
-			return top.getJump();
+			return top.hasJump();
 	
 		if(flag==1)
-			return bottom.getJump();
+			return bottom.hasJump();
 	
 		return false;
 	}
 	
 	public boolean getFlying() {
 		if(flag==0)
-			return top.getFlying();
+			return top.hasFlying();
 	
 		if(flag==1)
-			return bottom.getFlying();
+			return bottom.hasFlying();
 	
 		return false;
 	}
@@ -284,10 +284,10 @@ public class PlayerAbilityCards {
 	
 	public boolean getMindControl() {
 		if(flag==0)
-			return top.getMindControl();
+			return top.hasMindControl();
 		
 		if(flag==1)
-			return bottom.getMindControl();
+			return bottom.hasMindControl();
 	
 		return false;
 	}

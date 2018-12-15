@@ -1,8 +1,10 @@
-package Gloomhaven;
+package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
+
+import Gloomhaven.Setting;
 
 public class AbilityCard {
 

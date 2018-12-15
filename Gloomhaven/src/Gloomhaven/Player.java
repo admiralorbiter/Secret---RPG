@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.AbilityCards.PlayerAbilityCard;
+
 public class Player {
 
 	//Player Variables - Get set and don't change

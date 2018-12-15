@@ -1,6 +1,10 @@
-package Gloomhaven;
+package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
+
+import Gloomhaven.CardDataObject;
+import Gloomhaven.CardInterface;
+import Gloomhaven.CardsEnemyTest;
 
 public class EnemyAbilityCard extends AbilityCard {
 

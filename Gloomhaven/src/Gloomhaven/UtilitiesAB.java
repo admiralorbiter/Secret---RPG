@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.AbilityCards.PlayerAbilityCard;
+
 public final class UtilitiesAB {
 
 	public static void resolveCard(Player player, PlayerAbilityCard abilityCard, InfusionTable elements, Room room) {

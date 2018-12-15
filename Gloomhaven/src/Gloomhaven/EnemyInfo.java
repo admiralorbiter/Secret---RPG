@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.AbilityCards.EnemyAbilityCard;
+
 public class EnemyInfo {
 	
 	List<EnemyAbilityCard> abilityDeck = new ArrayList<EnemyAbilityCard>();

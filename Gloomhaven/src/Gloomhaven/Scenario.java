@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.*;
 
+import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.GamePanel.GameState;
 
 public class Scenario {

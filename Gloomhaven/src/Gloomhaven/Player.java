@@ -25,18 +25,18 @@ public class Player {
 	int displayCard;
 	
 	//Player variables
-	List<PlayerAbilityCards> abilityDeck = new ArrayList<PlayerAbilityCards>();                     //Class Ability Deck
+	List<PlayerAbilityCard> abilityDeck = new ArrayList<PlayerAbilityCard>();                     //Class Ability Deck
 	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
-	List<PlayerAbilityCards> inPlay = new ArrayList<PlayerAbilityCards>();							//List of cards in play
+	List<PlayerAbilityCard> inPlay = new ArrayList<PlayerAbilityCard>();							//List of cards in play
 	StatusEffectDataObject effects = new StatusEffectDataObject();                                  //Status Effects and Conditions of the Player
 	
 	//Card choice variables
 	boolean cardChoice=true;																		//Cardchoice variable used when selecting a first then second card
 	int initiative=-1;																				//Initiative value based on cards, deciedes order in the game
-	PlayerAbilityCards topCard=null;																//Top ability card choosen, used for the initiative score
-	PlayerAbilityCards bottomCard=null;																//Bottom ability card
-	PlayerAbilityCards firstCardChoice=new PlayerAbilityCards();																			//Card picked first during the turn			
-	PlayerAbilityCards secondCardChoice=new PlayerAbilityCards();																			//Card picked second during the turn
+	PlayerAbilityCard topCard=null;																//Top ability card choosen, used for the initiative score
+	PlayerAbilityCard bottomCard=null;																//Bottom ability card
+	PlayerAbilityCard firstCardChoice=null;//new PlayerAbilityCard();																			//Card picked first during the turn			
+	PlayerAbilityCard secondCardChoice=null;//new PlayerAbilityCard();																			//Card picked second during the turn
 	int shield;
 	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
 	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
@@ -94,7 +94,7 @@ public class Player {
 	
 		//Create ability deck
 		for(int i=0; i<startingAbilityCardCount; i++)
-			abilityDeck.add(new PlayerAbilityCards(1, i+1, character));
+			abilityDeck.add(new PlayerAbilityCard(character, i+1, 1));
 		
 	}
 	
@@ -144,15 +144,15 @@ public class Player {
 		
 		if(currentAbilityDeckSize==1) {
 			for(int i=0; i<abilityDeck.size(); i++) {
-				if(abilityDeck.get(i).cardFree()) {
-					abilityDeck.get(i).discardPile();
+				if(abilityDeck.get(i).isCardFree()) {
+					abilityDeck.get(i).setCardIndiscardPile();
 					return true;
 				}
 			}
 		}else {
 			if(key>=0 && key<abilityDeck.size()) {
-				if(abilityDeck.get(key).cardFree()) {
-					abilityDeck.get(key).discardPile();
+				if(abilityDeck.get(key).isCardFree()) {
+					abilityDeck.get(key).setCardIndiscardPile();
 					return true;
 				}
 				return false;
@@ -248,42 +248,42 @@ public class Player {
 				if(key==1) {
 					firstCardChoice=topCard;
 					topCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useTop();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("Top");
 				}
 				else if(key==2) {
 					firstCardChoice=topCard;
 					topCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useBottom();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("Bottom");
 				}
 				else if(key==3) {
 					firstCardChoice=topCard;
 					topCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useTopAlt();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("AltTop");
 				}
 				else if(key==4) {
 					firstCardChoice=topCard;
 					topCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("AltBottom");
 				}
 				else if(key==5) {
 					firstCardChoice=bottomCard;
 					bottomCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useTop();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("Top");
 				}
 				else if(key==6) {
 					firstCardChoice=bottomCard;
 					bottomCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useBottom();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("Bottom");
 				}
 				else if(key==7) {
 					firstCardChoice=bottomCard;
 					bottomCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useTopAlt();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("AltTop");
 				}
 				else if(key==8) {
 					firstCardChoice=bottomCard;
 					bottomCard=null;
-					abilityDeck.get(firstCardChoice.getIndex()).useBottomAlt();
+					abilityDeck.get(abilityDeck.indexOf(firstCardChoice)).setFlag("AltBottom");
 				}
 				
 				
@@ -296,16 +296,16 @@ public class Player {
 				secondCardChoice=bottomCard;
 				bottomCard=null;
 				if(key==5) {
-					abilityDeck.get(secondCardChoice.getIndex()).useTop();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("Top");
 				}
 				else if(key==6) {
-					abilityDeck.get(secondCardChoice.getIndex()).useBottom();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("Bottom");
 				}
 				else if(key==7) {
-					abilityDeck.get(secondCardChoice.getIndex()).useTopAlt();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("AltTop");
 				}
 				else if(key==8) {
-					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("AltBottom");
 				}
 				return key;
 			}
@@ -315,16 +315,16 @@ public class Player {
 				secondCardChoice=topCard;
 				topCard=null;
 				if(key==1) {
-					abilityDeck.get(secondCardChoice.getIndex()).useTop();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("Top");
 				}
 				else if(key==2) {
-					abilityDeck.get(secondCardChoice.getIndex()).useBottom();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("Bottom");
 				}
 				else if(key==3) {
-					abilityDeck.get(secondCardChoice.getIndex()).useTopAlt();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("AltTop");
 				}
 				else if(key==4) {
-					abilityDeck.get(secondCardChoice.getIndex()).useBottomAlt();
+					abilityDeck.get(abilityDeck.indexOf(secondCardChoice)).setFlag("AltBottom");
 				}
 				return key;
 			}
@@ -332,7 +332,7 @@ public class Player {
 		return -1;	
 	}
 	
-	public PlayerAbilityCards playCard() {
+	public PlayerAbilityCard playCard() {
 		if(!cardChoice) {
 			return firstCardChoice;
 		}else {
@@ -350,17 +350,17 @@ public class Player {
 			
 			//Get the data from the correct card
 			if(cardFlag==1)
-				card=topCard.getTop();
+				card=topCard.getTopData();
 			if(cardFlag==3)
-				card=bottomCard.getTop();
+				card=bottomCard.getTopData();
 				
 		}else {
 		
 		//get the data from the correct card
 		if(cardFlag==1)
-			card=topCard.getBottom();
+			card=topCard.getBottomData();
 		if(cardFlag==3)
-			card=bottomCard.getBottom();
+			card=bottomCard.getBottomData();
 		
 		return card;
 		}
@@ -387,8 +387,8 @@ public class Player {
 	}
 	
 	public boolean getCardChoice() {return cardChoice;}
-	public PlayerAbilityCards getFirstCardChoice() {return firstCardChoice;}
-	public PlayerAbilityCards getSecondCardChoice() {return secondCardChoice;}
+	public PlayerAbilityCard getFirstCardChoice() {return firstCardChoice;}
+	public PlayerAbilityCard getSecondCardChoice() {return secondCardChoice;}
 	
 	//Picks the two cards needed for initiative
 	public void pickAbilityCards(KeyEvent e, int key, Graphics g) {
@@ -415,9 +415,9 @@ public class Player {
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-						if(abilityDeck.get(displayCard).cardFree()) {
+						if(abilityDeck.get(displayCard).isCardFree()) {
 							topCard=abilityDeck.get(displayCard);
-							abilityDeck.get(displayCard).setInPlay();
+							abilityDeck.get(displayCard).setCardInPlay();
 							initiative=abilityDeck.get(displayCard).getInitiative();
 							cardChoice=!cardChoice;
 							setDisplayCard();
@@ -427,9 +427,9 @@ public class Player {
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
-					if(abilityDeck.get(key).cardFree()) {
+					if(abilityDeck.get(key).isCardFree()) {
 						topCard=abilityDeck.get(key);
-						abilityDeck.get(key).setInPlay();
+						abilityDeck.get(key).setCardInPlay();
 						initiative=abilityDeck.get(key).getInitiative();
 						cardChoice=!cardChoice;
 						setDisplayCard();
@@ -443,9 +443,9 @@ public class Player {
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
-						if(abilityDeck.get(displayCard).cardFree()) {
+						if(abilityDeck.get(displayCard).isCardFree()) {
 							bottomCard=abilityDeck.get(displayCard);
-							abilityDeck.get(displayCard).setInPlay();
+							abilityDeck.get(displayCard).setCardInPlay();
 							cardChoice=!cardChoice;
 						}
 					}
@@ -453,9 +453,9 @@ public class Player {
 				
 				//[Test] Picking cards assuming there are 8
 				if(key>=0 && key<abilityDeck.size()) {
-					if(abilityDeck.get(key).cardFree()) {
+					if(abilityDeck.get(key).isCardFree()) {
 						bottomCard=abilityDeck.get(key);
-						abilityDeck.get(key).setInPlay();
+						abilityDeck.get(key).setCardInPlay();
 						cardChoice=!cardChoice;
 					}
 				}
@@ -465,12 +465,12 @@ public class Player {
 	}
 	
 	public void setDisplayCard() {
-		displayCard=topCard.getIndex();
+		displayCard=abilityDeck.indexOf(topCard); //topCard.getIndex();
 	}
 	
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).cardFree())
+			if(abilityDeck.get(i).isCardFree())
 				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, setting.getGraphicsYBottom()+15+i*15);
 		}
 	}
@@ -481,32 +481,32 @@ public class Player {
 		
 		try {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT){
-				if(displayCard==topCard.getIndex())
-					displayCard=bottomCard.getIndex();
+				if(displayCard==abilityDeck.indexOf(topCard))
+					displayCard=abilityDeck.indexOf(bottomCard);
 				else
-					displayCard=topCard.getIndex();
+					displayCard=abilityDeck.indexOf(topCard);
 			}
 			else if(e.getKeyCode()==KeyEvent.VK_RIGHT) {
-				if(displayCard==topCard.getIndex())
-					displayCard=bottomCard.getIndex();
+				if(displayCard==abilityDeck.indexOf(topCard))
+					displayCard=abilityDeck.indexOf(bottomCard);
 				else
-					displayCard=topCard.getIndex();
+					displayCard=abilityDeck.indexOf(topCard);
 			}
 		}catch(NullPointerException ex){ }
 		abilityDeck.get(displayCard).showCard(g);
 		
 		if(topCard!=null) {
 			g.drawString("Cards", 10, startingY+offsetY*0);
-			g.drawString(topCard.getText(), 10, startingY+offsetY*1);
-			g.drawString("1: Top of Card", 10, startingY+offsetY*2);
-			g.drawString("2: Bottom of Card", 10, startingY+offsetY*3);
+			g.drawString("Init: "+topCard.getText()[0], 10, startingY+offsetY*1);
+			g.drawString("1: Top of Card: "+topCard.getText()[1], 10, startingY+offsetY*2);
+			g.drawString("2: Bottom of Card "+topCard.getText()[2], 10, startingY+offsetY*3);
 			g.drawString("3: Top Alt - Attack +2", 10, startingY+offsetY*4);
 			g.drawString("4: Bottom Alt - Move +2", 10, startingY+offsetY*5);
 		}
 		if(bottomCard!=null) {
-			g.drawString(bottomCard.getText(), 10, startingY+offsetY*6);
-			g.drawString("5: Top of Card", 10, startingY+offsetY*7);
-			g.drawString("6: Bottom of Card", 10, startingY+offsetY*8);
+			//g.drawString(bottomCard.getText()[0], 10, startingY+offsetY*6);
+			g.drawString("5: Top of Card "+bottomCard.getText()[1], 10, startingY+offsetY*7);
+			g.drawString("6: Bottom of Card "+bottomCard.getText()[2], 10, startingY+offsetY*8);
 			g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
 			g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
 		}
@@ -571,11 +571,11 @@ public class Player {
 		if(longRest==false) {
 			CardDataObject card = new CardDataObject();
 			int index=-1;
-			if(firstCardChoice.getFlag()==0 || firstCardChoice.getFlag()==2) {
-				card= firstCardChoice.getTop();
-				index = firstCardChoice.getIndex();
+			if(firstCardChoice.getFlag().equals("Top")|| firstCardChoice.getFlag().equals("AltTop")) {
+				card= firstCardChoice.getTopData();
+				index = abilityDeck.indexOf(firstCardChoice); //firstCardChoice.getIndex();
 			} else if(firstCardChoice.getFlag()==1 || firstCardChoice.getFlag()==3) {
-				card= firstCardChoice.getBottom();
+				card= firstCardChoice.getBottomData();
 				index = firstCardChoice.getIndex();
 			}
 			
@@ -605,14 +605,14 @@ public class Player {
 				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost){
 			}else {
-				abilityDeck.get(index).discardPile();
+				abilityDeck.get(index).setCardIndiscardPile();
 			}
 			
 			if(secondCardChoice.getFlag()==0 || secondCardChoice.getFlag()==2) {
-				card= secondCardChoice.getTop();
+				card= secondCardChoice.getTopData();
 				index = secondCardChoice.getIndex();
 			}else if(secondCardChoice.getFlag()==1 || secondCardChoice.getFlag()==3) {
-				card= secondCardChoice.getBottom();
+				card= secondCardChoice.getBottomData();
 				index = secondCardChoice.getIndex();
 			}
 			
@@ -630,7 +630,7 @@ public class Player {
 				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
 			}else if(card.lost){
 			}else {
-				abilityDeck.get(index).discardPile();
+				abilityDeck.get(index).setCardIndiscardPile();
 			}
 		}
 		secondCardChoice=null;
@@ -757,7 +757,7 @@ public class Player {
 		do
 		{
 		 int pick = rand.nextInt(abilityDeck.size());
-		 if(abilityDeck.get(pick).cardFree()) {
+		 if(abilityDeck.get(pick).isCardFree()) {
 			 abilityDeck.get(pick).lostPile();
 			 running=false;
 		 }
@@ -827,7 +827,7 @@ public class Player {
 	public int abilityCardsLeft() {
 		int currentAbilityDeckSize=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).cardFree())
+			if(abilityDeck.get(i).isCardFree())
 				currentAbilityDeckSize++;
 		}
 		return currentAbilityDeckSize;

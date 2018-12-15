@@ -14,6 +14,7 @@ public class AbilityCard {
 	private int counter;
 	private int maxCounter;
 	private ImageIcon image;
+	private String flag;
 	
 	public AbilityCard() {
 		name="If you are seeing this, then error";
@@ -24,6 +25,8 @@ public class AbilityCard {
 		setImage(null);
 	}
 	
+	public String getFlag() {return flag;}
+	public void setFlag(String flag) {this.flag=flag;}
 	public String getName() {return name;}
 	public int getInitiative() {return initiative;}
 	public boolean getLostFlag() {return lostFlag;}

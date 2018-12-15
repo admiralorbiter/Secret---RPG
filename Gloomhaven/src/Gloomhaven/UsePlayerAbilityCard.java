@@ -1,7 +1,10 @@
 package Gloomhaven;
 
 public final class UsePlayerAbilityCard {
-	public static CardDataObject getCardData(String flag, PlayerAbilityCard card) {
+	public static CardDataObject getCardData(PlayerAbilityCard card) {
+
+		String flag=card.getFlag();
+		
 		if(flag=="Top")
 			return card.getTopData();
 		
@@ -11,7 +14,9 @@ public final class UsePlayerAbilityCard {
 		return null;
 	}
 	
-	public static int getMove(String flag, PlayerAbilityCard card) {
+	public static int getMove(PlayerAbilityCard card) {
+		String flag=card.getFlag();
+		
 		if(flag=="Top")
 			return card.getTopData().getMove();
 		
@@ -27,7 +32,8 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static int getAttack(String flag, PlayerAbilityCard card) {
+	public static int getAttack(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().getAttack();
 		
@@ -43,7 +49,8 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static int getRange(String flag, PlayerAbilityCard card) {
+	public static int getRange(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().getRange();
 		
@@ -53,7 +60,8 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static boolean hasAugment(String flag, PlayerAbilityCard card) {
+	public static boolean hasAugment(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().hasAugment();
 		
@@ -63,7 +71,8 @@ public final class UsePlayerAbilityCard {
 		return false;
 	}
 	
-	public static boolean hasFlying(String flag, PlayerAbilityCard card) {
+	public static boolean hasFlying(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().hasFlying();
 		
@@ -73,7 +82,8 @@ public final class UsePlayerAbilityCard {
 		return false;
 	}
 	
-	public static boolean hasJump(String flag, PlayerAbilityCard card) {
+	public static boolean hasJump(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().hasJump();
 		
@@ -83,7 +93,8 @@ public final class UsePlayerAbilityCard {
 		return false;
 	}
 	
-	public static int getPierce(String flag, PlayerAbilityCard card) {
+	public static int getPierce(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().getPierce();
 		
@@ -93,7 +104,8 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static boolean hasTargetHeal(String flag, PlayerAbilityCard card) {
+	public static boolean hasTargetHeal(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			if(card.getTopData().getHeal()>0 && card.getTopData().getRange()>0)
 				return true;
@@ -105,7 +117,8 @@ public final class UsePlayerAbilityCard {
 		return false;
 	}
 	
-	public static int getHeal(String flag, PlayerAbilityCard card) {
+	public static int getHeal(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().getHeal();
 		
@@ -115,7 +128,8 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static boolean hasMindControl(String flag, PlayerAbilityCard card) {
+	public static boolean hasMindControl(PlayerAbilityCard card) {
+		String flag=card.getFlag();
 		if(flag=="Top")
 			return card.getTopData().hasMindControl();
 		

@@ -3,6 +3,7 @@ package Gloomhaven;
 import java.awt.Graphics;
 
 public class EnemyAbilityCards {
+	/*
 	private String name;
 	private int initiative;
 	private boolean lost;
@@ -44,5 +45,5 @@ public class EnemyAbilityCards {
 			return false;
 		
 		return true;
-	}
+	*/
 }

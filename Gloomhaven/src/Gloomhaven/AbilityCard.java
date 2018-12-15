@@ -38,6 +38,8 @@ public class AbilityCard {
 	public ImageIcon getImage() {return image;}
 	public void setImage(ImageIcon image) {this.image = image;}
 	
+	public void resetCounter() {counter=0;}
+	
 	public boolean increaseCounter() {
 		counter++;
 		if(counter>maxCounter) {

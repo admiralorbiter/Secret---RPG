@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +19,7 @@ public class Player {
 	int maxHealth;																					//Sets what the max health of the player can be
 	String name;																						//Name of the character
 	Setting setting = new Setting();
-	PlayerAbilityCards augment = new PlayerAbilityCards();
+	PlayerAbilityCard augment = null;
 	int level;
 	int displayCard;
 	
@@ -125,7 +124,7 @@ public class Player {
 		cardChoice=true;
 	}
 	
-	public PlayerAbilityCards getAugmentCard() {
+	public PlayerAbilityCard getAugmentCard() {
 		return augment;
 	}
 	
@@ -405,6 +404,7 @@ public class Player {
 					displayCard=0;
 			}
 		}catch(NullPointerException ex){ }
+		
 		abilityDeck.get(displayCard).showCard(g);
 		
 		abilityCardsLeft();
@@ -470,8 +470,10 @@ public class Player {
 	
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).isCardFree())
-				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, setting.getGraphicsYBottom()+15+i*15);
+			if(abilityDeck.get(i).isCardFree()) {
+				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], 10, setting.getGraphicsYBottom()+15+i*30);
+				g.drawString("   			"+abilityDeck.get(i).getText()[2], 10, setting.getGraphicsYBottom()+30+i*30);
+			}
 		}
 	}
 	
@@ -574,9 +576,9 @@ public class Player {
 			if(firstCardChoice.getFlag().equals("Top")|| firstCardChoice.getFlag().equals("AltTop")) {
 				card= firstCardChoice.getTopData();
 				index = abilityDeck.indexOf(firstCardChoice); //firstCardChoice.getIndex();
-			} else if(firstCardChoice.getFlag()==1 || firstCardChoice.getFlag()==3) {
+			} else if(firstCardChoice.getFlag().equals("Bottom") || firstCardChoice.getFlag().equals("AltBottom")) {
 				card= firstCardChoice.getBottomData();
-				index = firstCardChoice.getIndex();
+				index = abilityDeck.indexOf(firstCardChoice);
 			}
 			
 			//This is for brute: shield bash - Not sure it will always hold true
@@ -608,12 +610,12 @@ public class Player {
 				abilityDeck.get(index).setCardIndiscardPile();
 			}
 			
-			if(secondCardChoice.getFlag()==0 || secondCardChoice.getFlag()==2) {
+			if(secondCardChoice.getFlag().equals("Top") || secondCardChoice.getFlag().equals("AltTop")) {
 				card= secondCardChoice.getTopData();
-				index = secondCardChoice.getIndex();
-			}else if(secondCardChoice.getFlag()==1 || secondCardChoice.getFlag()==3) {
+				index =abilityDeck.indexOf(secondCardChoice); //secondCardChoice.getIndex();
+			}else if(secondCardChoice.getFlag().equals("Bottom") || secondCardChoice.getFlag().equals("AltBottom")) {
 				card= secondCardChoice.getBottomData();
-				index = secondCardChoice.getIndex();
+				index = abilityDeck.indexOf(secondCardChoice);
 			}
 			
 			
@@ -638,25 +640,25 @@ public class Player {
 		longRest=false;
 	}
 	
-	public void transferToLostPile(PlayerAbilityCards card) {
+	public void transferToLostPile(PlayerAbilityCard card) {
 		int index=abilityDeck.indexOf(card);
-		abilityDeck.get(index).lostPile();
+		abilityDeck.get(index).setCardInlostPile();
 	}
 	
-	public void setAugment(PlayerAbilityCards card) {
+	public void setAugment(PlayerAbilityCard card) {
 		augment=card;
 		inPlay.add(augment);
 	}
 	
-	public void replaceAugmentCard(PlayerAbilityCards abilityCard) {
-		abilityDeck.get(augment.getIndex()).lostPile();
+	public void replaceAugmentCard(PlayerAbilityCard abilityCard) {
+		abilityDeck.get(abilityDeck.indexOf(augment)).setCardInlostPile();
 		inPlay.remove(augment);
 		augment=abilityCard;
 		inPlay.add(augment);
 	}
 	
 	public void discardAugmentCard() {
-		abilityDeck.get(augment.getIndex()).lostPile();
+		abilityDeck.get(abilityDeck.indexOf(augment)).setCardInlostPile();
 		augment=null;
 	}
 	/*
@@ -680,7 +682,7 @@ public class Player {
 		g.drawString("Health "+health+"  XP"+xp+"  Shield "+shield+" Ret: "+retaliate.getAttack(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
 		if(isAugmented()) {
 			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
-			g.drawString(augment.getTop().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
+			g.drawString(augment.getTopData().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
 		}
 		List<String> negativeConditions = effects.getNegativeConditions();
 		if(negativeConditions.size()>0) {
@@ -709,7 +711,7 @@ public class Player {
 	}
 	
 	public boolean isAugmented() {
-		return augment.getAugment();
+		return UsePlayerAbilityCard.hasAugment(augment);
 
 	}
 	
@@ -736,7 +738,7 @@ public class Player {
 	public void showDiscardPile(Graphics g) {
 		g.drawString("Discard Pile:", 10, 115);
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).cardInDiscardPile())
+			if(abilityDeck.get(i).getDiscardFlag())
 				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 130+i*15);
 		}
 	}
@@ -744,7 +746,7 @@ public class Player {
 	public int discardPileSize() {
 		int count=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).cardInDiscardPile())
+			if(abilityDeck.get(i).getDiscardFlag())
 				count++;
 		}
 		return count;
@@ -758,7 +760,7 @@ public class Player {
 		{
 		 int pick = rand.nextInt(abilityDeck.size());
 		 if(abilityDeck.get(pick).isCardFree()) {
-			 abilityDeck.get(pick).lostPile();
+			 abilityDeck.get(pick).setCardInlostPile();
 			 running=false;
 		 }
 		}
@@ -769,15 +771,15 @@ public class Player {
 		showDiscardPile(g);
 		if(cardChoice) {
 			if(key>=0 && key<=abilityDeck.size()) {
-				if(abilityDeck.get(key).cardInDiscardPile()) {
-					abilityDeck.get(key).lostPile();
+				if(abilityDeck.get(key).getDiscardFlag()) {
+					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
 				}
 			}
 		}else {
 			if(key>=0 && key<=abilityDeck.size()) {
-				if(abilityDeck.get(key).cardInDiscardPile()) {
-					abilityDeck.get(key).lostPile();
+				if(abilityDeck.get(key).getDiscardFlag()) {
+					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
 					longRest=false;
 				}
@@ -787,8 +789,8 @@ public class Player {
 	
 	private void collectDiscardPile() {
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).cardInDiscardPile())
-				abilityDeck.get(i).takeOutOfDiscard();
+			if(abilityDeck.get(i).getDiscardFlag())
+				abilityDeck.get(i).takeCardOutOfDiscard();
 		}
 	}
 	
@@ -838,8 +840,8 @@ public class Player {
 	}
 	
 	//[Test]
-	public int testGetTopCardIndex() {return topCard.getIndex();}
-	public int testGetBottomCardIndex() {return bottomCard.getIndex();}
+	public int testGetTopCardIndex() {return abilityDeck.indexOf(topCard);}
+	public int testGetBottomCardIndex() {return abilityDeck.indexOf(bottomCard);}
 	
 	public String getID() {return id;}
 	public int getAttack(CardDataObject attackCard) {
@@ -1036,7 +1038,7 @@ public class Player {
 	public void recoverLostCards() {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).getLostFlag())
-				abilityDeck.get(i).reset();
+				abilityDeck.get(i).resetCardFlags();
 		}
 	}
 	

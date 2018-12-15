@@ -61,7 +61,12 @@ public final class UsePlayerAbilityCard {
 	}
 	
 	public static boolean hasAugment(PlayerAbilityCard card) {
+		
+		if(card==null)
+			return false;
+		
 		String flag=card.getFlag();
+		
 		if(flag=="Top")
 			return card.getTopData().hasAugment();
 		

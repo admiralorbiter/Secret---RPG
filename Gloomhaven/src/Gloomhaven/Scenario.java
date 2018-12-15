@@ -64,7 +64,7 @@ public class Scenario {
 	private Point dimensions;																		//Dimensions of the room
 	//private List<Player> targets;																	//Target list created by the enemy
 	private String targetID;																		//Player being targeted by the enemy						
-	private PlayerAbilityCards card = null;											//Card object used by the player's attack
+	private PlayerAbilityCard card = null;											//Card object used by the player's attack
 	private Enemy enemyControlled = null;
 	private Enemy enemyTarget = null;
 	//Need to refactor - Enemy turn index is held in enemy info, so no need to keep a variable
@@ -319,17 +319,17 @@ public class Scenario {
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
 			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
 			
-			g.drawString("Move "+card.getMove()+"     Attack: "+card.getAttack()+"  (Loc: Scenario -Player Attack Logic)", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
+			g.drawString("Move "+UsePlayerAbilityCard.getMove(card)+"     Attack: "+UsePlayerAbilityCard.getAttack(card)+"  (Loc: Scenario -Player Attack Logic)", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			
 			UtilitiesAB.resolveCard(party.get(playerIndex), card, elements, room);
 			//Next State: Player Move, Player attack, Back to Attack, or End Turn
-			if(card.getMove()>0) {
+			if(UsePlayerAbilityCard.getMove(card)>0) {
 				state=State.PLAYER_MOVE;
 			//if there is range? that way it hits all targed attacks
-			//}else if(card.getAttack()>0 || card.getTargetHeal()==true) {
-			}else if(card.getData().getElementalConsumed()) {
+			//}else if(UsePlayerAbilityCard.getAttack(card)>0 || UsePlayerAbilityCard.hasTargetHeal(card)==true) {
+			}else if(UsePlayerAbilityCard.getCardData(card).getElementalConsumed()) {
 				state=State.USE_ANY_INFUSION;
-			}else if(card.getRange()>0 || card.getAttack()>0) {
+			}else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0) {
 				state=State.PLAYER_ATTACK;
 			}else {
 				if(party.get(currentPlayer).getCardChoice()==false) {
@@ -366,7 +366,7 @@ public class Scenario {
 			if(party.get(playerIndex).canMove()){
 				//Highlight tiles that players can move to
 				Point playerPoint=party.get(playerIndex).getCoordinate();
-				for(int r=1; r<=card.getMove(); r++) {
+				for(int r=1; r<=UsePlayerAbilityCard.getMove(card); r++) {
 					room.drawRange(g, playerPoint, r, Color.BLUE);
 				}
 		
@@ -379,13 +379,13 @@ public class Scenario {
 					if(room.isSpace(room.getSelectionCoordinates(), "P")) {
 						finished=true;
 					}
-					else if(card.getFlying()) {
+					else if(UsePlayerAbilityCard.hasFlying(card)) {
 						//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
 						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
 						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
 						finished=true;
 					}
-					else if(card.getJump()) {
+					else if(UsePlayerAbilityCard.hasJump(card)) {
 						if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 							if(room.getQuickID(room.getSelectionCoordinates())=="Loot")
 								room.loot(party.get(playerIndex), room.getSelectionCoordinates());
@@ -409,13 +409,13 @@ public class Scenario {
 			}
 			//Next State: Player Attack, Attack Logic, Round End
 			if(finished) {
-				if(card.getData().getElementalConsumed()) {
+				if(UsePlayerAbilityCard.getCardData(card).getElementalConsumed()) {
 					state=State.USE_ANY_INFUSION;
 				}
-				else if(card.getRange()>0 || card.getAttack()>0) {
+				else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
-				}else if(card.getData().getPush()>0) {
+				}else if(UsePlayerAbilityCard.getCardData(card).getPush()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_PUSH_SELECTION;
 				}else {
@@ -441,12 +441,12 @@ public class Scenario {
 				
 				//Creates target list of enemy coordinates
 				List<Point> targets = new ArrayList<Point>();
-				int cardRange=card.getRange();
-				if(card.getRange()>=0) {
-					if(card.getRange()==0)
+				int cardRange=UsePlayerAbilityCard.getRange(card);
+				if(UsePlayerAbilityCard.getRange(card)>=0) {
+					if(UsePlayerAbilityCard.getRange(card)==0)
 						cardRange=1;
 		
-					if(card.getTargetHeal()) {
+					if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 						for(int range=1; range<=cardRange; range++)
 							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P");
 						targets.add(party.get(playerIndex).getCoordinate());
@@ -467,21 +467,21 @@ public class Scenario {
 					if(k==setting.getTargetKey()) {
 						
 						
-						if(card.getTargetHeal()) {
+						if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 							if(room.isSpace(room.getSelectionCoordinates(), "P")) {							//If the space selected has an enemy
 								if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
 									String id = room.getID(room.getSelectionCoordinates());
 									for(int i=0; i<party.size(); i++)
 									{
 										if(party.get(i).getID()==id) {
-											party.get(i).heal(card.getHeal());
+											party.get(i).heal(UsePlayerAbilityCard.getHeal(card));
 											finished=true;
 										}
 									}
 								}
 							}
 						}
-						else if(card.getData().getSemiCircle() || card.getData().getSortOfSemiCircle()) {
+						else if(UsePlayerAbilityCard.getCardData(card).getSemiCircle() || UsePlayerAbilityCard.getCardData(card).getSortOfSemiCircle()) {
 							
 							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
 							Point selectionCoordinates = room.getSelectionCoordinates();
@@ -489,38 +489,38 @@ public class Scenario {
 							if(pointFlag==0)
 							{
 								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()+1), targets);
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()), targets);
 							}
 							else if(pointFlag==1) {
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()-1), targets);
 								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()+1), targets);
 							}
 							else if(pointFlag==2) {
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()-1), targets);
 								attackProcedure(new Point((int)selectionCoordinates.getX()+1, (int)selectionCoordinates.getY()), targets);
 							}
 							else if(pointFlag==3) {
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
 								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
 							}
 							else if(pointFlag==4) {
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
 								attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()-1), targets);
 							}
 							else if(pointFlag==5) {
 					
 								attackProcedure(new Point((int)selectionCoordinates.getX()-1, (int)selectionCoordinates.getY()), targets);
-								if(card.getData().getSemiCircle())
+								if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 									attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()+1), targets);
 							}
 							finished=true;
 						}
-						else if(card.getData().getOpposingAttack()) {
+						else if(UsePlayerAbilityCard.getCardData(card).getOpposingAttack()) {
 							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
 							Point selectionCoordinates = room.getSelectionCoordinates();
 							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
@@ -545,7 +545,7 @@ public class Scenario {
 							}
 							finished=true;
 						}
-						else if(card.getData().getCircle()) {
+						else if(UsePlayerAbilityCard.getCardData(card).getCircle()) {
 							Point start = room.getSelectionCoordinates();
 							int range=1;
 							for(int x=-range; x<=range; x++) {
@@ -583,7 +583,7 @@ public class Scenario {
 								}
 							}
 						}
-						else if(card.getData().getTriangle()) {
+						else if(UsePlayerAbilityCard.getCardData(card).getTriangle()) {
 							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
 							Point selectionCoordinates = room.getSelectionCoordinates();
 							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
@@ -620,27 +620,27 @@ public class Scenario {
 									//String id = room.getID(room.getSelectionCoordinates());					//Get id of the enemy
 									//int damage=party.get(currentPlayer).getAttack(card);					//Get attack of the player
 									//enemyInfo.playerAttack(id, damage);
-									if(card.getMindControl()) {
+									if(UsePlayerAbilityCard.hasMindControl(card)) {
 										enemyControlled=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
 										state=State.MINDCONTROL;
 									}
 									else {
-										boolean adjacentBonus=card.getData().getAdjacentBonus();
+										boolean adjacentBonus=UsePlayerAbilityCard.getCardData(card).getAdjacentBonus();
 							
 										if(adjacentBonus)
 											adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
 									
-										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), card.getData(), room, adjacentBonus, elements);
+										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), UsePlayerAbilityCard.getCardData(card), room, adjacentBonus, elements);
 										
 										card.increaseCounter();
 										
-										if(card.getData().getTargetNum()>1 && card.getCounter()!=card.getData().getTargetNum()) {
+										if(UsePlayerAbilityCard.getCardData(card).getTargetNum()>1 && card.getCounter()!=UsePlayerAbilityCard.getCardData(card).getTargetNum()) {
 											System.out.println("1:  "+targets);
 											targets.remove(targets.indexOf(room.getSelectionCoordinates()));
 											System.out.println("2:  "+targets);
 										}else {
 											
-											if(card.getData().getFlag().equals("forEachTargeted")) {
+											if(UsePlayerAbilityCard.getCardData(card).getFlag().equals("forEachTargeted")) {
 												
 											}
 											
@@ -661,7 +661,7 @@ public class Scenario {
 			}
 			//Next State: Next card, Attack Logic, End Round
 			if(finished) {
-				if(card.getData().getPush()>0) {
+				if(UsePlayerAbilityCard.getCardData(card).getPush()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_PUSH_SELECTION;
 				}else {
@@ -683,9 +683,9 @@ public class Scenario {
 			boolean finished=false;
 			//Creates target list of enemy coordinates
 			List<Point> targets = new ArrayList<Point>();
-			int cardRange=card.getRange();
-			if(card.getRange()>=0) {
-				if(card.getRange()==0)
+			int cardRange=UsePlayerAbilityCard.getRange(card);
+			if(UsePlayerAbilityCard.getRange(card)>=0) {
+				if(UsePlayerAbilityCard.getRange(card)==0)
 					cardRange=1;
 	
 					for(int range=1; range<=cardRange; range++)
@@ -812,13 +812,13 @@ public class Scenario {
 			}
 			
 			if(finished) {
-				card.getData().increasePush();
+				UsePlayerAbilityCard.getCardData(card).increasePush();
 				room.moveEnemy(enemyTarget, pointToMove);
 
 				oppPoint = new Point(UtilitiesAB.findOppHex(tempHoldVar, pointToMove));
 				tempHoldVar=new Point(pointToMove);
 
-				if(card.getData().getPush()>card.getData().getPushCount())
+				if(UsePlayerAbilityCard.getCardData(card).getPush()>UsePlayerAbilityCard.getCardData(card).getPushCount())
 				{
 					//oppPoint=new Point(pointToMove);
 					state=State.PLAYER_PUSH;
@@ -839,10 +839,10 @@ public class Scenario {
 		}
 		else if(state==State.MINDCONTROL) {
 			boolean finished=false;
-			if(card.getData().getMindControData().getMove()>0)
+			if(UsePlayerAbilityCard.getCardData(card).getMindControData().getMove()>0)
 				finished=mindControlMove(party.get(playerIndex), enemyControlled, g);
 			
-			if(card.getData().getMindControData().getAttack()>0)
+			if(UsePlayerAbilityCard.getCardData(card).getMindControData().getAttack()>0)
 				finished=mindControlAttack(party.get(playerIndex), enemyControlled, g);
 			
 			//Next State: Next card, Attack Logic, End Round
@@ -898,10 +898,10 @@ public class Scenario {
 		}
 		else if(state==State.USE_ANY_INFUSION) {
 			if(elements.consumeAny(g, num)) {
-				if(card.getRange()>0 || card.getAttack()>0) {
+				if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_ATTACK;
-				}else if(card.getData().getPush()>0) {
+				}else if(UsePlayerAbilityCard.getCardData(card).getPush()>0) {
 					//room.setSelectionCoordinates(new Point(room.getSelectionCoordinates()));		//Resets selection coordinates
 					state=State.PLAYER_PUSH_SELECTION;
 				}else {
@@ -1003,15 +1003,15 @@ public class Scenario {
 		
 		//String direction = "north";
 		//room.drawSelectionHex(g, 2, UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates()));
-		if(card.getData().getSemiCircle())
+		if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
 			room.drawSelectionHexSemiCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
-		else if(card.getData().getSortOfSemiCircle())
+		else if(UsePlayerAbilityCard.getCardData(card).getSortOfSemiCircle())
 			room.drawSelectionHexAdjCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
-		else if(card.getData().getOpposingAttack()) 
+		else if(UsePlayerAbilityCard.getCardData(card).getOpposingAttack()) 
 			room.drawSelectionHexAdjOpposing(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
-		else if(card.getData().getCircle())
+		else if(UsePlayerAbilityCard.getCardData(card).getCircle())
 			room.drawRange(g, room.getSelectionCoordinates(), 1, Color.BLUE);
-		else if(card.getData().getTriangle())
+		else if(UsePlayerAbilityCard.getCardData(card).getTriangle())
 			room.drawSelectionHexTriangle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
 		else
 			room.drawSelectionHex(g);
@@ -1068,7 +1068,6 @@ public class Scenario {
 		try {
 			TimeUnit.MILLISECONDS.sleep(time);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -1112,7 +1111,7 @@ public class Scenario {
 		
 		//Highlight tiles that players can move to
 		Point enemyPoint=enemy.getCoordinate();
-		SimpleCards cardData = card.getData().getMindControData();
+		SimpleCards cardData = UsePlayerAbilityCard.getCardData(card).getMindControData();
 		
 		for(int r=1; r<=cardData.range; r++) {
 			room.drawRange(g, enemyPoint, r, Color.BLUE);
@@ -1127,13 +1126,13 @@ public class Scenario {
 			if(room.isSpace(room.getSelectionCoordinates(), "E")) {
 				return true;
 			}
-			else if(card.getFlying()) {
+			else if(UsePlayerAbilityCard.hasFlying(card)) {
 				//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
 				room.moveEnemy(enemy, room.getSelectionCoordinates());
 				enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
 				return true;
 			}
-			else if(card.getJump()) {
+			else if(UsePlayerAbilityCard.hasJump(card)) {
 				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 					room.moveEnemy(enemy, room.getSelectionCoordinates());
 					enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
@@ -1160,7 +1159,7 @@ public class Scenario {
 		
 		//Creates target list of enemy coordinates
 		List<Point> targets = new ArrayList<Point>();
-		int cardRange=card.getData().getMindControData().getRange();
+		int cardRange=UsePlayerAbilityCard.getCardData(card).getMindControData().getRange();
 		if(cardRange>=0) {
 			if(cardRange==0)
 				cardRange=1;
@@ -1179,7 +1178,7 @@ public class Scenario {
 			if(k==setting.getTargetKey()) {
 				if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
 					if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-							UtilitiesAB.resolveAttackEnemyOnEnemy(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), enemy, card.getData().getMindControData().getAttack());
+							UtilitiesAB.resolveAttackEnemyOnEnemy(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), enemy, UsePlayerAbilityCard.getCardData(card).getMindControData().getAttack());
 							return true;
 					}
 				}
@@ -1197,12 +1196,12 @@ public class Scenario {
 		if(room.isSpace(attackCoordinate, "E")) {							//If the space selected has an enemy
 			if(targets.contains(attackCoordinate)){						//If the target is in range
 	
-				boolean adjacentBonus=card.getData().getAdjacentBonus();
+				boolean adjacentBonus=UsePlayerAbilityCard.getCardData(card).getAdjacentBonus();
 	
 				if(adjacentBonus)
 					adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
 			
-				UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(attackCoordinate)), party.get(playerIndex), card.getData(), room, adjacentBonus, elements);
+				UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(attackCoordinate)), party.get(playerIndex), UsePlayerAbilityCard.getCardData(card), room, adjacentBonus, elements);
 			
 			}
 		}

@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class PlayerAbilityCards {
+	/*
 	private String name;
 	private int initiative;
 	private boolean lost;
@@ -296,5 +297,5 @@ public class PlayerAbilityCards {
 		Setting setting = new Setting();
 		g.drawImage(image, 10, setting.getGraphicsYTop()+70, 285, 425  , null);
 		g.drawString("Press Space to Select this card. Card selection "+Integer.toString(index), 20, setting.getGraphicsYTop()+70+450);
-	}
+	}*/
 }

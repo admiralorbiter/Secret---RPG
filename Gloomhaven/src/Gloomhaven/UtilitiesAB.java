@@ -1,7 +1,6 @@
 package Gloomhaven;
 
 import java.awt.Color;
-import javax.*;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -9,10 +8,10 @@ import java.util.List;
 
 public final class UtilitiesAB {
 
-	public static void resolveCard(Player player, PlayerAbilityCards abilityCard, InfusionTable elements, Room room) {
+	public static void resolveCard(Player player, PlayerAbilityCard abilityCard, InfusionTable elements, Room room) {
 
 		CardDataObject card = new CardDataObject();
-		card=abilityCard.getData();
+		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData();
 		
 		if(card.getExperience()>0)
 			player.increaseXP(card.getExperience());
@@ -320,7 +319,7 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 	}
 	
-	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCards abilityCard) {
+	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCard abilityCard) {
 		if(player.isAugmented()==false) {
 			player.setAugment(abilityCard);
 		}
@@ -518,11 +517,6 @@ public final class UtilitiesAB {
 		
 	}
 	
-	private static int[] cubeToCoordOdd(Point p1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public static void drawArrows(Graphics g, Point player, Point opposite) {
 		
 		Setting setting = new Setting();

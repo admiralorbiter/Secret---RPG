@@ -26,7 +26,8 @@ public class GamePanel extends JPanel implements KeyListener{
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
 	KeyEvent key;													//Current Key Event
-
+	Shop shop = new Shop();
+	
 	public GamePanel() {
 		addKeyListener(this);
 		setBackground(new Color(64, 64, 64));
@@ -51,8 +52,12 @@ public class GamePanel extends JPanel implements KeyListener{
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
 			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsYTop());
+			shop.drawShop(g);
+			g.drawString("Press space to continue", 10, setting.getHeight()-100);
 			//Insert Town State Stuff Here
-			state=GameState.ROAD_EVENT;
+			if(key!=null)
+				if(key.getKeyCode()==KeyEvent.VK_SPACE)
+					state=GameState.ROAD_EVENT;
 		}else if(state==GameState.ROAD_EVENT) {
 			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here

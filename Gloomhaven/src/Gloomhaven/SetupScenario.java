@@ -12,20 +12,17 @@ public class SetupScenario {
 	
 	public List<Enemy> getEnemies(){
 		List<Enemy> enemies = new ArrayList<Enemy>();
-		int scenarioLevel;
 		
 		switch(scenarioID) {
 			case "Test":
-				scenarioLevel=1;
-				enemies.add(new Enemy("Test", 0, scenarioLevel));
-				enemies.add(new Enemy("TestElite", 1, scenarioLevel));
-				enemies.add(new Enemy("Test", 2, scenarioLevel));
+				enemies.add(new Enemy(0, "Test"));
+				enemies.add(new Enemy(1, "TestElite"));
+				enemies.add(new Enemy(2, "Test"));
 				break;
 			default:
-				scenarioLevel=1;
-				enemies.add(new Enemy("Test", 0, scenarioLevel));
-				enemies.add(new Enemy("TestElite", 1, scenarioLevel));
-				enemies.add(new Enemy("Test", 2, scenarioLevel));
+				enemies.add(new Enemy(0, "Test"));
+				enemies.add(new Enemy(1, "TestElite"));
+				enemies.add(new Enemy(2, "Test"));
 		}
 		
 		return enemies;

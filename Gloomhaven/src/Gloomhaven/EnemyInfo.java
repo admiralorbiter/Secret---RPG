@@ -20,19 +20,17 @@ public class EnemyInfo {
 	int abilityCardIndex;
 	private int enemyInit;
 	
+	Point dimensions;
+	
 	public EnemyInfo(List<Enemy> enemies, Room room) {
 		this.enemies=enemies;
 		this.room=room;
-		Point dimensions=room.getDimensions();
-		
+		dimensions=room.getDimensions();
 		abilityCardIndex=0;
 		startingAbilityCardCount=8;
 		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new EnemyAbilityCard("Test", i+1, 1));
-		
-		for(int i=0; i<enemies.size(); i++) {
-			enemies.get(i).setDimensions(dimensions);
-		}
+
 	}
 	
 	public Enemy getEnemyFromID(String id) {
@@ -85,8 +83,8 @@ public class EnemyInfo {
 	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
 		
 		if(enemies.get(index).canMove()) {
-			int move = enemies.get(index).getMove();
-			List<Point> points=enemies.get(index).createTargetList(room.getBoard(), move, "P");
+			int move = enemies.get(index).getBaseStats().getMove();
+			List<Point> points=enemies.get(index).createTargetList(room.getBoard(), move, "P", dimensions);
 			if(points.size()>0) {
 				//Move Closer
 				
@@ -108,15 +106,15 @@ public class EnemyInfo {
 		
 		if(canAttack) {
 			
-			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P");
+			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P", dimensions);
 			
 			if(meleeRange) {
-				targets=enemies.get(index).createMeleeTargetList(room.getBoard(), party);
+				targets=enemies.get(index).createMeleeTargetList(room.getBoard(), party, dimensions);
 				return targets;
 			}
 			else {
 
-				targets=enemies.get(index).playersInRangeEstimate(room.getBoard(), party);
+				targets=enemies.get(index).playersInRangeEstimate(room.getBoard(), party, dimensions);
 				if(targets.size()>0) {
 					
 					targets=enemies.get(index).playersInRange(targets);
@@ -154,22 +152,14 @@ public class EnemyInfo {
 	
 	public int getAttack(int enemyTurnIndex) {
 		AttackModifierCard card = enemies.get(enemyTurnIndex).attackModifierDeck.pickRandomModifierCard();
-		return card.multiplier*(enemies.get(enemyTurnIndex).getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.plusAttack);
+		return card.multiplier*(enemies.get(enemyTurnIndex).getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.plusAttack);
 	}
 	
 	//[Test]
 	public void testPrintEnemies() {
 		for(int i=0; i<enemies.size(); i++) {
-			System.out.println(enemies.get(i).getClassID()+"  "+enemies.get(i).getCoordinate());
+			System.out.println(enemies.get(i).getClassID()+"  "+enemies.get(i).getCoordinates());
 		}
 	}
-	
-	//[Test]
-	public void testPrintDimensions() {
-		for(int i=0; i<enemies.size(); i++) {
-			System.out.println(enemies.get(i).getDimensions());
-		}
-	}
-	
 	
 }

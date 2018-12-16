@@ -8,7 +8,7 @@ public class AttackModifierDeck {
 	
 	List<AttackModifierCard> deck = new ArrayList<AttackModifierCard>();
 	
-	AttackModifierDeck(String id){
+	public AttackModifierDeck(String id){
 		switch(id) {
 			case "Standard":
 				for(int i=0; i<6; i++)

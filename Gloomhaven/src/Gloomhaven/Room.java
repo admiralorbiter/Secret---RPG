@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class Room {
 
 	//Constants
@@ -84,7 +83,8 @@ public class Room {
 			    	if(quickIDtemp.equals("Player")) {
 			    		setTilePlayer(party.get(0), point);
 			    	}else if(quickIDtemp.equals("Enemy")) {
-			    		enemies.add(new Enemy(idtemp, enemyCount, 1));
+			    		
+			    		enemies.add(new Enemy(enemyCount, idtemp));
 			    		setTileEnemy(enemies.get(enemyCount), point);
 			    		enemyCount++;
 			    	}else if(quickIDtemp.equals("Door")) {
@@ -213,13 +213,13 @@ public class Room {
 
 	//Sets the tile for the player
 	private void setTilePlayer(Player player, Point point) {
-		player.setPoint(point);
+		player.setCoordinates(point);
 		board[(int) point.getX()][(int) point.getY()].setHex("P", player.getID());
 	}
 	
 	//Sets the tile for the enemy
 	private void setTileEnemy(Enemy enemy, Point point) {
-		enemy.setPoint(point);
+		enemy.setCoordinates(point);
 		board[(int) point.getX()][(int) point.getY()].setHex("E", enemy.getID());
 	}
 	
@@ -422,7 +422,7 @@ public class Room {
 	
 	//Moves the player from one point to another
 	public void movePlayer(Player player, Point ending) {	
-		Point starting=player.getCoordinate();
+		Point starting=player.getCoordinates();
 		if(board[(int) ending.getX()][(int) ending.getY()].getQuickID().equals("Loot")) {
 			player.addLoot(board[(int) ending.getY()][(int) ending.getY()]);
 		}
@@ -438,8 +438,8 @@ public class Room {
 	}
 	
 	public void moveEnemy(Enemy enemy, Point ending) {
-		Point starting=enemy.getCoordinate();
-		enemy.moveEnemy(ending);
+		Point starting=enemy.getCoordinates();
+		enemy.setCoordinates(ending);
 		System.out.println(starting+","+ending);
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();

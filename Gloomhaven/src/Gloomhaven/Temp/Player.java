@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Temp;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,84 +9,117 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.AttackModifierCard;
+import Gloomhaven.AttackModifierDeck;
+import Gloomhaven.CardDataObject;
+import Gloomhaven.Hex;
+import Gloomhaven.Item;
+import Gloomhaven.ItemLoader;
+import Gloomhaven.Setting;
+import Gloomhaven.SimpleCards;
+import Gloomhaven.StatusEffectDataObject;
+import Gloomhaven.Trigger;
+import Gloomhaven.UsePlayerAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 
-public class Player extends character {
+public class Player {
 
-	//Player variables
-	private List<PlayerAbilityCard> abilityDeck = new ArrayList<PlayerAbilityCard>();                     	//Class Ability Deck
-	private AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
-	private List<PlayerAbilityCard> inPlay = new ArrayList<PlayerAbilityCard>();							//List of cards in play
-
-	private CardDataObject negativeConditions=null;
-	private PlayerAbilityCard augment = null;
-
-	private List<String> lootInventory = new ArrayList<String>();
-	private List<Item> items = new ArrayList<Item>();
-	private List<Item> consumedItems = new ArrayList<Item>();
-	private int smallItemTotal;
+	//Player Variables - Get set and don't change
+	//[Rem] Will need to implement a system that creates a unique id since it is possible parties
+	String id;																						//Unique ID
+	String characterClass;																			//Class
+	int startingAbilityCardCount;																	//Sets how many ability cards are allowed in the deck ( probably depends on level)
+	int maxHealth;																					//Sets what the max health of the player can be
+	String name;																						//Name of the character
+	Setting setting = new Setting();
+	PlayerAbilityCard augment = null;
+	int level;
+	int displayCard;
 	
+	//Player variables
+	List<PlayerAbilityCard> abilityDeck = new ArrayList<PlayerAbilityCard>();                     	//Class Ability Deck
+	AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
+	List<PlayerAbilityCard> inPlay = new ArrayList<PlayerAbilityCard>();							//List of cards in play
+	StatusEffectDataObject effects = new StatusEffectDataObject();                                  //Status Effects and Conditions of the Player
+	
+	//Card choice variables
 	boolean cardChoice=true;																		//Cardchoice variable used when selecting a first then second card
 	int initiative=-1;																				//Initiative value based on cards, deciedes order in the game
 	PlayerAbilityCard topCard=null;																//Top ability card choosen, used for the initiative score
 	PlayerAbilityCard bottomCard=null;																//Bottom ability card
-	PlayerAbilityCard firstCardChoice=null;																		//Card picked first during the turn			
-	PlayerAbilityCard secondCardChoice=null;
+	PlayerAbilityCard firstCardChoice=null;//new PlayerAbilityCard();																			//Card picked first during the turn			
+	PlayerAbilityCard secondCardChoice=null;//new PlayerAbilityCard();																			//Card picked second during the turn
+	int shield;
+	int turnNumber;																					//Turn number that is set when ordering players, what order the player goes in
+	private Point coordinates = new Point(0, 0);													//Coordinate point of the player
+	Point2D dimensions;																				//dimension of the current room																	
+	boolean longRest=false;																			//Indicates if the player is currently taking a long rest
+	int health;																						//Current health of the player
+	int xp;																							//Current experience of the player
+	List<String> lootInventory = new ArrayList<String>();
+	int gold;
+	List<Item> items = new ArrayList<Item>();
+	List<Item> consumedItems = new ArrayList<Item>();
+	int smallItemTotal;
+	int smallItemCount;
+	boolean movementImmunity=false;
+	int bonusMove=0;
+	boolean createAnyElement=false;
+	CardDataObject negativeConditions=null;
 	
-	private int maxHandCount;
-	private boolean longRest;
+	//List<PersistanceTriggers> triggers = new ArrayList<PersistanceTriggers>();
+	List<Trigger> triggers = new ArrayList<Trigger>();
+	SimpleCards retaliate = new SimpleCards();
+	public Player(int id, String character) {
+		//Set constant variables
+		switch(character) {
+			default:
+				this.id="P"+id;
+				this.characterClass=character;
+				startingAbilityCardCount=setting.getMaxHandCount();
+				maxHealth=50;
+				health=500;
+				xp=0;
+				shield=0;
+				level=1;
+				name="Jon";
+				gold=0;
+				displayCard=0;
+				
+				if(level%2==0)
+					smallItemTotal=level/2;
+				else
+					smallItemTotal=(level+1)/2;
+				
+				
+				//items = ItemLoader.testLoadAllItems();
+				items=ItemLoader.testLoadItems();
+				
+				/*
+				for(int i=0; i<items.size(); i++)
+				{
+					if(items.get(i).getID()==16)
+						smallItemTotal=smallItemTotal+2;
+				}*/
+
+		}
 	
-	//Probably can change these
-	private int bonusMove=0; //Feels like it can go in a better place (maybe bonus data object)
-	private int displayCard=0;
-	private int turnNumber;
-	private int smallItemCount;
-	private boolean movementImmunity=false;
-	private boolean createAnyElement=false;
-	
-	Setting setting = new Setting();
-	private List<Trigger> triggers = new ArrayList<Trigger>();
-	private SimpleCards retaliate = new SimpleCards();
-	
-	
-	public Player(int id, String classID) {
-		
-		setID("P"+id);
-		setClassID(classID);
-		setName("Jon");
-		data = new CharacterDataObject(classID);
-		
-		maxHandCount=setting.getMaxHandCount();
-		
-		for(int i=0; i<maxHandCount; i++)
-			abilityDeck.add(new PlayerAbilityCard(classID, i+1, 1));
-		
-		
-		//Sets how many small items you can carry
-		if(data.getLevel()%2==0)
-			smallItemTotal=data.getLevel()/2;
-		else
-			smallItemTotal=(data.getLevel()+1)/2;
+		//Create ability deck
+		for(int i=0; i<startingAbilityCardCount; i++)
+			abilityDeck.add(new PlayerAbilityCard(character, i+1, 1));
 		
 	}
 	
-	public int getMaxHandCount() {return maxHandCount;}
-	public void setMaxHandCount(int maxHandCount) {this.maxHandCount = maxHandCount;}
-	public int getSmallItemTotal() {return smallItemTotal;}
-	public void setSmallItemTotal(int smallItemTotal) {this.smallItemTotal = smallItemTotal;}
-
-	//Player Variables
-	public PlayerAbilityCard getAugmentCard() {return augment;}
-	
-	//Item
-	public List<Item> getItems(){return items;}
-
-	//On the cutting block
 	public void setBonusMove(int bonus) {bonusMove=bonus;}
 	public void toggleMovementImmunity() {movementImmunity=!movementImmunity;}
 	public boolean getMovementImmunity() {return movementImmunity;}
+	public List<Item> getItems(){return items;}
+	public int getSmallItemTotal() {return smallItemTotal;}
+	public void setSmallItemTotal(int total) {smallItemTotal=total;}
+	//Resets card variables at beginning of the round
 	
-	public void reset() {
+	
+	public void resetCards(){
 		initiative=-1;
 		firstCardChoice=null;
 		secondCardChoice=null;
@@ -97,12 +130,18 @@ public class Player extends character {
 		createAnyElement=false;
 	}
 	
+	
+	
+	//Resets card choice during the round for making more choices
 	public void resetCardChoice() {
 		firstCardChoice=null;
 		secondCardChoice=null;
 		cardChoice=true;
 	}
 	
+	public PlayerAbilityCard getAugmentCard() {
+		return augment;
+	}
 	
 	//Sets the player on a long rest and creates an initiative of 99
 	//Used during the beginning of the round, then during their turn they take the long rest
@@ -139,7 +178,7 @@ public class Player extends character {
 	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public List<Point> createTargetList(Hex board[][], int range, String quickID, Point dimensions) {
+	public List<Point> createTargetList(Hex board[][], int range, String quickID) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -195,7 +234,7 @@ public class Player extends character {
 	
 	public void addLoot(Hex hex) {
 		if(hex.getLootID().equals("Gold"))
-			data.setGold(data.getGold()+1);
+			gold++;
 		else
 			lootInventory.add(hex.getLootID());
 	}
@@ -380,7 +419,7 @@ public class Player extends character {
 					displayCard=0;
 			}
 		}catch(NullPointerException ex){ }
-
+		
 		abilityDeck.get(displayCard).showCard(g);
 		
 		abilityCardsLeft();
@@ -559,7 +598,7 @@ public class Player extends character {
 			
 			//This is for brute: shield bash - Not sure it will always hold true
 			if(card.roundBonus && card.shield>0) {
-				data.setShield(data.getShield()-1);
+				shield=shield-1;
 			}
 			
 			if(card.roundBonus && card.retaliateFlag==true) {
@@ -597,7 +636,7 @@ public class Player extends character {
 			
 			//This is for brute: shield bash - Not sure it will always hold true
 			if(card.roundBonus && card.shield>0) {
-				data.setShield(data.getShield()-1);
+				shield=shield-1;
 			}
 			
 			if(card.roundBonus && card.retaliateFlag==true) {
@@ -653,9 +692,9 @@ public class Player extends character {
 	public void graphicsPlayerInfo(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
-		g.drawString(name+"  "+getClassID(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
-		g.drawString("Level "+data.getLevel(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp()+"  Shield "+data.getShield()+" Ret: "+retaliate.getAttack(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		g.drawString(name+"  "+characterClass, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
+		g.drawString("Level "+level, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
+		g.drawString("Health "+health+"  XP"+xp+"  Shield "+shield+" Ret: "+retaliate.getAttack(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
 		if(isAugmented()) {
 			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
 			g.drawString(augment.getTopData().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
@@ -666,7 +705,7 @@ public class Player extends character {
 			for(int i=0; i<negativeConditions.size(); i++)
 				g.drawString(negativeConditions.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
 		}
-		g.drawString("Gold: "+data.getGold(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
+		g.drawString("Gold: "+gold, setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
 		if(getBonusNegativeConditions()!=null)
 			g.drawString("Bonus Condition on Attack: "+getBonusNegativeConditions().getNegativeCondition(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
 		
@@ -689,6 +728,21 @@ public class Player extends character {
 	public boolean isAugmented() {
 		return UsePlayerAbilityCard.hasAugment(augment);
 
+	}
+	
+	public void setShield(int shield) {
+		this.shield=shield;
+	}
+	
+	public void heal(int damageToHeal) {
+		if(effects.getPoison()) {
+			effects.switchPoison();
+		}else {
+			health=health+damageToHeal;
+			if(health>maxHealth) {
+				health=maxHealth;
+			}
+		}
 	}
 	
 	public void shortRestInfo(Graphics g) {
@@ -777,7 +831,16 @@ public class Player extends character {
 	}
 	
 	public int getTurnNumber() {return turnNumber;}
-
+	
+	public void setPoint(Point point) {
+		this.coordinates=new Point(point);
+	}
+	
+	public Point getCoordinate() {return coordinates;}
+	
+	public void setDimensions(Point2D dimensions) {
+		this.dimensions=dimensions;
+	}
 	public int abilityCardsLeft() {
 		int currentAbilityDeckSize=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
@@ -786,7 +849,16 @@ public class Player extends character {
 		}
 		return currentAbilityDeckSize;
 	}
-
+	
+	public void movePlayer(Point space) {
+		coordinates=space;
+	}
+	
+	//[Test]
+	public int testGetTopCardIndex() {return abilityDeck.indexOf(topCard);}
+	public int testGetBottomCardIndex() {return abilityDeck.indexOf(bottomCard);}
+	
+	public String getID() {return id;}
 	public int getAttack(CardDataObject attackCard) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
@@ -797,7 +869,7 @@ public class Player extends character {
 			for(int i=0; i<triggers.size(); i++) {
 				if(triggers.get(i).getTriggerName().equals("OnTargetEnemyAlone")) {
 					damage=damage+triggers.get(i).getAloneBonusData().getAttack();
-					data.setXp(data.getXp()+triggers.get(i).getAloneBonusData().getExperience());
+					xp=xp+triggers.get(i).getAloneBonusData().getExperience();
 					triggers.get(i).addToTrigger();
 				}
 			}
@@ -805,13 +877,13 @@ public class Player extends character {
 		
 		return damage;
 	}
-
+	public int getHealth() {return health;}
 	public void decreaseHealth(int damage) {
 		boolean needToReset=false;
 		if(triggers.size()>0) {
 			for(int i=0; i<triggers.size(); i++) {
 				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
-					data.setShield(data.getShield()+triggers.get(i).getShield());
+					shield=shield+triggers.get(i).getShield();
 					needToReset=true;
 					triggers.get(i).addToTrigger();
 				}
@@ -821,18 +893,18 @@ public class Player extends character {
 			damage=damage+1;
 		
 		if(damage>0)
-			data.setHealth(data.getHealth()+data.getShield()-damage);
+			health=health+shield-damage;
 		
 		if(needToReset) {
 			for(int i=0; i<triggers.size(); i++) {
 				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
-					data.setShield(data.getShield()+triggers.get(i).getShield());
+					shield=shield-triggers.get(i).getShield();
 				}
 			}
 		}
 		
 		//[Test]
-		System.out.println("Player was attacked for "+damage+" making thier health "+data.getHealth());
+		System.out.println("Player was attacked for "+damage+" making thier health "+health);
 	}
 	
 	public void removePersistanceBonus(int index) {
@@ -840,7 +912,7 @@ public class Player extends character {
 			//shield=shield-1;
 	}
 	
-	public void increaseXP(int xpGained) {data.setXp(data.getXp()+xpGained);}
+	public void increaseXP(int xpGained) {xp=xp+xpGained;}
 	
 	public void setCondition(String condition) {
 		if(condition=="Invisible" && effects.getInvisibility()!=true)
@@ -988,5 +1060,4 @@ public class Player extends character {
 	public void addAttackModifierCard(AttackModifierCard card) {
 		attackModifierDeck.addCard(card);
 	}
-	
 }

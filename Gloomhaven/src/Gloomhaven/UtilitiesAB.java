@@ -29,7 +29,7 @@ public final class UtilitiesAB {
 		
 		if(card.getLootRange()>0) {
 			List<Point> loot = new ArrayList<Point>();
-			loot=createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinate(), "Loot", room.getDimensions());
+			loot=createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinates(), "Loot", room.getDimensions());
 			room.loot(player, loot);
 		}
 		
@@ -46,7 +46,7 @@ public final class UtilitiesAB {
 			resolveNewAugmentedCard(player, card, abilityCard);
 		
 		if(card.getSheild()>0)
-			player.setShield(card.getSheild());
+			player.getCharacterData().setShield(card.getSheild());
 		
 		if(card.getRetaliateFlag()) {
 			player.setRetaliate(card.getRetaliateData());
@@ -74,8 +74,8 @@ public final class UtilitiesAB {
 	}
 	
 	public static Point findOppHex(Player player, Enemy enemy) {
-		Point playerCoordinate = new Point(player.getCoordinate());
-		Point coordinates = new Point(enemy.getCoordinate());
+		Point playerCoordinate = new Point(player.getCoordinates());
+		Point coordinates = new Point(enemy.getCoordinates());
 		
 		if(playerCoordinate.getX()==coordinates.getX()) {
 			if(playerCoordinate.getY()<coordinates.getY()) {
@@ -194,11 +194,11 @@ public final class UtilitiesAB {
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
 		
 		List<Point> targets = new ArrayList<Point>();
-		targets=enemy.createTargetList(room.getBoard(), 1, "P");
+		targets=enemy.createTargetList(room.getBoard(), 1, "P", room.getDimensions());
 
 		if(targets.size()>0) {
 			for(int i=0; i<targets.size(); i++) {
-				if(targets.get(i).equals(party.get(playerIndex).getCoordinate())) {
+				if(targets.get(i).equals(party.get(playerIndex).getCoordinates())) {
 					targets.remove(i);
 				}
 			}
@@ -212,7 +212,7 @@ public final class UtilitiesAB {
 	
 	private static boolean targetAloneToAlly(Enemy enemy, Room room) {
 		List<Point> targets = new ArrayList<Point>();
-		targets=enemy.createTargetList(room.getBoard(), 1, "E");
+		targets=enemy.createTargetList(room.getBoard(), 1, "E", room.getDimensions());
 		
 		if(targets.size()>0)
 			return false;
@@ -226,7 +226,7 @@ public final class UtilitiesAB {
 	}
 	
 	public static void resolveAttackEnemyOnEnemy(Enemy enemy, Enemy attacker, int attack) {
-		int enemyShield=enemy.getShield();
+		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){
 			attack=attack-enemyShield;
 			if(attack<0)
@@ -292,7 +292,7 @@ public final class UtilitiesAB {
 		
 		if(player.isAugmented()) {
 			if(player.getAugmentCard().getName().equals("Feedback Loop"))
-				player.setShield(1);
+				player.getCharacterData().setShield(1);
 			if(player.getAugmentCard().getName().equals("The Mind's Weakness"))
 				//If target is melee,
 				attack=attack+2;
@@ -301,7 +301,7 @@ public final class UtilitiesAB {
 				player.heal(2);
 		}
 		
-		int enemyShield=enemy.getShield();
+		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){
 			int playerPierce=card.getPierce();
 			if(playerPierce>0) {
@@ -381,7 +381,7 @@ public final class UtilitiesAB {
 	//Retrieves the number of negative conditions on enemy
 	private static int retrieveNegativeConditions(Enemy enemy) {
 		int count=0;
-		StatusEffectDataObject effect = enemy.getStatusEffects();
+		StatusEffectDataObject effect = enemy.getStatusEffect();
 		
 		if(effect.getPoison())
 			count++;

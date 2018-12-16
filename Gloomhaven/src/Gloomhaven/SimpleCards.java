@@ -13,6 +13,12 @@ public class SimpleCards {
 		
 	}
 	
+	public SimpleCards(int attack, int move, int range) {
+		this.attack=attack;
+		this.move=move;
+		this.range=range;
+	}
+	
 	public int getAttack() {return attack;}
 	public int getMove() {return move;}
 	public int getRange() {return range;}

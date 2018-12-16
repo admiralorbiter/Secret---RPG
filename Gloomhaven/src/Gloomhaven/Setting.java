@@ -59,7 +59,7 @@ public class Setting {
 	private String playerClass="Spellweaver";
 	
 	
-	public int getStartingAbilityCardCount() {
+	public int getMaxHandCount() {
 		if(playerClass=="Brute" || playerClass=="Mind Thief")
 			return 10;
 		if(playerClass=="Scoundrel")

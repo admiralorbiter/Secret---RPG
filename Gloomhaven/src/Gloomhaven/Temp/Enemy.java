@@ -1,33 +1,71 @@
-package Gloomhaven;
+package Gloomhaven.Temp;
 
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class Enemy extends character{
-	
-	private boolean eliteFlag;
-	private SimpleCards baseStats;
-	
-	public Enemy(int id, String classID) {
-		
-		setID("E"+id+classID);
-		setClassID(classID);
-		setName("Enemy");
-		data = new CharacterDataObject(classID);
-		
-		if(classID.equals("TestElite")) {
-			eliteFlag=true;
-			baseStats=new SimpleCards(4, 3, 6);
-		}
-		else {
-			eliteFlag=true;
-			baseStats=new SimpleCards(3, 2, 5);
-		}
-	}
-	
-	public SimpleCards getBaseStats() {return baseStats;}
+import Gloomhaven.AttackModifierDeck;
+import Gloomhaven.Hex;
+import Gloomhaven.StatusEffectDataObject;
 
+public class Enemy {
+	
+	boolean eliteFlag;
+	String classID;
+	String id;
+	Point coordinates = new Point();
+	StatusEffectDataObject effects = new StatusEffectDataObject();
+	Point dimensions;
+	AttackModifierDeck attackModifierDeck = new AttackModifierDeck("Standard");
+	
+	int move;
+	int shield;
+	int range;
+	int attack;
+	int health;
+	int maxHealth=health;
+	
+	int TEST_HEALTH=50;
+	int TEST_ATTACK=3;
+	int TEST_RANGE=5;
+	int TEST_MOVE=2;
+	int TEST_SHIELD=0;
+	int TEST_MAXHEALTH=TEST_HEALTH;
+	
+	public Enemy(String classID, int id, int scenarioLevel) {
+		this.classID=classID;
+		this.id=id+classID;
+	
+		switch(classID) {
+			case "Test": 
+				eliteFlag=false;
+				range=TEST_RANGE;
+				attack=TEST_ATTACK;
+				health=TEST_HEALTH;
+				move=TEST_MOVE;
+				shield=TEST_SHIELD;
+				break;
+			case "TestElite":
+				eliteFlag=true;
+				range=TEST_RANGE+scenarioLevel;
+				attack=TEST_ATTACK+scenarioLevel;
+				health=TEST_HEALTH+scenarioLevel;
+				move=TEST_MOVE+scenarioLevel;
+				shield=TEST_SHIELD+scenarioLevel;
+				maxHealth=maxHealth+scenarioLevel;
+				break;
+			default:
+				eliteFlag=true;
+				range=TEST_RANGE;
+				attack=TEST_ATTACK;
+				health=TEST_HEALTH;
+				move=TEST_MOVE;
+				shield=TEST_SHIELD;
+		}
+	}	
+	
 	public boolean canAttack() {
 
 		if(effects.getDisarm()) {
@@ -50,12 +88,19 @@ public class Enemy extends character{
 		
 		return true;
 	}
-
+	public int getMove() {return move;}
 	public boolean isElite() {return eliteFlag;}
-
+	public String getClassID() {return classID;}
+	
+	public void setPoint(Point point) {
+		this.coordinates=point;
+	}
+	
+	public Point getCoordinate() {return coordinates;}
+	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
-	public boolean checkMeleeRange(Hex board[][], String lookingForID, Point dimensions) {
+	public boolean checkMeleeRange(Hex board[][], String lookingForID) {
 		
 		
 		int x=(int) coordinates.getX();
@@ -98,37 +143,48 @@ public class Enemy extends character{
 		if(effects.getPoison())
 			damage=damage+1;
 		
-		damage=damage-data.getShield();
+		damage=damage-shield;
 		if(damage>0)
-			data.setHealth(data.getHealth()-damage);
+			health=health-damage;
 		
 		//[Test]
-		System.out.println("Enemy "+id+" took "+damage+" and is now at "+data.getHealth());
+		System.out.println("Enemy "+id+" took "+damage+" and is now at "+health);
+	}
+	
+	public void heal(int heal) {
+		if(effects.getPoison()) {
+			effects.switchPoison();
+		}else {
+			health=health+heal;
+			if(health>maxHealth) {
+				health=maxHealth;
+			}
+		}
 	}
 	
 	//[Rem] This has to be a way to abstract this for both player and enemies
-	public List<Player> createMeleeTargetList(Hex board[][],List<Player> party, Point dimensions){
+	public List<Player> createMeleeTargetList(Hex board[][],List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
-		checkRange(board, "P", 1, party, targets, dimensions);
+		checkRange(board, "P", 1, party, targets);
 		
 		return targets;
 	}
 	
-	public List<Player> playersInRangeEstimate(Hex board[][], List<Player> party, Point dimensions){
+	public List<Player> playersInRangeEstimate(Hex board[][], List<Player> party){
 		List<Player> targets = new ArrayList<Player>();
 		
-		if(baseStats.range<=1)
+		if(range<=1)
 			return targets;
 		
-		for(int r=2; r<=baseStats.range; r++) {
-			checkRange(board, "P", r, party, targets, dimensions);
+		for(int r=2; r<=range; r++) {
+			checkRange(board, "P", r, party, targets);
 		}
 		
 		return targets;
 	}
 
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
-	public void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Point dimensions) {
+	public void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets) {
 		List<String> idList = new ArrayList<String>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -221,6 +277,20 @@ public class Enemy extends character{
 		}
 	}
 	
+	public StatusEffectDataObject getStatusEffects() {return effects;}
+	
+	public void setDimensions(Point dimensions) {
+		this.dimensions=dimensions;
+	}
+	
+	public Point getDimensions() {
+		return dimensions;
+	}
+	
+
+	public int getAttack() {return attack;}
+	public String getID() {return id;}
+	
 	public void setNegativeCondition(String condition) {
 		if(condition=="Wound" && effects.getWound()==false)
 			effects.switchWound();
@@ -269,9 +339,15 @@ public class Enemy extends character{
 		}
 	}
 	
+	public int getShield() {return shield;}
+	
+	public void moveEnemy(Point newCoordinate) {
+		coordinates=newCoordinate;
+	}
+	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public List<Point> createTargetList(Hex board[][], int range, String quickID, Point dimensions) {
+	public List<Point> createTargetList(Hex board[][], int range, String quickID) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {

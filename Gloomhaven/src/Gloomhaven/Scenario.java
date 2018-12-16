@@ -89,7 +89,6 @@ public class Scenario {
 		currentPlayer=0;																			//sets current player to 0 for the card selection around
 		enemyInfo.orderEnemies();																	//orders the enemies in list
 		dimensions=room.getDimensions();															//Sets dimensions from room
-		passDimensions();																			//passes dimension to party
 		
 		state=State.CARD_SELECTION;
 	}
@@ -259,9 +258,9 @@ public class Scenario {
 				int targetIndex=-1;
 				
 				for(int i=0; i<targets.size(); i++) {
-					if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinate(), party.get(currentPlayer).getCoordinate())<min) {
+					if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), party.get(currentPlayer).getCoordinates())<min) {
 						targetIndex=i;
-					}else if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinate(), party.get(currentPlayer).getCoordinate())==min) {
+					}else if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), party.get(currentPlayer).getCoordinates())==min) {
 						if(targets.get(targetIndex).getInitiative()>targets.get(i).getInitiative()) {
 							targetIndex=i;
 						}
@@ -285,7 +284,7 @@ public class Scenario {
 			if((k==setting.getHealKey()) || (party.get(playerIndex).abilityCardsLeft()==0)) {						//If player doesn't discard (or can't), take damage
 				int damage=enemyInfo.getAttack(enemyTurnIndex);										//Retrieves enemy's attack
 				party.get(playerIndex).decreaseHealth(damage);										//Decreases player health
-				if(party.get(playerIndex).getHealth()<=0) {											//If player's health is below 0, kill player
+				if(party.get(playerIndex).getCharacterData().getHealth()<=0) {											//If player's health is below 0, kill player
 					party.remove(playerIndex);
 				}
 				if(party.size()==0)
@@ -318,7 +317,7 @@ public class Scenario {
 		//State: PLAYER_ATTACK_LOGIC: Player picks card, then uses data for next state-----------------------------------------------------------------------------------
 		else if(state==State.PLAYER_ATTACK_LOGIC) {
 			card = party.get(playerIndex).playCard();												//Card Picked by the player
-			room.setSelectionCoordinates(party.get(playerIndex).getCoordinate());					//Sets selection coordinates based on player
+			room.setSelectionCoordinates(party.get(playerIndex).getCoordinates());					//Sets selection coordinates based on player
 			
 			g.drawString("Move "+UsePlayerAbilityCard.getMove(card)+"     Attack: "+UsePlayerAbilityCard.getAttack(card)+"  (Loc: Scenario -Player Attack Logic)", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
 			
@@ -366,7 +365,7 @@ public class Scenario {
 			boolean finished=false;
 			if(party.get(playerIndex).canMove()){
 				//Highlight tiles that players can move to
-				Point playerPoint=party.get(playerIndex).getCoordinate();
+				Point playerPoint=party.get(playerIndex).getCoordinates();
 				for(int r=1; r<=UsePlayerAbilityCard.getMove(card); r++) {
 					room.drawRange(g, playerPoint, r, Color.BLUE);
 				}
@@ -383,7 +382,7 @@ public class Scenario {
 					else if(UsePlayerAbilityCard.hasFlying(card)) {
 						//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
 						room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-						party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+						party.get(playerIndex).setCoordinates(new Point(room.getSelectionCoordinates()));
 						finished=true;
 					}
 					else if(UsePlayerAbilityCard.hasJump(card)) {
@@ -391,7 +390,7 @@ public class Scenario {
 							if(room.getQuickID(room.getSelectionCoordinates())=="Loot")
 								room.loot(party.get(playerIndex), room.getSelectionCoordinates());
 							room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-							party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+							party.get(playerIndex).setCoordinates(new Point(room.getSelectionCoordinates()));
 							finished=true;
 						}
 	
@@ -399,7 +398,7 @@ public class Scenario {
 						//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
 						if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 							room.movePlayer(party.get(playerIndex), room.getSelectionCoordinates());
-							party.get(playerIndex).movePlayer(new Point(room.getSelectionCoordinates()));
+							party.get(playerIndex).setCoordinates(new Point(room.getSelectionCoordinates()));
 							finished=true;
 						}
 					}
@@ -449,12 +448,12 @@ public class Scenario {
 		
 					if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 						for(int range=1; range<=cardRange; range++)
-							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P");
-						targets.add(party.get(playerIndex).getCoordinate());
+							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P", room.getDimensions());
+						targets.add(party.get(playerIndex).getCoordinates());
 					}
 					else {
 						for(int range=1; range<=cardRange; range++)
-							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
+							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E", room.getDimensions());
 					}
 				}
 				
@@ -484,7 +483,7 @@ public class Scenario {
 						}
 						else if(UsePlayerAbilityCard.getCardData(card).getSemiCircle() || UsePlayerAbilityCard.getCardData(card).getSortOfSemiCircle()) {
 							
-							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates());
 							Point selectionCoordinates = room.getSelectionCoordinates();
 							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
 							if(pointFlag==0)
@@ -522,7 +521,7 @@ public class Scenario {
 							finished=true;
 						}
 						else if(UsePlayerAbilityCard.getCardData(card).getOpposingAttack()) {
-							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates());
 							Point selectionCoordinates = room.getSelectionCoordinates();
 							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
 							if(pointFlag==0)
@@ -585,7 +584,7 @@ public class Scenario {
 							}
 						}
 						else if(UsePlayerAbilityCard.getCardData(card).getTriangle()) {
-							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate());
+							int pointFlag=UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates());
 							Point selectionCoordinates = room.getSelectionCoordinates();
 							attackProcedure(new Point((int)selectionCoordinates.getX(), (int)selectionCoordinates.getY()), targets);
 							if(pointFlag==0)
@@ -690,7 +689,7 @@ public class Scenario {
 					cardRange=1;
 	
 					for(int range=1; range<=cardRange; range++)
-						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E");
+						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E", room.getDimensions());
 			}
 			
 			//If there are targets, highlight the targets and wait for selection
@@ -704,7 +703,7 @@ public class Scenario {
 						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
 							oppPoint = new Point(UtilitiesAB.findOppHex(party.get(currentPlayer), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()))));
 							enemyTarget=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
-							tempHoldVar=new Point(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinate());
+							tempHoldVar=new Point(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinates());
 							state=State.PLAYER_PUSH;
 						}
 					}
@@ -735,7 +734,7 @@ public class Scenario {
 			room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
 			//UtilitiesAB.drawArrows(g, new Point(party.get(currentPlayer).getCoordinate()), oppPoint);
 			g.drawString("Press 1, 2, 3.", 5*setting.getGraphicsX(), setting.getGraphicsYBottom());
-			pointFlag=UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), oppPoint);
+			pointFlag=UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinates(), oppPoint);
 			
 			if(num>=1 && num<=3) {
 				
@@ -966,19 +965,12 @@ public class Scenario {
 			
 			if(finished) {
 				for(int i=0; i<party.size(); i++)
-					party.get(i).resetCards();														//Resets card variables for party
+					party.get(i).reset();														//Resets card variables for party
 				turn=0;																				//Resets turn
 				currentPlayer=0;																	//Resets currentPlayer
 				state=State.CARD_SELECTION;															//Next State: Card Selection (Back to beginning)
 			}
 		}	
-	}
-	
-	//[Temp] Should handle the party the same way i do with enemies with an object that holds all the info
-	private void passDimensions() {		
-		for(int i=0; i<party.size(); i++) {
-			party.get(i).setDimensions(dimensions);
-		}
 	}
 	
 	//Parses key event into either a character or a number to be used
@@ -1005,15 +997,15 @@ public class Scenario {
 		//String direction = "north";
 		//room.drawSelectionHex(g, 2, UtilitiesAB.getPointFlag(party.get(currentPlayer).getCoordinate(), room.getSelectionCoordinates()));
 		if(UsePlayerAbilityCard.getCardData(card).getSemiCircle())
-			room.drawSelectionHexSemiCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+			room.drawSelectionHexSemiCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates()));
 		else if(UsePlayerAbilityCard.getCardData(card).getSortOfSemiCircle())
-			room.drawSelectionHexAdjCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+			room.drawSelectionHexAdjCircle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates()));
 		else if(UsePlayerAbilityCard.getCardData(card).getOpposingAttack()) 
-			room.drawSelectionHexAdjOpposing(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+			room.drawSelectionHexAdjOpposing(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates()));
 		else if(UsePlayerAbilityCard.getCardData(card).getCircle())
 			room.drawRange(g, room.getSelectionCoordinates(), 1, Color.BLUE);
 		else if(UsePlayerAbilityCard.getCardData(card).getTriangle())
-			room.drawSelectionHexTriangle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinate()));
+			room.drawSelectionHexTriangle(g, UtilitiesAB.getPointFlag(room.getSelectionCoordinates(), party.get(currentPlayer).getCoordinates()));
 		else
 			room.drawSelectionHex(g);
 		
@@ -1111,7 +1103,7 @@ public class Scenario {
 
 		
 		//Highlight tiles that players can move to
-		Point enemyPoint=enemy.getCoordinate();
+		Point enemyPoint=enemy.getCoordinates();
 		SimpleCards cardData = UsePlayerAbilityCard.getCardData(card).getMindControData();
 		
 		for(int r=1; r<=cardData.range; r++) {
@@ -1130,13 +1122,13 @@ public class Scenario {
 			else if(UsePlayerAbilityCard.hasFlying(card)) {
 				//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
 				room.moveEnemy(enemy, room.getSelectionCoordinates());
-				enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+				enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
 				return true;
 			}
 			else if(UsePlayerAbilityCard.hasJump(card)) {
 				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 					room.moveEnemy(enemy, room.getSelectionCoordinates());
-					enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+					enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
 					return true;
 				}
 
@@ -1144,7 +1136,7 @@ public class Scenario {
 				//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
 				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
 					room.moveEnemy(enemy, room.getSelectionCoordinates());
-					enemy.moveEnemy(new Point(room.getSelectionCoordinates()));
+					enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
 					return true;
 				}
 			}
@@ -1166,7 +1158,7 @@ public class Scenario {
 				cardRange=1;
 	
 				for(int range=1; range<=cardRange; range++)
-					targets = enemy.createTargetList(room.getBoard(), range, "E");	
+					targets = enemy.createTargetList(room.getBoard(), range, "E", room.getDimensions());	
 		}
 		
 		//If there are targets, highlight the targets and wait for selection

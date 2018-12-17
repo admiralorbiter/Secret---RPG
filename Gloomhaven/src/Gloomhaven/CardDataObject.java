@@ -36,13 +36,7 @@ public class CardDataObject {
 	boolean jump;
 	
 	//Negative conditions it causes
-	boolean wound;
-	boolean curse;
-	boolean disarm;
-	boolean immoblize;
-	boolean muddle;
-	boolean poison;
-	boolean stun;
+	StatusEffectDataObject negativeEffects;
 	
 	//Card effects
 	int push;
@@ -111,13 +105,7 @@ public class CardDataObject {
 		strengthen=false;
 		jump=false;
 		
-		wound=false;
-		curse=false;
-		disarm=false;
-		immoblize=false;
-		muddle=false;
-		poison=false;
-		stun=false;
+		negativeEffects = new StatusEffectDataObject();
 		
 		push=0;
 		pushCount=0;
@@ -196,52 +184,11 @@ public class CardDataObject {
 	public int getPull() {return pull;}
 	public boolean hasAugment() {return augment;}
 	public boolean hasJump() {return jump;}
-	public boolean getWound() {return wound;}
-	public boolean getCurse() {return curse;}
-	public boolean getDisarm() {return disarm;}
-	public boolean getImmobilize() {return immoblize;}
-	public boolean getMuddle() {return muddle;}
-	public boolean getPoison() {return poison;}
-	public boolean getStun() {return stun;}
+
+	public StatusEffectDataObject getNegativeEffects() {return negativeEffects;}
+	
 	public boolean getTaunt() {return taunt;}
 	public int getTargetNum() {return targetNum;}
-	public boolean causesNegativeCondition() {
-		if(wound)
-			return true;
-		if(curse)
-			return true;
-		if(disarm)
-			return true;
-		if(immoblize)
-			return true;
-		if(muddle)
-			return true;
-		if(poison)
-			return true;
-		if(stun)
-			return true;
-		
-		return false;
-	}
-	
-	public String getNegativeCondition() {
-		if(wound)
-			return "Wound";
-		if(curse)
-			return "Curse";
-		if(disarm)
-			return "Disarm";
-		if(immoblize)
-			return "Immobilize";
-		if(muddle)
-			return "Muddle";
-		if(poison)
-			return "Poison";
-		if(stun)
-			return "Stun";
-		
-		return "";
-	}
 	
 	public boolean infusion() {
 		if(darkInfusion)

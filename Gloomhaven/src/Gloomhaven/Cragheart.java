@@ -23,7 +23,7 @@ public class Cragheart implements CardInterface{
 			card.initiative=35;
 			card.text="Attack +3 Immobilize. Inufse earth";
 			card.attack=3;
-			card.immoblize=true;
+			card.getNegativeEffects().setImmobilize(true);
 			card.earthInfusion=true;
 			break;
 		case 3:
@@ -85,7 +85,7 @@ public class Cragheart implements CardInterface{
 			card.circle=true;
 			card.attack=1;
 			card.range=2;
-			card.muddle=true;
+			card.getNegativeEffects().setMuddle(true);
 			break;
 		case 11:
 			card.name="Earthen Clod";

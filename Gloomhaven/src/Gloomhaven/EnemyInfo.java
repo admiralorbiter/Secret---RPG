@@ -84,7 +84,7 @@ public class EnemyInfo {
 		
 		if(enemies.get(index).canMove()) {
 			int move = enemies.get(index).getBaseStats().getMove();
-			List<Point> points = UtilitiesAB.createTargetList(room.getBoard(), move, enemies.get(index).getCoordinates(), "P", dimensions);
+			List<Point> points = UtilitiesTargeting.createTargetList(room.getBoard(), move, enemies.get(index).getCoordinates(), "P", dimensions);
 			if(points.size()>0) {
 				//Move Closer
 				

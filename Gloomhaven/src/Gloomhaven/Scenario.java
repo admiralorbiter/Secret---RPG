@@ -269,7 +269,7 @@ public class Scenario {
 				
 				targetID=targets.get(targetIndex).getID();													//[Temp] Picks first one on the list
 				if(targets.get(targetIndex).hasRetaliate())
-					UtilitiesAB.resolveRetalaite(enemyInfo.getEnemy(enemyTurnIndex), party.get(0));
+					party.get(currentPlayer).resolveRetaliate(enemyInfo.getEnemy(enemyTurnIndex));
 				state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 			}else {
 				enemyControlLogic();																//Next State: Attack, Enemy Attack, Round End
@@ -448,12 +448,12 @@ public class Scenario {
 		
 					if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 						for(int range=1; range<=cardRange; range++)
-							targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "P", room.getDimensions());
+							targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "P", room.getDimensions());
 						targets.add(party.get(playerIndex).getCoordinates());
 					}
 					else {
 						for(int range=1; range<=cardRange; range++)
-							targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "E", room.getDimensions());
+							targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "E", room.getDimensions());
 					}
 				}
 				
@@ -628,7 +628,7 @@ public class Scenario {
 										boolean adjacentBonus=UsePlayerAbilityCard.getCardData(card).getAdjacentBonus();
 							
 										if(adjacentBonus)
-											adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
+											adjacentBonus=UtilitiesTargeting.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
 									
 										UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party.get(playerIndex), UsePlayerAbilityCard.getCardData(card), room, adjacentBonus, elements);
 										
@@ -689,7 +689,7 @@ public class Scenario {
 					cardRange=1;
 	
 					for(int range=1; range<=cardRange; range++)
-						targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(currentPlayer).getCoordinates(), "E", dimensions);
+						targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, party.get(currentPlayer).getCoordinates(), "E", dimensions);
 			}
 			
 			//If there are targets, highlight the targets and wait for selection
@@ -701,7 +701,7 @@ public class Scenario {
 				if(k==setting.getTargetKey()) {
 					if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
 						if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
-							oppPoint = new Point(UtilitiesAB.findOppHex(party.get(currentPlayer), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()))));
+							oppPoint = new Point(UtilitiesTargeting.findOppisiteHex(party.get(currentPlayer).getCoordinates(), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinates()));
 							enemyTarget=enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates()));
 							tempHoldVar=new Point(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinates());
 							state=State.PLAYER_PUSH;
@@ -814,8 +814,7 @@ public class Scenario {
 			if(finished) {
 				UsePlayerAbilityCard.getCardData(card).increasePush();
 				room.moveEnemy(enemyTarget, pointToMove);
-
-				oppPoint = new Point(UtilitiesAB.findOppHex(tempHoldVar, pointToMove));
+				oppPoint = new Point(UtilitiesTargeting.findOppisiteHex(tempHoldVar, pointToMove));
 				tempHoldVar=new Point(pointToMove);
 
 				if(UsePlayerAbilityCard.getCardData(card).getPush()>UsePlayerAbilityCard.getCardData(card).getPushCount())
@@ -1158,7 +1157,7 @@ public class Scenario {
 				cardRange=1;
 	
 				for(int range=1; range<=cardRange; range++)
-					targets=UtilitiesAB.createTargetList(room.getBoard(), range, enemy.getCoordinates(), "E", room.getDimensions());
+					targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, enemy.getCoordinates(), "E", room.getDimensions());
 		}
 		
 		//If there are targets, highlight the targets and wait for selection
@@ -1192,7 +1191,7 @@ public class Scenario {
 				boolean adjacentBonus=UsePlayerAbilityCard.getCardData(card).getAdjacentBonus();
 	
 				if(adjacentBonus)
-					adjacentBonus=UtilitiesAB.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
+					adjacentBonus=UtilitiesTargeting.targetAdjacentToAlly(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), party, playerIndex, room);
 			
 				UtilitiesAB.resolveAttack(enemyInfo.getEnemyFromID(room.getID(attackCoordinate)), party.get(playerIndex), UsePlayerAbilityCard.getCardData(card), room, adjacentBonus, elements);
 			

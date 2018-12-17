@@ -39,7 +39,7 @@ public class Brute implements CardInterface {
 				card.initiative=10;
 				card.text="Attack +2. Disarm.";
 				card.attack=2;
-				card.disarm=true;
+				card.getNegativeEffects().setDisarm(true);
 				break;
 			case 5:
 				card.name="Overwhelming Assault";
@@ -70,7 +70,7 @@ public class Brute implements CardInterface {
 				card.initiative=15;
 				card.text="Attack +4. Stun. XP +2. Consumed on use.";
 				card.attack=4;
-				card.stun=true;
+				card.getNegativeEffects().setStun(true);
 				card.experience=2;
 				card.lost=true;
 				break;

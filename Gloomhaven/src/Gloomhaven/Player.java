@@ -18,7 +18,6 @@ public class Player extends character {
 	private AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
 	private List<PlayerAbilityCard> inPlay = new ArrayList<PlayerAbilityCard>();							//List of cards in play
 
-	private CardDataObject negativeConditions=null;
 	private PlayerAbilityCard augment = null;
 
 	private List<String> lootInventory = new ArrayList<String>();
@@ -90,7 +89,7 @@ public class Player extends character {
 		cardChoice=true;
 		topCard=null;
 		bottomCard=null;
-		negativeConditions=null;
+		negativeBonusEffects = new StatusEffectDataObject();
 		createAnyElement=false;
 	}
 	
@@ -743,29 +742,6 @@ public class Player extends character {
 		}
 	}
 	
-	public void setBonusNegativeConditions(String name) {
-		negativeConditions = new CardDataObject();
-		if(name=="Wound")
-			negativeConditions.wound=true;
-		else if(name=="Curse")
-			negativeConditions.curse=true;
-		else if(name=="Disarm")
-			negativeConditions.disarm=true;
-		else if(name=="Immobilize")
-			negativeConditions.immoblize=true;
-		else if(name=="Muddle")
-			negativeConditions.muddle=true;
-		else if(name=="Poison")
-			negativeConditions.poison=true;
-		else if(name=="Stun")
-			negativeConditions.stun=true;
-	}
-	
-	public void resetBonusNegativeConditions() {
-		negativeConditions=null;
-	}
-	
-	public CardDataObject getBonusNegativeConditions() {return negativeConditions;}
 	public void setCreateAnyElement(boolean flag) {createAnyElement=true;}
 	public boolean getCreateAnyElement() {return createAnyElement;}
 	

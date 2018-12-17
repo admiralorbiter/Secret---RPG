@@ -62,7 +62,7 @@ public class Scoundrel implements CardInterface{
 				card.initiative=60;
 				card.text="Attack +3. Poison. XP +1";
 				card.attack=3;
-				card.poison=true;
+				card.getNegativeEffects().setPoison(true);
 				card.experience=1;
 				break;
 			case 7:
@@ -153,7 +153,7 @@ public class Scoundrel implements CardInterface{
 				card.name="Special Mixture";
 				card.text="Move +3. Poison. Target one adjacent enemy (No Implemented)";
 				card.move=3;
-				card.poison=true;
+				card.getNegativeEffects().setPoison(true);
 				break;
 		}
 		

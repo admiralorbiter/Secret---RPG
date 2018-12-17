@@ -29,7 +29,7 @@ public class Tinkerer implements CardInterface {
 			card.text="Attack +3 for 3 hex triangle. Wound. XP +2. Infuse Fire. Card consumed on use. ";
 			card.triangle=true;
 			card.attack=3;
-			card.wound=true;
+			card.getNegativeEffects().setWound(true);
 			card.experience=2;
 			card.fireInfusion=true;
 			card.lost=true;
@@ -58,7 +58,7 @@ public class Tinkerer implements CardInterface {
 			card.triangle=true;
 			card.attack=3;
 			card.range=3;
-			card.immoblize=true;
+			card.getNegativeEffects().setImmobilize(true);
 			break;
 		case 7:
 			card.name="Stun Shot";
@@ -66,7 +66,7 @@ public class Tinkerer implements CardInterface {
 			card.text="Attack +1. Range +3. Stun.";
 			card.attack=1;
 			card.range=3;
-			card.stun=true;
+			card.getNegativeEffects().setStun(true);
 			break;
 		case 8:
 			card.name="Reinvigorating Elixir";
@@ -104,7 +104,7 @@ public class Tinkerer implements CardInterface {
 			card.text="Attack +2 Range +3 Poison. Infuse earth";
 			card.attack=2;
 			card.range=3;
-			card.poison=true;
+			card.getNegativeEffects().setPoison(true);
 			card.earthInfusion=true;
 			break;
 		
@@ -154,7 +154,7 @@ public class Tinkerer implements CardInterface {
 			card.name="Net Shooter";
 			card.text="Immobilize. Target one adjacent enemy (Unimplemented?). Move +2";
 			card.range=1;
-			card.immoblize=true;
+			card.getNegativeEffects().setImmobilize(true);
 			card.move=2;
 			break;
 		case 7:

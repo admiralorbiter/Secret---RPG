@@ -99,7 +99,7 @@ public class MindThief implements CardInterface {
 				top.text="Attack +4. Range +5. Disarm. Infuse Ice. XP +2. Card consumed on discard.";
 				top.attack=4;
 				top.range=5;
-				top.disarm=true;
+				top.getNegativeEffects().setDisarm(true);
 				top.iceInfusion=true;
 				top.experience=2;
 				top.lost=true;
@@ -161,7 +161,7 @@ public class MindThief implements CardInterface {
 				bottom.level=1;
 				bottom.text="Attack +1. Wound target.";
 				bottom.attack=1;
-				bottom.wound=true;
+				bottom.getNegativeEffects().setWound(true);
 				break;
 			case 7:
 				bottom.name="Parasitic Influence";
@@ -187,7 +187,7 @@ public class MindThief implements CardInterface {
 				bottom.text="Attack +1. Range +2. Stun. Infuse Ice. XP +1.";
 				bottom.attack=1;
 				bottom.range=2;
-				bottom.stun=true;
+				bottom.getNegativeEffects().setStun(true);
 				bottom.iceInfusion=true;
 				bottom.experience=1;
 				break;

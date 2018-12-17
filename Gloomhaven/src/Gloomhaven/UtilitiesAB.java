@@ -29,7 +29,7 @@ public final class UtilitiesAB {
 		
 		if(card.getLootRange()>0) {
 			List<Point> loot = new ArrayList<Point>();
-			loot=createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinates(), "Loot", room.getDimensions());
+			loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinates(), "Loot", room.getDimensions());
 			room.loot(player, loot);
 		}
 		
@@ -63,84 +63,11 @@ public final class UtilitiesAB {
 	
 	}
 	
-	public static void findClosestPlayer(Enemy enemy, List<Player> targets) {
-		
-	}
-	
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
 	public static void drawPush(Point oppPoint, Room room, Graphics g) {
 		
 		room.drawHex(g, (int)oppPoint.getX(), (int)oppPoint.getY());
 	}
-	
-	public static Point findOppHex(Player player, Enemy enemy) {
-		Point playerCoordinate = new Point(player.getCoordinates());
-		Point coordinates = new Point(enemy.getCoordinates());
-		
-		if(playerCoordinate.getX()==coordinates.getX()) {
-			if(playerCoordinate.getY()<coordinates.getY()) {
-				playerCoordinate.translate(1, 2);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()>coordinates.getY()) {
-				playerCoordinate.translate(1, -2);
-				return playerCoordinate;
-			}
-		}else if(playerCoordinate.getX()>coordinates.getX()) {
-			if(playerCoordinate.getY()==coordinates.getY()) {
-				playerCoordinate.translate(-2, 0);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()<coordinates.getY()) {
-				playerCoordinate.translate(-1, 2);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()>coordinates.getY()) {
-				playerCoordinate.translate(-1, -2);
-				return playerCoordinate;
-			}
-		}else {
-			if(playerCoordinate.getY()==coordinates.getY()) {
-				playerCoordinate.translate(2, 0);
-				return playerCoordinate;
-			}
-		}
-		return coordinates;
-	}
-	
-	public static Point findOppHex(Point playerCoordinate, Point coordinates) {
-		
-		if(playerCoordinate.getX()==coordinates.getX()) {
-			if(playerCoordinate.getY()<coordinates.getY()) {
-				playerCoordinate.translate(1, 2);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()>coordinates.getY()) {
-				playerCoordinate.translate(1, -2);
-				return playerCoordinate;
-			}
-		}else if(playerCoordinate.getX()>coordinates.getX()) {
-			if(playerCoordinate.getY()==coordinates.getY()) {
-				playerCoordinate.translate(-2, 0);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()<coordinates.getY()) {
-				playerCoordinate.translate(-1, 2);
-				return playerCoordinate;
-			}
-			else if(playerCoordinate.getY()>coordinates.getY()) {
-				playerCoordinate.translate(-1, -2);
-				return playerCoordinate;
-			}
-		}else {
-			if(playerCoordinate.getY()==coordinates.getY()) {
-				playerCoordinate.translate(2, 0);
-				return playerCoordinate;
-			}
-		}
-		return coordinates;
-	}
-	
 	
 	/*
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
@@ -191,40 +118,6 @@ public final class UtilitiesAB {
 		}
 	}*/
 	
-	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
-		
-		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "P", room.getDimensions());
-
-		if(targets.size()>0) {
-			for(int i=0; i<targets.size(); i++) {
-				if(targets.get(i).equals(party.get(playerIndex).getCoordinates())) {
-					targets.remove(i);
-				}
-			}
-		}
-
-		if(targets.size()>0)
-			return true;
-		else
-			return false;
-	}
-	
-	private static boolean targetAloneToAlly(Enemy enemy, Room room) {
-		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "E", room.getDimensions());
-		
-		if(targets.size()>0)
-			return false;
-		
-		return true;
-	}
-	
-	public static void resolveRetalaite(Enemy enemy, Player player) {
-		enemy.takeDamage(player.getRetaliate().getAttack());
-		player.increaseXP(player.getRetaliate().getExperience());
-	}
-	
 	public static void resolveAttackEnemyOnEnemy(Enemy enemy, Enemy attacker, int attack) {
 		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){
@@ -247,8 +140,8 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		if(card.causesNegativeCondition())
-			negativeConditionOnEnemy(card, enemy);
+		if(card.getNegativeEffects().causesNegativeCondition())
+			negativeConditionOnEnemy(card.getNegativeEffects(), enemy);
 		
 		if(card.getAddNegativeConditionsToAttack()) {
 			if(card.getName().equals("Submissive Affliction"))
@@ -261,7 +154,7 @@ public final class UtilitiesAB {
 		}
 		
 		if(card.getAloneBonus()) {
-			if(targetAloneToAlly(enemy, room)) {
+			if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
 				if(card.getAloneBonusData().getAttack()>0)
 					attack=attack+card.getAdjacentBonusData().getAttack();
 				
@@ -330,20 +223,20 @@ public final class UtilitiesAB {
 		}
 	}
 	
-	private static void negativeConditionOnEnemy(CardDataObject card, Enemy enemy) {
-		if(card.wound)
+	private static void negativeConditionOnEnemy(StatusEffectDataObject card, Enemy enemy) {
+		if(card.getWound())
 			enemy.setNegativeCondition("Wound");
-		if(card.curse)
+		if(card.getCurse())
 			enemy.setNegativeCondition("Curse");
-		if(card.disarm)
+		if(card.getDisarm())
 			enemy.setNegativeCondition("Disarm");
-		if(card.immoblize)
+		if(card.getImmobilize())
 			enemy.setNegativeCondition("Immobilize");
-		if(card.muddle)
+		if(card.getMuddle())
 			enemy.setNegativeCondition("Muddle");
-		if(card.poison)
+		if(card.getPoison())
 			enemy.setNegativeCondition("Poison");
-		if(card.stun)
+		if(card.getStun())
 			enemy.setNegativeCondition("Stun");
 	}
 	
@@ -406,42 +299,7 @@ public final class UtilitiesAB {
 		
 		return count;	
 	}
-	
-	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
-	//https://www.redblobgames.com/grids/hexagons/
-	public static List<Point> createTargetList(Hex board[][], int range, Point starting, String quickID, Point dimensions) {
-		List<Point> targets = new ArrayList<Point>();
-		
-		for(int x=-range; x<=range; x++) {
-			for(int y=-range; y<=range; y++) {
-				for(int z=-range; z<=range; z++) {
-					if(x+y+z==0) {
-						Point convertedPoint = new Point();
-			
-						//Converts cube coord to a coord to plot
-						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(starting.getX()%2!=0)
-							convertedPoint=cubeToCoordOdd(x, y, z);
-						else
-							convertedPoint=cubeToCoordEven(x, y, z);
 
-						int xToPlot=(int)(convertedPoint.getX()+starting.getX());
-						int yToPlot=(int) (convertedPoint.getY()+starting.getY());
-
-						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
-									targets.add(new Point(xToPlot,yToPlot));
-						}
-
-					}
-				}
-			}
-		}
-		
-		return targets;
-	}
-	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
 	/*
@@ -478,52 +336,6 @@ public final class UtilitiesAB {
 		return targets;
 	}*/
 		
-		
-	//Converts cube coord to a coord to plot
-	//https://www.redblobgames.com/grids/hexagons/#conversions
-	private static Point cubeToCoordEven(int x, int y, int z ) {
-		x=x+(z-(z&1))/2;
-		y=z;
-
-		Point point = new Point(x, y);
-		return point;
-	}
-	
-	//Converts cube coord to a coord to plot
-	//https://www.redblobgames.com/grids/hexagons/#conversions
-	private static Point cubeToCoordOdd(int x, int y, int z) {
-		x=x+(z+(z&1))/2;
-		y=z;
-		
-		Point point = new Point(x, y);
-		return point;
-	}
-	
-	private static int[] oddToCubeCoord(Point p) {
-		int cubeCoord[] = new int[3];
-		int x=0;
-		int y=1;
-		int z=2;
-		
-		cubeCoord[x]=p.x-(p.y-(p.y&1))/2;
-		cubeCoord[z]=p.y;
-		cubeCoord[y]=-cubeCoord[x]-cubeCoord[z];
-		
-		return cubeCoord;
-	}
-	
-	private static int[] evenToCubeCoord(Point p) {
-		int cubeCoord[] = new int[3];
-		int x=0;
-		int y=1;
-		int z=2;
-		
-		cubeCoord[x]=p.x-(p.y+(p.y&1))/2;
-		cubeCoord[z]=p.y;
-		cubeCoord[y]=-cubeCoord[x]-cubeCoord[z];
-		
-		return cubeCoord;
-	}
 	
 	/*
 	public static int distance(Point p1, Point p2) {
@@ -710,9 +522,9 @@ public final class UtilitiesAB {
 						//Converts cube coord to a coord to plot
 						//https://www.redblobgames.com/grids/hexagons/#conversions
 						if(enemy.coordinates.getX()%2!=0)
-							convertedPoint=cubeToCoordOdd(x, y, z);
+							convertedPoint=UtilitiesBoard.cubeToCoordOdd(x, y, z);
 						else
-							convertedPoint=cubeToCoordEven(x, y, z);
+							convertedPoint=UtilitiesBoard.cubeToCoordEven(x, y, z);
 						
 						int xToPlot=(int)(convertedPoint.getX()+enemy.coordinates.getX());
 						int yToPlot=(int) (convertedPoint.getY()+enemy.coordinates.getY());

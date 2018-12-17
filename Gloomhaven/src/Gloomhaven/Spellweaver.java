@@ -48,7 +48,7 @@ public class Spellweaver implements CardInterface {
 				card.elementalConsumed=true;
 				card.elementalConsumedData.elemental="Ice";
 				card.elementalConsumedData.attack=1;
-				card.immoblize=true;
+				card.getNegativeEffects().setImmobilize(true);
 				break;
 			case 5:
 				card.name="Mana Bolt";

@@ -44,6 +44,17 @@ public class StatusEffectDataObject{
 	public int getPull() {return pull;}
 	public int getPierce() {return pierce;}
 	
+	public void setWound(boolean wound) {this.wound=wound;}
+	public void setCurse(boolean curse) {this.curse=curse;}
+	public void setDisarm(boolean disarm) {this.disarm=disarm;}
+	public void setImmobilize(boolean immobilize) {this.immobilize=immobilize;}
+	public void setMuddle(boolean muddle) {this.muddle=muddle;}
+	public void setPoison(boolean poison) {this.poison=poison;}
+	public void setStun(boolean stun) {this.stun=stun;}
+	
+	
+	
+	
 	public void switchBless() {bless=!bless;}
 	public void switchCurse() {curse=!curse;}
 	public void switchDisarm() {disarm=!disarm;}
@@ -85,5 +96,43 @@ public class StatusEffectDataObject{
 			list.add("Stun");
 		
 		return list;
+	}
+	
+	public boolean causesNegativeCondition() {
+		if(wound)
+			return true;
+		if(curse)
+			return true;
+		if(disarm)
+			return true;
+		if(immobilize)
+			return true;
+		if(muddle)
+			return true;
+		if(poison)
+			return true;
+		if(stun)
+			return true;
+		
+		return false;
+	}
+	
+	public String getNegativeCondition() {
+		if(wound)
+			return "Wound";
+		if(curse)
+			return "Curse";
+		if(disarm)
+			return "Disarm";
+		if(immobilize)
+			return "Immobilize";
+		if(muddle)
+			return "Muddle";
+		if(poison)
+			return "Poison";
+		if(stun)
+			return "Stun";
+		
+		return "";
 	}
 }

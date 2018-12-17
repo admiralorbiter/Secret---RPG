@@ -283,7 +283,7 @@ public class Scenario {
 			
 			if((k==setting.getHealKey()) || (party.get(playerIndex).abilityCardsLeft()==0)) {						//If player doesn't discard (or can't), take damage
 				int damage=enemyInfo.getAttack(enemyTurnIndex);										//Retrieves enemy's attack
-				party.get(playerIndex).decreaseHealth(damage);										//Decreases player health
+				party.get(playerIndex).takeDamage(damage);										//Decreases player health
 				if(party.get(playerIndex).getCharacterData().getHealth()<=0) {											//If player's health is below 0, kill player
 					party.remove(playerIndex);
 				}
@@ -448,12 +448,12 @@ public class Scenario {
 		
 					if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 						for(int range=1; range<=cardRange; range++)
-							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "P", room.getDimensions());
+							targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "P", room.getDimensions());
 						targets.add(party.get(playerIndex).getCoordinates());
 					}
 					else {
 						for(int range=1; range<=cardRange; range++)
-							targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E", room.getDimensions());
+							targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "E", room.getDimensions());
 					}
 				}
 				
@@ -689,7 +689,7 @@ public class Scenario {
 					cardRange=1;
 	
 					for(int range=1; range<=cardRange; range++)
-						targets = party.get(playerIndex).createTargetList(room.getBoard(), range, "E", room.getDimensions());
+						targets=UtilitiesAB.createTargetList(room.getBoard(), range, party.get(currentPlayer).getCoordinates(), "E", dimensions);
 			}
 			
 			//If there are targets, highlight the targets and wait for selection
@@ -1158,7 +1158,7 @@ public class Scenario {
 				cardRange=1;
 	
 				for(int range=1; range<=cardRange; range++)
-					targets = enemy.createTargetList(room.getBoard(), range, "E", room.getDimensions());	
+					targets=UtilitiesAB.createTargetList(room.getBoard(), range, enemy.getCoordinates(), "E", room.getDimensions());
 		}
 		
 		//If there are targets, highlight the targets and wait for selection

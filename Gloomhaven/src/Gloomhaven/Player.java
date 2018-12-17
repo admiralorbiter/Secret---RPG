@@ -45,9 +45,6 @@ public class Player extends character {
 	private boolean createAnyElement=false;
 	
 	Setting setting = new Setting();
-	private List<Trigger> triggers = new ArrayList<Trigger>();
-	private SimpleCards retaliate = new SimpleCards();
-	
 	
 	public Player(int id, String classID) {
 		
@@ -135,62 +132,6 @@ public class Player extends character {
 		}
 		
 		return false;
-	}
-	
-	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
-	//https://www.redblobgames.com/grids/hexagons/
-	public List<Point> createTargetList(Hex board[][], int range, String quickID, Point dimensions) {
-		List<Point> targets = new ArrayList<Point>();
-		
-		for(int x=-range; x<=range; x++) {
-			for(int y=-range; y<=range; y++) {
-				for(int z=-range; z<=range; z++) {
-					if(x+y+z==0) {
-						Point convertedPoint = new Point();
-			
-						//Converts cube coord to a coord to plot
-						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(coordinates.getX()%2!=0)
-							convertedPoint=cubeToCoordOdd(x, y, z);
-						else
-							convertedPoint=cubeToCoordEven(x, y, z);
-
-						int xToPlot=(int)(convertedPoint.getX()+coordinates.getX());
-						int yToPlot=(int) (convertedPoint.getY()+coordinates.getY());
-
-						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
-									targets.add(new Point(xToPlot,yToPlot));
-						}
-
-					}
-				}
-			}
-		}
-		
-		return targets;
-	}
-		
-		
-	//Converts cube coord to a coord to plot
-	//https://www.redblobgames.com/grids/hexagons/#conversions
-	private Point cubeToCoordEven(int x, int y, int z ) {
-		x=x+(z-(z&1))/2;
-		y=z;
-
-		Point point = new Point(x, y);
-		return point;
-	}
-	
-	//Converts cube coord to a coord to plot
-	//https://www.redblobgames.com/grids/hexagons/#conversions
-	private Point cubeToCoordOdd(int x, int y, int z) {
-		x=x+(z+(z&1))/2;
-		y=z;
-		
-		Point point = new Point(x, y);
-		return point;
 	}
 	
 	public void addLoot(Hex hex) {
@@ -319,10 +260,8 @@ public class Player extends character {
 	public CardDataObject getAbilityCardData(String flag, int cardFlag) {
 		CardDataObject card = new CardDataObject();
 		
-		//if(flag.compareTo("Top")==0)
 		if(flag=="Top")
 		{
-			
 			//Get the data from the correct card
 			if(cardFlag==1)
 				card=topCard.getTopData();
@@ -341,24 +280,6 @@ public class Player extends character {
 		}
 		
 		return card;
-	}
-	
-	public CardDataObject playAlternative(String flag) {
-	
-		CardDataObject card = new CardDataObject();
-		if(flag=="Top")
-		{
-			//do the top alt of the ability card
-			card.attack=2;
-			card.move=0;
-			return card;
-		}
-		
-		card.attack=0;
-		card.move=2;
-		return card;
-		
-		//Play bottom alt of the ability card
 	}
 	
 	public boolean getCardChoice() {return cardChoice;}
@@ -441,7 +362,7 @@ public class Player extends character {
 	}
 	
 	public void setDisplayCard() {
-		displayCard=abilityDeck.indexOf(topCard); //topCard.getIndex();
+		displayCard=abilityDeck.indexOf(topCard);
 	}
 	
 	public void drawAbilityCards(Graphics g) {
@@ -637,12 +558,7 @@ public class Player extends character {
 		abilityDeck.get(abilityDeck.indexOf(augment)).setCardInlostPile();
 		augment=null;
 	}
-	/*
-	public void graphicsAugmentCard(Graphics g) {
-		g.drawString("Augment Active:", setting.getGraphicsXMid(), setting.getGraphicsYBottom());
-		g.drawString(augment.getTop().getAugmentText(), setting.getGraphicsXMid(), setting.getGraphicsYBottom()+15);
-	}*/
-	
+
 	public void graphicsDrawCardsInPlay(Graphics g) {
 		g.drawString("Cards in play.", setting.getGraphicsXRight(), setting.getGraphicsYTop());
 		for(int i=0; i<inPlay.size(); i++) {
@@ -670,20 +586,7 @@ public class Player extends character {
 		if(getBonusNegativeConditions()!=null)
 			g.drawString("Bonus Condition on Attack: "+getBonusNegativeConditions().getNegativeCondition(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
 		
-		
-		
-		/*
-		g.drawString("Discard Deck Size and Lost Deck Size (Need to do)", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
-		g.drawString("Hand Size", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
-		g.drawString("Goal", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+90);
-		g.drawString("Scenario Goal", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105);
-		g.drawString("Gold", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+120);
-		g.drawString("Items", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+135);*/
 		g.setColor(setting.getDefaultColor());
-	}
-	
-	public void setRetaliate(SimpleCards retCard) {
-		this.retaliate=retCard;
 	}
 	
 	public boolean isAugmented() {
@@ -805,115 +708,11 @@ public class Player extends character {
 		
 		return damage;
 	}
-
-	public void decreaseHealth(int damage) {
-		boolean needToReset=false;
-		if(triggers.size()>0) {
-			for(int i=0; i<triggers.size(); i++) {
-				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
-					data.setShield(data.getShield()+triggers.get(i).getShield());
-					needToReset=true;
-					triggers.get(i).addToTrigger();
-				}
-			}
-		}
-		if(effects.getPoison())
-			damage=damage+1;
-		
-		if(damage>0)
-			data.setHealth(data.getHealth()+data.getShield()-damage);
-		
-		if(needToReset) {
-			for(int i=0; i<triggers.size(); i++) {
-				if(triggers.get(i).getTriggerName()=="PlayerTarget") {
-					data.setShield(data.getShield()+triggers.get(i).getShield());
-				}
-			}
-		}
-		
-		//[Test]
-		System.out.println("Player was attacked for "+damage+" making thier health "+data.getHealth());
-	}
-	
-	public void removePersistanceBonus(int index) {
-		//if(triggers.get(index).getName()=="Warding Strength")
-			//shield=shield-1;
-	}
 	
 	public void increaseXP(int xpGained) {data.setXp(data.getXp()+xpGained);}
 	
-	public void setCondition(String condition) {
-		if(condition=="Invisible" && effects.getInvisibility()!=true)
-			effects.switchInvisibility();
-		
-		if(condition=="Bless" && effects.getBless()!=true)
-			effects.switchBless();
-		
-		if(condition=="Strengthen" && effects.getStrengthen()!=true)
-			effects.switchStrengthen();
-	}
-	
 	public void addPersistanceBonus(CardDataObject card) {
 		triggers.add(card.getTriggerData());
-	}
-	
-	public void setNegativeCondition(String condition) {
-		if(condition=="Wound" && effects.getWound()==false)
-			effects.switchWound();
-		
-		if(condition=="Curse" && effects.getCurse()==false)
-			effects.switchCurse();
-		
-		if(condition=="Disarm" && effects.getDisarm()==false)
-			effects.switchDisarm();
-		
-		if(condition=="Immobilize" && effects.getImmobilize()==false)
-			effects.switchImmobilize();
-		
-		if(condition=="Muddle" && effects.getMuddle()==false)
-			effects.switchMuddle();
-		
-		if(condition=="Poison" && effects.getPoison()==false)
-			effects.switchPoison();
-		
-		if(condition=="Stun" && effects.getStun()==false)
-			effects.switchStun();
-			
-	}
-	
-	public boolean canAttack() {
-
-		if(effects.getDisarm()) {
-			return false;
-		}
-		else if(effects.getStun()) {
-			return false;
-		}
-		else if(effects.getImmobilize()) {
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public boolean canMove() {
-		if(effects.getStun())
-			return false;
-		if(effects.getImmobilize())
-			return false;
-		
-		return true;
-	}
-	
-	public boolean hasRetaliate() {
-		if(retaliate.attack>0)
-			return true;
-		else
-			return false;
-	}
-	
-	public SimpleCards getRetaliate() {
-		return retaliate;
 	}
 	
 	public void removeItem(Item item) {
@@ -967,14 +766,6 @@ public class Player extends character {
 	}
 	
 	public CardDataObject getBonusNegativeConditions() {return negativeConditions;}
-	
-	//[Test] Print Loot
-	public void testPrintLoot() {
-		System.out.println("Loost List:");
-		for(int i=0; i<lootInventory.size(); i++)
-			System.out.println(lootInventory.get(i));
-	}
-	
 	public void setCreateAnyElement(boolean flag) {createAnyElement=true;}
 	public boolean getCreateAnyElement() {return createAnyElement;}
 	

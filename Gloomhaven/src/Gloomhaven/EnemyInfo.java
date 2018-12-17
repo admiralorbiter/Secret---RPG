@@ -84,7 +84,7 @@ public class EnemyInfo {
 		
 		if(enemies.get(index).canMove()) {
 			int move = enemies.get(index).getBaseStats().getMove();
-			List<Point> points=enemies.get(index).createTargetList(room.getBoard(), move, "P", dimensions);
+			List<Point> points = UtilitiesAB.createTargetList(room.getBoard(), move, enemies.get(index).getCoordinates(), "P", dimensions);
 			if(points.size()>0) {
 				//Move Closer
 				
@@ -105,19 +105,17 @@ public class EnemyInfo {
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		
 		if(canAttack) {
-			
-			boolean meleeRange=enemies.get(index).checkMeleeRange(room.getBoard(), "P", dimensions);
+			boolean meleeRange=UtilitiesAB.checkMeleeRange(enemies.get(index), room.getBoard(), "P", dimensions);
 			
 			if(meleeRange) {
-				targets=enemies.get(index).createMeleeTargetList(room.getBoard(), party, dimensions);
+				targets = UtilitiesAB.createMeleeTargetList(room.getBoard(), party, enemies.get(index), dimensions);
 				return targets;
 			}
 			else {
 
-				targets=enemies.get(index).playersInRangeEstimate(room.getBoard(), party, dimensions);
+				targets = UtilitiesAB.playersInRangeEstimate(room.getBoard(), party, enemies.get(index), dimensions);
 				if(targets.size()>0) {
-					
-					targets=enemies.get(index).playersInRange(targets);
+					targets=UtilitiesAB.playersInRange(targets);
 					return targets;
 				}
 				else {

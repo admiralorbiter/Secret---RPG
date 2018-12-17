@@ -194,7 +194,7 @@ public final class UtilitiesAB {
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
 		
 		List<Point> targets = new ArrayList<Point>();
-		targets=enemy.createTargetList(room.getBoard(), 1, "P", room.getDimensions());
+		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "P", room.getDimensions());
 
 		if(targets.size()>0) {
 			for(int i=0; i<targets.size(); i++) {
@@ -212,7 +212,7 @@ public final class UtilitiesAB {
 	
 	private static boolean targetAloneToAlly(Enemy enemy, Room room) {
 		List<Point> targets = new ArrayList<Point>();
-		targets=enemy.createTargetList(room.getBoard(), 1, "E", room.getDimensions());
+		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "E", room.getDimensions());
 		
 		if(targets.size()>0)
 			return false;
@@ -441,6 +441,42 @@ public final class UtilitiesAB {
 		
 		return targets;
 	}
+	
+	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
+	//https://www.redblobgames.com/grids/hexagons/
+	/*
+	public List<Point> createTargetList(Hex board[][], int range, String quickID, Point dimensions) {
+		List<Point> targets = new ArrayList<Point>();
+		
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						Point convertedPoint = new Point();
+			
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(coordinates.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
+						else
+							convertedPoint=cubeToCoordEven(x, y, z);
+
+						int xToPlot=(int)(convertedPoint.getX()+coordinates.getX());
+						int yToPlot=(int) (convertedPoint.getY()+coordinates.getY());
+
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
+									targets.add(new Point(xToPlot,yToPlot));
+						}
+
+					}
+				}
+			}
+		}
+		
+		return targets;
+	}*/
 		
 		
 	//Converts cube coord to a coord to plot
@@ -591,6 +627,118 @@ public final class UtilitiesAB {
 		}
 		return -1;
 	}
+	
+	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
+	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
+	public static boolean checkMeleeRange(character entity, Hex board[][], String lookingForID, Point dimensions) {
+		
+		Point coordinates = entity.getCoordinates();
+		int x=(int) coordinates.getX();
+		int y=(int) coordinates.getY();
+	
+		if(x-1>0) {
+			if(board[x-1][y].getQuickID()==lookingForID)
+				return true;
+			if(y-1>0) {
+				if(board[x-1][y-1].getQuickID()==lookingForID) {
+					return true;
+				}
+			}
+			if(y+1<dimensions.getY()) {
+				if(board[x-1][y+1].getQuickID()==lookingForID) {
+					return true;
+				}
+			}
+		}
+		
+		if(x+1<dimensions.getX()) {
+			if(board[x+1][y].getQuickID()==lookingForID)
+				return true;
+			if(y-1>0) {
+				if(board[x+1][y-1].getQuickID()==lookingForID) {
+					return true;
+				}
+			}
+			if(y+1<dimensions.getY()) {
+				if(board[x+1][y+1].getQuickID()==lookingForID) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	//[Rem] This has to be a way to abstract this for both player and enemies
+	public static List<Player> createMeleeTargetList(Hex board[][],List<Player> party, Enemy enemy, Point dimensions){
+		List<Player> targets = new ArrayList<Player>();
+		checkRange(board, "P", 1, party, targets, enemy, dimensions);
+		
+		return targets;
+	}
+	
+	public static List<Player> playersInRangeEstimate(Hex board[][], List<Player> party, Enemy enemy, Point dimensions){
+		List<Player> targets = new ArrayList<Player>();
+		
+		if(enemy.getBaseStats().getRange()<=1)
+			return targets;
+		
+		for(int r=2; r<=enemy.getBaseStats().getRange(); r++) {
+			checkRange(board, "P", r, party, targets, enemy, dimensions);
+		}
+		
+		return targets;
+	}
+
+	//[Need to Do] Remove players that can't be reached
+	public static List<Player> playersInRange(List<Player> targets){
+		
+		return targets;
+	}
+
+	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
+	public static void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Enemy enemy, Point dimensions) {
+		List<String> idList = new ArrayList<String>();
+		
+		
+		for(int x=-range; x<=range; x++) {
+			for(int y=-range; y<=range; y++) {
+				for(int z=-range; z<=range; z++) {
+					if(x+y+z==0) {
+						Point convertedPoint = new Point();
+			
+						//Converts cube coord to a coord to plot
+						//https://www.redblobgames.com/grids/hexagons/#conversions
+						if(enemy.coordinates.getX()%2!=0)
+							convertedPoint=cubeToCoordOdd(x, y, z);
+						else
+							convertedPoint=cubeToCoordEven(x, y, z);
+						
+						int xToPlot=(int)(convertedPoint.getX()+enemy.coordinates.getX());
+						int yToPlot=(int) (convertedPoint.getY()+enemy.coordinates.getY());
+						
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY())
+								if(board[xToPlot][yToPlot].getQuickID()==lookingForID)
+									idList.add(board[xToPlot][yToPlot].getID());
+						
+					}
+				}
+			}
+		}
+		
+		
+		for(int idIndex=0; idIndex<idList.size(); idIndex++) {
+			for(int i=0; i<party.size(); i++) {
+				if(party.get(i).getID()==idList.get(idIndex)) {
+					targets.add(party.get(i));
+					break;											//[Rem] Worried this will cause a bug.
+				}
+			}
+		}
+	}
+
+	
 	/*
 	public static Point function() {
 		

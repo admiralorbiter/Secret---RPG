@@ -1,8 +1,11 @@
-package Gloomhaven;
+package Gloomhaven.Characters;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import Gloomhaven.CharacterDataObject;
+import Gloomhaven.SimpleCards;
 
 public class Enemy extends character{
 	

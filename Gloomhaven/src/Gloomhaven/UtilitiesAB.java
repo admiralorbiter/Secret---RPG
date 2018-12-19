@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.Player;
+import Gloomhaven.Characters.character;
 
 public final class UtilitiesAB {
 
@@ -45,8 +48,8 @@ public final class UtilitiesAB {
 		if(card.hasAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
 		
-		if(card.getSheild()>0)
-			player.getCharacterData().setShield(card.getSheild());
+		if(card.getShield()>0)
+			player.getCharacterData().setShield(card.getShield());
 		
 		if(card.getRetaliateFlag()) {
 			player.setRetaliate(card.getRetaliateData());
@@ -466,13 +469,13 @@ public final class UtilitiesAB {
 			
 						//Converts cube coord to a coord to plot
 						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(enemy.coordinates.getX()%2!=0)
+						if(enemy.getCoordinates().getX()%2!=0)
 							convertedPoint=UtilitiesBoard.cubeToCoordOdd(x, y, z);
 						else
 							convertedPoint=UtilitiesBoard.cubeToCoordEven(x, y, z);
 						
-						int xToPlot=(int)(convertedPoint.getX()+enemy.coordinates.getX());
-						int yToPlot=(int) (convertedPoint.getY()+enemy.coordinates.getY());
+						int xToPlot=(int)(convertedPoint.getX()+enemy.getCoordinates().getX());
+						int yToPlot=(int) (convertedPoint.getY()+enemy.getCoordinates().getY());
 						
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY())

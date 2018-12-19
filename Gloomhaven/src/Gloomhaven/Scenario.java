@@ -14,6 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.EnemyInfo;
+import Gloomhaven.Characters.Player;
 import Gloomhaven.GamePanel.GameState;
 
 public class Scenario {

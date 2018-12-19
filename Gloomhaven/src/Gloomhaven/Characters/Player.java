@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Characters;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,6 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.AttackModifierCard;
+import Gloomhaven.AttackModifierDeck;
+import Gloomhaven.CardDataObject;
+import Gloomhaven.CharacterDataObject;
+import Gloomhaven.Hex;
+import Gloomhaven.Item;
+import Gloomhaven.ItemLoader;
+import Gloomhaven.Setting;
+import Gloomhaven.SimpleCards;
+import Gloomhaven.StatusEffectDataObject;
+import Gloomhaven.UsePlayerAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 
 public class Player extends character {
@@ -478,11 +489,11 @@ public class Player extends character {
 			}
 			
 			//This is for brute: shield bash - Not sure it will always hold true
-			if(card.roundBonus && card.shield>0) {
+			if(card.getRoundBonus() && card.getShield()>0) {
 				data.setShield(data.getShield()-1);
 			}
 			
-			if(card.roundBonus && card.retaliateFlag==true) {
+			if(card.getRoundBonus() && card.getRetaliateFlag()==true) {
 				retaliate= new SimpleCards();
 			}
 
@@ -499,9 +510,9 @@ public class Player extends character {
 				}
 			}
 			 
-			if(card.continuous) {
+			if(card.getContinuous()) {
 				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.lost){
+			}else if(card.getLost()){
 			}else {
 				abilityDeck.get(index).setCardIndiscardPile();
 			}
@@ -516,17 +527,17 @@ public class Player extends character {
 			
 			
 			//This is for brute: shield bash - Not sure it will always hold true
-			if(card.roundBonus && card.shield>0) {
+			if(card.getRoundBonus() && card.getShield()>0) {
 				data.setShield(data.getShield()-1);
 			}
 			
-			if(card.roundBonus && card.retaliateFlag==true) {
+			if(card.getRoundBonus() && card.getRetaliateFlag()==true) {
 				retaliate= new SimpleCards();
 			}
 
-			if(card.continuous) {
+			if(card.getContinuous()) {
 				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.lost){
+			}else if(card.getLost()){
 			}else {
 				abilityDeck.get(index).setCardIndiscardPile();
 			}
@@ -692,8 +703,8 @@ public class Player extends character {
 	public int getAttack(CardDataObject attackCard) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
-		System.out.println(attackCard.attack+"  "+card.plusAttack+"  "+card.multiplier);
-		int damage = (attackCard.attack+card.plusAttack)*card.multiplier;
+		System.out.println(attackCard.getAttack()+"  "+card.getPlusAttack()+"  "+card.getMultiplier());
+		int damage = (attackCard.getAttack()+card.getPlusAttack())*card.getMultiplier();
 		
 		if(triggers.size()>0) {
 			for(int i=0; i<triggers.size(); i++) {

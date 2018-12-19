@@ -3,6 +3,8 @@ package Gloomhaven;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Characters.Player;
+
 
 public final class ItemLoader {
 	public static Item Load(int id) {

@@ -1,8 +1,14 @@
-package Gloomhaven;
+package Gloomhaven.Characters;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import Gloomhaven.AttackModifierDeck;
+import Gloomhaven.CharacterDataObject;
+import Gloomhaven.SimpleCards;
+import Gloomhaven.StatusEffectDataObject;
+import Gloomhaven.Trigger;
 
 public class character {
 	
@@ -38,7 +44,7 @@ public class character {
 	public SimpleCards getRetaliate() {return retaliate;}
 	
 	public boolean hasRetaliate() {
-		if(retaliate.attack>0)
+		if(retaliate.getAttack()>0)
 			return true;
 		else
 			return false;

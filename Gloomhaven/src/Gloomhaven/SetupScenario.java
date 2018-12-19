@@ -3,6 +3,8 @@ package Gloomhaven;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Characters.Enemy;
+
 public class SetupScenario {
 	String scenarioID;
 	

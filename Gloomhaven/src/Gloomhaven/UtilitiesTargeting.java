@@ -4,6 +4,9 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.Player;
+
 public final class UtilitiesTargeting {
 
 	public static Point findOppisiteHex(Point povCoordinate, Point targetCoordinate) {

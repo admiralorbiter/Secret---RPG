@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.swing.*;
 
+import Gloomhaven.Characters.Player;
+
 
 public class GamePanel extends JPanel implements KeyListener{
 	

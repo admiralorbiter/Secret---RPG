@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardInterfaces;
 
 import java.io.File;
 import java.io.IOException;

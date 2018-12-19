@@ -1,10 +1,10 @@
 package Gloomhaven;
 
 public class Trigger extends SimpleCards{
-	int count=0;
-	int triggerCount=0;
-	String triggerName="";
-	String name="";
+	public int count=0;
+	public int triggerCount=0;
+	public String triggerName="";
+	public String name="";
 	boolean finished=false;
 	public Trigger() {
 		finished=false;
@@ -14,8 +14,8 @@ public class Trigger extends SimpleCards{
 	public int getTriggerAmountNeeded() {return triggerCount;}
 	public String getTriggerName() {return triggerName;}
 	
-	boolean aloneBonus;
-	SimpleCards aloneBonusData = new SimpleCards();
+	public boolean aloneBonus;
+	public SimpleCards aloneBonusData = new SimpleCards();
 	public SimpleCards getAloneBonusData() {return aloneBonusData;}
 	public void addToTrigger() {
 		count++;

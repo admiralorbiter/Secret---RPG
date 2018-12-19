@@ -2,16 +2,16 @@ package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
 
-import Gloomhaven.Brute;
 import Gloomhaven.CardDataObject;
-import Gloomhaven.CardImages;
-import Gloomhaven.CardInterface;
-import Gloomhaven.Cragheart;
-import Gloomhaven.MindThief;
-import Gloomhaven.Scoundrel;
 import Gloomhaven.Setting;
-import Gloomhaven.Spellweaver;
-import Gloomhaven.Tinkerer;
+import Gloomhaven.CardInterfaces.Brute;
+import Gloomhaven.CardInterfaces.CardImages;
+import Gloomhaven.CardInterfaces.CardInterface;
+import Gloomhaven.CardInterfaces.Cragheart;
+import Gloomhaven.CardInterfaces.MindThief;
+import Gloomhaven.CardInterfaces.Scoundrel;
+import Gloomhaven.CardInterfaces.Spellweaver;
+import Gloomhaven.CardInterfaces.Tinkerer;
 
 public class PlayerAbilityCard extends AbilityCard {
 	

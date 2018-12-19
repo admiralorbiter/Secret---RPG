@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.Player;
+
 public class Room {
 
 	//Constants

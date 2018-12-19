@@ -34,7 +34,8 @@ public class AttackModifierCard {
 		this.rolling=rolling;
 		free=true;
 	}
-	
+	public int getPlusAttack() {return plusAttack;}
+	public int getMultiplier() {return multiplier;}
 	public boolean cardFree() {return free;}
 	public boolean getShuffle() {return shuffle;}
 	public void setFree() {free=true;}

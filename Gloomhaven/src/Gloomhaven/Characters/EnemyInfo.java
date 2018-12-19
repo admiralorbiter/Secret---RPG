@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Characters;
 
 import java.awt.Graphics;
 import java.awt.Point;
@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.AttackDeck;
+import Gloomhaven.AttackModifierCard;
+import Gloomhaven.Room;
+import Gloomhaven.Setting;
+import Gloomhaven.UtilitiesAB;
+import Gloomhaven.UtilitiesTargeting;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 
 public class EnemyInfo {
@@ -150,7 +156,7 @@ public class EnemyInfo {
 	
 	public int getAttack(int enemyTurnIndex) {
 		AttackModifierCard card = enemies.get(enemyTurnIndex).attackModifierDeck.pickRandomModifierCard();
-		return card.multiplier*(enemies.get(enemyTurnIndex).getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.plusAttack);
+		return card.getMultiplier()*(enemies.get(enemyTurnIndex).getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.getPlusAttack());
 	}
 	
 	//[Test]

@@ -146,27 +146,5 @@ public class character {
 		getCharacterData().setXp(getCharacterData().getXp()+getRetaliate().getExperience());
 	}
 	
-	public void setBonusNegativeConditions(String name) {
-		negativeBonusEffects = new StatusEffectDataObject();
-		if(name=="Wound")
-			negativeBonusEffects.setWound(true);
-		else if(name=="Curse")
-			negativeBonusEffects.setCurse(true);
-		else if(name=="Disarm")
-			negativeBonusEffects.setDisarm(true);
-		else if(name=="Immobilize")
-			negativeBonusEffects.setImmobilize(true);
-		else if(name=="Muddle")
-			negativeBonusEffects.setMuddle(true);
-		else if(name=="Poison")
-			negativeBonusEffects.setPoison(true);
-		else if(name=="Stun")
-			negativeBonusEffects.setStun(true);
-	}
-	
-	public void resetBonusNegativeConditions() {
-		negativeBonusEffects=null;
-	}
-	
 	public StatusEffectDataObject getBonusNegativeConditions() {return negativeBonusEffects;}
 }

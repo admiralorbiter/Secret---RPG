@@ -105,17 +105,17 @@ public class EnemyInfo {
 		boolean canAttack=enemies.get(index).canAttack();			//can be rolled into the if, but this might help with testing
 		
 		if(canAttack) {
-			boolean meleeRange=UtilitiesAB.checkMeleeRange(enemies.get(index), room.getBoard(), "P", dimensions);
+			boolean meleeRange=UtilitiesTargeting.checkMeleeRange(enemies.get(index), room.getBoard(), "P", dimensions);
 			
 			if(meleeRange) {
-				targets = UtilitiesAB.createMeleeTargetList(room.getBoard(), party, enemies.get(index), dimensions);
+				targets = UtilitiesTargeting.createMeleeTargetList(room.getBoard(), party, enemies.get(index), dimensions);
 				return targets;
 			}
 			else {
 
-				targets = UtilitiesAB.playersInRangeEstimate(room.getBoard(), party, enemies.get(index), dimensions);
+				targets = UtilitiesTargeting.playersInRangeEstimate(room.getBoard(), party, enemies.get(index), dimensions);
 				if(targets.size()>0) {
-					targets=UtilitiesAB.playersInRange(targets);
+					targets=UtilitiesTargeting.playersInRange(targets);
 					return targets;
 				}
 				else {

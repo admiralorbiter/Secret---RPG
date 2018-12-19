@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.AbilityCards.AbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 
 public final class UtilitiesAB {
@@ -22,7 +23,7 @@ public final class UtilitiesAB {
 			infuseElement(card, elements);
 		
 		if(card.positiveConditions())
-			positiveConditionOnPlayer(card, player);
+			player.getStatusEffect().setPositiveCondition(card);
 				
 		if(card.getHeal()>0)
 			player.heal(card.getHeal());
@@ -135,20 +136,20 @@ public final class UtilitiesAB {
 		System.out.println("Utility Class Damage: "+attack);
 		if(player.getBonusNegativeConditions()!=null) {
 			if(player.getBonusNegativeConditions().causesNegativeCondition()) {
-				negativeConditionOnEnemy(player.getBonusNegativeConditions(), enemy);
-				player.resetBonusNegativeConditions();
+				enemy.getStatusEffect().setNegativeCondition(player.getBonusNegativeConditions());
+				player.getStatusEffect().resetBonusNegativeConditions();
 			}
 		}
 		
 		if(card.getNegativeEffects().causesNegativeCondition())
-			negativeConditionOnEnemy(card.getNegativeEffects(), enemy);
+			enemy.getStatusEffect().setNegativeCondition(card.getNegativeEffects());
 		
 		if(card.getAddNegativeConditionsToAttack()) {
 			if(card.getName().equals("Submissive Affliction"))
-				attack=attack+retrieveNegativeConditions(enemy);
+				attack=attack+enemy.getStatusEffect().retrieveNegativeConditionCount();
 			else if(card.getName().equals("Perverse Edge")) {
-				attack=attack+2*retrieveNegativeConditions(enemy);
-				player.increaseXP(retrieveNegativeConditions(enemy));
+				attack=attack+2*enemy.getStatusEffect().retrieveNegativeConditionCount();
+				player.increaseXP(enemy.getStatusEffect().retrieveNegativeConditionCount());
 				
 			}
 		}
@@ -223,32 +224,6 @@ public final class UtilitiesAB {
 		}
 	}
 	
-	private static void negativeConditionOnEnemy(StatusEffectDataObject card, Enemy enemy) {
-		if(card.getWound())
-			enemy.setNegativeCondition("Wound");
-		if(card.getCurse())
-			enemy.setNegativeCondition("Curse");
-		if(card.getDisarm())
-			enemy.setNegativeCondition("Disarm");
-		if(card.getImmobilize())
-			enemy.setNegativeCondition("Immobilize");
-		if(card.getMuddle())
-			enemy.setNegativeCondition("Muddle");
-		if(card.getPoison())
-			enemy.setNegativeCondition("Poison");
-		if(card.getStun())
-			enemy.setNegativeCondition("Stun");
-	}
-	
-	private static void positiveConditionOnPlayer(CardDataObject card, Player player) {
-		if(card.invisible)
-			player.setCondition("Invisible");
-		if(card.bless)
-			player.setCondition("Bless");
-		if(card.strengthen)
-			player.setCondition("Strengthen");
-	}
-	
 	private static void infuseElement(CardDataObject card, InfusionTable elements) {
 	
 		if(card.darkInfusion)
@@ -270,95 +245,7 @@ public final class UtilitiesAB {
 			elements.infuse("Earth");
 
 	}
-	
-	//Retrieves the number of negative conditions on enemy
-	private static int retrieveNegativeConditions(Enemy enemy) {
-		int count=0;
-		StatusEffectDataObject effect = enemy.getStatusEffect();
-		
-		if(effect.getPoison())
-			count++;
-		
-		if(effect.getWound())
-			count++;
-		
-		if(effect.getImmobilize())
-			count++;
-		
-		if(effect.getDisarm())
-			count++;
-		
-		if(effect.getStun())
-			count++;
-		
-		if(effect.getMuddle())
-			count++;
-		
-		if(effect.getCurse())
-			count++;
-		
-		return count;	
-	}
 
-	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
-	//https://www.redblobgames.com/grids/hexagons/
-	/*
-	public List<Point> createTargetList(Hex board[][], int range, String quickID, Point dimensions) {
-		List<Point> targets = new ArrayList<Point>();
-		
-		for(int x=-range; x<=range; x++) {
-			for(int y=-range; y<=range; y++) {
-				for(int z=-range; z<=range; z++) {
-					if(x+y+z==0) {
-						Point convertedPoint = new Point();
-			
-						//Converts cube coord to a coord to plot
-						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(coordinates.getX()%2!=0)
-							convertedPoint=cubeToCoordOdd(x, y, z);
-						else
-							convertedPoint=cubeToCoordEven(x, y, z);
-
-						int xToPlot=(int)(convertedPoint.getX()+coordinates.getX());
-						int yToPlot=(int) (convertedPoint.getY()+coordinates.getY());
-
-						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY())
-								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
-									targets.add(new Point(xToPlot,yToPlot));
-						}
-
-					}
-				}
-			}
-		}
-		
-		return targets;
-	}*/
-		
-	
-	/*
-	public static int distance(Point p1, Point p2) {
-		int distance=0;
-		int cubeCoord1[] = new int[3];
-		int cubeCoord2[] = new int[3];
-		int x=0, y=0, z=0;
-		System.out.println("Finding distance (Util -distance 447) "+p1+"   "+p2);
-		if(p1.x%2!=0)
-			cubeCoord1=oddToCubeCoord(p1);
-		else
-			cubeCoord1=evenToCubeCoord(p1);
-
-		if(p2.x%2!=0)
-			cubeCoord2=oddToCubeCoord(p2);
-		else
-			cubeCoord2=evenToCubeCoord(p2);
-		
-		//System.out.println(cubeCoord1+"   "+cubeCoord2);
-		distance=(Math.abs(cubeCoord1[x]-cubeCoord2[x])+Math.abs(cubeCoord1[y]-cubeCoord2[y])+Math.abs(cubeCoord1[z]-cubeCoord2[z]))/2;
-		return distance;
-	}*/
-	
 	public static int distance(Point p1, Point p2) {
 
 		int penalty=((p1.y%2==0)&&(p2.y%2!=0)&&(p1.x<p2.x))||((p2.y%2==0)&&(p2.y!=0)&&(p2.x<p1.x))?1:0;
@@ -439,7 +326,7 @@ public final class UtilitiesAB {
 		}
 		return -1;
 	}
-	
+	/*
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
 	public static boolean checkMeleeRange(character entity, Hex board[][], String lookingForID, Point dimensions) {
@@ -549,7 +436,7 @@ public final class UtilitiesAB {
 			}
 		}
 	}
-
+	*/
 	
 	/*
 	public static Point function() {

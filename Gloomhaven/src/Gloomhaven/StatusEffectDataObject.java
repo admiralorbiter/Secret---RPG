@@ -135,4 +135,85 @@ public class StatusEffectDataObject{
 		
 		return "";
 	}
+	
+	//Retrieves the number of negative conditions on enemy
+	public int retrieveNegativeConditionCount() {
+		int count=0;
+		
+		if(poison)
+			count++;
+		
+		if(wound)
+			count++;
+		
+		if(immobilize)
+			count++;
+		
+		if(disarm)
+			count++;
+		
+		if(stun)
+			count++;
+		
+		if(muddle)
+			count++;
+		
+		if(curse)
+			count++;
+		
+		return count;	
+	}
+	
+	public void setNegativeCondition(StatusEffectDataObject card) {
+		if(card.getWound())
+			wound=true;
+		if(card.getCurse())
+			curse=true;
+		if(card.getDisarm())
+			disarm=true;
+		if(card.getImmobilize())
+			immobilize=true;
+		if(card.getMuddle())
+			muddle=true;
+		if(card.getPoison())
+			poison=true;
+		if(card.getStun())
+			stun=true;
+	}
+	
+	public void setNegativeCondition(String effect) {
+		if(effect.equals("Wound"))
+			wound=true;
+		if(effect.equals("Curse"))
+			curse=true;
+		if(effect.equals("Disarm"))
+			disarm=true;
+		if(effect.equals("Immobilize"))
+			immobilize=true;
+		if(effect.equals("Muddle"))
+			muddle=true;
+		if(effect.equals("Poison"))
+			poison=true;
+		if(effect.equals("Stun"))
+			stun=true;
+	}
+
+	public void resetBonusNegativeConditions() {
+		wound=false;
+		curse=false;
+		disarm=false;
+		immobilize=false;
+		muddle=false;
+		poison=false;
+		stun=false;
+	}
+	
+	public void setPositiveCondition(CardDataObject card) {
+		if(card.invisible)
+			invisibility=true;
+		if(card.bless)
+			bless=true;
+		if(card.strengthen)
+			strengthen=true;
+	}
 }

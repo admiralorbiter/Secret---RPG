@@ -3,14 +3,14 @@ package Gloomhaven;
 import java.util.List;
 
 public class PositiveConditions {
-	Target target = new Target("Self");
+	private Target target = new Target("Self");
 	
-	String flag="None";
+	private String flag="None";
 	
-	boolean bless=false;
-	boolean invisibility=false;
-	boolean strengthen=false;
-	boolean retaliate=false;
+	private boolean bless=false;
+	private boolean invisibility=false;
+	private boolean strengthen=false;
+	private boolean retaliate=false;
 	
 	public PositiveConditions() {
 		
@@ -55,4 +55,18 @@ public class PositiveConditions {
 			}
 		}
 	}
+
+	//Getters and Setters
+	public Target getTarget() {return target;}
+	public void setTarget(Target target) {this.target = target;}
+	public String getFlag() {return flag;}
+	public void setFlag(String flag) {this.flag = flag;}
+	public boolean isBless() {return bless;}
+	public void setBless(boolean bless) {this.bless = bless;}
+	public boolean isInvisibility() {return invisibility;}
+	public void setInvisibility(boolean invisibility) {this.invisibility = invisibility;}
+	public boolean isStrengthen() {return strengthen;}
+	public void setStrengthen(boolean strengthen) {this.strengthen = strengthen;}
+	public boolean isRetaliate() {return retaliate;}
+	public void setRetaliate(boolean retaliate) {this.retaliate = retaliate;}
 }

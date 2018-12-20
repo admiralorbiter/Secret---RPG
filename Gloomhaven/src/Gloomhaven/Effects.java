@@ -3,15 +3,15 @@ package Gloomhaven;
 import java.util.List;
 
 public class Effects {
-	Target target = new Target();
+	private Target target = new Target();
 	
-	String flag="None";
+	private String flag="None";
 	
-	boolean pierce=false;
-	boolean push=false;
-	boolean pull=false;
-	boolean heal=false;
-	boolean loot=false;
+	private boolean pierce=false;
+	private boolean push=false;
+	private boolean pull=false;
+	private boolean heal=false;
+	private boolean loot=false;
 	
 	public Effects() {
 		
@@ -64,5 +64,21 @@ public class Effects {
 			}
 		}
 	}
+
+	//Getters and Setters
+	public Target getTarget() {return target;}
+	public void setTarget(Target target) {this.target = target;}
+	public String getFlag() {return flag;}
+	public void setFlag(String flag) {this.flag = flag;}
+	public boolean isPierce() {return pierce;}
+	public void setPierce(boolean pierce) {this.pierce = pierce;}
+	public boolean isPush() {return push;}
+	public void setPush(boolean push) {this.push = push;}
+	public boolean isPull() {return pull;}
+	public void setPull(boolean pull) {this.pull = pull;}
+	public boolean isHeal() {return heal;}
+	public void setHeal(boolean heal) {this.heal = heal;}
+	public boolean isLoot() {return loot;}
+	public void setLoot(boolean loot) {this.loot = loot;}
 
 }

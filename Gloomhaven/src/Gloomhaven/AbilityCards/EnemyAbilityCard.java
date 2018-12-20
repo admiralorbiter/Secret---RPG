@@ -1,14 +1,12 @@
 package Gloomhaven.AbilityCards;
 
-import java.awt.Graphics;
-
 import Gloomhaven.CardDataObject;
 import Gloomhaven.CardInterfaces.CardInterface;
 import Gloomhaven.CardInterfaces.CardsEnemyTest;
 
 public class EnemyAbilityCard extends AbilityCard {
 
-	CardDataObject card = new CardDataObject();
+	CardDataObject cardData = new CardDataObject();
 	
 	public EnemyAbilityCard(String enemyClass, int cardID, int enemyLevel) {
 		
@@ -18,21 +16,21 @@ public class EnemyAbilityCard extends AbilityCard {
 			classCardData = new CardsEnemyTest();
 		}
 		
-		card = classCardData.getData(cardID);
-		setName(enemyClass);
-		setInitiative(card.getInitiative());
+		cardData=classCardData.getData(cardID);
+		setInitiative(classCardData.getInitiative(cardID));
+		setName(classCardData.getName(cardID));
 	}
 	
 	public int getAttack() {
-		return card.getAttack();
+		return cardData.getData().getAttack();
 	}
 	
 	public int getMove() {
-		return card.getMove();
+		return cardData.getData().getMove();
 	}
 	
 	public int getRange() {
-		return card.getRange();
+		return cardData.getData().getRange();
 	}
 	
 }

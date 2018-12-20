@@ -15,8 +15,8 @@ import Gloomhaven.CardInterfaces.Tinkerer;
 
 public class PlayerAbilityCard extends AbilityCard {
 	
-	CardDataObject top = new CardDataObject();
-	CardDataObject bottom = new CardDataObject();
+	CardDataObject topData = new CardDataObject();
+	CardDataObject bottomData = new CardDataObject();
 	int topAttack=2;
 	int bottomMove=2;
 	
@@ -44,31 +44,30 @@ public class PlayerAbilityCard extends AbilityCard {
 		}
 		
 		if(cardLevel==1) {
-			top=classCardData.getTop(cardID);
-			bottom=classCardData.getBottom(cardID);
+			setName(classCardData.getName(cardID));
+			setInitiative(classCardData.getInitiative(cardID));
+			topData=classCardData.getTop(cardID);
+			bottomData=classCardData.getBottom(cardID);
 		}
-		
-		setName(top.getName());
-		setInitiative(top.getInitiative());
 	}
 	
 	public int getAltTop() {return topAttack;}
 	public int getAltBottom() {return bottomMove;}
 	
 	public CardDataObject getTopData() {
-		return top;
+		return topData;
 	}
 	
 	public CardDataObject getBottomData() {
-		return bottom;
+		return bottomData;
 	}
 	
 	public String[] getText() {
 		String text[] = new String[3];
 		
 		text[0]=Integer.toString(getInitiative());
-		text[1]=top.getText();
-		text[2]=bottom.getText();
+		text[1]=topData.getCardText();
+		text[2]=bottomData.getCardText();
 		
 		return text;
 	}

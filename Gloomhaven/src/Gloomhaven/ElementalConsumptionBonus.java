@@ -1,10 +1,9 @@
 package Gloomhaven;
 
 public class ElementalConsumptionBonus {
-	private SimpleCardData simpleBonus = new SimpleCardData();
 	private Target target = new Target();
 	
-	private SimpleCardData bonusData = null;
+	private SimpleCardData bonusData = new SimpleCardData();
 	private PositiveConditions positiveConditions=null;
 	private NegativeConditions negativeConditions=null;
 	private Effects effects=null;
@@ -18,8 +17,7 @@ public class ElementalConsumptionBonus {
 	public ElementalConsumptionBonus(PositiveConditions positiveConditions) {this.positiveConditions=positiveConditions;}
 	public ElementalConsumptionBonus(NegativeConditions negativeConditions) {this.negativeConditions=negativeConditions;}
 	public ElementalConsumptionBonus(Effects effects) {this.effects=effects;}
-	public SimpleCardData getSimpleBonus() {return simpleBonus;}
-	public void setSimpleBonus(SimpleCardData simpleBonus) {this.simpleBonus = simpleBonus;}
+
 	public Target getTarget() {return target;}
 	public void setTarget(Target target) {this.target = target;}
 	public SimpleCardData getBonusData() {return bonusData;}

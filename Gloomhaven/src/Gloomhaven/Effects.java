@@ -13,6 +13,8 @@ public class Effects {
 	private boolean heal=false;
 	private boolean loot=false;
 	
+	int range=0;
+	
 	public Effects() {
 		
 	}
@@ -25,16 +27,16 @@ public class Effects {
 			case "Pierce":
 				pierce=true;
 				break;
-			case "push":
+			case "Push":
 				push=true;
 				break;
-			case "pull":
+			case "Pull":
 				pull=true;
 				break;
-			case "heal":
+			case "Heal":
 				heal=true;
 				break;
-			case "loot":
+			case "Loot":
 				loot=true;
 				break;
 		}
@@ -80,5 +82,7 @@ public class Effects {
 	public void setHeal(boolean heal) {this.heal = heal;}
 	public boolean isLoot() {return loot;}
 	public void setLoot(boolean loot) {this.loot = loot;}
-
+	public int getRange() {return range;}
+	public void setRange(int range) {this.range=range;}
+	
 }

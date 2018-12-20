@@ -1,6 +1,7 @@
 package Gloomhaven.CardInterfaces;
 
 import Gloomhaven.CardDataObject;
+import Gloomhaven.Trigger;
 
 public class MindThief implements CardInterface {
 
@@ -14,6 +15,8 @@ public class MindThief implements CardInterface {
 			case 1:
 				card.setCardText("Attack +2 and (add +1 Attack for each negative condition on target.) Unimplemented. XP +1");
 				card.getData().setAttack(2);
+				card.setTrigger(new Trigger("ForEachNegativeCondition"));
+				card.getTrigger().getBonusData().setAttack(1);
 				card.getData().setXpOnUse(1);
 				break;
 			case 2:

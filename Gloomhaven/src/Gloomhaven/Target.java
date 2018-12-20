@@ -35,19 +35,19 @@ public class Target {
 			case "Self":
 				self=true;
 				break;
-			case "allAdjacentEnemies":
+			case "AllAdjacentEnemies":
 				allAdjacentEnemies=true;
 				break;
-			case "allAdjacentAllies":
+			case "AllAdjacentAllies":
 				allAdjacentAllies=true;
 				break;
-			case "allEnemiesInRoom":
+			case "AllEnemiesInRoom":
 				allEnemiesInRoom=true;
 				break;
-			case "allAlliesInRoom":
+			case "AllAlliesInRoom":
 				allAlliesInRoom=true;
 				break;
-			case "allEnemiesOnPath":
+			case "AllEnemiesOnPath":
 				allEnemiesOnPath=true;
 				break;
 		}

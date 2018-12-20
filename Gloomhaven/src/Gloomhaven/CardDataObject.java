@@ -8,9 +8,12 @@ public class CardDataObject {
 	private PositiveConditions positiveConditions = null;
 	private Effects effects = null;
 	private Counter counter = null;
+	private Trigger trigger = null;
 	
 	private boolean infuseElementalFlag=false;
 	private boolean consumeElementalFlag=false;
+	private String infuseElemental="None";
+	private String consumeElemental="None";
 	
 	private int recoverLostCards=0;
 	
@@ -36,10 +39,16 @@ public class CardDataObject {
 	public void setEffects(Effects effects) {this.effects = effects;}
 	public Counter getCounter() {return counter;}
 	public void setCounter(Counter counter) {this.counter = counter;}
+	public Trigger getTrigger() {return trigger;}
+	public void setTrigger(Trigger trigger) {this.trigger=trigger;}
 	public boolean getInfuseElementalFlag() {return infuseElementalFlag;}
 	public void setInfuseElementalFlag(boolean infuseElemental) {this.infuseElementalFlag = infuseElemental;}
 	public boolean getConsumeElementalFlag() {return consumeElementalFlag;}
 	public void setConsumeElementalFlag(boolean consumeElemental) {this.consumeElementalFlag = consumeElemental;}
+	public String getInfuseElemental() {return infuseElemental;}
+	public void setInfuseElemental(String infuseElemental) {this.infuseElemental=infuseElemental;}
+	public String getConsumeElemental() {return infuseElemental;}
+	public void setConsumeElemental(String consumeElemental) {this.consumeElemental=consumeElemental;}
 	public int getRecoverLostCards() {return recoverLostCards;}
 	public void setRecoverLostCards(int recoverLostCards) {this.recoverLostCards=recoverLostCards;}
 	public String getCardText() {return cardText;}

@@ -34,19 +34,19 @@ public class Counter {
 	public Counter(String triggerFlag, SimpleCardData bonusData) {
 		this.triggerFlag=triggerFlag;
 		
-		setCounterFlags(triggerFlag, "", bonusData, null, null);
+		setCounterFlags(triggerFlag, "BonusData", bonusData, null, null);
 	}
 	
 	public Counter(String triggerFlag, PositiveConditions positiveConditions) {
 		this.triggerFlag=triggerFlag;
 		
-		setCounterFlags(triggerFlag, "", null, positiveConditions, null);
+		setCounterFlags(triggerFlag, "PositiveConditions", null, positiveConditions, null);
 	}
 
 	public Counter(String triggerFlag, NegativeConditions negativeConditions) {
 		this.triggerFlag=triggerFlag;
 		
-		setCounterFlags(triggerFlag, "", null, null, negativeConditions);
+		setCounterFlags(triggerFlag, "NegativeConditions", null, null, negativeConditions);
 	}
 	
 	public void setCounterFlags(String triggerFlag, String effectFlag, SimpleCardData bonusData, PositiveConditions positiveConditions, NegativeConditions negativeConditions) {

@@ -42,18 +42,23 @@ public class CardDataObject {
 	public Trigger getTrigger() {return trigger;}
 	public void setTrigger(Trigger trigger) {this.trigger=trigger;}
 	public boolean getInfuseElementalFlag() {return infuseElementalFlag;}
-	public void setInfuseElementalFlag(boolean infuseElemental) {this.infuseElementalFlag = infuseElemental;}
 	public boolean getConsumeElementalFlag() {return consumeElementalFlag;}
-	public void setConsumeElementalFlag(boolean consumeElemental) {this.consumeElementalFlag = consumeElemental;}
 	public String getInfuseElemental() {return infuseElemental;}
-	public void setInfuseElemental(String infuseElemental) {this.infuseElemental=infuseElemental;}
-	public String getConsumeElemental() {return infuseElemental;}
-	public void setConsumeElemental(String consumeElemental) {this.consumeElemental=consumeElemental;}
+	public String getConsumeElemental() {return consumeElemental;}
 	public int getRecoverLostCards() {return recoverLostCards;}
 	public void setRecoverLostCards(int recoverLostCards) {this.recoverLostCards=recoverLostCards;}
 	public String getCardText() {return cardText;}
 	public void setCardText(String cardText) {this.cardText=cardText;}
 	public int getID() {return id;}
 	public void setID(int id) {this.id=id;}
+	public void setInfuseElemental(String infuseElemental) {
+		this.infuseElemental=infuseElemental;
+		this.infuseElementalFlag=true;
+	}
+	public void setConsumeElemental(String consumeElemental) {
+		this.consumeElemental=consumeElemental;
+		this.consumeElementalFlag=true;
+		elementalBonus = new ElementalConsumptionBonus();
+	}
 	
 }

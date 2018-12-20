@@ -1,5 +1,7 @@
 package Gloomhaven;
 
+import java.util.List;
+
 public class Target {
 	private String flag ="Enemy";
 	
@@ -13,6 +15,8 @@ public class Target {
 	private boolean circle=false;
 	private boolean triangle=false;
 	private boolean line=false;
+	private boolean ally=false;
+	private boolean allAllies=false;
 	
 	private int lineLength=0;
 	
@@ -30,6 +34,18 @@ public class Target {
 	public Target(String flag) {
 		
 		this.flag=flag;
+		
+		setTarget(flag);
+	}
+	
+	public Target(List<String> flags) {
+		this.flag="Multiple";
+		
+		for(int i=0; i<flags.size(); i++)
+			setTarget(flags.get(i));
+	}
+	
+	public void setTarget(String flag) {
 		
 		switch(flag) {
 			case "Self":
@@ -50,8 +66,22 @@ public class Target {
 			case "AllEnemiesOnPath":
 				allEnemiesOnPath=true;
 				break;
+			case "Circle":
+				circle=true;
+				break;
+			case "Line":
+				line=true;
+				break;
+			case "Triangle":
+				triangle=true;
+				break;
+			case "Ally":
+				ally=true;
+				break;
+			case "AllAllies":
+				allAllies=true;
+				break;
 		}
-
 	}
 	
 	//Getters and Setters
@@ -80,7 +110,6 @@ public class Target {
 	public boolean isLine() {return line;}
 	public void setLine(boolean line) {this.line = line;}
 	public int getLineLength() {return lineLength;}
-	public void setLineLength(int lineLength) {this.lineLength = lineLength;}
-	
+	public void setLineLength(int lineLength) {this.lineLength = lineLength;}	
 	
 }

@@ -10,7 +10,6 @@ public class PositiveConditions {
 	private boolean bless=false;
 	private boolean invisibility=false;
 	private boolean strengthen=false;
-	private boolean retaliate=false;
 	
 	public PositiveConditions() {
 		
@@ -29,9 +28,6 @@ public class PositiveConditions {
 		case "Strengthen":
 			strengthen=true;
 			break;
-		case "Retaliate":
-			retaliate=true;
-			break;
 		}
 	}
 	
@@ -49,9 +45,6 @@ public class PositiveConditions {
 			case "Strengthen":
 				strengthen=true;
 				break;
-			case "Retaliate":
-				retaliate=true;
-				break;
 			}
 		}
 	}
@@ -67,6 +60,4 @@ public class PositiveConditions {
 	public void setInvisibility(boolean invisibility) {this.invisibility = invisibility;}
 	public boolean isStrengthen() {return strengthen;}
 	public void setStrengthen(boolean strengthen) {this.strengthen = strengthen;}
-	public boolean isRetaliate() {return retaliate;}
-	public void setRetaliate(boolean retaliate) {this.retaliate = retaliate;}
 }

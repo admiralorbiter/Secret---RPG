@@ -7,61 +7,85 @@ public class Effects {
 	
 	private String flag="None";
 	
-	private boolean pierce=false;
-	private boolean push=false;
-	private boolean pull=false;
-	private boolean heal=false;
-	private boolean loot=false;
+	private int pierce=0;
+	private int push=0;
+	private int pull=0;
+	private int heal=0;
+	private int loot=0;
+	private int retaliate=0;
+	private int shield=0;
 	
-	int range=0;
+	private int range=0;
+	
+	boolean instaKill=false;
 	
 	public Effects() {
 		
 	}
 	
-	public Effects(String flag) {
+	public Effects(String flag, int amount, int range) {
 		
 		this.flag=flag;
+		this.range=range;
 		
 		switch(flag) {
 			case "Pierce":
-				pierce=true;
+				pierce=amount;
 				break;
 			case "Push":
-				push=true;
+				push=amount;
 				break;
 			case "Pull":
-				pull=true;
+				pull=amount;
 				break;
 			case "Heal":
-				heal=true;
+				heal=amount;
 				break;
 			case "Loot":
-				loot=true;
+				loot=amount;
+				break;
+			case "Retaliate":
+				retaliate=amount;
+				break;
+			case "InstaKill":
+				instaKill=true;
+				break;
+			case "Shield":
+				shield=amount;
 				break;
 		}
 	}
 	
-	public Effects(List<String> flags) {
+	public Effects(List<String> flags, int[] amounts, int range) {
 		
 		this.flag="Multiple";
+		this.range=range;
 		
 		for(int i=0; i<flags.size(); i++) {
 			switch(flags.get(i)) {
 				case "Pierce":
-					pierce=true;
+					pierce=amounts[i];
 					break;
-				case "push":
-					push=true;
+				case "Push":
+					push=amounts[i];
 					break;
-				case "pull":
-					pull=true;
+				case "Pull":
+					pull=amounts[i];
 					break;
-				case "heal":
-					heal=true;
+				case "Heal":
+					heal=amounts[i];
 					break;
-				case "loot":
-					loot=true;
+				case "Loot":
+					loot=amounts[i];
+					break;
+				case "Retaliate":
+					retaliate=amounts[i];
+					break;
+				case "InstaKill":
+					instaKill=true;
+					break;
+				case "Shield":
+					shield=amounts[i];
 					break;
 			}
 		}
@@ -72,17 +96,19 @@ public class Effects {
 	public void setTarget(Target target) {this.target = target;}
 	public String getFlag() {return flag;}
 	public void setFlag(String flag) {this.flag = flag;}
-	public boolean isPierce() {return pierce;}
-	public void setPierce(boolean pierce) {this.pierce = pierce;}
-	public boolean isPush() {return push;}
-	public void setPush(boolean push) {this.push = push;}
-	public boolean isPull() {return pull;}
-	public void setPull(boolean pull) {this.pull = pull;}
-	public boolean isHeal() {return heal;}
-	public void setHeal(boolean heal) {this.heal = heal;}
-	public boolean isLoot() {return loot;}
-	public void setLoot(boolean loot) {this.loot = loot;}
+	public int getPierce() {return pierce;}
+	public void setPierce(int pierce) {this.pierce = pierce;}
+	public int getPush() {return push;}
+	public void setPush(int push) {this.push = push;}
+	public int getPull() {return pull;}
+	public void setPull(int pull) {this.pull = pull;}
+	public int getHeal() {return heal;}
+	public void setHeal(int heal) {this.heal = heal;}
+	public int getLoot() {return loot;}
+	public void setLoot(int loot) {this.loot = loot;}
 	public int getRange() {return range;}
 	public void setRange(int range) {this.range=range;}
+	public int getRetaliate() {return retaliate;}
+	public void setRetaliate(int retaliate) {this.retaliate=retaliate;}
 	
 }

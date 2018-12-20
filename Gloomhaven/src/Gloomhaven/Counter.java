@@ -19,37 +19,49 @@ public class Counter {
 	SimpleCardData bonusData = null;
 	PositiveConditions positiveConditions=null;
 	NegativeConditions negativeConditions=null;
+	Effects effects =null;
 	
 	public Counter() {
 		
 	}
 	
-	public Counter(String triggerFlag, String effectFlag) {
+	public Counter(int max, String triggerFlag, String effectFlag) {
 		this.triggerFlag=triggerFlag;
 		this.effectFlag=effectFlag;
+		this.maxCounters=max;
 		
-		setCounterFlags(triggerFlag, effectFlag, null, null, null);
+		setCounterFlags(triggerFlag, effectFlag, null, null, null, null);
 	}
 	
-	public Counter(String triggerFlag, SimpleCardData bonusData) {
+	public Counter(int max, String triggerFlag, SimpleCardData bonusData) {
 		this.triggerFlag=triggerFlag;
+		this.maxCounters=max;
 		
-		setCounterFlags(triggerFlag, "BonusData", bonusData, null, null);
+		setCounterFlags(triggerFlag, "BonusData", bonusData, null, null, null);
 	}
 	
-	public Counter(String triggerFlag, PositiveConditions positiveConditions) {
+	public Counter(int max, String triggerFlag, PositiveConditions positiveConditions) {
 		this.triggerFlag=triggerFlag;
+		this.maxCounters=max;
 		
-		setCounterFlags(triggerFlag, "PositiveConditions", null, positiveConditions, null);
+		setCounterFlags(triggerFlag, "PositiveConditions", null, positiveConditions, null, null);
 	}
 
-	public Counter(String triggerFlag, NegativeConditions negativeConditions) {
+	public Counter(int max, String triggerFlag, NegativeConditions negativeConditions) {
 		this.triggerFlag=triggerFlag;
+		this.maxCounters=max;
 		
-		setCounterFlags(triggerFlag, "NegativeConditions", null, null, negativeConditions);
+		setCounterFlags(triggerFlag, "NegativeConditions", null, null, negativeConditions, null);
 	}
 	
-	public void setCounterFlags(String triggerFlag, String effectFlag, SimpleCardData bonusData, PositiveConditions positiveConditions, NegativeConditions negativeConditions) {
+	public Counter(int max, String triggerFlag, Effects effects) {
+		this.triggerFlag=triggerFlag;
+		this.maxCounters=max;
+		
+		setCounterFlags(triggerFlag, "Effects", null, null, null, effects);
+	}
+	
+	public void setCounterFlags(String triggerFlag, String effectFlag, SimpleCardData bonusData, PositiveConditions positiveConditions, NegativeConditions negativeConditions, Effects effects) {
 		switch(triggerFlag) {
 		case "OnDamage":
 			triggerOnDamage=true;
@@ -81,6 +93,11 @@ public class Counter {
 			effectFlag="NegativeConditions";
 			this.negativeConditions=negativeConditions;
 		}
+		
+		if(effects!=null) {
+			effectFlag="Effects";
+			this.effects=effects;
+		}
 	}
 
 	//Getters and Setters
@@ -108,5 +125,6 @@ public class Counter {
 	public void setPositiveConditions(PositiveConditions positiveConditions) {this.positiveConditions = positiveConditions;}
 	public NegativeConditions getNegativeConditions() {return negativeConditions;}
 	public void setNegativeConditions(NegativeConditions negativeConditions) {this.negativeConditions = negativeConditions;}
-	
+	public Effects getEffects() {return effects;}
+	public void setEffects(Effects effects) {this.effects=effects;}
 }

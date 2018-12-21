@@ -11,16 +11,14 @@ import java.util.Random;
 
 import Gloomhaven.AttackModifierCard;
 import Gloomhaven.AttackModifierDeck;
-import Gloomhaven.CardDataObject;
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.Hex;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
 import Gloomhaven.Setting;
-import Gloomhaven.SimpleCards;
-import Gloomhaven.StatusEffectDataObject;
-import Gloomhaven.UsePlayerAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
+import Gloomhaven.CardDataObject.CardDataObject;
 
 public class Player extends character {
 
@@ -46,11 +44,8 @@ public class Player extends character {
 	private int maxHandCount;
 	private boolean longRest;
 	
-	//Probably can change these
-	private int bonusMove=0; //Feels like it can go in a better place (maybe bonus data object)
 	private int displayCard=0;
 	private int turnNumber;
-	private int smallItemCount;
 	private boolean movementImmunity=false;
 	private boolean createAnyElement=false;
 	
@@ -89,7 +84,7 @@ public class Player extends character {
 	public List<Item> getItems(){return items;}
 
 	//On the cutting block
-	public void setBonusMove(int bonus) {bonusMove=bonus;}
+	public void setBonusMove(int bonus) {}
 	public void toggleMovementImmunity() {movementImmunity=!movementImmunity;}
 	public boolean getMovementImmunity() {return movementImmunity;}
 	
@@ -100,7 +95,6 @@ public class Player extends character {
 		cardChoice=true;
 		topCard=null;
 		bottomCard=null;
-		negativeBonusEffects = new StatusEffectDataObject();
 		createAnyElement=false;
 	}
 	

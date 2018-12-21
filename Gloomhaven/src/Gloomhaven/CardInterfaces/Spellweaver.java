@@ -3,15 +3,15 @@ package Gloomhaven.CardInterfaces;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.CardDataObject;
-import Gloomhaven.Counter;
-import Gloomhaven.Effects;
-import Gloomhaven.ElementalConsumptionBonus;
-import Gloomhaven.NegativeConditions;
-import Gloomhaven.PositiveConditions;
-import Gloomhaven.SimpleCardData;
-import Gloomhaven.Target;
-import Gloomhaven.Trigger;
+import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.CardDataObject.Counter;
+import Gloomhaven.CardDataObject.Effects;
+import Gloomhaven.CardDataObject.ElementalConsumptionBonus;
+import Gloomhaven.CardDataObject.NegativeConditions;
+import Gloomhaven.CardDataObject.PositiveConditions;
+import Gloomhaven.CardDataObject.SimpleCardData;
+import Gloomhaven.CardDataObject.Target;
+import Gloomhaven.CardDataObject.Trigger;
 
 public class Spellweaver implements CardInterface {
 
@@ -424,59 +424,59 @@ public class Spellweaver implements CardInterface {
 	public String getName(int id) {
 		switch(id) {
 			case 1:
-				return "Name";
+				return "Fire Orbs";
 			case 2:
-				return "Name";
+				return "Impaling Eruption";
 			case 3:
-				return "Name";
+				return "Reviving Ether";
 			case 4:
-				return "Name";
+				return "Freezing Nova";
 			case 5:
-				return "Name";
+				return "Mana Bolt";
 			case 6:
-				return "Name";
+				return "Frost Armor";
 			case 7:
-				return "Name";
+				return "Flame Strike";
 			case 8:
-				return "Name";
+				return "Ride the Wind";
 			case 9:
-				return "Name";
+				return "Crackling Air";
 			case 10:
-				return "Name";
+				return "Hardened Spikes";
 			case 11:
-				return "Name";
+				return "Aid from the Ether";
 			case 12:
-				return "Name";
+				return "Flashing Burst";
 			case 13:
-				return "Name";
+				return "Icy Blast";
 			case 14:
-				return "Name";
+				return "Cold Fire";
 			case 15:
-				return "Name";
+				return "Elemental Aid";
 			case 16:
-				return "Name";
+				return "Spirit of Doom";
 			case 17:
-				return "Name";
+				return "Forked Beam";
 			case 18:
-				return "Name";
+				return "Chromatic Explosion";
 			case 19:
-				return "Name";
+				return "Engulfed in Flames";
 			case 20:
-				return "Name";
+				return "Living Torch";
 			case 21:
-				return "Name";
+				return "Frozen Night";
 			case 22:
-				return "Name";
+				return "Twin Restoration";
 			case 23:
-				return "Name";
+				return "Stone Fists";
 			case 24:
-				return "Name";
+				return "Zephyr Wings";
 			case 25:
-				return "Name";
+				return "Cold Front";
 			case 26:
-				return "Name";
+				return "Black Hole";
 			case 27:
-				return "Name";
+				return "Inferno";
 		}
 		return "Error";
 	}
@@ -485,59 +485,59 @@ public class Spellweaver implements CardInterface {
 	public int getInitiative(int id) {
 		switch(id) {
 			case 1:
-				return 0;
+				return 69;
 			case 2:
-				return 0;
+				return 70;
 			case 3:
-				return 0;
+				return 80;
 			case 4:
-				return 0;
+				return 21;
 			case 5:
-				return 0;
+				return 7;
 			case 6:
-				return 0;
+				return 20;
 			case 7:
-				return 0;
+				return 36;
 			case 8:
-				return 0;
+				return 83;
 			case 9:
-				return 0;
+				return 25;
 			case 10:
-				return 0;
+				return 26;
 			case 11:
-				return 0;
+				return 91;
 			case 12:
-				return 0;
+				return 26;
 			case 13:
-				return 0;
+				return 66;
 			case 14:
-				return 0;
+				return 67;
 			case 15:
-				return 0;
+				return 84;
 			case 16:
-				return 0;
+				return 81;
 			case 17:
-				return 0;
+				return 20;
 			case 18:
-				return 0;
+				return 71;
 			case 19:
-				return 0;
+				return 44;
 			case 20:
-				return 0;
+				return 96;
 			case 21:
-				return 0;
+				return 46;
 			case 22:
-				return 0;
+				return 75;
 			case 23:
-				return 0;
+				return 62;
 			case 24:
-				return 0;
+				return 85;
 			case 25:
-				return 0;
+				return 61;
 			case 26:
-				return 0;
+				return 41;
 			case 27:
-				return 0;
+				return 19;
 		}
 		return -999;
 	}

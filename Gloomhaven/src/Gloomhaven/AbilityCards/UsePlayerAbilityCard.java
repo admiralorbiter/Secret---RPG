@@ -1,6 +1,6 @@
-package Gloomhaven;
+package Gloomhaven.AbilityCards;
 
-import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.CardDataObject.CardDataObject;
 
 public final class UsePlayerAbilityCard {
 	public static CardDataObject getCardData(PlayerAbilityCard card) {

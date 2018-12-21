@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 import javax.swing.ImageIcon;
 

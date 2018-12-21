@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 import java.util.List;
 
@@ -23,6 +23,19 @@ public class NegativeConditions {
 		
 		this.flag=flag;
 		
+		setNegativeConditions(flag);
+	}
+	
+	public NegativeConditions(List<String> flags) {
+		
+		this.flag="Multiple";
+		
+		for(int i=0; i<flags.size(); i++) {
+			setNegativeConditions(flags.get(i));
+		}
+	}
+
+	public void setNegativeConditions(String flag) {
 		switch(flag) {
 			case "Curse":
 				curse=true;
@@ -45,40 +58,11 @@ public class NegativeConditions {
 			case "Stun":
 				stun=true;
 				break;
+			default:
+				System.out.println("Error: NegativeConditions");
+				System.exit(0);
 		}
 	}
-	
-	public NegativeConditions(List<String> flags) {
-		
-		this.flag="Multiple";
-		
-		for(int i=0; i<flags.size(); i++) {
-			switch(flags.get(i)) {
-				case "Curse":
-					curse=true;
-					break;
-				case "Disarm":
-					disarm=true;
-					break;
-				case "Immobilize":
-					immobilize=true;
-					break;
-				case "Wound":
-					wound=true;
-					break;
-				case "Muddle":
-					muddle=true;
-					break;
-				case "Poison":
-					poison=true;
-					break;
-				case "Stun":
-					stun=true;
-					break;
-			}
-		}
-	}
-
 	
 	//Getters and Setters
 	public Target getTarget() {return target;}

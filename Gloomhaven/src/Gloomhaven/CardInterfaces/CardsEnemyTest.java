@@ -1,6 +1,6 @@
 package Gloomhaven.CardInterfaces;
 
-import Gloomhaven.CardDataObject;
+import Gloomhaven.CardDataObject.CardDataObject;
 
 public class CardsEnemyTest implements CardInterface {
 

@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 import java.util.List;
 
@@ -28,6 +28,20 @@ public class Effects {
 		this.flag=flag;
 		this.range=range;
 		
+		setEffect(flag, amount);
+	}
+	
+	public Effects(List<String> flags, int[] amounts, int range) {
+		
+		this.flag="Multiple";
+		this.range=range;
+		
+		for(int i=0; i<flags.size(); i++) {
+			setEffect(flags.get(i), amounts[i]);
+		}
+	}
+	
+	public void setEffect(String flag, int amount) {
 		switch(flag) {
 			case "Pierce":
 				pierce=amount;
@@ -53,41 +67,9 @@ public class Effects {
 			case "Shield":
 				shield=amount;
 				break;
-		}
-	}
-	
-	public Effects(List<String> flags, int[] amounts, int range) {
-		
-		this.flag="Multiple";
-		this.range=range;
-		
-		for(int i=0; i<flags.size(); i++) {
-			switch(flags.get(i)) {
-				case "Pierce":
-					pierce=amounts[i];
-					break;
-				case "Push":
-					push=amounts[i];
-					break;
-				case "Pull":
-					pull=amounts[i];
-					break;
-				case "Heal":
-					heal=amounts[i];
-					break;
-				case "Loot":
-					loot=amounts[i];
-					break;
-				case "Retaliate":
-					retaliate=amounts[i];
-					break;
-				case "InstaKill":
-					instaKill=true;
-					break;
-				case "Shield":
-					shield=amounts[i];
-					break;
-			}
+			default:
+				System.out.println("Error: Effects");
+				System.exit(0);
 		}
 	}
 
@@ -110,5 +92,6 @@ public class Effects {
 	public void setRange(int range) {this.range=range;}
 	public int getRetaliate() {return retaliate;}
 	public void setRetaliate(int retaliate) {this.retaliate=retaliate;}
+	public int getShield() {return shield;}
 	
 }

@@ -1,7 +1,7 @@
 package Gloomhaven.CardInterfaces;
 
-import Gloomhaven.CardDataObject;
-import Gloomhaven.Trigger;
+import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.CardDataObject.Trigger;
 
 public class MindThief implements CardInterface {
 

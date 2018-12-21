@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 public class ElementalConsumptionBonus {
 	private Target target = new Target();

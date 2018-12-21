@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
+import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.character;

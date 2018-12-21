@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 import java.util.List;
 

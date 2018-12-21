@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 public class Counter {
 	Target target = new Target("Self");
@@ -63,20 +63,23 @@ public class Counter {
 	
 	public void setCounterFlags(String triggerFlag, String effectFlag, SimpleCardData bonusData, PositiveConditions positiveConditions, NegativeConditions negativeConditions, Effects effects) {
 		switch(triggerFlag) {
-		case "OnDamage":
-			triggerOnDamage=true;
-			break;
-		case "OnAttack":
-			triggerOnAttack=true;
-			break;
-		case "OnMeleeAttack":
-			triggerOnAttack=true;
+			case "OnDamage":
+				triggerOnDamage=true;
+				break;
+			case "OnAttack":
+				triggerOnAttack=true;
+				break;
+			case "OnMeleeAttack":
+				triggerOnAttack=true;
+			default:
+				System.out.println("Error: Counter");
+				System.exit(0);
 		}
 		
 		switch(effectFlag) {
-		case "NoDamage":
-			noDamage=true;
-			break;
+			case "NoDamage":
+				noDamage=true;
+				break;
 		}
 		
 		if(bonusData!=null) {
@@ -127,4 +130,16 @@ public class Counter {
 	public void setNegativeConditions(NegativeConditions negativeConditions) {this.negativeConditions = negativeConditions;}
 	public Effects getEffects() {return effects;}
 	public void setEffects(Effects effects) {this.effects=effects;}
+	
+	public void addToCounter() {
+		currentCount++;
+	}
+	
+	public boolean isAtMaxCount() {
+		if(maxCounters==currentCount)
+			return true;
+		
+		return false;
+	}
+	}
 }

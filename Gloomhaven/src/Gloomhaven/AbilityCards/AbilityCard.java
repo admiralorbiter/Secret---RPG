@@ -11,7 +11,10 @@ public class AbilityCard {
 	private String name="If you are seeing this, then error";
 	private int initiative=-99;
 	private ImageIcon image=null;
-
+	private boolean lostFlag;
+	private boolean discardFlag;
+	private boolean inPlayFlag;
+	
 	public AbilityCard() {
 
 	}
@@ -26,12 +29,21 @@ public class AbilityCard {
 	public void setImage(ImageIcon image) {this.image = image;}
 	public void setInitiative(int init) {this.initiative=init;}
 	public int getInitiative() {return initiative;}
-	
-	
+	public boolean isLostFlag() {return lostFlag;}
+	public void setLostFlag(boolean lostFlag) {this.lostFlag = lostFlag;}
+	public boolean isDiscardFlag() {return discardFlag;}
+	public void setDiscardFlag(boolean discardFlag) {this.discardFlag = discardFlag;}
+	public boolean isInPlayFlag() {return inPlayFlag;}
+	public void setInPlayFlag(boolean inPlayFlag) {this.inPlayFlag = inPlayFlag;}
+
 	public void showCard(Graphics g) {
 		Setting setting = new Setting();
 		if(getImage()!=null)
 			g.drawImage(getImage().getImage(), 10, setting.getGraphicsYTop()+70, 285, 425  , null);
+	}
+	
+	public boolean isCardFree() {
+		
 	}
 
 }

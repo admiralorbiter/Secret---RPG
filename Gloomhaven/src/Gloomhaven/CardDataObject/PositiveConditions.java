@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.CardDataObject;
 
 import java.util.List;
 
@@ -18,24 +18,19 @@ public class PositiveConditions {
 	public PositiveConditions(String flag) {
 		this.flag=flag;
 		
-		switch(flag) {
-		case "Bless":
-			bless=true;
-			break;
-		case "Invisibility":
-			invisibility=true;
-			break;
-		case "Strengthen":
-			strengthen=true;
-			break;
-		}
+		setPositiveConditions(flag);
 	}
 	
 	public PositiveConditions(List<String> flags) {
 		this.flag="Multiple";
 		
 		for(int i=0; i<flags.size(); i++) {
-			switch(flags.get(i)) {
+			setPositiveConditions(flags.get(i));
+		}
+	}
+	
+	public void setPositiveConditions(String flag) {
+		switch(flag) {
 			case "Bless":
 				bless=true;
 				break;
@@ -45,7 +40,10 @@ public class PositiveConditions {
 			case "Strengthen":
 				strengthen=true;
 				break;
-			}
+			default:
+				System.out.println("Error: PositiveConditions");
+				System.exit(0);
+				
 		}
 	}
 

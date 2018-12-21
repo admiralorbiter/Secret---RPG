@@ -1,6 +1,6 @@
 package Gloomhaven.AbilityCards;
 
-import Gloomhaven.CardDataObject;
+import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardInterfaces.CardInterface;
 import Gloomhaven.CardInterfaces.CardsEnemyTest;
 

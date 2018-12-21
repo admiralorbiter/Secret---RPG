@@ -2,8 +2,8 @@ package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
 
-import Gloomhaven.CardDataObject;
 import Gloomhaven.Setting;
+import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardInterfaces.Brute;
 import Gloomhaven.CardInterfaces.CardImages;
 import Gloomhaven.CardInterfaces.CardInterface;

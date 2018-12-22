@@ -216,8 +216,60 @@ public class MindThief implements CardInterface {
 
 	@Override
 	public String getName(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		switch(id) {
+			case 1:
+				return "Submissive Affliction";
+			case 2:
+				return "Into the Night";
+			case 3:
+				return "Fearsome Blade";
+			case 4:
+				return "Feedback Loop";
+			case 5:
+				return "Gnawing Horde";
+			case 6:
+				card.name="The Mind's Weakness";
+				card.level=1;
+				card.text="Attack +1. Wound target.";
+				card.attack=1;
+				card.getNegativeEffects().setWound(true);
+				break;
+			case 7:
+				card.name="Parasitic Influence";
+				card.level=1;
+				card.text="Force enemy to move with player control of range 4. Move +1.";
+				card.mindControl=true;
+				card.range=4;
+				card.mindControlData.move=1;
+				card.mindControlData.attack=0;
+				card.mindControlData.range=1;
+				break;
+			case 8:
+				card.name="Scurry";
+				card.level=1;
+				card.text="Loot +2. XP +1. Card Consumed on discard.";
+				card.lootRange=2;
+				card.experience=1;
+				card.lost=true;
+				break;
+			case 9:
+				card.name="Perverse Edge";
+				card.level=1;
+				card.text="Attack +1. Range +2. Stun. Infuse Ice. XP +1.";
+				card.attack=1;
+				card.range=2;
+				card.getNegativeEffects().setStun(true);
+				card.iceInfusion=true;
+				card.experience=1;
+				break;
+			case 10:
+				card.name="Empathetic Assault";
+				card.level=1;
+				card.text="Move +2. Heal +2 (Self)";
+				card.move=2;
+				card.heal=2;
+				break;
+		}
 	}
 
 	@Override

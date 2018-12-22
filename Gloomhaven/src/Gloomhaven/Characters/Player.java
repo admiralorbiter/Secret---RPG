@@ -52,7 +52,7 @@ public class Player extends character {
 	Setting setting = new Setting();
 	
 	public Player(int id, String classID) {
-		
+		setRoundBonus(new CardDataObject());
 		setID("P"+id);
 		setClassID(classID);
 		setName("Jon");
@@ -60,15 +60,40 @@ public class Player extends character {
 		
 		maxHandCount=setting.getMaxHandCount();
 		
+		randomlySelectCards();
+		/*
 		for(int i=0; i<maxHandCount; i++)
 			abilityDeck.add(new PlayerAbilityCard(classID, i+1, 1));
-		
+		*/
 		
 		//Sets how many small items you can carry
 		if(data.getLevel()%2==0)
 			smallItemTotal=data.getLevel()/2;
 		else
 			smallItemTotal=(data.getLevel()+1)/2;
+		
+	}
+	
+	public void randomlySelectCards() {
+		int cardIndex[] = new int[maxHandCount];
+		
+		for(int i=0; i<maxHandCount; i++) {
+			boolean finished=false;
+			int num;
+			do {
+				Random r = new Random();
+				num = r.nextInt(27)+1;
+				finished=true;
+				for(int j=0; j<i; j++) {
+					if(cardIndex[j]==num)
+						finished=false;
+				}
+			}
+			while(!finished);
+			cardIndex[i]=num;
+			abilityDeck.add(new PlayerAbilityCard(classID, num, 1));
+		}
+		
 		
 	}
 	
@@ -139,6 +164,8 @@ public class Player extends character {
 	}
 	
 	public void addLoot(Hex hex) {
+		System.out.println("Player.java Loc 142: Player successfully looted "+hex.getLootID().equals("Gold"));
+		
 		if(hex.getLootID().equals("Gold"))
 			data.setGold(data.getGold()+1);
 		else
@@ -444,30 +471,8 @@ public class Player extends character {
 	}
 	
 	public void endTurn() {
-		
-		if(effects.getDisarm()) {
-			effects.switchDisarm();
-		}
-		
-		if(effects.getStun()) {
-			effects.switchStun();
-		}
-		
-		if(effects.getMuddle()) {
-			effects.switchMuddle();
-		}
-		
-		if(effects.getInvisibility()) {
-			effects.switchInvisibility();
-		}
-		
-		if(effects.getStrengthen()) {
-			effects.switchStrengthen();
-		}
-		
-		if(effects.getImmobilize()) {
-			effects.switchImmobilize();
-		}
+
+		endOfRound();
 		
 		cardChoice=true;
 		
@@ -481,35 +486,22 @@ public class Player extends character {
 				card= firstCardChoice.getBottomData();
 				index = abilityDeck.indexOf(firstCardChoice);
 			}
+
 			
 			//This is for brute: shield bash - Not sure it will always hold true
-			if(card.getRoundBonus() && card.getShield()>0) {
+			/*
+			if(card.getData().getRoundBonusFlag() && card.getEffects().getShield()>0) {
 				data.setShield(data.getShield()-1);
 			}
 			
-			if(card.getRoundBonus() && card.getRetaliateFlag()==true) {
+			if(card.getData().getRoundBonusFlag() && card.getEffects().getRetaliate()>0) {
 				retaliate= new SimpleCards();
-			}
+			}*/
 
-			//If persistant card trigger is finished, removes from play and removes from trigger deck
-			if(triggers.size()>0) {
-				for(int i=0; i<triggers.size(); i++) {
-					if(triggers.get(i).isFinished()) {
-						
-						for(int j=0; j<inPlay.size(); j++)
-							if(triggers.get(i).getName().equals(inPlay.get(j).getName()))
-								inPlay.remove(j);
-						triggers.remove(i);
-					}
-				}
-			}
-			 
-			if(card.getContinuous()) {
-				inPlay.add(firstCardChoice);						//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.getLost()){
-			}else {
+			if(card.getData().getConsumeFlag())
+				abilityDeck.get(index).setCardInlostPile();
+			else
 				abilityDeck.get(index).setCardIndiscardPile();
-			}
 			
 			if(secondCardChoice.getFlag().equals("Top") || secondCardChoice.getFlag().equals("AltTop")) {
 				card= secondCardChoice.getTopData();
@@ -519,31 +511,25 @@ public class Player extends character {
 				index = abilityDeck.indexOf(secondCardChoice);
 			}
 			
-			
+			/*
 			//This is for brute: shield bash - Not sure it will always hold true
-			if(card.getRoundBonus() && card.getShield()>0) {
+			if(card.getRoundBonusFlag() && card.getShield()>0) {
 				data.setShield(data.getShield()-1);
 			}
 			
-			if(card.getRoundBonus() && card.getRetaliateFlag()==true) {
+			if(card.getRoundBonusFlag() && card.getRetaliate()==true) {
 				retaliate= new SimpleCards();
 			}
-
-			if(card.getContinuous()) {
-				inPlay.add(secondCardChoice);									//Need a way to track if i am using the top or bottom as a cont
-			}else if(card.getLost()){
-			}else {
+			*/
+			
+			if(card.getData().getConsumeFlag())
+				abilityDeck.get(index).setCardInlostPile();
+			else
 				abilityDeck.get(index).setCardIndiscardPile();
-			}
 		}
 		secondCardChoice=null;
 		firstCardChoice=null;
 		longRest=false;
-	}
-	
-	public void transferToLostPile(PlayerAbilityCard card) {
-		int index=abilityDeck.indexOf(card);
-		abilityDeck.get(index).setCardInlostPile();
 	}
 	
 	public void setAugment(PlayerAbilityCard card) {
@@ -568,6 +554,10 @@ public class Player extends character {
 		for(int i=0; i<inPlay.size(); i++) {
 			g.drawString(inPlay.get(i).getName(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+15+15*i);
 		}
+		
+		for(int j=0; j<counterTriggers.size(); j++) {
+			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+60+15*j);
+		}
 	}
 	
 	public void graphicsPlayerInfo(Graphics g) {
@@ -575,20 +565,22 @@ public class Player extends character {
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
 		g.drawString(name+"  "+getClassID(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
 		g.drawString("Level "+data.getLevel(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp()+"  Shield "+data.getShield()+" Ret: "+retaliate.getAttack(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp()+"  Shield "+data.getShield()+" Ret: Need to fix retatliate showing", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
 		if(isAugmented()) {
 			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
-			g.drawString(augment.getTopData().getAugmentText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
+			g.drawString("Need to fix augment", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
 		}
-		List<String> negativeConditions = effects.getNegativeConditions();
-		if(negativeConditions.size()>0) {
+		List<String> negativeConditionList = negativeConditions.getList();
+		if(negativeConditionList.size()>0) {
 			g.drawString("Negative Conditions", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+90);
-			for(int i=0; i<negativeConditions.size(); i++)
-				g.drawString(negativeConditions.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
+			for(int i=0; i<negativeConditionList.size(); i++)
+				g.drawString(negativeConditionList.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
 		}
 		g.drawString("Gold: "+data.getGold(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
-		if(getBonusNegativeConditions()!=null)
-			g.drawString("Bonus Condition on Attack: "+getBonusNegativeConditions().getNegativeCondition(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
+		
+		if(roundBonus!=null)
+			if(roundBonus.getNegativeConditions()!=null)
+				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
 		
 		g.setColor(setting.getDefaultColor());
 	}
@@ -606,7 +598,7 @@ public class Player extends character {
 	public void showDiscardPile(Graphics g) {
 		g.drawString("Discard Pile:", 10, 115);
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).getDiscardFlag())
+			if(abilityDeck.get(i).isDiscardFlag())
 				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 130+i*15);
 		}
 	}
@@ -614,7 +606,7 @@ public class Player extends character {
 	public int discardPileSize() {
 		int count=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).getDiscardFlag())
+			if(abilityDeck.get(i).isDiscardFlag())
 				count++;
 		}
 		return count;
@@ -639,14 +631,14 @@ public class Player extends character {
 		showDiscardPile(g);
 		if(cardChoice) {
 			if(key>=0 && key<=abilityDeck.size()) {
-				if(abilityDeck.get(key).getDiscardFlag()) {
+				if(abilityDeck.get(key).isDiscardFlag()) {
 					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
 				}
 			}
 		}else {
 			if(key>=0 && key<=abilityDeck.size()) {
-				if(abilityDeck.get(key).getDiscardFlag()) {
+				if(abilityDeck.get(key).isDiscardFlag()) {
 					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
 					longRest=false;
@@ -657,7 +649,7 @@ public class Player extends character {
 	
 	private void collectDiscardPile() {
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).getDiscardFlag())
+			if(abilityDeck.get(i).isDiscardFlag())
 				abilityDeck.get(i).takeCardOutOfDiscard();
 		}
 	}
@@ -697,27 +689,22 @@ public class Player extends character {
 	public int getAttack(CardDataObject attackCard) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
-		System.out.println(attackCard.getAttack()+"  "+card.getPlusAttack()+"  "+card.getMultiplier());
-		int damage = (attackCard.getAttack()+card.getPlusAttack())*card.getMultiplier();
+		System.out.println(attackCard.getData().getAttack()+"  "+card.getPlusAttack()+"  "+card.getMultiplier());
+		int damage = (attackCard.getData().getAttack()+card.getPlusAttack())*card.getMultiplier();
 		
-		if(triggers.size()>0) {
-			for(int i=0; i<triggers.size(); i++) {
-				if(triggers.get(i).getTriggerName().equals("OnTargetEnemyAlone")) {
-					damage=damage+triggers.get(i).getAloneBonusData().getAttack();
-					data.setXp(data.getXp()+triggers.get(i).getAloneBonusData().getExperience());
-					triggers.get(i).addToTrigger();
+		if(roundTriggers.size()>0) {
+			for(int i=0; i<roundTriggers.size(); i++) {
+				if(roundTriggers.get(i).getTriggerFlag().equals("EnemyAlone")){
+					damage=damage+roundTriggers.get(i).getBonusData().getAttack();
+					data.setXp(data.getXp()+roundTriggers.get(i).getBonusData().getXpOnUse());
 				}
 			}
 		}
-		
+				
 		return damage;
 	}
 	
 	public void increaseXP(int xpGained) {data.setXp(data.getXp()+xpGained);}
-	
-	public void addPersistanceBonus(CardDataObject card) {
-		triggers.add(card.getTriggerData());
-	}
 	
 	public void removeItem(Item item) {
 		items.remove(item);
@@ -750,10 +737,13 @@ public class Player extends character {
 	public void setCreateAnyElement(boolean flag) {createAnyElement=true;}
 	public boolean getCreateAnyElement() {return createAnyElement;}
 	
-	public void recoverLostCards() {
-		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).getLostFlag())
-				abilityDeck.get(i).resetCardFlags();
+	public void recoverLostCards(int number) {
+		
+		if(number==99) {
+			for(int i=0; i<abilityDeck.size(); i++) {
+				if(abilityDeck.get(i).isLostFlag())
+					abilityDeck.get(i).resetCardFlags();
+			}
 		}
 	}
 	

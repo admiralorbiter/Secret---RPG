@@ -4,7 +4,7 @@ import Gloomhaven.CardDataObject.CardDataObject;
 
 public final class UsePlayerAbilityCard {
 	public static CardDataObject getCardData(PlayerAbilityCard card) {
-		//change
+
 		String flag=card.getFlag();
 		
 		if(flag=="Top")
@@ -20,10 +20,10 @@ public final class UsePlayerAbilityCard {
 		String flag=card.getFlag();
 		
 		if(flag=="Top")
-			return card.getTopData().getMove();
+			return card.getTopData().getData().getMove();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().getMove();
+			return card.getBottomData().getData().getMove();
 		
 		if(flag=="AltTop")
 			return 0;
@@ -37,10 +37,10 @@ public final class UsePlayerAbilityCard {
 	public static int getAttack(PlayerAbilityCard card) {
 		String flag=card.getFlag();
 		if(flag=="Top")
-			return card.getTopData().getAttack();
+			return card.getTopData().getData().getAttack();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().getAttack();
+			return card.getBottomData().getData().getAttack();
 		
 		if(flag=="AltTop")
 			return card.getAltTop();
@@ -54,10 +54,10 @@ public final class UsePlayerAbilityCard {
 	public static int getRange(PlayerAbilityCard card) {
 		String flag=card.getFlag();
 		if(flag=="Top")
-			return card.getTopData().getRange();
+			return card.getTopData().getData().getRange();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().getRange();
+			return card.getBottomData().getData().getRange();
 		
 		return 0;
 	}
@@ -81,10 +81,10 @@ public final class UsePlayerAbilityCard {
 	public static boolean hasFlying(PlayerAbilityCard card) {
 		String flag=card.getFlag();
 		if(flag=="Top")
-			return card.getTopData().hasFlying();
+			return card.getTopData().getData().getFlyFlag();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().hasFlying();
+			return card.getBottomData().getData().getFlyFlag();
 		
 		return false;
 	}
@@ -92,57 +92,67 @@ public final class UsePlayerAbilityCard {
 	public static boolean hasJump(PlayerAbilityCard card) {
 		String flag=card.getFlag();
 		if(flag=="Top")
-			return card.getTopData().hasJump();
+			return card.getTopData().getData().getJumpFlag();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().hasJump();
+			return card.getBottomData().getData().getJumpFlag();
 		
 		return false;
 	}
 	
 	public static int getPierce(PlayerAbilityCard card) {
 		String flag=card.getFlag();
+		
 		if(flag=="Top")
-			return card.getTopData().getPierce();
+			if(card.getTopData().getEffects()!=null)
+				return card.getTopData().getEffects().getPierce();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().getPierce();
+			if(card.getBottomData().getEffects()!=null)
+				return card.getBottomData().getEffects().getPierce();
 		
 		return 0;
 	}
 	
 	public static boolean hasTargetHeal(PlayerAbilityCard card) {
 		String flag=card.getFlag();
+		
 		if(flag=="Top")
-			if(card.getTopData().getHeal()>0 && card.getTopData().getRange()>0)
-				return true;
+			if(card.getTopData().getEffects()!=null)
+				if(card.getTopData().getEffects().getHeal()>0 && card.getTopData().getEffects().getRange()>0)
+					return true;
 		
 		if(flag=="Bottom")
-			if(card.getBottomData().getHeal()>0 && card.getBottomData().getRange()>0)
-				return true;
+			if(card.getBottomData().getEffects()!=null)
+				if(card.getBottomData().getEffects().getHeal()>0 && card.getBottomData().getEffects().getRange()>0)
+					return true;
 		
 		return false;
 	}
 	
 	public static int getHeal(PlayerAbilityCard card) {
 		String flag=card.getFlag();
+		
 		if(flag=="Top")
-			return card.getTopData().getHeal();
+			if(card.getTopData().getEffects()!=null)
+				return card.getTopData().getEffects().getHeal();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().getHeal();
+			if(card.getBottomData().getEffects()!=null)
+				return card.getBottomData().getEffects().getHeal();
 		
 		return 0;
 	}
 	
 	public static boolean hasMindControl(PlayerAbilityCard card) {
 		String flag=card.getFlag();
+		/*
 		if(flag=="Top")
 			return card.getTopData().hasMindControl();
 		
 		if(flag=="Bottom")
 			return card.getBottomData().hasMindControl();
-		
+		*/
 		return false;
 	}
 }

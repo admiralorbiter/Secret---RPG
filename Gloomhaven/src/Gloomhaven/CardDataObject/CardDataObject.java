@@ -6,12 +6,13 @@ public class CardDataObject {
 	private ElementalConsumptionBonus elementalBonus = null;
 	private NegativeConditions negativeConditions = null;
 	private PositiveConditions positiveConditions = null;
-	private Effects effects = null;
+	private Effects effects = new Effects();
 	private Counter counter = null;
 	private Trigger trigger = null;
 	
 	private boolean infuseElementalFlag=false;
 	private boolean consumeElementalFlag=false;
+	private boolean augment=false;
 	private String infuseElemental="None";
 	private String consumeElemental="None";
 	
@@ -51,6 +52,8 @@ public class CardDataObject {
 	public void setCardText(String cardText) {this.cardText=cardText;}
 	public int getID() {return id;}
 	public void setID(int id) {this.id=id;}
+	public boolean hasAugment() {return augment;}
+	public void setAugment(boolean augment) {this.augment=augment;}
 	public void setInfuseElemental(String infuseElemental) {
 		this.infuseElemental=infuseElemental;
 		this.infuseElementalFlag=true;

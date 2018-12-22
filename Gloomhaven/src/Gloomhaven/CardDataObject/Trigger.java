@@ -1,5 +1,8 @@
 package Gloomhaven.CardDataObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Trigger {
 	private Target target = new Target();
 	
@@ -8,6 +11,7 @@ public class Trigger {
 	
 	private boolean triggerForEachNegativeConditionsOnTarget=false;
 	private boolean triggerForEachTargeted=false;
+	private boolean triggerEnemyAlone=false;
 	
 	private SimpleCardData bonusData = new SimpleCardData();
 	
@@ -36,7 +40,20 @@ public class Trigger {
 		case "ForEachTargeted":
 			triggerForEachTargeted=true;
 			break;
+		case "EnemyAlone":
+			triggerEnemyAlone=true;
+			break;
 		}
+	}
+	
+	public List<String> getTriggerFlagList(){
+		List<String> triggerFlagList = new ArrayList<String>();
+		
+		triggerFlagList.add("ForEachNegativeCondition");
+		triggerFlagList.add("ForEachTargeted");
+		triggerFlagList.add("EnemyAlone");
+		
+		return triggerFlagList;
 	}
 
 	//Getters and Setters
@@ -50,6 +67,6 @@ public class Trigger {
 	public boolean isTriggerForEachTargeted() {return triggerForEachTargeted;}
 	public SimpleCardData getBonusData() {return bonusData;}
 	public void setBonusData(SimpleCardData bonusData) {this.bonusData = bonusData;	}
-	
+	public boolean isTriggerEnemyAlone() {return triggerEnemyAlone;}
 	
 }

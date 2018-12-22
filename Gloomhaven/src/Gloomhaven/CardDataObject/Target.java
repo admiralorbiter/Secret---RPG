@@ -1,5 +1,6 @@
 package Gloomhaven.CardDataObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Target {
@@ -12,7 +13,10 @@ public class Target {
 	private boolean allEnemiesInRoom=false;
 	private boolean allAlliesInRoom=false;
 	private boolean allEnemiesOnPath=false;
+	private boolean opposingAttack=false;
 	private boolean circle=false;
+	private boolean semiCircle=false;
+	private boolean sortOfSemiCircle=false;
 	private boolean triangle=false;
 	private boolean line=false;
 	private boolean ally=false;
@@ -45,11 +49,34 @@ public class Target {
 			setTarget(flags.get(i));
 	}
 	
+	public List<String> getTargetFlagList(){
+		List<String> targetFlagList = new ArrayList<String>();
+		
+		targetFlagList.add("Self");
+		targetFlagList.add("OpposingAttack");
+		targetFlagList.add("AllAdjacentEnemies");
+		targetFlagList.add("AllAdjacentAllies");
+		targetFlagList.add("AllEnemiesInRoom");
+		targetFlagList.add("AllAlliesInRoom");
+		targetFlagList.add("AllEnemiesOnPath");
+		targetFlagList.add("Circle");
+		targetFlagList.add("SemiCircle");
+		targetFlagList.add("SortOfSemiCircle");
+		targetFlagList.add("Triangle");
+		targetFlagList.add("Ally");
+		targetFlagList.add("AllAllies");
+		
+		return targetFlagList;
+	}
+	
 	public void setTarget(String flag) {
 		
 		switch(flag) {
 			case "Self":
 				self=true;
+				break;
+			case "OpposingAttack":
+				opposingAttack=true;
 				break;
 			case "AllAdjacentEnemies":
 				allAdjacentEnemies=true;
@@ -69,6 +96,12 @@ public class Target {
 			case "Circle":
 				circle=true;
 				break;
+			case "SemiCircle":
+				semiCircle=true;
+				break;
+			case "SortOfSemiCircle":
+				sortOfSemiCircle=true;
+				break;
 			case "Line":
 				line=true;
 				break;
@@ -81,6 +114,7 @@ public class Target {
 			case "AllAllies":
 				allAllies=true;
 				break;
+
 		}
 	}
 	
@@ -103,9 +137,15 @@ public class Target {
 	public void setAllyTargets(int allyTargets) {this.allyTargets = allyTargets;}
 	public int getTargets() {return targets;}
 	public void setTargets(int targets) {this.targets = targets;}
-	public boolean isCircle() {return circle;}
+	public boolean getOpposingAttack() {return opposingAttack;}
+	public void setOpposingAttack(boolean opposingAttack) {this.opposingAttack=opposingAttack;}
+	public boolean getCircle() {return circle;}
 	public void setCircle(boolean circle) {this.circle = circle;}
-	public boolean isTriangle() {return triangle;}
+	public boolean getSemiCircle() {return semiCircle;}
+	public void setSemiCircle(boolean semiCircle) {this.semiCircle=semiCircle;}
+	public boolean getSortOfSemiCircle() {return sortOfSemiCircle;}
+	public void setSortaOfSemiCircle(boolean sortaSemi) {this.sortOfSemiCircle=sortaSemi;}
+	public boolean getTriangle() {return triangle;}
 	public void setTriangle(boolean triangle) {this.triangle = triangle;}
 	public boolean isLine() {return line;}
 	public void setLine(boolean line) {this.line = line;}

@@ -3,6 +3,7 @@ package Gloomhaven;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Player;
 
 
@@ -249,7 +250,11 @@ public final class ItemLoader {
 			break;
 			//during attack add stun to a single attack
 			//what if the attack has several targets?
-			case 21: player.setBonusNegativeConditions("Stun");
+			case 21: 
+				if(player.getRoundBonus().getNegativeConditions()!=null)
+					player.getRoundBonus().getNegativeConditions().setFlag("Stun");
+				else
+					player.getRoundBonus().setNegativeConditions(new NegativeConditions("Stun"));
 			break;
 			//heal +5 Self
 			case 27: player.heal(5);
@@ -273,7 +278,11 @@ public final class ItemLoader {
 			case 24: player.heal(1);
 			break;
 			//add wound to a single attack
-			case 25: player.setBonusNegativeConditions("Wound");
+			case 25: 
+				if(player.getRoundBonus().getNegativeConditions()!=null)
+					player.getRoundBonus().getNegativeConditions().setFlag("Wound");
+				else
+					player.getRoundBonus().setNegativeConditions(new NegativeConditions("Wound"));
 			break;
 			//during a melee attack, turn it into two spaces in a line
 			case 26: System.out.println(item.getName());

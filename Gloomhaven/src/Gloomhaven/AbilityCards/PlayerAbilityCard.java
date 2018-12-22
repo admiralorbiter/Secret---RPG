@@ -15,11 +15,12 @@ import Gloomhaven.CardInterfaces.Tinkerer;
 
 public class PlayerAbilityCard extends AbilityCard {
 	
-	CardDataObject topData = new CardDataObject();
-	CardDataObject bottomData = new CardDataObject();
-	int topAttack=2;
-	int bottomMove=2;
-	
+	private CardDataObject topData = new CardDataObject();
+	private CardDataObject bottomData = new CardDataObject();
+	private int topAttack=2;
+	private int bottomMove=2;
+	private String useFlag="Schrodinger's Card";
+	private int abilityCardCounter=0;//used to count stuff like how many targets hit
 	public PlayerAbilityCard(String playerClass, int cardID, int cardLevel) {
 		CardInterface classCardData=null;
 		
@@ -49,18 +50,19 @@ public class PlayerAbilityCard extends AbilityCard {
 			topData=classCardData.getTop(cardID);
 			bottomData=classCardData.getBottom(cardID);
 		}
+
 	}
 	
+	//Getters and Setters
 	public int getAltTop() {return topAttack;}
 	public int getAltBottom() {return bottomMove;}
-	
-	public CardDataObject getTopData() {
-		return topData;
-	}
-	
-	public CardDataObject getBottomData() {
-		return bottomData;
-	}
+	public CardDataObject getTopData() {return topData;}	
+	public CardDataObject getBottomData() {return bottomData;}
+	public String getFlag() {return useFlag;}
+	public void setFlag(String flag) {this.useFlag=flag;}
+	public int getAbilityCardCount() {return abilityCardCounter;}
+	public void increaseAbilityCardCounter() {abilityCardCounter++;}
+	public void setAbilityCardCounter(int count) {this.abilityCardCounter=count;}
 	
 	public String[] getText() {
 		String text[] = new String[3];
@@ -74,7 +76,8 @@ public class PlayerAbilityCard extends AbilityCard {
 	
 	public void showCard(Graphics g) {
 		Setting setting = new Setting();
-		g.drawImage(getImage().getImage(), 10, setting.getGraphicsYTop()+70, 285, 425  , null);
+		if(getImage()!=null)
+			g.drawImage(getImage().getImage(), 10, setting.getGraphicsYTop()+70, 285, 425  , null);
 		g.drawString("Press Space to Select this card. ", 20, setting.getGraphicsYTop()+70+450);
 	}
 }

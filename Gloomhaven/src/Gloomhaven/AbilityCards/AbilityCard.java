@@ -43,7 +43,41 @@ public class AbilityCard {
 	}
 	
 	public boolean isCardFree() {
+		if(lostFlag)
+			return false;
+		if(discardFlag)
+			return false;
+		if(inPlayFlag)
+			return false;
 		
+		return true;
 	}
-
+	
+	public void resetCardFlags() {
+		inPlayFlag=false;
+		lostFlag=false;
+		discardFlag=false;
+	}
+	
+	public void setCardInPlay() {
+		inPlayFlag=true;
+		lostFlag=false;
+		discardFlag=false;
+	}
+	
+	public void setCardInlostPile() {
+		inPlayFlag=false;
+		discardFlag=false;
+		lostFlag=true;
+	}
+	
+	public void setCardIndiscardPile() {
+		inPlayFlag=false;
+		lostFlag=false;
+		discardFlag=true;
+	}
+	
+	public void takeCardOutOfDiscard() {
+		discardFlag=false;
+	}
 }

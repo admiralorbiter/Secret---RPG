@@ -1,5 +1,8 @@
 package Gloomhaven.CardDataObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Counter {
 	Target target = new Target("Self");
 	
@@ -61,6 +64,15 @@ public class Counter {
 		setCounterFlags(triggerFlag, "Effects", null, null, null, effects);
 	}
 	
+	public List<String> getTriggerFlagList(){
+		List<String> triggerFlagList = new ArrayList<String>();
+		
+		triggerFlagList.add("OnDamage");
+		triggerFlagList.add("OnAttack");
+		triggerFlagList.add("OnMeleeAttack");
+		
+		return triggerFlagList;
+	}
 	public void setCounterFlags(String triggerFlag, String effectFlag, SimpleCardData bonusData, PositiveConditions positiveConditions, NegativeConditions negativeConditions, Effects effects) {
 		switch(triggerFlag) {
 			case "OnDamage":
@@ -140,6 +152,5 @@ public class Counter {
 			return true;
 		
 		return false;
-	}
 	}
 }

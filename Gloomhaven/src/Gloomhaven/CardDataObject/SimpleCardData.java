@@ -22,6 +22,12 @@ public class SimpleCardData {
 		discardFlag=true;
 	}
 	
+	public SimpleCardData(int attack, int move, int range) {
+		this.attack=attack;
+		this.move=move;
+		this.range=range;
+	}
+	
 	//Getters and Setters
 	public boolean getJumpFlag() {return jumpFlag;}
 	public void setJumpFlag(boolean jumpFlag) {this.jumpFlag = jumpFlag;}
@@ -43,6 +49,7 @@ public class SimpleCardData {
 	public void setRoundBonusFlag(boolean roundBonus) {this.roundBonusFlag = roundBonus;}
 	public Target getTarget() {return target;}
 	public void setTarget(Target target) {this.target = target;}
+
 	public void setConsumeFlag(boolean consume) {
 		this.consumeFlag = consume;
 		this.discardFlag=!consume;

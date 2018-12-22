@@ -6,10 +6,12 @@ import java.util.List;
 
 import Gloomhaven.AttackModifierDeck;
 import Gloomhaven.CharacterDataObject;
+import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Counter;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.PositiveConditions;
+import Gloomhaven.CardDataObject.Trigger;
 
 public class character {
 	
@@ -21,7 +23,10 @@ public class character {
 	NegativeConditions negativeConditions = new NegativeConditions();
 	PositiveConditions positiveConditions = new PositiveConditions();
 	Effects effects = new Effects();
-	List<Counter> triggers = new ArrayList<Counter>();
+	List<Counter> counterTriggers = new ArrayList<Counter>();
+	List<Trigger> roundTriggers = new ArrayList<Trigger>();
+	
+	CardDataObject roundBonus = new CardDataObject();
 	
 	CharacterDataObject data;
 
@@ -41,7 +46,20 @@ public class character {
 	public AttackModifierDeck getAttackModDeck() {return attackModifierDeck;}
 	public void setAttackModDeck(AttackModifierDeck deck) {this.attackModifierDeck=deck;}
 	public CharacterDataObject getCharacterData() {return data;}
+	public CardDataObject getRoundBonus() {return roundBonus;}
+	public void setRoundBonus(CardDataObject card) {this.roundBonus=card;}
+	public List<Counter> getTriggers(){return counterTriggers;}
+	public PositiveConditions getPositiveConditions() {return positiveConditions;}
+	public NegativeConditions getNegativeConditions() {return negativeConditions;}
 	
+	
+	public void addCounter(Counter trigger) {
+		counterTriggers.add(trigger);
+	}
+	
+	public void addRoundTrigger(Trigger trigger) {
+		roundTriggers.add(trigger);
+	}
 	
 	public boolean hasRetaliate() {
 		if(effects.getRetaliate()>0)
@@ -86,15 +104,17 @@ public class character {
 	
 	public void takeDamage(int damage) {
 
-		if(triggers.size()>0) {
-			for(int i=0; i<triggers.size(); i++) {
-				if(triggers.get(i).isTriggerOnDamage() || triggers.get(i).isTriggerOnMeleeAttack()) {
+		if(counterTriggers.size()>0) {
+			for(int i=0; i<counterTriggers.size(); i++) {
+				if(counterTriggers.get(i).isTriggerOnDamage() || counterTriggers.get(i).isTriggerOnMeleeAttack()) {
+					if(counterTriggers.get(i).getEffectFlag().equals("NoDamage"))
+						damage=0;
 					
-					triggers.get(i).addToCounter();
+					counterTriggers.get(i).addToCounter();
 				}
 				
-				if(triggers.get(i).isAtMaxCount())
-					triggers.remove(i);
+				if(counterTriggers.get(i).isAtMaxCount())
+					counterTriggers.remove(i);
 			}
 		}
 		
@@ -106,6 +126,66 @@ public class character {
 				
 		//[Test]
 		System.out.println(name+" was attacked for "+damage+" making thier health "+data.getHealth());
+	}
+	
+	public void endOfRound() {
+		if(negativeConditions.isDisarm()) {
+			if(negativeConditions.getDisarmCount()==2)
+				negativeConditions.setDisarm(false);
+			else
+				negativeConditions.increaseCount("Disarm");
+		}
+		
+		if(negativeConditions.isStun()) {
+			if(negativeConditions.getStunCount()==2)
+				negativeConditions.setStun(false);
+			else
+				negativeConditions.increaseCount("Stun");
+		}
+		
+		if(negativeConditions.isMuddle()) {
+			if(negativeConditions.getMuddleCount()==2)
+				negativeConditions.setMuddle(false);
+			else
+				negativeConditions.increaseCount("Muddle");
+		}
+		
+		if(positiveConditions.isInvisibility()) {
+			if(positiveConditions.getInvisibilityCount()==2)
+				positiveConditions.setInvisibility(false);
+			else
+				positiveConditions.increaseCount("Invisibility");
+		}
+		
+		if(positiveConditions.isStrengthen()) {
+			if(positiveConditions.getStrengthenCount()==2)
+				positiveConditions.setStrengthen(false);
+			else
+				positiveConditions.increaseCount("Strengthen");
+		}
+		
+		if(negativeConditions.isImmobilize()) {
+			if(negativeConditions.getImmobilizeCount()==2)
+				negativeConditions.setImmobilize(false);
+			else
+				negativeConditions.increaseCount("Immobilize");
+		}
+		
+		if(getRoundBonus()!=null)
+			setRoundBonus(null);
+		
+		//If persistant card trigger is finished, removes from play and removes from trigger deck
+		if(counterTriggers.size()>0) {
+			for(int i=0; i<counterTriggers.size(); i++) {
+				if(counterTriggers.get(i).isAtMaxCount()) {
+					
+					counterTriggers.remove(i);
+				}
+			}
+		}
+		
+		roundTriggers = new ArrayList<Trigger>();
+
 	}
 	
 }

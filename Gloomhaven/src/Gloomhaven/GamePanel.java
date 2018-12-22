@@ -67,8 +67,8 @@ public class GamePanel extends JPanel implements KeyListener{
 		}else if(state==GameState.SCENARIO) {
 			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round
-			if(scene.finished())									//If scenario is off, end state of game
-				state=GameState.END;
+			//if(scene.finished())									//If scenario is off, end state of game
+				//state=GameState.END;
 		}else if(state==GameState.END) {
 			System.exit(0);											//[Temp] End of the game, just exit program
 		}

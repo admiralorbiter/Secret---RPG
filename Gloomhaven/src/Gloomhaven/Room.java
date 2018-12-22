@@ -18,6 +18,7 @@ public class Room {
 
 	//Constants
 	private Setting setting = new Setting();
+	//TODO change dimensions back to a single point that covers the whole map
 	private List<Point> dimensions = new ArrayList<Point>();
 	//private Point dimensions;																							//Dimensions of the room
 	private Hex board[][];																								//Room board made of hexs
@@ -33,8 +34,7 @@ public class Room {
 		//enemies=setup.getEnemies();	
 		switch(id) {
 			case "Test":
-				dimensions.add(new Point(9, 9));
-				dimensions.add(new Point(3, 3));
+				dimensions.add(new Point(13, 10));
 				width=13;
 				height=11;
 				board=new Hex[width][height];
@@ -454,7 +454,7 @@ public class Room {
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
 	public void drawRange(Graphics g, Point start, int range, Color color) {
-				
+		
 		for(int x=-range; x<=range; x++) {
 			for(int y=-range; y<=range; y++) {
 				for(int z=-range; z<=range; z++) {
@@ -471,12 +471,14 @@ public class Room {
 						//Plotted point is equal to the converted point + player point
 						int xToPlot=(int)(convertedPoint.getX()+start.getX());					
 						int yToPlot=(int) (convertedPoint.getY()+start.getY());
-						
+
 						//Checks that the plotted x and y are inside the dimensions
 						if(xToPlot>=0 && xToPlot<dimensions.get(roomIndex).getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.get(roomIndex).getY()) {
-								g.setColor(color);
-								drawHex(g, xToPlot,  yToPlot);
+								if(!board[xToPlot][yToPlot].getHidden()) {
+									g.setColor(color);
+									drawHex(g, xToPlot,  yToPlot);
+								}
 							}
 					}
 				}
@@ -592,6 +594,7 @@ public class Room {
 				g.setColor(setting.getEnemyColor());
 			
 		}
+		
 		if(board[x][y].getQuickID()=="Loot") {
 			g.setColor(Color.ORANGE);
 			g.drawString(board[x][y].getLootID(), SIZE_OF_HEX/2+x*(SIZE_OF_HEX)+offsetX-15, SIZE_OF_HEX/2+5+y*(SIZE_OF_HEX+bufferY)+offsetY);

@@ -93,5 +93,6 @@ public class Effects {
 	public int getRetaliate() {return retaliate;}
 	public void setRetaliate(int retaliate) {this.retaliate=retaliate;}
 	public int getShield() {return shield;}
+	public void setShield(int shield) {this.shield=shield;}
 	
 }

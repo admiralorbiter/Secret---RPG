@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.Scenario.State;
 
 public class InfusionTable {
 	

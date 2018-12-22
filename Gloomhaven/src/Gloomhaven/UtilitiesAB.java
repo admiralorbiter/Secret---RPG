@@ -9,6 +9,7 @@ import java.util.List;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.character;
@@ -20,52 +21,46 @@ public final class UtilitiesAB {
 		CardDataObject card = new CardDataObject();
 		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData()
 		
-		if(card.getExperience()>0)
-			player.increaseXP(card.getExperience());
+		if(card.getTrigger()!=null)
+			player.addRoundTrigger(card.getTrigger());
 		
-		if(card.infusion())
-			infuseElement(card, elements);
+		if(card.getCounter()!=null)
+			player.addCounter(card.getCounter());
 		
-		if(card.positiveConditions())
-			player.getStatusEffect().setPositiveCondition(card);
+		if(card.getData().getXpOnUse()>0)
+			player.increaseXP(card.getData().getXpOnUse());
+		
+		if(card.getInfuseElementalFlag())
+			elements.infuse(card.getInfuseElemental());
+
+		if(card.getPositiveConditions()!=null)
+			player.getPositiveConditions().setPositiveConditions(card.getPositiveConditions());
 				
-		if(card.getHeal()>0)
-			player.heal(card.getHeal());
-		
-		if(card.getLootRange()>0) {
-			List<Point> loot = new ArrayList<Point>();
-			loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getLootRange(), player.getCoordinates(), "Loot", room.getDimensions());
-			room.loot(player, loot);
+		if(card.getEffects()!=null) {
+			if(card.getEffects().getHeal()>0 && card.getEffects().getTarget().isSelf())
+				player.heal(card.getEffects().getHeal());
+			
+			if(card.getEffects().getLoot()>0) {
+				List<Point> loot = new ArrayList<Point>();
+				loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getEffects().getLoot(), player.getCoordinates(), "Loot", room.getDimensions());
+				room.loot(player, loot);
+			}
+			
+			if(card.getEffects().getShield()>0) {
+				player.getRoundBonus().getEffects().setShield(card.getEffects().getShield());
+			}
+			
+			if(card.getEffects().getRetaliate()>0) {
+				player.getRoundBonus().getEffects().setRetaliate(card.getEffects().getRetaliate());
+			}
 		}
-		
-		if(card.getContinuous()) {
-			player.addPersistanceBonus(card);
-			/*
-			if(card.name.equals("Warding Strength"))
-			{
-				player.persistanceBonus(1, "Warding Strength");
-			}*/
+		if(card.getRecoverLostCards()>0) {
+			player.recoverLostCards(card.getRecoverLostCards());
 		}
 		
 		if(card.hasAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
 		
-		if(card.getShield()>0)
-			player.getCharacterData().setShield(card.getShield());
-		
-		if(card.getRetaliateFlag()) {
-			player.setRetaliate(card.getRetaliateData());
-		}
-		
-		if(card.getRecoverLostCards()) {
-			player.recoverLostCards();
-		}
-		
-		if(card.getLost())
-			player.transferToLostPile(abilityCard);
-		
-		
-	
 	}
 	
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
@@ -138,56 +133,46 @@ public final class UtilitiesAB {
 		//int attack=card.getAttack();
 		int attack = player.getAttack(card);
 		System.out.println("Utility Class Damage: "+attack);
-		if(player.getBonusNegativeConditions()!=null) {
-			if(player.getBonusNegativeConditions().causesNegativeCondition()) {
-				enemy.getStatusEffect().setNegativeCondition(player.getBonusNegativeConditions());
-				player.resetBonusNegativeConditions();
+		
+		if(card.getNegativeConditions()!=null) {
+			enemy.getNegativeConditions().setNegativeConditions(card.getNegativeConditions());
+		}
+		if(player.getRoundBonus()!=null) {
+			if(player.getRoundBonus().getNegativeConditions()!=null) {
+				enemy.getNegativeConditions().setNegativeConditions(player.getRoundBonus().getNegativeConditions());
 			}
 		}
 		
-		if(card.getNegativeEffects().causesNegativeCondition())
-			enemy.getStatusEffect().setNegativeCondition(card.getNegativeEffects());
-	
-		if(card.getAddNegativeConditionsToAttack()) {
-			if(card.getName().equals("Submissive Affliction"))
-				attack=attack+enemy.getStatusEffect().retrieveNegativeConditionCount();
-			else if(card.getName().equals("Perverse Edge")) {
-				attack=attack+2*enemy.getStatusEffect().retrieveNegativeConditionCount();
-				player.increaseXP(enemy.getStatusEffect().retrieveNegativeConditionCount());
-				
-			}
-		}
 		
-		if(card.getAloneBonus()) {
-			if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
-				if(card.getAloneBonusData().getAttack()>0)
-					attack=attack+card.getAdjacentBonusData().getAttack();
-				
-				if(card.getAloneBonusData().getExperience()>0)
-					player.increaseXP(card.getAdjacentBonusData().getExperience());
+		for(int i=0; i<player.getTriggers().size(); i++) {
+			if(player.getTriggers().get(i).getTriggerFlag().equals("EnemyAlone")) {
+				if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
+					if(player.getTriggers().get(i).getBonusData().getAttack()>0)
+						attack=attack+player.getTriggers().get(i).getBonusData().getAttack();
+					
+					if(player.getTriggers().get(i).getBonusData().getXpOnUse()>0)
+						player.increaseXP(player.getTriggers().get(i).getBonusData().getXpOnUse());
+				}
 			}
-		}
-		
-		if(adjacentBonus) {
-			if(card.getAdjacentBonusData().getAttack()>0)
-				attack=attack+card.getAdjacentBonusData().getAttack();
 			
-			if(card.getAdjacentBonusData().getExperience()>0)
-				player.increaseXP(card.getAdjacentBonusData().getExperience());
-		}
-		
-		if(card.getElementalConsumed()) {
-			String element=card.getElementalConsumedData().getElementalConsumed();
-
-			if(elements.consume(element)) {
-				if(card.getElementalConsumedData().getAttack()>0)
-					attack=attack+card.getElementalConsumedData().getAttack();
-				
-				if(card.getElementalConsumedData().getExperience()>0)
-					player.increaseXP(card.getElementalConsumedData().getExperience());
+			if(player.getTriggers().get(i).getTriggerFlag().equals("ForEachTargeted")) {
+				player.increaseXP(player.getTriggers().get(i).getBonusData().getXpOnUse());
 			}
 		}
 		
+		if(card.getConsumeElementalFlag()) {
+			String element = card.getConsumeElemental();
+			
+			if(elements.consume(element)) {
+				if(card.getElementalBonus().getBonusData().getAttack()>0)
+					attack=attack+card.getElementalBonus().getBonusData().getAttack();
+				
+				if(card.getElementalBonus().getBonusData().getXpOnUse()>0)
+					player.increaseXP(card.getElementalBonus().getBonusData().getXpOnUse());
+			}
+		}
+		
+		/*
 		if(player.isAugmented()) {
 			if(player.getAugmentCard().getName().equals("Feedback Loop"))
 				player.getCharacterData().setShield(1);
@@ -197,22 +182,18 @@ public final class UtilitiesAB {
 			if(player.getAugmentCard().getName().equals("Parasitic influence"))
 				//If target is melle
 				player.heal(2);
-		}
+		}*/
+				
 		
 		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){
-			int playerPierce=card.getPierce();
+			int playerPierce=card.getEffects().getPierce();
 			if(playerPierce>0) {
 				if(enemyShield>playerPierce)
 					attack=attack+playerPierce;
 				else
 					attack=attack+enemyShield;
 			}
-		}
-		
-		if(card.getFlag().equals("forEachTargeted")) {
-			System.out.println("(Loc: Utilities.java -resolveAttack L315)  Gettings data for targeting" );
-			player.increaseXP(card.getforEachTargetedData().getExperience());
 		}
 		
 		System.out.println("Utility Class Damage 2: "+attack);
@@ -228,28 +209,6 @@ public final class UtilitiesAB {
 		}
 	}
 		
-	private static void infuseElement(CardDataObject card, InfusionTable elements) {
-	
-		if(card.darkInfusion)
-			elements.infuse("Dark");
-		
-		if(card.lightInfusion)
-			elements.infuse("Light");
-		
-		if(card.fireInfusion)
-			elements.infuse("Fire");
-		
-		if(card.iceInfusion)
-			elements.infuse("Ice");
-		
-		if(card.airInfusion)
-			elements.infuse("Air");
-		
-		if(card.earthInfusion)
-			elements.infuse("Earth");
-
-	}
-	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
 	/*

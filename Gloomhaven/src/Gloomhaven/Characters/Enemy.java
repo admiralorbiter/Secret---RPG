@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
-import Gloomhaven.SimpleCards;
+import Gloomhaven.CardDataObject.SimpleCardData;
 
 public class Enemy extends character{
 	
 	private boolean eliteFlag;
-	private SimpleCards baseStats;
+	private SimpleCardData baseStats;
 	
 	public Enemy(int id, String classID) {
 		
@@ -21,44 +21,16 @@ public class Enemy extends character{
 		
 		if(classID.equals("TestElite")) {
 			eliteFlag=true;
-			baseStats=new SimpleCards(4, 3, 6);
+			baseStats=new SimpleCardData(4, 3, 6);
 		}
 		else {
 			eliteFlag=true;
-			baseStats=new SimpleCards(3, 2, 5);
+			baseStats=new SimpleCardData(3, 2, 5);
 		}
 	}
 	
-	public SimpleCards getBaseStats() {return baseStats;}
+	public SimpleCardData getBaseStats() {return baseStats;}
 	public boolean isElite() {return eliteFlag;}
-
-	
-	//Should do ALL end of the round stuff
-	public void endOfRound() {
-		if(effects.getDisarm()) {
-			effects.switchDisarm();
-		}
-		
-		if(effects.getStun()) {
-			effects.switchStun();
-		}
-		
-		if(effects.getMuddle()) {
-			effects.switchMuddle();
-		}
-		
-		if(effects.getInvisibility()) {
-			effects.switchInvisibility();
-		}
-		
-		if(effects.getStrengthen()) {
-			effects.switchStrengthen();
-		}
-		
-		if(effects.getImmobilize()) {
-			effects.switchImmobilize();
-		}
-	}
 	
 	public void push(Point playerCoordinate, int pushRange) {
 		//If player is above it on the x axis, push down

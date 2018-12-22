@@ -28,13 +28,14 @@ public class CharacterDataObject {
 			case "TestElite":
 				health=TEST_HEALTH+scenarioLevel;
 				shield=TEST_SHIELD+scenarioLevel;
-				maxHealth=maxHealth+scenarioLevel;
+				maxHealth=TEST_HEALTH+scenarioLevel;
 			default:
 				level=1;
 				health=450;
 				xp=0;
 				shield=0;
 				level=1;
+				maxHealth=450;
 		}
 	}
 	

@@ -60,11 +60,12 @@ public class Player extends character {
 		
 		maxHandCount=setting.getMaxHandCount();
 		
-		randomlySelectCards();
-		/*
-		for(int i=0; i<maxHandCount; i++)
-			abilityDeck.add(new PlayerAbilityCard(classID, i+1, 1));
-		*/
+		if(classID.equals("Spellweaver"))
+			randomlySelectCards();
+		else {
+			for(int i=0; i<maxHandCount; i++)
+				abilityDeck.add(new PlayerAbilityCard(classID, i+1, 1));
+		}
 		
 		//Sets how many small items you can carry
 		if(data.getLevel()%2==0)

@@ -69,6 +69,7 @@ public class character {
 	}
 	
 	public void heal(int damageToHeal) {
+		System.out.println("character.java Loc 72: Health before heal    "+damageToHeal+": "+data.getHealth());
 		if(negativeConditions.isPoison()) {
 			negativeConditions.setPoison(false);
 		}else {
@@ -76,6 +77,7 @@ public class character {
 			if(data.getHealth()>data.getMaxHealth())
 				data.setHealth(data.getMaxHealth());
 		}
+		System.out.println("character.java Loc 80: Health after heal: "+data.getHealth());
 	}
 	
 	public boolean canAttack() {

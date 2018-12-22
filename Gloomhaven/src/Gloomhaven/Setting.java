@@ -56,7 +56,7 @@ public class Setting {
 	public int getGraphicsYMid() {return offsetYGraphicsMid;}
 	
 	
-	private String playerClass="Spellweaver";
+	private String playerClass="Mind Thief";
 	
 	
 	public int getMaxHandCount() {

@@ -3,7 +3,7 @@ package Gloomhaven.CardDataObject;
 import java.util.List;
 
 public class Effects {
-	private Target target = new Target();
+	private Target target = new Target("Self");
 	
 	private String flag="None";
 	

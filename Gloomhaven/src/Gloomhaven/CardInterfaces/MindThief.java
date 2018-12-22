@@ -47,7 +47,7 @@ public class MindThief implements CardInterface {
 			case 6:
 				card.setCardText("Augument On Melee Attack +2. Attack +1 XP +1 (I don't have it seperate the two things.");
 				card.setAugment(true);
-				card.getData().setAttack(1);
+				card.getData().setAttack(2);
 				card.getData().setXpOnUse(1);
 				break;
 			case 7:

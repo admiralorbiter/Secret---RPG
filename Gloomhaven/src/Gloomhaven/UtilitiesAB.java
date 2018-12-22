@@ -172,17 +172,17 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		/*
+		
 		if(player.isAugmented()) {
 			if(player.getAugmentCard().getName().equals("Feedback Loop"))
 				player.getCharacterData().setShield(1);
 			if(player.getAugmentCard().getName().equals("The Mind's Weakness"))
 				//If target is melee,
 				attack=attack+2;
-			if(player.getAugmentCard().getName().equals("Parasitic influence"))
+			if(player.getAugmentCard().getName().equals("Parasitic Influence"))
 				//If target is melle
 				player.heal(2);
-		}*/
+		}
 				
 		
 		int enemyShield=enemy.getCharacterData().getShield();

@@ -357,6 +357,7 @@ public class Scenario {
 			state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
 		}
 		else {
+			System.out.println("TEst");
 			//Next State: Long Rest or Player Choice
 			for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
 				if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks

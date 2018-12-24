@@ -2,6 +2,9 @@ package Gloomhaven;
 
 import java.awt.Point;
 
+import Gloomhaven.Pathfinding.Network;
+import Gloomhaven.Pathfinding.Node;
+
 public class Hex {
 	
 	String quickID="-";
@@ -9,7 +12,7 @@ public class Hex {
 	String lootID=" ";
 	boolean empty=true;
 	boolean loot=false;
-	Point coordinate;
+	Point coordinate = new Point();
 	boolean door=false;
 	boolean open=true;
 	int roomID=0;
@@ -64,6 +67,7 @@ public class Hex {
 	public boolean getDoor() {return door;}
 	public boolean getHidden() {return hidden;}
 	public void toggleShowHex() {hidden=false;}
+	public Point getCoordinates() {return coordinate;}
 	public boolean showHex() {
 		if(neverShown)
 			return false;
@@ -74,4 +78,5 @@ public class Hex {
 	}
 	public void disableHex() {neverShown=true;}
 	public int getRoomID() {return roomID;}
+	
 }

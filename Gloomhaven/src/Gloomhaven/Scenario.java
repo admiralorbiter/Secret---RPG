@@ -21,6 +21,7 @@ public class Scenario {
 	    INITIATIVE,
 	    ATTACK,
 	    ENEMY_ATTACK,
+	    ENEMY_MOVE,
 	    PLAYER_CHOICE,
 	    PLAYER_DEFENSE,
 	    PLAYER_DISCARD,

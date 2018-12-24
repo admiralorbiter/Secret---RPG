@@ -211,7 +211,7 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		if(player.isAugmented()) {
+		if(player.isAugmented() && checkMeleeRange(player,room.getBoard(),"E" , new Point(room.getWidth(), room.getHeight()))) {
 			if(player.getAugmentCard().getEffects()!=null)
 				if(player.getAugmentCard().getEffects().getShield()>0)
 					player.getCharacterData().setShield(1);

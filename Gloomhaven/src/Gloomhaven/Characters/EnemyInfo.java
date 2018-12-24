@@ -87,13 +87,18 @@ public class EnemyInfo {
 	public int getCount() {return enemies.size();}
 	
 	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
+		//TODO this needs to be rewritten
 		
 		if(enemies.get(index).canMove()) {
 			int move = enemies.get(index).getBaseStats().getMove();
-			List<Point> points = UtilitiesTargeting.createTargetList(room.getBoard(), move, enemies.get(index).getCoordinates(), "P", dimensions);
-			if(points.size()>0) {
-				//Move Closer
-				
+			for(int i=0; i<move; i++) {
+				List<Point> points = UtilitiesTargeting.createTargetList(room.getBoard(), move+3, enemies.get(index).getCoordinates(), "P", dimensions);
+				if(points.size()>0) {
+					//Move Closer
+					//picks the closest person on the createtargetlist
+					if(!room.moveEnemyOneHexCloser(enemies.get(index), points.get(0)))
+						System.out.println("Unable to move up/down/left/right   "+points.get(0));
+				}
 			}
 		}
 	}

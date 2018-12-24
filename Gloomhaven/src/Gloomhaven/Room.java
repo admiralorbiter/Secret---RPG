@@ -150,6 +150,8 @@ public class Room {
 	public Point getDimensions() {return dimensions.get(roomIndex);}
 	public boolean isSpaceEmpty(Point space) {return board[(int) space.getX()][(int) space.getY()].getSpaceFree();}
 	public Hex[][] getBoard(){return board;}
+	public int getWidth() {return width;}
+	public int getHeight() {return height;}
 	
 	//Creates and resets the room board
 	private void resetBoard(int index) {
@@ -443,11 +445,42 @@ public class Room {
 	public void moveEnemy(Enemy enemy, Point ending) {
 		Point starting=enemy.getCoordinates();
 		enemy.setCoordinates(ending);
-		System.out.println(starting+","+ending);
+
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
 		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
 		board[(int) starting.getX()][(int) starting.getY()].reset();
+	}
+	
+	public boolean moveEnemyOneHexCloser(Enemy enemy, Point player) {
+		boolean meleeRange=UtilitiesAB.checkMeleeRange(enemy, board, "P", new Point(width, height));
+		if(meleeRange==false) {
+			Point temp = new Point(enemy.getCoordinates());
+		
+			if((enemy.getCoordinates().getX()-player.getX())>0)
+				temp.translate(-1, 0);
+			else
+				temp.translate(1, 0);
+
+			if(board[(int)temp.getX()][(int)temp.getY()].getSpaceFree()) {
+				moveEnemy(enemy, new Point(temp));
+				return true;
+			}
+
+			temp = new Point(enemy.getCoordinates());
+			if((enemy.getCoordinates().getY()-player.getY())>0)
+				temp.translate(0, -1);
+			else
+				temp.translate(0, 1);
+
+			if(board[(int)temp.getX()][(int)temp.getY()].getSpaceFree()) {
+				moveEnemy(enemy, new Point(temp));
+				return true;
+			}
+			
+		}
+		
+		return false;
 	}
 	
 	

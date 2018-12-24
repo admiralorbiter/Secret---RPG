@@ -52,6 +52,7 @@ public class Enemy extends character{
 			}else {
 				//Push Left
 				
+				
 			}
 		}
 	}

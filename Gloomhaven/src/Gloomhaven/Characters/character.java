@@ -48,7 +48,8 @@ public class character {
 	public CharacterDataObject getCharacterData() {return data;}
 	public CardDataObject getRoundBonus() {return roundBonus;}
 	public void setRoundBonus(CardDataObject card) {this.roundBonus=card;}
-	public List<Counter> getTriggers(){return counterTriggers;}
+	public List<Counter> getCounterTriggers(){return counterTriggers;}
+	public List<Trigger> getRoundTriggers(){return roundTriggers;}
 	public PositiveConditions getPositiveConditions() {return positiveConditions;}
 	public NegativeConditions getNegativeConditions() {return negativeConditions;}
 	

@@ -13,6 +13,9 @@ public class Trigger {
 	private boolean triggerForEachTargeted=false;
 	private boolean triggerEnemyAlone=false;
 	
+	
+	private boolean onAttack=false;
+	
 	private SimpleCardData bonusData = new SimpleCardData();
 	
 	public Trigger() {
@@ -36,12 +39,15 @@ public class Trigger {
 		switch(triggerFlag) {
 		case "ForEachNegativeCondition":
 			triggerForEachNegativeConditionsOnTarget=true;
+			onAttack=true;
 			break;
 		case "ForEachTargeted":
 			triggerForEachTargeted=true;
+			onAttack=true;
 			break;
 		case "EnemyAlone":
 			triggerEnemyAlone=true;
+			onAttack=true;
 			break;
 		}
 	}
@@ -68,5 +74,6 @@ public class Trigger {
 	public SimpleCardData getBonusData() {return bonusData;}
 	public void setBonusData(SimpleCardData bonusData) {this.bonusData = bonusData;	}
 	public boolean isTriggerEnemyAlone() {return triggerEnemyAlone;}
-	
+	public void setTriggerOnAttackFlag(boolean triggerFlag) {this.onAttack=triggerFlag;}
+	public boolean isTriggerOnAttack() {return onAttack;}
 }

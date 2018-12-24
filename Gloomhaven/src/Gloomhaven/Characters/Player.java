@@ -27,7 +27,7 @@ public class Player extends character {
 	private AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");                      //Standard Attack Modifier Deck
 	private List<PlayerAbilityCard> inPlay = new ArrayList<PlayerAbilityCard>();							//List of cards in play
 
-	private PlayerAbilityCard augment = null;
+	private CardDataObject augment = null;
 
 	private List<String> lootInventory = new ArrayList<String>();
 	private List<Item> items = new ArrayList<Item>();
@@ -104,7 +104,7 @@ public class Player extends character {
 	public void setSmallItemTotal(int smallItemTotal) {this.smallItemTotal = smallItemTotal;}
 
 	//Player Variables
-	public PlayerAbilityCard getAugmentCard() {return augment;}
+	public CardDataObject getAugmentCard() {return augment;}
 	
 	//Item
 	public List<Item> getItems(){return items;}
@@ -533,27 +533,47 @@ public class Player extends character {
 		longRest=false;
 	}
 	
-	public void setAugment(PlayerAbilityCard card) {
-		augment=card;
-		inPlay.add(augment);
+	public void setAugment(PlayerAbilityCard abilityCard) {
+		if(abilityCard.getTopData().hasAugment()) {
+			augment=abilityCard.getTopData();
+		}
+		else {
+			augment=abilityCard.getBottomData();
+		}
 	}
 	
 	public void replaceAugmentCard(PlayerAbilityCard abilityCard) {
-		abilityDeck.get(abilityDeck.indexOf(augment)).setCardInlostPile();
-		inPlay.remove(augment);
-		augment=abilityCard;
-		inPlay.add(augment);
+		//Set previous augment in the lost pile
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if((abilityDeck.get(i).getTopData()==augment) || (abilityDeck.get(i).getBottomData()==augment)) {
+				abilityDeck.get(i).setCardInlostPile();
+			}
+		}
+		abilityDeck.get(abilityDeck.indexOf(abilityCard)).setCardInPlay();
+		
+		if(abilityCard.getTopData().hasAugment()) {
+			augment=abilityCard.getTopData();
+		}
+		else {
+			augment=abilityCard.getBottomData();
+		}
 	}
 	
 	public void discardAugmentCard() {
+		inPlay.remove(abilityDeck.get(abilityDeck.indexOf(augment)));
 		abilityDeck.get(abilityDeck.indexOf(augment)).setCardInlostPile();
 		augment=null;
 	}
 
 	public void graphicsDrawCardsInPlay(Graphics g) {
 		g.drawString("Cards in play.", setting.getGraphicsXRight(), setting.getGraphicsYTop());
+		
+		
+		if(augment!=null)
+			g.drawString(augment.getCardText(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+15);
+		
 		for(int i=0; i<inPlay.size(); i++) {
-			g.drawString(inPlay.get(i).getName(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+15+15*i);
+			g.drawString(inPlay.get(i).getName(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+30+15*i);
 		}
 		
 		for(int j=0; j<counterTriggers.size(); j++) {

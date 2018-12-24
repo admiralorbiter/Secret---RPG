@@ -357,7 +357,7 @@ public class Scenario {
 			state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
 		}
 		else {
-			System.out.println("TEst");
+
 			//Next State: Long Rest or Player Choice
 			for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
 				if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
@@ -781,8 +781,8 @@ public class Scenario {
 										targets.remove(targets.indexOf(room.getSelectionCoordinates()));
 										System.out.println("2:  "+targets);
 									}else {
-										for(int i=0; i<party.get(playerIndex).getTriggers().size(); i++) {
-											if(party.get(playerIndex).getTriggers().get(i).getTriggerFlag().equals("forEachTargeted"))
+										for(int i=0; i<party.get(playerIndex).getCounterTriggers().size(); i++) {
+											if(party.get(playerIndex).getCounterTriggers().get(i).getTriggerFlag().equals("forEachTargeted"))
 												System.out.println("Scenario.java Loc 648: Reminder that there needs to be a resolution for forEachTargeted flag");
 										}
 

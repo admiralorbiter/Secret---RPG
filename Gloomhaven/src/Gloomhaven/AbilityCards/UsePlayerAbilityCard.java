@@ -62,20 +62,13 @@ public final class UsePlayerAbilityCard {
 		return 0;
 	}
 	
-	public static boolean hasAugment(PlayerAbilityCard card) {
+	public static boolean hasAugment(CardDataObject augment) {
 		
-		if(card==null)
+		if(augment==null)
 			return false;
 		
-		String flag=card.getFlag();
-		
-		if(flag=="Top")
-			return card.getTopData().hasAugment();
-		
-		if(flag=="Bottom")
-			return card.getBottomData().hasAugment();
-		
-		return false;
+		return augment.hasAugment();
+
 	}
 	
 	public static boolean hasFlying(PlayerAbilityCard card) {

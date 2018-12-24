@@ -22,6 +22,9 @@ public final class UtilitiesAB {
 		CardDataObject card = new CardDataObject();
 		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData()
 		
+		if(card.getData().getRoundBonusFlag())
+			player.setRoundBonus(card);
+		
 		if(card.getTrigger()!=null)
 			player.addRoundTrigger(card.getTrigger());
 		
@@ -48,11 +51,21 @@ public final class UtilitiesAB {
 			}
 			
 			if(card.getEffects().getShield()>0) {
-				player.getRoundBonus().getEffects().setShield(card.getEffects().getShield());
+				if(player.getRoundBonus().getEffects()!=null)
+					player.getRoundBonus().getEffects().setShield(card.getEffects().getShield());
+				else {
+					player.setRoundBonus(new CardDataObject());
+					player.getRoundBonus().setEffects(new Effects("Shield", card.getEffects().getShield(), 0));
+				}
 			}
 			
 			if(card.getEffects().getRetaliate()>0) {
-				player.getRoundBonus().getEffects().setRetaliate(card.getEffects().getRetaliate());
+				if(player.getRoundBonus().getEffects()!=null)
+					player.getRoundBonus().getEffects().setRetaliate(card.getEffects().getRetaliate());
+				else {
+					player.setRoundBonus(new CardDataObject());
+					player.getRoundBonus().setEffects(new Effects("Retaliate", card.getEffects().getRetaliate(), card.getEffects().getRange()));
+				}
 			}
 		}
 		if(card.getRecoverLostCards()>0) {
@@ -138,27 +151,52 @@ public final class UtilitiesAB {
 		if(card.getNegativeConditions()!=null) {
 			enemy.getNegativeConditions().setNegativeConditions(card.getNegativeConditions());
 		}
+		
 		if(player.getRoundBonus()!=null) {
 			if(player.getRoundBonus().getNegativeConditions()!=null) {
 				enemy.getNegativeConditions().setNegativeConditions(player.getRoundBonus().getNegativeConditions());
 			}
 		}
 		
-		
-		for(int i=0; i<player.getTriggers().size(); i++) {
-			if(player.getTriggers().get(i).getTriggerFlag().equals("EnemyAlone")) {
-				if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
-					if(player.getTriggers().get(i).getBonusData().getAttack()>0)
-						attack=attack+player.getTriggers().get(i).getBonusData().getAttack();
-					
-					if(player.getTriggers().get(i).getBonusData().getXpOnUse()>0)
-						player.increaseXP(player.getTriggers().get(i).getBonusData().getXpOnUse());
+		//Add trigger effects to attacks
+		for(int i=0; i<player.getRoundTriggers().size(); i++) {
+			if(player.getRoundTriggers().get(i).isTriggerOnAttack()) {
+				if(player.getRoundTriggers().get(i).getTriggerFlag().equals("EnemyAlone")) {
+					if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
+						if(player.getRoundTriggers().get(i).getBonusData().getAttack()>0)
+							attack=attack+player.getRoundTriggers().get(i).getBonusData().getAttack();
+						
+						if(player.getRoundTriggers().get(i).getBonusData().getXpOnUse()>0)
+							player.increaseXP(player.getRoundTriggers().get(i).getBonusData().getXpOnUse());
+					}
+				}
+				
+				if(player.getRoundTriggers().get(i).getTriggerFlag().equals("ForEachTargeted")) {
+					player.increaseXP(player.getRoundTriggers().get(i).getBonusData().getXpOnUse());
+				}
+				
+				if(player.getRoundTriggers().get(i).equals("ForEachNegativeCondition")) {
+					for(int j=0; j<enemy.getNegativeConditions().countNegativeConditions(); j++) {
+						if(player.getRoundTriggers().get(i).getBonusData().getAttack()>0)
+							attack=attack+player.getRoundTriggers().get(i).getBonusData().getAttack();
+						
+						if(player.getRoundTriggers().get(i).getBonusData().getXpOnUse()>0)
+							player.increaseXP(player.getRoundTriggers().get(i).getBonusData().getXpOnUse());
+					}
 				}
 			}
-			
-			if(player.getTriggers().get(i).getTriggerFlag().equals("ForEachTargeted")) {
-				player.increaseXP(player.getTriggers().get(i).getBonusData().getXpOnUse());
+		}
+		
+		//Add counter to attacks
+		for(int i=0; i<player.getCounterTriggers().size(); i++) {
+			if(player.getCounterTriggers().get(i).isTriggerOnAttack()) {
+				if(player.getCounterTriggers().get(i).getBonusData().getAttack()>0)
+					attack=attack+player.getCounterTriggers().get(i).getBonusData().getAttack();
+				
+				if(player.getCounterTriggers().get(i).getBonusData().getXpOnUse()>0)
+					player.increaseXP(player.getCounterTriggers().get(i).getBonusData().getXpOnUse());
 			}
+			
 		}
 		
 		if(card.getConsumeElementalFlag()) {
@@ -173,18 +211,22 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		
 		if(player.isAugmented()) {
-			if(player.getAugmentCard().getName().equals("Feedback Loop"))
-				player.getCharacterData().setShield(1);
-			if(player.getAugmentCard().getName().equals("The Mind's Weakness"))
-				//If target is melee,
-				attack=attack+2;
-			if(player.getAugmentCard().getName().equals("Parasitic Influence"))
-				//If target is melle
-				player.heal(2);
-		}
+			if(player.getAugmentCard().getEffects()!=null)
+				if(player.getAugmentCard().getEffects().getShield()>0)
+					player.getCharacterData().setShield(1);
 				
+				if(player.getAugmentCard().getCounter()!=null)
+					if(distance(player.getCoordinates(), enemy.getCoordinates())<=player.getAugmentCard().getCounter().getBonusData().getRange()) {
+						attack=attack+player.getAugmentCard().getCounter().getBonusData().getAttack();
+					
+					
+					if(player.getAugmentCard().getEffects()!=null) {
+						if(player.getAugmentCard().getEffects().getHeal()>0)
+							player.heal(player.getAugmentCard().getEffects().getHeal());
+					}
+				}
+		}
 		
 		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){

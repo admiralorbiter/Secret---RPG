@@ -85,7 +85,7 @@ public class Counter {
 				triggerOnAttack=true;
 			default:
 				System.out.println("Error: Counter");
-				System.exit(0);
+				//System.exit(0);
 		}
 		
 		switch(effectFlag) {

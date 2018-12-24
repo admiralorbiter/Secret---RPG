@@ -1,9 +1,11 @@
 package Gloomhaven.CardInterfaces;
 
 import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.CardDataObject.Counter;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.PositiveConditions;
+import Gloomhaven.CardDataObject.SimpleCardData;
 import Gloomhaven.CardDataObject.Trigger;
 
 public class MindThief implements CardInterface {
@@ -16,7 +18,7 @@ public class MindThief implements CardInterface {
 	
 		switch(id) {
 			case 1:
-				card.setCardText("Attack +2 and (add +1 Attack for each negative condition on target.) Unimplemented. XP +1");
+				card.setCardText("Attack +2 and (add +1 Attack for each negative condition on target.) XP +1");
 				card.getData().setAttack(2);
 				card.setTrigger(new Trigger("ForEachNegativeCondition"));
 				card.getTrigger().getBonusData().setAttack(1);
@@ -45,13 +47,15 @@ public class MindThief implements CardInterface {
 				card.getData().setXpOnUse(2);
 				break;
 			case 6:
-				card.setCardText("Augument On Melee Attack +2. Attack +1 XP +1 (I don't have it seperate the two things.");
+				card.setCardText("Augument On Melee Attack +2. Attack +1 XP +1");
 				card.setAugment(true);
-				card.getData().setAttack(2);
+				card.setCounter(new Counter(1000, "OnMeleeAttack", new SimpleCardData()));
+				card.getCounter().getBonusData().setAttack(2);
+				card.getData().setAttack(1);
 				card.getData().setXpOnUse(1);
 				break;
 			case 7:
-				card.setCardText("Augument On Melee Attack Heal +2. Attack +1. XP +1 (I don't have it seperate the two things.");
+				card.setCardText("Augument On Melee Attack Heal +2. Attack +1. XP +1.");
 				card.setAugment(true);
 				card.setEffects(new Effects("Heal", 2, 0));
 				card.getData().setAttack(1);

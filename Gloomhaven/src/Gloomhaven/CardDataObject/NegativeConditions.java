@@ -171,4 +171,30 @@ public class NegativeConditions {
 		if(flag.equals("Stun"))
 			stunCount++;
 	}
+	
+	public int countNegativeConditions() {
+		int count=0;
+		if(curse)
+			count++;
+		
+		if(disarm)
+			count++;
+		
+		if(immobilize)
+			count++;
+		
+		if(wound)
+			count++;
+		
+		if(muddle)
+			count++;
+		
+		if(poison)
+			count++;
+		
+		if(stun)
+			count++;
+		
+		return count;
+	}
 }

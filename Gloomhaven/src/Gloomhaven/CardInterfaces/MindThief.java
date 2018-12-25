@@ -99,6 +99,7 @@ public class MindThief implements CardInterface {
 			case 1:
 				card.setCardText("Mindcontrol: Force enemy to target another enemy at Range 5. Attack +2 Range +0 (Unimplemented)");
 				//Force one enemy within 5 range to do 2 attack to melee
+				card.setMindControl(true);
 				//card.mindControl=true;
 				card.getData().setRange(5);
 				card.getData().setAttack(2);
@@ -130,6 +131,7 @@ public class MindThief implements CardInterface {
 				break;
 			case 7:
 				card.setCardText("MindControl: Force enemy to move with player control of range 4. Move +1. (Unimplemented)");
+				card.setMindControl(true);
 				card.getData().setRange(4);
 				card.getData().setMove(1);
 				break;

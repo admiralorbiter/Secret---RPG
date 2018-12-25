@@ -139,13 +139,13 @@ public final class UsePlayerAbilityCard {
 	
 	public static boolean hasMindControl(PlayerAbilityCard card) {
 		String flag=card.getFlag();
-		/*
+		
 		if(flag=="Top")
-			return card.getTopData().hasMindControl();
+			return card.getTopData().getMindControl();
 		
 		if(flag=="Bottom")
-			return card.getBottomData().hasMindControl();
-		*/
+			return card.getBottomData().getMindControl();
+		
 		return false;
 	}
 }

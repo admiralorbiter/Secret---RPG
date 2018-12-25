@@ -18,6 +18,8 @@ public class CardDataObject {
 	
 	private int recoverLostCards=0;
 	
+	private boolean mindcontrol=false;
+	
 	private String cardText=baseData.getCardText();
 	
 	private int id;
@@ -54,6 +56,8 @@ public class CardDataObject {
 	public void setID(int id) {this.id=id;}
 	public boolean hasAugment() {return augment;}
 	public void setAugment(boolean augment) {this.augment=augment;}
+	public boolean getMindControl() {return mindcontrol;}
+	public void setMindControl(boolean mindcontrol) {this.mindcontrol=mindcontrol;}
 	public void setInfuseElemental(String infuseElemental) {
 		this.infuseElemental=infuseElemental;
 		this.infuseElementalFlag=true;

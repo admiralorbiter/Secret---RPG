@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
+import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.EnemyInfo;
 import Gloomhaven.Characters.Player;
@@ -985,13 +986,13 @@ public class Scenario {
 	
 	private void mindcontrol() {
 		boolean finished=false;
-		/*
-		if(UsePlayerAbilityCard.getCardData(card).getMindControData().getMove()>0)
-			finished=mindControlMove(party.get(playerIndex), enemyControlled, g);
 		
-		if(UsePlayerAbilityCard.getCardData(card).getMindControData().getAttack()>0)
-			finished=mindControlAttack(party.get(playerIndex), enemyControlled, g);
-		*/
+		if(UsePlayerAbilityCard.getCardData(card).getData().getMove()>0)
+			finished=mindControlMove(party.get(playerIndex), enemyControlled);
+		
+		if(UsePlayerAbilityCard.getCardData(card).getData().getAttack()>0)
+			finished=mindControlAttack(party.get(playerIndex), enemyControlled);
+		
 		//Next State: Next card, Attack Logic, End Round
 		if(finished) {
 			if(party.get(currentPlayer).getCardChoice()==false) {
@@ -1005,6 +1006,93 @@ public class Scenario {
 					state=State.ATTACK;
 				}
 			}
+		}
+	}
+	
+	private boolean mindControlMove(Player player, Enemy enemy) {
+		boolean finished=false;
+
+		
+		//Highlight tiles that players can move to
+		Point enemyPoint=enemy.getCoordinates();
+		CardDataObject cardData = UsePlayerAbilityCard.getCardData(card);
+		
+		for(int r=1; r<=cardData.getData().getRange(); r++) {
+			room.drawRange(g, enemyPoint, r, Color.BLUE);
+		}
+
+		//Moves selection highlight
+		g.drawString("Press "+setting.getMoveKey()+"to move.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		selection(g);
+		
+		//Player moves if the space is empty or the space hasn't changed
+		if(k==setting.getMoveKey()) {
+			if(room.isSpace(room.getSelectionCoordinates(), "E")) {
+				return true;
+			}
+			else if(UsePlayerAbilityCard.hasFlying(card)) {
+				//NEED TO HANDLE MULTIPLE PEOPLE OR THINGS ON A HEX
+				room.moveEnemy(enemy, room.getSelectionCoordinates());
+				enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
+				return true;
+			}
+			else if(UsePlayerAbilityCard.hasJump(card)) {
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+					room.moveEnemy(enemy, room.getSelectionCoordinates());
+					enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
+					return true;
+				}
+
+			}else {
+				//NEED TO ADD IN A CHECK FOR PATH IF JUMP IS NOT TRUE
+				if(room.isSpaceEmpty(room.getSelectionCoordinates())) {
+					room.moveEnemy(enemy, room.getSelectionCoordinates());
+					enemy.setCoordinates(new Point(room.getSelectionCoordinates()));
+					return true;
+				}
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	private boolean mindControlAttack(Player player, Enemy enemy) {
+		boolean finished=false;
+		
+		g.drawString("Press "+setting.getTargetKey()+" to target.", setting.getGraphicsX(), setting.getGraphicsYBottom());
+		
+		//Creates target list of enemy coordinates
+		List<Point> targets = new ArrayList<Point>();
+		int cardRange=UsePlayerAbilityCard.getCardData(card).getData().getRange();
+		if(cardRange>=0) {
+			if(cardRange==0)
+				cardRange=1;
+	
+				for(int range=1; range<=cardRange; range++)
+					targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, enemy.getCoordinates(), "E", room.getDimensions());
+		}
+		
+		//If there are targets, highlight the targets and wait for selection
+		if(targets.size()>0) {
+
+			room.highlightTargets(targets, g);
+			selection(g);
+			
+			//Space is used for selection of target
+			if(k==setting.getTargetKey()) {
+				if(room.isSpace(room.getSelectionCoordinates(), "E")) {							//If the space selected has an enemy
+					if(targets.contains(room.getSelectionCoordinates())){						//If the target is in range
+							UtilitiesAB.resolveAttackEnemyOnEnemy(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())), enemy, UsePlayerAbilityCard.getCardData(card).getData().getAttack());
+							return true;
+					}
+				}
+				return false;
+			}
+			else {
+				return false;
+			}
+		}else {																					//If there are no enemies in target range
+			return true;
 		}
 	}
 	

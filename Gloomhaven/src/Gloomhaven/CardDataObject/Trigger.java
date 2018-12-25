@@ -12,7 +12,7 @@ public class Trigger {
 	private boolean triggerForEachNegativeConditionsOnTarget=false;
 	private boolean triggerForEachTargeted=false;
 	private boolean triggerEnemyAlone=false;
-	
+	private boolean triggerAdjacentToAllies=false;
 	private boolean triggerOnRetaliate=false;
 	
 	private boolean onAttack=false;
@@ -53,6 +53,10 @@ public class Trigger {
 			case "OnRetaliate":
 				triggerOnRetaliate=true;
 				onAttack=false;
+				break;
+			case "AdjacentToAllies":
+				triggerAdjacentToAllies=true;
+				onAttack=true;
 				break;
 		}
 	}

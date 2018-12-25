@@ -7,9 +7,10 @@ public class CardsTest implements CardInterface {
 	@Override
 	public CardDataObject getTop(int id) {
 		CardDataObject top = new CardDataObject();	
-		top.range=2;
+		
 		switch(id)
 		{
+		/*
 			case 1:
 				top.move=3;
 				top.attack=3;
@@ -79,19 +80,20 @@ public class CardsTest implements CardInterface {
 				top.name="All Mine";
 				top.initiative=11;
 				break;
-				
+				*/
 		}
 		//[Test]
-		top.text=top.name+"  "+top.attack+" attack and "+top.move+" move.";
+		//top.text=top.name+"  "+top.attack+" attack and "+top.move+" move.";
 		return top;
 	}
 
 	@Override
 	public CardDataObject getBottom(int id) {
 		CardDataObject bottom = new CardDataObject();	
-		bottom.range=2;
+		//bottom.range=2;
 		switch(id)
 		{
+		/*
 			case 1:
 				bottom.move=3;
 				bottom.attack=3;
@@ -151,11 +153,12 @@ public class CardsTest implements CardInterface {
 				bottom.move=2;
 				bottom.attack=1;
 				break;
+				*/
 				
 		}
 		
 		//[Test]
-		bottom.text=bottom.attack+" attack and "+bottom.move+" move.";
+		//bottom.text=bottom.attack+" attack and "+bottom.move+" move.";
 		return bottom;
 	}
 
@@ -163,6 +166,18 @@ public class CardsTest implements CardInterface {
 	public CardDataObject getData(int i) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getName(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getInitiative(int id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -34,7 +34,8 @@ public class Room {
 		//enemies=setup.getEnemies();	
 		switch(id) {
 			case "Test":
-				dimensions.add(new Point(13, 10));
+				dimensions.add(new Point(9, 9));
+				dimensions.add(new Point(3, 3));
 				width=13;
 				height=11;
 				board=new Hex[width][height];
@@ -148,6 +149,7 @@ public class Room {
 	public String getLootID(Point point) {return board[(int)point.getX()][(int)point.getY()].getLootID();}
 	public Point getDimensions(int index) {return dimensions.get(index);}
 	public Point getDimensions() {return dimensions.get(roomIndex);}
+	//public Point getDimensions() {return new Point(width, height);}
 	public boolean isSpaceEmpty(Point space) {return board[(int) space.getX()][(int) space.getY()].getSpaceFree();}
 	public Hex[][] getBoard(){return board;}
 	public int getWidth() {return width;}

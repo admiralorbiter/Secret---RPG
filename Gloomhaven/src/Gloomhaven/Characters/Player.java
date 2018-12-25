@@ -725,6 +725,44 @@ public class Player extends character {
 		return damage;
 	}
 	
+	@Override
+	public void takeDamage(int damage) {
+		
+		if(counterTriggers.size()>0) {
+			for(int i=0; i<counterTriggers.size(); i++) {
+				if(counterTriggers.get(i).isTriggerOnDamage() || counterTriggers.get(i).isTriggerOnMeleeAttack()) {
+					if(counterTriggers.get(i).getEffectFlag().equals("NoDamage"))
+						damage=0;
+					
+					counterTriggers.get(i).addToCounter();
+				}
+				
+				if(counterTriggers.get(i).isAtMaxCount())
+					counterTriggers.remove(i);
+			}
+		}
+		
+		if(negativeConditions.isPoison())
+			damage=damage+1;
+		
+
+		if(augment!=null)
+			if(augment.getEffects()!=null)
+				if(augment.getEffects().getShield()>0)
+					if(damage-augment.getEffects().getShield()>=0)
+						damage=damage-augment.getEffects().getShield();
+		
+		if(data.getShield()>0)
+			if(damage-data.getShield()>=0)
+				damage=damage-data.getShield();
+		
+		if(damage>0)
+			data.setHealth(data.getHealth()-damage);
+				
+		//[Test]
+		System.out.println(name+" was attacked for "+damage+" making thier health "+data.getHealth());
+	}
+	
 	public void increaseXP(int xpGained) {data.setXp(data.getXp()+xpGained);}
 	
 	public void removeItem(Item item) {

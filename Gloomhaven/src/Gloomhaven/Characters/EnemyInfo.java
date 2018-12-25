@@ -92,7 +92,7 @@ public class EnemyInfo {
 		if(enemies.get(index).canMove()) {
 			int move = enemies.get(index).getBaseStats().getMove();
 			for(int i=0; i<move; i++) {
-				List<Point> points = UtilitiesTargeting.createTargetList(room.getBoard(), move+3, enemies.get(index).getCoordinates(), "P", dimensions);
+				List<Point> points = UtilitiesTargeting.createTargetList(room.getBoard(), move+3, enemies.get(index).getCoordinates(), "P", room.getDimensions());
 				if(points.size()>0) {
 					//Move Closer
 					//picks the closest person on the createtargetlist

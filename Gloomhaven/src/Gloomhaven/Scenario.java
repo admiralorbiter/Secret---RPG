@@ -593,8 +593,10 @@ public class Scenario {
 					targets.add(party.get(playerIndex).getCoordinates());
 				}
 				else {
+				
 					for(int range=1; range<=cardRange; range++)
 						targets=UtilitiesTargeting.createTargetList(room.getBoard(), range, party.get(playerIndex).getCoordinates(), "E", room.getDimensions());
+					
 				}
 			}
 			

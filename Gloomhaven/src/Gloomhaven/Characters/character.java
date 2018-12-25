@@ -124,6 +124,7 @@ public class character {
 		if(negativeConditions.isPoison())
 			damage=damage+1;
 		
+		
 		if(damage>0)
 			data.setHealth(data.getHealth()+data.getShield()-damage);
 				

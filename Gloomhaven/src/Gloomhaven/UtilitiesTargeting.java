@@ -55,24 +55,26 @@ public final class UtilitiesTargeting {
 			
 						//Converts cube coord to a coord to plot
 						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(starting.getX()%2!=0)
+						if(starting.getY()%2!=0)
 							convertedPoint=UtilitiesBoard.cubeToCoordOdd(x, y, z);
 						else
 							convertedPoint=UtilitiesBoard.cubeToCoordEven(x, y, z);
 
 						int xToPlot=(int)(convertedPoint.getX()+starting.getX());
 						int yToPlot=(int) (convertedPoint.getY()+starting.getY());
-
-						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY())
+						
+						if(xToPlot>=0 && xToPlot<=dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<=dimensions.getY()) {
+								//System.out.println(board[xToPlot][yToPlot].getQuickID());
 								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
 									targets.add(new Point(xToPlot,yToPlot));
+								}
+							}
 						}
 
 					}
 				}
 			}
-		}
 		
 		return targets;
 	}

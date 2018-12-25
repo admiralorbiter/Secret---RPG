@@ -21,6 +21,8 @@ public class Target {
 	private boolean line=false;
 	private boolean ally=false;
 	private boolean allAllies=false;
+	private boolean allAdjacent=false;
+	private boolean oneAdjacent=false;
 	
 	private int lineLength=0;
 	
@@ -54,6 +56,8 @@ public class Target {
 		
 		targetFlagList.add("Self");
 		targetFlagList.add("OpposingAttack");
+		targetFlagList.add("AllAdjacent");
+		targetFlagList.add("OneAdjacentEnemy");
 		targetFlagList.add("AllAdjacentEnemies");
 		targetFlagList.add("AllAdjacentAllies");
 		targetFlagList.add("AllEnemiesInRoom");
@@ -77,6 +81,12 @@ public class Target {
 				break;
 			case "OpposingAttack":
 				opposingAttack=true;
+				break;
+			case "OneAdjacentEnemy":
+				oneAdjacent=true;
+				break;
+			case "AllAdjacent":
+				allAdjacent=true;
 				break;
 			case "AllAdjacentEnemies":
 				allAdjacentEnemies=true;

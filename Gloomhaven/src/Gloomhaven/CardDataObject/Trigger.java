@@ -13,6 +13,7 @@ public class Trigger {
 	private boolean triggerForEachTargeted=false;
 	private boolean triggerEnemyAlone=false;
 	
+	private boolean triggerOnRetaliate=false;
 	
 	private boolean onAttack=false;
 	
@@ -37,18 +38,22 @@ public class Trigger {
 		this.effectFlag=effectFlag;
 		
 		switch(triggerFlag) {
-		case "ForEachNegativeCondition":
-			triggerForEachNegativeConditionsOnTarget=true;
-			onAttack=true;
-			break;
-		case "ForEachTargeted":
-			triggerForEachTargeted=true;
-			onAttack=true;
-			break;
-		case "EnemyAlone":
-			triggerEnemyAlone=true;
-			onAttack=true;
-			break;
+			case "ForEachNegativeCondition":
+				triggerForEachNegativeConditionsOnTarget=true;
+				onAttack=true;
+				break;
+			case "ForEachTargeted":
+				triggerForEachTargeted=true;
+				onAttack=true;
+				break;
+			case "EnemyAlone":
+				triggerEnemyAlone=true;
+				onAttack=true;
+				break;
+			case "OnRetaliate":
+				triggerOnRetaliate=true;
+				onAttack=false;
+				break;
 		}
 	}
 	
@@ -58,6 +63,7 @@ public class Trigger {
 		triggerFlagList.add("ForEachNegativeCondition");
 		triggerFlagList.add("ForEachTargeted");
 		triggerFlagList.add("EnemyAlone");
+		triggerFlagList.add("OnRetaliate");
 		
 		return triggerFlagList;
 	}

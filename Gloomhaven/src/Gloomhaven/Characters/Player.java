@@ -620,7 +620,7 @@ public class Player extends character {
 		g.drawString("Discard Pile:", 10, 115);
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).isDiscardFlag())
-				g.drawString(i+": "+abilityDeck.get(i).getText(), 10, 130+i*15);
+				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+" "+abilityDeck.get(i).getText()[1]+" "+abilityDeck.get(i).getText()[2], 10, 130+i*15);
 		}
 	}
 	

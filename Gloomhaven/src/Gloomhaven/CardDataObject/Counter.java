@@ -84,7 +84,8 @@ public class Counter {
 			case "OnMeleeAttack":
 				triggerOnAttack=true;
 			default:
-				System.out.println("Error: Counter");
+				triggerOnAttack=true;
+				System.out.println("Error: Counter "+triggerFlag);
 				//System.exit(0);
 		}
 		

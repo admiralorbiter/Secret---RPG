@@ -41,12 +41,14 @@ public final class UtilitiesAB {
 			player.getPositiveConditions().setPositiveConditions(card.getPositiveConditions());
 				
 		if(card.getEffects()!=null) {
+					
 			if(card.getEffects().getHeal()>0 && card.getEffects().getTarget().isSelf())
 				player.heal(card.getEffects().getHeal());
 			
 			if(card.getEffects().getLoot()>0) {
 				List<Point> loot = new ArrayList<Point>();
-				loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getEffects().getLoot(), player.getCoordinates(), "Loot", room.getDimensions());
+				loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getEffects().getLoot()+1, player.getCoordinates(), "Loot", room.getDimensions());
+				
 				room.loot(player, loot);
 			}
 			

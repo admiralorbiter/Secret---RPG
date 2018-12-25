@@ -28,7 +28,7 @@ public class Effects {
 		this.flag=flag;
 		this.range=range;
 		
-		setEffect(flag, amount);
+		setEffect(flag, amount, range);
 	}
 	
 	public Effects(List<String> flags, int[] amounts, int range) {
@@ -37,11 +37,11 @@ public class Effects {
 		this.range=range;
 		
 		for(int i=0; i<flags.size(); i++) {
-			setEffect(flags.get(i), amounts[i]);
+			setEffect(flags.get(i), amounts[i], range);
 		}
 	}
 	
-	public void setEffect(String flag, int amount) {
+	public void setEffect(String flag, int amount, int range) {
 		switch(flag) {
 			case "Pierce":
 				pierce=amount;
@@ -56,7 +56,10 @@ public class Effects {
 				heal=amount;
 				break;
 			case "Loot":
-				loot=amount;
+				if(amount>range)
+					loot=amount;
+				else
+					loot=range;
 				break;
 			case "Retaliate":
 				retaliate=amount;

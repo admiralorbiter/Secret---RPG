@@ -96,3 +96,7 @@ Table
 3
 Obs
 Table
+1
+6
+Loot
+Gold

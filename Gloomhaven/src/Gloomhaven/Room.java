@@ -709,13 +709,16 @@ public class Room {
 	}
 	
 	public void loot(Player player, List<Point> loot) {
+		
 		for(int i=0; i<loot.size(); i++) {
+			
 			player.addLoot(board[(int) loot.get(i).getX()][(int) loot.get(i).getY()]);
 			board[(int) loot.get(i).getX()][(int) loot.get(i).getY()].reset();
 		}
 	}
 	
 	public void loot(Player player, Point loot) {
+	
 		player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
 		board[(int) loot.getX()][(int) loot.getY()].reset();
 	}

@@ -1,7 +1,9 @@
-package Gloomhaven;
+package Gloomhaven.EventCards;
 
 import java.util.List;
 
+import Gloomhaven.City;
+import Gloomhaven.ItemLoader;
 import Gloomhaven.Characters.Player;
 
 public final class RoadEventCardUtilities {
@@ -26,10 +28,11 @@ public final class RoadEventCardUtilities {
 						changePartyGold(1, party);
 					break;
 				case 5:
-					//TODO: Need to add collective item
+					gloomhaven.addCollectiveItems(ItemLoader.Load(106));
 					break;
 				case 6:
 					//TODO: Lose 1 mark each
+					//Not implemented
 					break;
 				case 7:
 					changeXP(5, party);
@@ -39,6 +42,7 @@ public final class RoadEventCardUtilities {
 					break;
 				case 9:
 					//TODO: Need consume 1 collective item
+					//Not implemented
 					break;
 					
 			}

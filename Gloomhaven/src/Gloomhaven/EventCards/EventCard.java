@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.EventCards;
 
 public class EventCard {
 	String optionA;

@@ -8,6 +8,7 @@ public class City {
 	private int reputationLevel=0;
 	private List<String> globalAchievements = new ArrayList<String>();
 	private List<String> partyAchievements = new ArrayList<String>();
+	private List<Item> collectiveItems = new ArrayList<Item>();
 	
 	public City() {
 		
@@ -28,4 +29,6 @@ public class City {
 	public void changeProsperity(int change) {this.prospLevel=this.prospLevel-change;}
 	public List<String> getPartyAchievements(){return partyAchievements;}
 	public void addPartyAchievement(String achievement) {partyAchievements.add(achievement);}
+	public List<Item> getCollectiveItems(){return collectiveItems;}
+	public void addCollectiveItems(Item item) {collectiveItems.add(item);}
 }

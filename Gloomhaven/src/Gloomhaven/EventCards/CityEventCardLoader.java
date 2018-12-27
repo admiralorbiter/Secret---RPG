@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.EventCards;
 
 public final class CityEventCardLoader {
 

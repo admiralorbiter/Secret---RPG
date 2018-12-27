@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.EventCards;
 
 public final class RoadEventCardLoader {
 	public static String cardText(int id) {

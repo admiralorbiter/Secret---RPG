@@ -759,6 +759,13 @@ public class Player extends character {
 	@Override
 	public void takeDamage(int damage) {
 		
+		for(int i=0; i<items.size(); i++) {
+			if(items.get(i).getPlayFlag().equals("when_attacked")) {
+				//TODO: Need to go through items that could be triggered
+				System.out.println("Player.java -takeDamage Loc 764: item may have been triggered due to an attack");
+			}
+		}
+		
 		if(counterTriggers.size()>0) {
 			for(int i=0; i<counterTriggers.size(); i++) {
 				if(counterTriggers.get(i).isTriggerOnDamage()) {
@@ -835,6 +842,11 @@ public class Player extends character {
 					abilityDeck.get(i).resetCardFlags();
 			}
 		}
+	}
+	
+	public void addItem(List<Item> collectiveItems) {
+		for(int i=0; i<collectiveItems.size(); i++)
+			items.add(collectiveItems.get(i));
 	}
 	
 }

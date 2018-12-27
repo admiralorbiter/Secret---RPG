@@ -29,6 +29,7 @@ public final class ItemLoader {
 				item.inventoryTracker(2);
 				break;
 			case 4:
+				//TODO: Need to utilize items when attacked
 				item = new Item(id, 20, "Leather Armor", "Body", "spent", "when_attacked", 1);
 				item.setText("When attacked, the attacker gains Disadvantage on the attack");
 				item.inventoryTracker(2);
@@ -43,11 +44,13 @@ public final class ItemLoader {
 				item.inventoryTracker(2);
 				break;
 			case 7:
+				//TODO: Need to utilize items when attacked
 				item=new Item(id, 10, "Iron Helmet", "Head", "continuous", "when_attacked", 1);
 				item.setText("When attacked, consider any 2x attack modifier card the enemy draws to be 0 instead.");
 				item.inventoryTracker(2);
 				break;
 			case 8:
+				//TODO: Need to utilize items when attacked
 				item = new Item(id, 20, "Heater Shield", "One-Hand", "spent", "when_attacked", 1);
 				item.setText("When damage by an attack, gain shield 1 for the attack.");
 				item.inventoryTracker(2);
@@ -115,6 +118,7 @@ public final class ItemLoader {
 				item.inventoryTracker(2);
 				break;
 			case 23:
+				//TODO: Need to utilize items when attacked
 				item = new Item(id, 20, "Chainmail", "Body", "spent", "when_attacked", 3);
 				item.inventoryTracker(2);
 				break;
@@ -143,8 +147,14 @@ public final class ItemLoader {
 				item.inventoryTracker(2);
 				break;
 			case 30:
+				//TODO: Need to utilize items when attacked
 				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked", 4);
 				item.inventoryTracker(2);
+				break;
+			case 31:
+				//TODO: Need to utilize items when attacked
+				item = new Item(id, 40, "Necklace of Teeth", "Head", "continuous", "when_attacked", 0);
+				item.inventoryTracker(1);
 				break;
 		}
 		
@@ -328,6 +338,15 @@ public final class ItemLoader {
 		}
 		
 		player.spendItem(item);
+	}
+	
+	public static int getIndexOfItem(int id, List<Item> items) {
+		for(int i=0; i<items.size(); i++) {
+			if(items.get(i).getID()==id)
+				return i;
+		}
+		
+		return -99;
 	}
 	
 }

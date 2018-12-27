@@ -98,6 +98,10 @@ public class Scenario {
 		
 		this.gloomhaven=gloomhaven;
 		
+		//[Temp]
+		//TODO: Need to have users pick who gets the collective item
+		party.get(0).addItem(gloomhaven.getCollectiveItems());
+		
 		state=State.CARD_SELECTION;
 	}
 	

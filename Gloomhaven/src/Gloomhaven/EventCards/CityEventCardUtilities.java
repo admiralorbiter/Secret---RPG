@@ -1,7 +1,8 @@
-package Gloomhaven;
+package Gloomhaven.EventCards;
 
 import java.util.List;
 
+import Gloomhaven.City;
 import Gloomhaven.Characters.Player;
 
 public final class CityEventCardUtilities {

@@ -15,58 +15,72 @@ public final class ItemLoader {
 		switch(id) {
 			case 1:
 				item = new Item(id, 20, "Boots of Striding", "Boots", "spent", "during_turn", 1);
+				item.setText("During your movement. Add +2 to the movement.");
 				item.inventoryTracker(2);
 				break;
 			case 2:
 				item = new Item(id, 20, "Winged Shoes", "Boots", "spent", "during_turn", 1);
+				item.setText("During your movement, add Jump to movement.");
 				item.inventoryTracker(2);
 				break;
 			case 3:
 				item = new Item(id, 10, "Hide Armor", "Body", "continuous", "when_attacked", 1);
+				item.setText("On the next two sources of damage to you from attacks, gain Shield 1");
 				item.inventoryTracker(2);
 				break;
 			case 4:
 				item = new Item(id, 20, "Leather Armor", "Body", "spent", "when_attacked", 1);
+				item.setText("When attacked, the attacker gains Disadvantage on the attack");
 				item.inventoryTracker(2);
 				break;
 			case 5:
 				item = new Item(id, 20, "Cloak of Invisibility", "Body", "consumed", "during_turn", 1);
+				item.setText("During your turn, gain invisible");
 				item.inventoryTracker(2);
 			case 6:
 				item = new Item(id, 30, "Eagle-Eye Goggles", "Head", "spent", "during_turn", 1);
+				item.setText("During your attack, gain Advantage on the entire attack action.");
 				item.inventoryTracker(2);
 				break;
 			case 7:
 				item=new Item(id, 10, "Iron Helmet", "Head", "continuous", "when_attacked", 1);
+				item.setText("When attacked, consider any 2x attack modifier card the enemy draws to be 0 instead.");
 				item.inventoryTracker(2);
 				break;
 			case 8:
 				item = new Item(id, 20, "Heater Shield", "One-Hand", "spent", "when_attacked", 1);
+				item.setText("When damage by an attack, gain shield 1 for the attack.");
 				item.inventoryTracker(2);
 				break;
 			case 9:
 				item = new Item(id, 30, "Piercing Bow", "Two-Hands", "consumed", "during_turn", 1);
+				item.setText("During your ranged attack, ignore all shield values for the entire attack action.");
 				item.inventoryTracker(2);
 				break;
 			case 10:
 				item = new Item(id, 30, "War Hammer", "Two-Hands", "consumed", "during_turn", 1);
+				item.setText("During your melee attack, add stun to the entire attack action.");
 				item.inventoryTracker(2);
 				break;
 			case 11:
 				item = new Item(id, 20, "Poison Dagger", "One-Hand", "spent", "during_turn", 1);
+				item.setText("During your melee attack, add Poison to a single action.");
 				item.inventoryTracker(2);
 				break;
 			case 12:
 				item = new Item(id, 10, "Minor Healing Potion", "Small Item", "consumed", "during_turn", 1);
+				item.setText("During your turn, heal 3 damage.");
 				item.inventoryTracker(4);
 				break;
 			case 13:
 				item = new Item(id, 10, "Minor Stamina Potion", "Small_Item", "consumed", "during_turn", 1);
+				item.setText("During your attack, add +1 attack to your entire attack action.");
 				item.inventoryTracker(4);
 				break;
 			case 14:
 				item = new Item(id, 10, "Minor Power Potion", "Small_Item", "consumed", "during_turn", 1);
 				item.inventoryTracker(4);
+				item.setText("During your turn, recover up to two of your discarded cards.");
 				break;
 			case 15:
 				item = new Item(id, 30, "Boots of Speed", "Boots", "spent", "after_initiative", 2);

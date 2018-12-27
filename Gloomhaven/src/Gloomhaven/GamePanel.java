@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		for(int id=0; id<setting.getNumPlayers(); id++)
 			party.add(new Player(id, setting.getPlayerClass()));				//Adds the players to the party
 		scene= new Scenario(setting.getSceneID(), party);			//Creates the scenario
+		shop.setMaxPlayers(party.size());
 		state=GameState.TOWN;										//Init Phase -> Town Phase
 	}
 	
@@ -61,12 +62,13 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
 			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsYTop());
-			shop.drawShop(g, xClick, yClick);
+			shop.drawShop(g, party, xClick, yClick);
 			g.drawString("Press space to continue", 10, setting.getHeight()-100);
 			//Insert Town State Stuff Here
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
-					state=GameState.ROAD_EVENT;
+					if(shop.atLastPartyMember())
+						state=GameState.ROAD_EVENT;
 		}else if(state==GameState.ROAD_EVENT) {
 			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here

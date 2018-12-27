@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import Gloomhaven.Characters.Player;
+
 public class Shop {
 	
 	ImageIcon shopImage=null;
@@ -15,51 +17,73 @@ public class Shop {
 	
 	List<Item> supply = new ArrayList<Item>();
 	
+	int currentParty=0;
+	int maxPlayers=0;
 	public Shop(int prosperityLevel) {
 		
 		shopImage = new ImageIcon("src/Gloomhaven/shop.png");
 		if(prosperityLevel==1)
 			supply=ItemLoader.loadAllLevel1Items();
+		
+		currentParty=0;
 	}
 	
-	public void drawShope(Graphics g) {
+	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
 		if(shopImage!=null)
 			g.drawImage(shopImage.getImage(), 50, 50, setting.getWidth()-200, setting.getHeight()-200, null);
+		
 		g.setColor(Color.black);
 		g.fillRect(setting.getWidth()/2, setting.getHeight()/6, 650, 650);
 		g.setColor(Color.white);
 		
-		
-		int row=0;
-		int col=0;
-		for(int i=0; i<supply.size(); i++) {
-			
-			if(i%3==0) {
-				row++;
-				col=0;
-			}
-			else {
-				col++;
-			}
-			
-			g.drawString(supply.get(i).getName(), setting.getWidth()/2+col*150, setting.getHeight()/6+15+50*row);
-		}
-	}
-	
-	public void drawShop(Graphics g,int  xClick,int  yClick) {
-		if(shopImage!=null)
-			g.drawImage(shopImage.getImage(), 50, 50, setting.getWidth()-200, setting.getHeight()-200, null);
-		g.setColor(Color.black);
-		g.fillRect(setting.getWidth()/2, setting.getHeight()/6, 650, 650);
-		g.setColor(Color.white);
 		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());
 		List<String> itemText = new ArrayList<String>();
 		for(int i=0; i<supply.size(); i++)
 			itemText.add(supply.get(i).getName());
-		int selectionFlag=matrix.drawSelection(g, itemText, xClick, yClick);
-		if(selectionFlag>=0 && selectionFlag<supply.size())
-			supply.remove(selectionFlag);
+		int selectionFlag=matrix.drawSelection(g, supply, xClick, yClick);
 
+
+		g.setColor(Color.BLACK);
+		g.fillRect(75, setting.getHeight()-350, 300, 150);
+		g.setColor(Color.WHITE);
 		
+		if(selectionFlag>=0 && selectionFlag<supply.size())
+			if(buyItem(party, selectionFlag))
+					g.setColor(Color.WHITE);
+			else
+				g.setColor(Color.red);
+		
+		for(int i=0; i<party.size(); i++) {
+			g.drawRect(90, setting.getHeight()-340+25*i, 200, 30);
+			g.setColor(Color.WHITE);
+			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, setting.getHeight()-325+25*i);
+		}
+	}
+	
+	public int getCurrentParty() {return currentParty;}
+	public boolean atLastPartyMember() {
+		currentParty++;
+		if(currentParty==maxPlayers) {
+			resetCurrentPartyCount();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void setMaxPlayers(int maxPlayers) {this.maxPlayers=maxPlayers;}
+	
+	public void resetCurrentPartyCount() {currentParty=0;}
+	
+	public boolean buyItem(List<Player> party, int selectionIndex) {
+		if(party.get(currentParty).getCharacterData().getGold()>=supply.get(selectionIndex).getGold()) {
+			party.get(currentParty).getItems().add(supply.get(selectionIndex));
+			party.get(currentParty).getCharacterData().setGold(party.get(currentParty).getCharacterData().getGold()-supply.get(selectionIndex).getGold());
+			supply.remove(selectionIndex);
+			return true;
+		}else {
+			System.out.println("Not enough gold");
+			return false;
+		}
 	}
 }

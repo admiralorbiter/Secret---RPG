@@ -42,6 +42,7 @@ public class Item {
 	public int getGold() {return gold;}
 	public String getName() {return name;}
 	public String getText() {return text;}
+	public void setText(String text) {this.text=text;}
 	public void refresh() {
 		useCount=0;
 	}

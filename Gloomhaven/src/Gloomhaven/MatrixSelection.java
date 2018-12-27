@@ -39,7 +39,7 @@ public class MatrixSelection {
 		}
 	}
 	
-	public int drawSelection(Graphics g, List<String> text , int xClick, int yClick) {
+	public int drawSelection(Graphics g, List<Item> text , int xClick, int yClick) {
 		int x=width/row;
 		int y=height/col;
 		int drawRow=0;
@@ -55,10 +55,34 @@ public class MatrixSelection {
 			else {
 				drawCol++;
 			}
-			g.setColor(Color.magenta);
+			g.setColor(Color.black);
 			g.fillRect(setting.getWidth()/2+drawCol*x, setting.getHeight()/6+15+drawRow*y, x-5, y-5);
 			g.setColor(Color.WHITE);
-			g.drawString(text.get(i), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+15+drawRow*y);
+			g.drawString(text.get(i).getName(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+25+drawRow*y);
+			//g.drawString(text.get(i).getText(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+65+drawRow*y);
+			
+			
+			int charLength=0;//x/5;
+			int rowLength=1;
+			int pixelsForEachChar=10;
+
+			for(int j=0; j<text.get(i).getText().length(); j++) {
+				
+				if(j%(x/pixelsForEachChar)==0) {
+					rowLength++;
+					charLength=0;
+				}
+				else {
+					charLength++;
+				}
+				char c = text.get(i).getText().charAt(j);
+				g.drawString(String.valueOf(c), setting.getWidth()/2+drawCol*x+charLength*pixelsForEachChar, setting.getHeight()/6+20+drawRow*y+rowLength*11);
+			}
+			rowLength++;
+			charLength=1;
+			g.setColor(Color.RED);
+			g.drawString("Gold: "+text.get(i).getGold(), setting.getWidth()/2+drawCol*x+charLength*pixelsForEachChar, setting.getHeight()/6+20+drawRow*y+rowLength*11);
+			g.setColor(Color.WHITE);
 		}
 		Point selectionPoint = new Point(findSelection(xClick, yClick));
 		if(selectionPoint.getX()>=0 && selectionPoint.getX()<=col) {

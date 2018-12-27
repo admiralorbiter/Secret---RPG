@@ -60,8 +60,9 @@ public class Player extends character {
 		
 		maxHandCount=setting.getMaxHandCount();
 		
-		items = ItemLoader.testLoadItems();
+		//items = ItemLoader.testLoadItems();
 		
+			
 		for(int i=0; i<items.size(); i++)
 			ItemLoader.addAttackModifier(attackModifierDeck, items.get(i).getID());
 			

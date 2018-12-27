@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
+import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Player;
 
 
@@ -40,7 +41,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	int randomEvent;
 	int xClick=-99;
 	int yClick=-99;
-	
+
 	public GamePanel() {
 		
 		for(int i=1; i<10; i++) {
@@ -64,7 +65,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		//[Temp] Need unique IDs and class 
 		for(int id=0; id<setting.getNumPlayers(); id++)
 			party.add(new Player(id, setting.getPlayerClass()));				//Adds the players to the party
-		scene= new Scenario(setting.getSceneID(), party);			//Creates the scenario
+		scene= new Scenario(setting.getSceneID(), party, gloomhaven);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		state=GameState.TOWN;										//Init Phase -> Town Phase
 	}
@@ -100,6 +101,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				}
 				
 				if(key.getKeyCode()==KeyEvent.VK_SPACE && cityDeck.get(randomEvent).getChoice()!=0) {
+					CityEventCardUtilities.resolveCityEvent(cityDeck.get(randomEvent), gloomhaven, party);
+					if(CityEventCardLoader.destroyCard(cityDeck.get(randomEvent).getID(), cityDeck.get(randomEvent).getChoice()))
+						cityDeck.remove(randomEvent);
 					randomEvent = r.nextInt(roadDeck.size())+1;
 					state=GameState.ROAD_EVENT;
 				}
@@ -124,6 +128,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				}
 				
 				if(key.getKeyCode()==KeyEvent.VK_SPACE && roadDeck.get(randomEvent).getChoice()!=0) {
+					RoadEventCardUtilities.resolveCityEvent(roadDeck.get(randomEvent), gloomhaven, party);
+					if(CityEventCardLoader.destroyCard(roadDeck.get(randomEvent).getID(), roadDeck.get(randomEvent).getChoice()))
+						roadDeck.remove(randomEvent);
 					state=GameState.SCENARIO;
 				}
 			}

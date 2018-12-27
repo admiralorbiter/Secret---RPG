@@ -592,6 +592,25 @@ public class Player extends character {
 		g.setColor(Color.WHITE);
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
 		g.drawString(name+"  "+getClassID(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
+		
+		if(positiveConditions.isBless()) {
+			g.setColor(Color.YELLOW);
+			g.drawString("B", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
+			g.setColor(Color.WHITE);
+		}
+		
+		if(positiveConditions.isInvisibility()) {
+			g.setColor(Color.gray);
+			g.drawString("I", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
+			g.setColor(Color.WHITE);
+		}
+		
+		if(positiveConditions.isStrengthen()) {
+			g.setColor(Color.red);
+			g.drawString("S", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
+			g.setColor(Color.WHITE);
+		}
+		
 		g.drawString("Level "+data.getLevel(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
 		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
 	

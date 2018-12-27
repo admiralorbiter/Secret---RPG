@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.EnemyInfo;
 import Gloomhaven.Characters.Player;
@@ -75,13 +76,16 @@ public class Scenario {
 	private Graphics g;
 	private KeyEvent key;
 	
-	public Scenario(String sceneID, List<Player> party) {
+	private City gloomhaven;
+	
+	public Scenario(String sceneID, List<Player> party, City gloomhaven) {
 		this.party=party;				//Imports party into scenario
 		
 		//Loads the items that will continuous effects for the player
 		//Adds those bonus to the players stats
-		for(int i=0; i<party.size(); i++)
+		for(int i=0; i<party.size(); i++) {
 			ItemLoader.continuousEffects(party.get(i));
+		}
 		
 		//Sets up the room and the enemies based on the scene id
 		List<Enemy> enemies = new ArrayList<Enemy>(); 
@@ -91,6 +95,8 @@ public class Scenario {
 		//Preps for the start of the scenario
 		currentPlayer=0;
 		enemyInfo.orderEnemies();
+		
+		this.gloomhaven=gloomhaven;
 		
 		state=State.CARD_SELECTION;
 	}
@@ -278,7 +284,7 @@ public class Scenario {
 	
 	private void setupBeginningOfRound(KeyEvent key, Graphics g) {
 		//Graphics - Scene Header/Elements/Cards in Play/Player Info/Gameboard
-		g.drawString("State of Scenario", setting.getGraphicsX()*5, setting.getGraphicsYTop());
+		g.drawString("State of Scenario      Prosperity:"+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel(), setting.getGraphicsX()*5, setting.getGraphicsYTop());
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
 		elements.graphicsDrawTable(g);
 		room.drawBoard(g);

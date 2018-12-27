@@ -11,6 +11,8 @@ public class EventCard {
 	
 	public EventCard(String type, int id) {
 		this.id=id;
+		this.type=type;
+		
 		if(type.equals("City")) {
 			text=CityEventCardLoader.cardText(id);
 			optionA=CityEventCardLoader.cityA(id);
@@ -18,7 +20,11 @@ public class EventCard {
 			resultA=CityEventCardLoader.resultsA(id);
 			resultB=CityEventCardLoader.resultsB(id);
 		}else if(type.equals("Road")){
-			
+			text=RoadEventCardLoader.cardText(id);
+			optionA=RoadEventCardLoader.cityA(id);
+			optionB=RoadEventCardLoader.cityB(id);
+			resultA=RoadEventCardLoader.resultsA(id);
+			resultB=RoadEventCardLoader.resultsB(id);
 		}
 	}
 	

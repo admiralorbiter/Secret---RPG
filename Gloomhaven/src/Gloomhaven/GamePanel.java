@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -21,6 +22,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	    TESTING_SETUP,
 	    PARTY_SETUP,
 	    TOWN,
+	    CITY_EVENT,
 	    ROAD_EVENT,
 	    SCENARIO,
 	    END;
@@ -31,12 +33,21 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	Scenario scene;													//Current Scenario
 	KeyEvent key;													//Current Key Event
 	Prosperity prosp = new Prosperity();
+	List<EventCard> cityDeck = new ArrayList<EventCard>();
+	List<EventCard> roadDeck = new ArrayList<EventCard>();
 	Shop shop = new Shop(prosp.getLevel());
-	
+	Random r = new Random();
+	int randomEvent;
 	int xClick=-99;
 	int yClick=-99;
 	
 	public GamePanel() {
+		
+		for(int i=0; i<10; i++) {
+			cityDeck.add(new EventCard("City", i));
+			roadDeck.add(new EventCard("Road", i));
+		}
+		
 		addKeyListener(this);
 		addMouseListener(this);
 		setBackground(new Color(64, 64, 64));
@@ -67,12 +78,31 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			//Insert Town State Stuff Here
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
-					if(shop.atLastPartyMember())
-						state=GameState.ROAD_EVENT;
+					if(shop.atLastPartyMember()) {
+						randomEvent = r.nextInt(cityDeck.size());
+						state=GameState.CITY_EVENT;
+					}
+		}else if(state==GameState.CITY_EVENT) {
+			g.drawString("City Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
+			g.drawString(cityDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			g.drawString(cityDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+			
+			if(key!=null)
+				if(key.getKeyCode()==KeyEvent.VK_SPACE) {
+					randomEvent = r.nextInt(roadDeck.size());
+					state=GameState.ROAD_EVENT;
+				}
 		}else if(state==GameState.ROAD_EVENT) {
 			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here
-			state=GameState.SCENARIO;
+			
+			g.drawString(roadDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			g.drawString(roadDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+			
+			if(key!=null)
+				if(key.getKeyCode()==KeyEvent.VK_SPACE) {
+					state=GameState.SCENARIO;
+				}
 		}else if(state==GameState.SCENARIO) {
 			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round

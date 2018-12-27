@@ -52,4 +52,5 @@ public class CharacterDataObject {
 	public void setShield(int shield) {this.shield = shield;}
 	public int getGold() {return gold;}
 	public void setGold(int gold) {this.gold = gold;}
+	public void changeGold(int change) {this.gold=this.gold+change;}
 }

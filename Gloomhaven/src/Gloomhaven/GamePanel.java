@@ -32,10 +32,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
 	KeyEvent key;													//Current Key Event
-	Prosperity prosp = new Prosperity();
+	City gloomhaven = new City();
 	List<EventCard> cityDeck = new ArrayList<EventCard>();
 	List<EventCard> roadDeck = new ArrayList<EventCard>();
-	Shop shop = new Shop(prosp.getLevel());
+	Shop shop = new Shop(gloomhaven.getProspLevel());
 	Random r = new Random();
 	int randomEvent;
 	int xClick=-99;
@@ -84,23 +84,46 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 					}
 		}else if(state==GameState.CITY_EVENT) {
 			g.drawString("City Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
-			g.drawString(cityDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
-			g.drawString(cityDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+			g.drawString("1: "+cityDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			g.drawString("2: "+cityDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
 			
-			if(key!=null)
-				if(key.getKeyCode()==KeyEvent.VK_SPACE) {
+			if(cityDeck.get(randomEvent).getChoice()!=0) {
+				g.drawString(cityDeck.get(randomEvent).getResults(), setting.getGraphicsX(), setting.getGraphicsYTop()+150);
+				g.drawString("Press space to continue", 10, setting.getHeight()-100);
+			}
+			
+			if(key!=null) {
+				if(key.getKeyCode()==KeyEvent.VK_1 && cityDeck.get(randomEvent).getChoice()==0) {
+					cityDeck.get(randomEvent).setChoice(1);
+				}else if(key.getKeyCode()==KeyEvent.VK_2 && cityDeck.get(randomEvent).getChoice()==0) {
+					cityDeck.get(randomEvent).setChoice(1);
+				}
+				
+				if(key.getKeyCode()==KeyEvent.VK_SPACE && cityDeck.get(randomEvent).getChoice()!=0) {
 					randomEvent = r.nextInt(roadDeck.size());
 					state=GameState.ROAD_EVENT;
 				}
+			}
 		}else if(state==GameState.ROAD_EVENT) {
 			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here
 			
-			g.drawString(roadDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
-			g.drawString(roadDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+			g.drawString("1: "+roadDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			g.drawString("2: "+roadDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+			
+			if(roadDeck.get(randomEvent).getChoice()!=0) {
+				g.drawString(roadDeck.get(randomEvent).getResults(), setting.getGraphicsX(), setting.getGraphicsYTop()+150);
+				g.drawString("Press space to continue", 10, setting.getHeight()-100);
+			}
 			
 			if(key!=null)
-				if(key.getKeyCode()==KeyEvent.VK_SPACE) {
+				if(key.getKeyCode()==KeyEvent.VK_1 && roadDeck.get(randomEvent).getChoice()==0) {
+					roadDeck.get(randomEvent).setChoice(1);
+				}else if(key.getKeyCode()==KeyEvent.VK_2 && roadDeck.get(randomEvent).getChoice()==0) {
+					roadDeck.get(randomEvent).setChoice(1);
+				}
+				
+				if(key.getKeyCode()==KeyEvent.VK_SPACE && roadDeck.get(randomEvent).getChoice()!=0) {
 					state=GameState.SCENARIO;
 				}
 		}else if(state==GameState.SCENARIO) {

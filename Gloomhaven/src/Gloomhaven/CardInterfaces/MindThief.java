@@ -18,7 +18,7 @@ public class MindThief implements CardInterface {
 	
 		switch(id) {
 			case 1:
-				card.setCardText("Attack +2 and (add +1 Attack for each negative condition on target.) XP +1");
+				card.setCardText("Attack +2 and (add +1 Attack for each negative condition on target.) (Refactored) XP +1");
 				card.getData().setAttack(2);
 				card.setTrigger(new Trigger("ForEachNegativeCondition"));
 				card.getTrigger().getBonusData().setAttack(1);
@@ -97,10 +97,8 @@ public class MindThief implements CardInterface {
 		
 		switch(id) {
 			case 1:
-				card.setCardText("Mindcontrol: Force enemy to target another enemy at Range 5. Attack +2 Range +0 (Unimplemented)");
-				//Force one enemy within 5 range to do 2 attack to melee
+				card.setCardText("Mindcontrol: Force enemy to target another enemy at Range 5. Attack +2 Range +0");
 				card.setMindControl(true);
-				//card.mindControl=true;
 				card.getData().setRange(5);
 				card.getData().setAttack(2);
 				break;

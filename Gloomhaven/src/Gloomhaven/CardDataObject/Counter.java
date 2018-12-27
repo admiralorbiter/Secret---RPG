@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Counter {
-	Target target = new Target("Self");
+	private Target target = new Target("Self");
 	
-	String triggerFlag="None";
-	String effectFlag="None";
-	
+	private String triggerFlag="None";
+	private String effectFlag="None";
 	
 	int maxCounters=0;
 	int currentCount=0;
 	
 	boolean triggerOnDamage=false;
 	boolean triggerOnAttack=false;
-	boolean triggerOnMeleeAttack=false;
-	
+	boolean triggerOnRetaliate=false;
+	boolean triggerForEachTargeted=false;
 	boolean noDamage=false;
 	
 	SimpleCardData bonusData = null;
@@ -70,6 +69,10 @@ public class Counter {
 		triggerFlagList.add("OnDamage");
 		triggerFlagList.add("OnAttack");
 		triggerFlagList.add("OnMeleeAttack");
+		triggerFlagList.add("ForEachNegativeCondition");
+		triggerFlagList.add("ForEachTargeted");
+		triggerFlagList.add("EnemyAlone");
+		triggerFlagList.add("OnRetaliate");
 		
 		return triggerFlagList;
 	}
@@ -83,6 +86,16 @@ public class Counter {
 				break;
 			case "OnMeleeAttack":
 				triggerOnAttack=true;
+				break;
+			case "EnemyAlone":
+				triggerOnAttack=true;
+				break;
+			case "OnRetaliate":
+				triggerOnRetaliate=true;
+				break;
+			case "AdjacentToAllies":
+				triggerOnAttack=true;
+				break;
 			default:
 				triggerOnAttack=true;
 				System.out.println("Error: Counter "+triggerFlag);
@@ -131,8 +144,6 @@ public class Counter {
 	public void setTriggerOnDamage(boolean triggerOnDamage) {this.triggerOnDamage = triggerOnDamage;}
 	public boolean isTriggerOnAttack() {return triggerOnAttack;}
 	public void setTriggerOnAttack(boolean triggerOnAttack) {this.triggerOnAttack = triggerOnAttack;}
-	public boolean isTriggerOnMeleeAttack() {return triggerOnMeleeAttack;}
-	public void setTriggerOnMeleeAttack(boolean triggerOnMeleeAttack) {this.triggerOnMeleeAttack = triggerOnMeleeAttack;}
 	public boolean isNoDamage() {return noDamage;}
 	public void setNoDamage(boolean noDamage) {this.noDamage = noDamage;}
 	public SimpleCardData getBonusData() {return bonusData;}

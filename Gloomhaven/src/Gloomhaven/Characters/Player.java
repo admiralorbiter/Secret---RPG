@@ -60,6 +60,12 @@ public class Player extends character {
 		
 		maxHandCount=setting.getMaxHandCount();
 		
+		items = ItemLoader.testLoadItems();
+		
+		for(int i=0; i<items.size(); i++)
+			ItemLoader.addAttackModifier(attackModifierDeck, items.get(i).getID());
+			
+		
 		if(classID.equals("Spellweaver"))
 			randomlySelectCards();
 		else {
@@ -586,22 +592,27 @@ public class Player extends character {
 		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
 		g.drawString(name+"  "+getClassID(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
 		g.drawString("Level "+data.getLevel(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp()+"  Shield "+data.getShield()+" Ret: Need to fix retatliate showing", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+	
 		if(isAugmented()) {
 			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
-			g.drawString("Need to fix augment", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
+			g.drawString(augment.getCardText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
 		}
-		List<String> negativeConditionList = negativeConditions.getList();
-		if(negativeConditionList.size()>0) {
-			g.drawString("Negative Conditions", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+90);
-			for(int i=0; i<negativeConditionList.size(); i++)
-				g.drawString(negativeConditionList.get(i), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+105+15*i);
+		
+		
+		for(int i=0; i<counterTriggers.size();i++) {
+			g.drawString(counterTriggers.get(i).getTriggerFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+i*90);
 		}
-		g.drawString("Gold: "+data.getGold(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+150);
+		
+		for(int i=0; i<roundTriggers.size();i++) {
+			g.drawString(roundTriggers.get(i).getTriggerFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+i*150);
+		}
+		
+		g.drawString("Gold: "+data.getGold(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
 		
 		if(roundBonus!=null)
 			if(roundBonus.getNegativeConditions()!=null)
-				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
+				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+180);
 		
 		g.setColor(setting.getDefaultColor());
 	}
@@ -730,7 +741,7 @@ public class Player extends character {
 		
 		if(counterTriggers.size()>0) {
 			for(int i=0; i<counterTriggers.size(); i++) {
-				if(counterTriggers.get(i).isTriggerOnDamage() || counterTriggers.get(i).isTriggerOnMeleeAttack()) {
+				if(counterTriggers.get(i).isTriggerOnDamage()) {
 					if(counterTriggers.get(i).getEffectFlag().equals("NoDamage"))
 						damage=0;
 					
@@ -804,10 +815,6 @@ public class Player extends character {
 					abilityDeck.get(i).resetCardFlags();
 			}
 		}
-	}
-	
-	public void addAttackModifierCard(AttackModifierCard card) {
-		attackModifierDeck.addCard(card);
 	}
 	
 }

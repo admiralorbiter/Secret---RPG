@@ -11,7 +11,6 @@ import Gloomhaven.CardDataObject.Counter;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.PositiveConditions;
-import Gloomhaven.CardDataObject.Trigger;
 
 public class character {
 	
@@ -24,7 +23,7 @@ public class character {
 	PositiveConditions positiveConditions = new PositiveConditions();
 	Effects effects = new Effects();
 	List<Counter> counterTriggers = new ArrayList<Counter>();
-	List<Trigger> roundTriggers = new ArrayList<Trigger>();
+	List<Counter> roundTriggers = new ArrayList<Counter>();
 	
 	CardDataObject roundBonus = new CardDataObject();
 	
@@ -49,7 +48,7 @@ public class character {
 	public CardDataObject getRoundBonus() {return roundBonus;}
 	public void setRoundBonus(CardDataObject card) {this.roundBonus=card;}
 	public List<Counter> getCounterTriggers(){return counterTriggers;}
-	public List<Trigger> getRoundTriggers(){return roundTriggers;}
+	public List<Counter> getRoundTriggers(){return roundTriggers;}
 	public PositiveConditions getPositiveConditions() {return positiveConditions;}
 	public NegativeConditions getNegativeConditions() {return negativeConditions;}
 	
@@ -58,7 +57,7 @@ public class character {
 		counterTriggers.add(trigger);
 	}
 	
-	public void addRoundTrigger(Trigger trigger) {
+	public void addRoundTrigger(Counter trigger) {
 		roundTriggers.add(trigger);
 	}
 	
@@ -109,7 +108,7 @@ public class character {
 
 		if(counterTriggers.size()>0) {
 			for(int i=0; i<counterTriggers.size(); i++) {
-				if(counterTriggers.get(i).isTriggerOnDamage() || counterTriggers.get(i).isTriggerOnMeleeAttack()) {
+				if(counterTriggers.get(i).isTriggerOnDamage()) {
 					if(counterTriggers.get(i).getEffectFlag().equals("NoDamage"))
 						damage=0;
 					
@@ -188,7 +187,7 @@ public class character {
 			}
 		}
 		
-		roundTriggers = new ArrayList<Trigger>();
+		roundTriggers = new ArrayList<Counter>();
 
 	}
 	

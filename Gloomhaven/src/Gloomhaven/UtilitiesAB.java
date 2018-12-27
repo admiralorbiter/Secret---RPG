@@ -22,11 +22,10 @@ public final class UtilitiesAB {
 		CardDataObject card = new CardDataObject();
 		card=UsePlayerAbilityCard.getCardData(abilityCard); //abilityCard.getData()
 		
-		if(card.getData().getRoundBonusFlag())
+		if(card.getData().getRoundBonusFlag()) {
 			player.setRoundBonus(card);
-		
-		if(card.getTrigger()!=null)
-			player.addRoundTrigger(card.getTrigger());
+			player.addRoundTrigger(card.getCounter());
+		}
 		
 		if(card.getCounter()!=null)
 			player.addCounter(card.getCounter());
@@ -151,6 +150,7 @@ public final class UtilitiesAB {
 		System.out.println("Utility Class Damage: "+attack);
 		
 		if(card.getNegativeConditions()!=null) {
+			System.out.println("UtilitiesAB.java resolveAttack: Setting ngeative condition "+card.getNegativeConditions().getFlag());
 			enemy.getNegativeConditions().setNegativeConditions(card.getNegativeConditions());
 		}
 		

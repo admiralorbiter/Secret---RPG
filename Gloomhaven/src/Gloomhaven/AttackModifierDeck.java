@@ -41,6 +41,7 @@ public class AttackModifierDeck {
 				deck.add(new AttackModifierCard(1, 0, true, false));
 		}
 	}
+
 	
 	public AttackModifierCard pickRandomModifierCard() {
 		Random rand = new Random();

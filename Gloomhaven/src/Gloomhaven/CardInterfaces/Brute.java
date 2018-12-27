@@ -6,7 +6,6 @@ import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.SimpleCardData;
 import Gloomhaven.CardDataObject.Target;
-import Gloomhaven.CardDataObject.Trigger;
 
 public class Brute implements CardInterface {
 
@@ -25,8 +24,8 @@ public class Brute implements CardInterface {
 			case 2:
 				card.setCardText("Retaliate +2. XP +1 for each Retaliate (Maybe implemented). Round Bonus");
 				card.setEffects(new Effects("Retaliate", 2, 0));
-				card.setTrigger(new Trigger("OnRetaliate", new SimpleCardData()));
-				card.getTrigger().getBonusData().setXpOnUse(1);
+				card.setCounter(new Counter(99, "OnRetaliate", new SimpleCardData()));
+				card.getCounter().getBonusData().setXpOnUse(1);
 				card.getData().setRoundBonusFlag(true);
 				break;
 			case 3:

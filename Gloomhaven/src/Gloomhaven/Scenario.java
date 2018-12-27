@@ -282,6 +282,7 @@ public class Scenario {
 		g.drawString(state.toString(), setting.getGraphicsX()*5, setting.getGraphicsYTop()+15);
 		elements.graphicsDrawTable(g);
 		room.drawBoard(g);
+		room.drawEntityTable(g, party, enemyInfo.getEnemies());
 		party.get(0).graphicsPlayerInfo(g);
 		party.get(0).graphicsDrawCardsInPlay(g);
 		

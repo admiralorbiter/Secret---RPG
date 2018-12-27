@@ -20,14 +20,14 @@ public class Scoundrel implements CardInterface{
 			case 1:
 				card.setCardText("Attack +3. Add +2 and XP +1 when target is adj to allies.");
 				card.getData().setAttack(3);
-				card.setTrigger(new Trigger("AdjacentToAllies", new SimpleCardData()));
+				card.setTrigger(new Trigger("AdjacentToAllies"));
 				card.getTrigger().getBonusData().setAttack(2);
 				card.getTrigger().getBonusData().setXpOnUse(1);
 				break;
 			case 2:
 				card.setCardText("Attack +3. Add +2 and XP +1 when target is adj to allies.");
 				card.getData().setAttack(3);
-				card.setTrigger(new Trigger("AdjacentToAllies", new SimpleCardData()));
+				card.setTrigger(new Trigger("AdjacentToAllies"));
 				card.getTrigger().getBonusData().setAttack(2);
 				card.getTrigger().getBonusData().setXpOnUse(1);
 				break;
@@ -39,7 +39,7 @@ public class Scoundrel implements CardInterface{
 			case 4:
 				card.setCardText("Attack +3. Add +2 Attack and gain XP +1 when target is adj to your allies. Add +2 Attack and gain XP +1 when target is adj is not adj to allies. (Can't do both yet) Consumed on use.");
 				card.getData().setAttack(3);
-				card.setTrigger(new Trigger("AdjacentToAllies", new SimpleCardData()));
+				card.setTrigger(new Trigger("AdjacentToAllies"));
 				card.getTrigger().getBonusData().setAttack(2);
 				card.getTrigger().getBonusData().setXpOnUse(1);
 				card.getData().setConsumeFlag(true);

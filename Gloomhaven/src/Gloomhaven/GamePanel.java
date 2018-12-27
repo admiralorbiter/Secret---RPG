@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,7 @@ import javax.swing.*;
 import Gloomhaven.Characters.Player;
 
 
-public class GamePanel extends JPanel implements KeyListener{
+public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	public enum GameState {
 	    TITLE_STATE,
@@ -28,7 +30,11 @@ public class GamePanel extends JPanel implements KeyListener{
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
 	KeyEvent key;													//Current Key Event
-	Shop shop = new Shop();
+	Prosperity prosp = new Prosperity();
+	Shop shop = new Shop(prosp.getLevel());
+	
+	int xClick=-99;
+	int yClick=-99;
 	
 	public GamePanel() {
 		addKeyListener(this);
@@ -54,7 +60,7 @@ public class GamePanel extends JPanel implements KeyListener{
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
 			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsYTop());
-			shop.drawShop(g);
+			shop.drawShop(g, xClick, yClick);
 			g.drawString("Press space to continue", 10, setting.getHeight()-100);
 			//Insert Town State Stuff Here
 			if(key!=null)
@@ -98,4 +104,37 @@ public class GamePanel extends JPanel implements KeyListener{
 
 	//Does nothing
 	@Override public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("Test");
+		xClick=arg0.getX();
+		yClick=arg0.getY();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

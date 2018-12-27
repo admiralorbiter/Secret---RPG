@@ -230,6 +230,89 @@ public class Room {
 		board[(int) point.getX()][(int) point.getY()].setHex("E", enemy.getID());
 	}
 	
+	public void drawEntityTable(Graphics g, List<Player> party, List<Enemy> enemies) {
+				
+		g.setColor(Color.white);
+		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYBottom()+33*5, 200, 33*6);
+	
+		for(int i=0; i<party.size(); i++)
+		{
+			g.drawString(party.get(i).getID(), setting.getGraphicsXRight()+5, setting.getGraphicsYBottom()+25*8);
+			List<String> negativeConditionList=new ArrayList<String>();
+			if(party.get(i).getNegativeConditions()!=null)
+				negativeConditionList=party.get(i).getNegativeConditions().getList();
+			for(int j=0; j<negativeConditionList.size(); j++) {
+				if(negativeConditionList.get(j).equals("Curse")) {
+					g.setColor(new Color(128, 0, 128));
+					g.drawString("C", setting.getGraphicsXRight()+10+100, setting.getGraphicsYBottom()+25*8);
+				}else if(negativeConditionList.get(j).equals("Disarm")) {
+					g.setColor(Color.GRAY);
+					g.drawString("D", setting.getGraphicsXRight()+15+100, setting.getGraphicsYBottom()+25*8);
+				}
+				else if(negativeConditionList.get(j).equals("Immobilize")) {
+					g.setColor(Color.ORANGE);
+					g.drawString("D", setting.getGraphicsXRight()+20+100, setting.getGraphicsYBottom()+25*8);
+				}
+				else if(negativeConditionList.get(j).equals("Wound")) {
+					g.setColor(Color.red);
+					g.drawString("W", setting.getGraphicsXRight()+25+100, setting.getGraphicsYBottom()+25*8);
+				}
+				else if(negativeConditionList.get(j).equals("Muddle")) {
+					g.setColor(Color.gray);
+					g.drawString("M", setting.getGraphicsXRight()+30+100, setting.getGraphicsYBottom()+25*8);
+				}
+				else if(negativeConditionList.get(j).equals("Poison")) {
+					g.setColor(Color.green);
+					g.drawString("P", setting.getGraphicsXRight()+35+100, setting.getGraphicsYBottom()+25*8);
+				}
+				else if(negativeConditionList.get(j).equals("Stun")) {
+					g.setColor(Color.yellow);
+					g.drawString("S", setting.getGraphicsXRight()+40+100, setting.getGraphicsYBottom()+25*8);
+				}
+				g.setColor(setting.getDefaultColor());
+			}
+		}
+		
+		for(int i=0; i<enemies.size(); i++)
+		{
+			g.drawString(enemies.get(i).getID(), setting.getGraphicsXRight()+5, setting.getGraphicsYBottom()+25*(9+i));
+			List<String> negativeConditionList =new ArrayList<String>();
+			if(enemies.get(i).getNegativeConditions()!=null)
+				negativeConditionList=enemies.get(i).getNegativeConditions().getList();
+			for(int j=0; j<negativeConditionList.size(); j++) {
+				
+				if(negativeConditionList.get(j).equals("Curse")) {
+					g.setColor(new Color(128, 0, 128));
+					g.drawString("C", setting.getGraphicsXRight()+10+100, setting.getGraphicsYBottom()+25*(9+i));
+				}else if(negativeConditionList.get(j).equals("Disarm")) {
+					g.setColor(Color.GRAY);
+					g.drawString("D", setting.getGraphicsXRight()+15+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				else if(negativeConditionList.get(j).equals("Immobilize")) {
+					g.setColor(Color.ORANGE);
+					g.drawString("D", setting.getGraphicsXRight()+20+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				else if(negativeConditionList.get(j).equals("Wound")) {
+					g.setColor(Color.red);
+					g.drawString("W", setting.getGraphicsXRight()+25+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				else if(negativeConditionList.get(j).equals("Muddle")) {
+					g.setColor(Color.gray);
+					g.drawString("M", setting.getGraphicsXRight()+30+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				else if(negativeConditionList.get(j).equals("Poison")) {
+					g.setColor(Color.green);
+					g.drawString("P", setting.getGraphicsXRight()+35+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				else if(negativeConditionList.get(j).equals("Stun")) {
+					g.setColor(Color.yellow);
+					g.drawString("S", setting.getGraphicsXRight()+40+100, setting.getGraphicsYBottom()+25*(9+i));
+				}
+				g.setColor(setting.getDefaultColor());
+			}
+		}
+	}
+	
 	//Hex Selection Functions
 	public void setSelectionCoordinates(Point newCoordinates) {selectionCoordinates=newCoordinates;}
 	public Point getSelectionCoordinates() {return selectionCoordinates;}

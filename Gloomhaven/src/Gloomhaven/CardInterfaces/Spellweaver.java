@@ -183,7 +183,7 @@ public class Spellweaver implements CardInterface {
 				card.setCardText("Attack in a pyramid. Attack +4 Gain +1 XP for each enemy targeted. Infuse ice. Consume after use.");
 				card.getData().setTarget(new Target("Pyramid"));
 				card.getData().setAttack(4);
-				card.setTrigger(new Trigger("ForEachTargeted", new SimpleCardData()));
+				card.setTrigger(new Trigger("ForEachTargeted"));
 				card.getTrigger().getBonusData().setXpOnUse(1);
 				card.setInfuseElemental("Ice");
 				card.getData().setConsumeFlag(true);

@@ -8,7 +8,8 @@ public class CardDataObject {
 	private PositiveConditions positiveConditions = null;
 	private Effects effects = new Effects();
 	private Counter counter = null;
-	private Trigger trigger = null;
+	private Trigger trigger=null;
+
 	
 	private boolean infuseElementalFlag=false;
 	private boolean consumeElementalFlag=false;
@@ -42,8 +43,6 @@ public class CardDataObject {
 	public void setEffects(Effects effects) {this.effects = effects;}
 	public Counter getCounter() {return counter;}
 	public void setCounter(Counter counter) {this.counter = counter;}
-	public Trigger getTrigger() {return trigger;}
-	public void setTrigger(Trigger trigger) {this.trigger=trigger;}
 	public boolean getInfuseElementalFlag() {return infuseElementalFlag;}
 	public boolean getConsumeElementalFlag() {return consumeElementalFlag;}
 	public String getInfuseElemental() {return infuseElemental;}
@@ -56,6 +55,8 @@ public class CardDataObject {
 	public void setID(int id) {this.id=id;}
 	public boolean hasAugment() {return augment;}
 	public void setAugment(boolean augment) {this.augment=augment;}
+	public Trigger getTrigger() {return trigger;}
+	public void setTrigger(Trigger trigger) {this.trigger=trigger;}
 	public boolean getMindControl() {return mindcontrol;}
 	public void setMindControl(boolean mindcontrol) {this.mindcontrol=mindcontrol;}
 	public void setInfuseElemental(String infuseElemental) {

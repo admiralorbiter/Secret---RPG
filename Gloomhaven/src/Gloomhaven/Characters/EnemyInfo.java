@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.AttackDeck;
 import Gloomhaven.AttackModifierCard;
 import Gloomhaven.Room;
 import Gloomhaven.Setting;
@@ -19,7 +18,6 @@ public class EnemyInfo {
 	
 	List<EnemyAbilityCard> abilityDeck = new ArrayList<EnemyAbilityCard>();
 	List<Enemy> enemies = new ArrayList<Enemy>();
-	AttackDeck enemyDeck = new AttackDeck();						//Creates enemy attack deck - [Temp] Will need to have it flag and select the enemy one
 	int turnNumber;
 	Room room;
 	int startingAbilityCardCount;
@@ -48,6 +46,7 @@ public class EnemyInfo {
 		return null;
 	}
 	
+	public List<Enemy> getEnemies(){return enemies;}
 	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
 	public void setTurnNumber(int turnNumber) {
 		this.turnNumber=turnNumber;

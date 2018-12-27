@@ -137,18 +137,16 @@ public final class ItemLoader {
 		return item;
 	}
 	
-	public static void addAttackModifier(Player player, int id) {
+	public static void addAttackModifier(AttackModifierDeck deck, int id) {
 		switch(id) {
-		case 22:
-			player.addAttackModifierCard(new AttackModifierCard(1, -1));
-			break;
-		case 23:
-			player.addAttackModifierCard(new AttackModifierCard(1, -1));
-			player.addAttackModifierCard(new AttackModifierCard(1, -1));
-			player.addAttackModifierCard(new AttackModifierCard(1, -1));
-			break;
-			
-			
+			case 22:
+				System.out.println("ItemLoader.java AddAttackModifer: -1 Mod Added due to Item");
+				deck.addCard(new AttackModifierCard(1, -1));
+				break;
+			case 23:
+				System.out.println("ItemLoader.java AddAttackModifer: -1 Mod Added due to Item");
+				deck.addCard(new AttackModifierCard(1, -1));
+				break;	
 		}
 	}
 	
@@ -158,6 +156,30 @@ public final class ItemLoader {
 			return 3;
 		
 		return 1;
+	}
+	
+	public static List<Item> loadAllLevel1Items(){
+		List<Item> items = new ArrayList<Item>();
+		
+		for(int i=1; i<=14; i++) {
+			if(i<=12 && i>=14) {
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(1);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(2);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(3);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(4);
+			}else {
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(1);
+				items.add(Load(i));
+				items.get(items.size()-1).setIndexNum(2);
+			}
+		}
+		
+		return items;
 	}
 	
 	public static List<Item> testLoadAllItems(){
@@ -191,6 +213,8 @@ public final class ItemLoader {
 		items.add(Load(24));
 		items.get(items.size()-1).setIndexNum(1);
 		items.add(Load(25));
+		items.get(items.size()-1).setIndexNum(1);
+		items.add(Load(22));
 		items.get(items.size()-1).setIndexNum(1);
 		items.add(Load(20));
 		items.get(items.size()-1).setIndexNum(2);

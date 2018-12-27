@@ -8,6 +8,7 @@ public class Item {
 	int gold;
 	String name;
 	int level;
+	String text="Needs to be created in the uploader";
 	
 	boolean consumed=false;
 	boolean spent=false;
@@ -40,7 +41,7 @@ public class Item {
 	public int getID() {return id;}
 	public int getGold() {return gold;}
 	public String getName() {return name;}
-	
+	public String getText() {return text;}
 	public void refresh() {
 		useCount=0;
 	}

@@ -38,6 +38,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	public GamePanel() {
 		addKeyListener(this);
+		addMouseListener(this);
 		setBackground(new Color(64, 64, 64));
 		setDoubleBuffered(true);
 		setFocusable(true);
@@ -125,10 +126,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("Test");
+
 		xClick=arg0.getX();
 		yClick=arg0.getY();
+		repaint();
 	}
 
 	@Override

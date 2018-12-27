@@ -52,11 +52,15 @@ public class Shop {
 		g.setColor(Color.black);
 		g.fillRect(setting.getWidth()/2, setting.getHeight()/6, 650, 650);
 		g.setColor(Color.white);
-		MatrixSelection matrix = new MatrixSelection(650, 650, 14);
+		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());
 		List<String> itemText = new ArrayList<String>();
 		for(int i=0; i<supply.size(); i++)
 			itemText.add(supply.get(i).getName());
-		matrix.drawSelection(g, itemText, xClick, yClick);
+		int selectionFlag=matrix.drawSelection(g, itemText, xClick, yClick);
+		if(selectionFlag>=0 && selectionFlag<supply.size())
+			supply.remove(selectionFlag);
+		
+		System.out.println("Selection Flag: "+selectionFlag);
 		
 	}
 }

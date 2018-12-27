@@ -50,9 +50,9 @@ public final class RoadEventCardLoader {
 			case 5:
 				return "Help the humans fight off the Inox.";
 			case 6:
-				return "Take the opportunity to run from the bear before it gets any closer.";
+				return "Attack the bear, hopefully catching it by suprise.";
 			case 7:
-				return "Keep moving on dwon the road. No need to get mixed up in whatever is going on.";
+				return "Keep moving on down the road. No need to get mixed up in whatever is going on.";
 			case 8:
 				return "Resist the robbery, killing as many thieves as you can.";
 			case 9:

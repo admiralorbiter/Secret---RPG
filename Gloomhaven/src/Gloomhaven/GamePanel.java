@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	public GamePanel() {
 		
-		for(int i=0; i<10; i++) {
+		for(int i=1; i<10; i++) {
 			cityDeck.add(new EventCard("City", i));
 			roadDeck.add(new EventCard("Road", i));
 		}
@@ -79,11 +79,11 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
 					if(shop.atLastPartyMember()) {
-						randomEvent = r.nextInt(cityDeck.size());
+						randomEvent = r.nextInt(cityDeck.size())+1;
 						state=GameState.CITY_EVENT;
 					}
 		}else if(state==GameState.CITY_EVENT) {
-			g.drawString("City Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
+			g.drawString("City Event "+cityDeck.get(randomEvent).getID(), setting.getGraphicsX(),  setting.getGraphicsYTop());
 			g.drawString("1: "+cityDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
 			g.drawString("2: "+cityDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
 			
@@ -100,12 +100,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				}
 				
 				if(key.getKeyCode()==KeyEvent.VK_SPACE && cityDeck.get(randomEvent).getChoice()!=0) {
-					randomEvent = r.nextInt(roadDeck.size());
+					randomEvent = r.nextInt(roadDeck.size())+1;
 					state=GameState.ROAD_EVENT;
 				}
 			}
 		}else if(state==GameState.ROAD_EVENT) {
-			g.drawString("Road Event", setting.getGraphicsX(),  setting.getGraphicsYTop());
+			g.drawString("Road Event "+roadDeck.get(randomEvent).getID(), setting.getGraphicsX(),  setting.getGraphicsYTop());
 			//Insert Road Event Stuff here
 			
 			g.drawString("1: "+roadDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
@@ -116,7 +116,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				g.drawString("Press space to continue", 10, setting.getHeight()-100);
 			}
 			
-			if(key!=null)
+			if(key!=null) {
 				if(key.getKeyCode()==KeyEvent.VK_1 && roadDeck.get(randomEvent).getChoice()==0) {
 					roadDeck.get(randomEvent).setChoice(1);
 				}else if(key.getKeyCode()==KeyEvent.VK_2 && roadDeck.get(randomEvent).getChoice()==0) {
@@ -126,6 +126,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				if(key.getKeyCode()==KeyEvent.VK_SPACE && roadDeck.get(randomEvent).getChoice()!=0) {
 					state=GameState.SCENARIO;
 				}
+			}
 		}else if(state==GameState.SCENARIO) {
 			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round

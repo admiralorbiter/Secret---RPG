@@ -59,8 +59,7 @@ public class Shop {
 		int selectionFlag=matrix.drawSelection(g, itemText, xClick, yClick);
 		if(selectionFlag>=0 && selectionFlag<supply.size())
 			supply.remove(selectionFlag);
-		
-		System.out.println("Selection Flag: "+selectionFlag);
+
 		
 	}
 }

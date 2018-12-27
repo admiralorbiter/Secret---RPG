@@ -31,6 +31,48 @@ public final class CityEventCardLoader {
 				return "The map does lookk valuable. Deciede to bargain for it.";
 			case 9:
 				return "Sell the goods.";
+			case 10:
+				return "Error: Need to get card "+id+"  uploaded.";
+			case 11:
+				return "Make a deal with the Harrower";
+			case 12:
+				return "Yield to the pie and admit defeat";
+			case 13:
+				return "Stop and try the food.";
+			case 14:
+				return "Raise arms and fight the Lurkers back into the sea.";
+			case 15:
+				return "Do your best to explain that the man was like this when you found him.";
+			case 16:
+				return "Intervene on the boy's behalf.";
+			case 17:
+				return "Deman a different payment. The single coin is an insult.";
+			case 18:
+				return "Decline to help the old woman.";
+			case 19:
+				return "Attend the wedding with an expensive gift.";
+			case 20:
+				return "Agree to guard the goods. It should be easy money.";
+			case 21:
+				return "Deman payment up front before agreeing to look for the man's brother.";
+			case 22:
+				return "Further investigate the exchange between the men.";
+			case 23:
+				return "Give chase. Thieves must be brought to justice.";
+			case 24:
+				return "Join the expedition as a guard.";
+			case 25:
+				return "Attempt to catch the vase.";
+			case 26:
+				return "Offer to fix the lamps. It shouldn't be too hard with a bit of technical know how.";
+			case 27:
+				return "Attempt to stop the crowd from hanging the Vermling.";
+			case 28:
+				return "Accept the mysterious job. You can handle anything.";
+			case 29:
+				return "Talk to the Savvas, appealing to their sense of duty and community.";
+			case 30:
+				return "Give chase! No one steals from you and gets away with it.";
 		}
 		
 		return option;
@@ -58,6 +100,48 @@ public final class CityEventCardLoader {
 				return "Refuse to deal with the merchant.";
 			case 9:
 				return "Donate the goods to the city.";
+			case 10:
+				return "Error: Need to get card "+id+"  uploaded.";
+			case 11:
+				return "Shake your head and walk away. Best not to take chances in such situations.";
+			case 12:
+				return "Power through the pain. You will not be bested!";
+			case 13:
+				return "Continue on your way to a less adventurous meal.";
+			case 14:
+				return "Approach the Lurkers cautiously and attempt to communicate with them.";
+			case 15:
+				return "Panic and kill the guard, then dispose of both corpses.";
+			case 16:
+				return "Let the guards haul the boy away to prison.";
+			case 17:
+				return "Accept the strange coin and reseach it for hidden value.";
+			case 18:
+				return "Agree to help with the rat infestation.";
+			case 19:
+				return "Attend the wedding and bring a mundane gifts.";
+			case 20:
+				return "Politely decline. You have much better things to do tonight.";
+			case 21:
+				return "Agree to help the man in his search.";
+			case 22:
+				return "Leave the criminal element alone and continue enjoying the show.";
+			case 23:
+				return "The thief had the right idea. Grab some vegetables for yourself.";
+			case 24:
+				return "Join the expedition as logger.";
+			case 25:
+				return "With no time to react, watch the vase fall to the ground.";
+			case 26:
+				return "Take the opportunity to steal some valuables from drunk patrons in the dark.";
+			case 27:
+				return "Take no action and see this through to its logical conclusion.";
+			case 28:
+				return "Incredulously explain she must have the wrong people and you won't take the job.";
+			case 29:
+				return "Talk to the managers and attempt to get the Savvas better pay.";
+			case 30:
+				return "Take a clear shot at him with a bow before he disappears into the grating.";
 		}
 		
 		return option;
@@ -86,6 +170,56 @@ public final class CityEventCardLoader {
 					return true;
 			case 9:
 				return true;
+			case 10:
+				return false;
+			case 11:
+				return true;
+			case 12:
+				return true;
+			case 13:
+				return false;
+			case 14:
+				return true;
+			case 15:
+				return true;
+			case 16:
+				return true;
+			case 17:
+				return true;
+			case 18:
+				return false;
+			case 19:
+				return true;
+			case 20:
+				if(choice==1)
+					return false;
+				return true;
+			case 21:
+				return true;
+			case 22:
+				if(choice==1)
+					return true;
+				return false;
+			case 23:
+				return true;
+			case 24:
+				return false;
+			case 25:
+				return true;
+			case 26:
+				return true;
+			case 27:
+				return true;
+			case 28:
+				return true;
+			case 29:
+				if(choice==1 || choice==2)
+					return true;
+				return false;
+			case 30:
+				if(choice==1 || choice==2)
+					return true;
+				return false;
 		}
 		
 		return false;
@@ -113,6 +247,48 @@ public final class CityEventCardLoader {
 				return "Unlock Sunken Vessel (n-17) Party Achievement: A map to treasure. Otherwise not enough gold. No effect";
 			case 9:
 				return "Gain 10 gold each. Rep <-9: Gain 5 additional gold each.";
+			case 10:
+				return "Error: Need to get card "+id+"  uploaded.";
+			case 11:
+				return "Pay 5 collective gold. Gain Random Item Design Rep>9: Lose 1 rep otherwise, Lose 1 rep.";
+			case 12:
+				return "Lose 1 Rep.";
+			case 13:
+				return "All start scenario with Bless. Lose 3 gold each.";
+			case 14:
+				return "Gain 10 experience each.";
+			case 15:
+				return "Rep >5: No effect. Otherwise, lose 2 rep.";
+			case 16:
+				return "Pay 10 collective gold. Add city event 70 to deck. Otherise, no effect.";
+			case 17:
+				return "Gain 10 collective gold.";
+			case 18:
+				return "Lose 1 rep.";
+			case 19:
+				return "Rep>9. Pay 20 collective gold. Gain 2 rep. Rep<10, pay 20 gold, no effect. Otherwise. option b.";
+			case 20:
+				return "Rep>9: Gain 10 collective gold. Otherwise, gain 5 experience each. Gain 10 collective gold.";
+			case 21:
+				return "Rep>7: Gain 5 collective gold. Add road event 65 to the deck. Otherwise, no effect.";
+			case 22:
+				return "Gain 2 rep.";
+			case 23:
+				return "Gain 1 rep.";
+			case 24:
+				return "Gain 10 experience each.";
+			case 25:
+				return "Brute/Craghart/Berseker - Gain collective gold. Otherwise, lose 10 collective gold.";
+			case 26:
+				return "Tinkerer - Gain 2 rep. Otherwise, no effect.";
+			case 27:
+				return "Spellweaver/Doomstalker/Soothsinger - Gain 1 prosperity. Otherwise, lose 1 rep.";
+			case 28:
+				return "Scoundrel/Mindthief/Nightshroud - Gain 10 gold each. Othewrise, lose 3 rep.";
+			case 29:
+				return "Cragheart/Elementalist - Gain 1 prosperity. Othewrise, no effect.";
+			case 30:
+				return "Mindthief - Gain 5 gold each. Gain 1 collective Flea Bitten Shawl (Item 105). Otherwise, lose 5 gold each.";
 		}
 		
 		return option;
@@ -140,9 +316,102 @@ public final class CityEventCardLoader {
 				return "No effect.";
 			case 9:
 				return "Gain 1 prosperity";
+			case 10:
+				return "Error: Need to get card "+id+"  uploaded.";
+			case 11:
+				return "Rep <-4: Gain 1 rep.";
+			case 12:
+				return "Lose 1 battle goal. Gain 10 gold each. Gain 1 rep.";
+			case 13:
+				return "No Effect.";
+			case 14:
+				return "Gain 2 rep.";
+			case 15:
+				return "Pay 15 collective gold. No effect. Otherwise, lose 1 battle goal.";
+			case 16:
+				return "No Effect.";
+			case 17:
+				return "Unlock Temple of the Eclipse.";
+			case 18:
+				return "Gain 2 gold each.";
+			case 19:
+				return "Rep<-4: Lose 5 collective gold. Lose 1 rep. Otherise, lose 5 collective gold.";
+			case 20:
+				return "Lose 1 prosperity.";
+			case 21:
+				return "Add road event 655 to deck.";
+			case 22:
+				return "Gain 1 battle goal mark.";
+			case 23:
+				return "All start scenario with Bless.";
+			case 24:
+				return "Gain 1 prosperity.";
+			case 25:
+				return "No effect.";
+			case 26:
+				return "Scoundrel/Mindthief/Nightshroud - Gain 10 collective gold. Otherwise, lose 1 rep.";
+			case 27:
+				return "Add city event 60 to the deck.";
+			case 28:
+				return "No effect.";
+			case 29:
+				return "Scoundrel/Sawbones/Soothsinger - Gain 1 prosperity. Otherwise, no effect.";
+			case 30:
+				return "Lose 1 rep.";
 		}
 		
 		return option;
+	}
+	
+	public static boolean thresholdForResults(int id, int choice) {
+		
+		if(choice==1) {
+			switch(id) {
+				case 2:
+					return true;
+				case 3:
+					return true;
+				case 8:
+					return true;
+				case 11:
+					return true;
+				case 15:
+					return true;
+				case 16:
+					return true;
+				case 19:
+					return true;
+				case 20:
+					return true;
+				case 21:
+					return true;
+				case 25:
+					return true;
+				case 26:
+					return true;
+				case 27:
+					return true;
+				case 28:
+					return true;
+				case 29:
+					return true;
+				case 30:
+					return true;
+			}
+		}else if(choice==2) {
+			switch(id) {
+				case 15:
+					return true;
+				case 19:
+					return true;
+				case 26:
+					return true;
+				case 29:
+					return true;
+			}
+		}
+		
+		return false;
 	}
 	
 }

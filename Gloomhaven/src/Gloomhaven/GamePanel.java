@@ -48,9 +48,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 
 	public GamePanel() {
 		
-		for(int i=1; i<10; i++) {
+		for(int i=1; i<=30; i++) {
 			cityDeck.add(new EventCard("City", i));
-			roadDeck.add(new EventCard("Road", i));
+			if(i<10)
+				roadDeck.add(new EventCard("Road", i));
 		}
 		
 		addKeyListener(this);
@@ -105,7 +106,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				}
 				
 				if(key.getKeyCode()==KeyEvent.VK_SPACE && cityDeck.get(randomEvent).getChoice()!=0) {
-					CityEventCardUtilities.resolveCityEvent(cityDeck.get(randomEvent), gloomhaven, party);
+					CityEventCardUtilities.resolveCityEvent(cityDeck.get(randomEvent), gloomhaven, party, cityDeck, roadDeck);
 					if(CityEventCardLoader.destroyCard(cityDeck.get(randomEvent).getID(), cityDeck.get(randomEvent).getChoice()))
 						cityDeck.remove(randomEvent);
 					randomEvent = r.nextInt(roadDeck.size())+1;

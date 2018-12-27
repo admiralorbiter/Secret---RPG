@@ -9,6 +9,9 @@ public class EventCard {
 	String type;
 	String text;
 	
+	
+	boolean threshold;
+	boolean thresholdMet=false;
 	int choice=0;//1 is top 2 is bottom 3 is alttop 4 is altbottom
 	
 	public EventCard(String type, int id) {
@@ -36,6 +39,7 @@ public class EventCard {
 	public String getOptionB() {return optionB;}
 	public int getChoice() {return choice;}
 	public void setChoice(int choice) {this.choice=choice;}
+	public boolean wasThresholdMet() {return thresholdMet;}
 	public String getResults() {
 		if(choice==1) {
 			return resultA;
@@ -46,4 +50,5 @@ public class EventCard {
 		
 		return "Error in eventcard.java - get results function.";
 	}
+
 }

@@ -51,6 +51,8 @@ public class Player extends character {
 	
 	Setting setting = new Setting();
 	
+	private int battleGoal=0;
+	
 	public Player(int id, String classID) {
 		setRoundBonus(new CardDataObject());
 		setID("P"+id);
@@ -847,6 +849,13 @@ public class Player extends character {
 	public void addItem(List<Item> collectiveItems) {
 		for(int i=0; i<collectiveItems.size(); i++)
 			items.add(collectiveItems.get(i));
+	}
+	
+	public void changeBattleGoalTotal(int change) {
+		battleGoal=battleGoal+change;
+		
+		if(this.battleGoal<0)
+			battleGoal=0;
 	}
 	
 }

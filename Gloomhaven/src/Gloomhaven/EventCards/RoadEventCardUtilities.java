@@ -14,31 +14,30 @@ public final class RoadEventCardUtilities {
 		if(choice==1) {
 			switch(id) {
 				case 1:
-					addNegativeConditions("Poison", party);
+					EventCardUtilities.addNegativeConditions("Poison", party);
 					break;
 				case 2:
-					addPositiveConditions("Bless", party);
+					EventCardUtilities.addPositiveConditions("Bless", party);
 					break;
 				case 3:
-					addNegativeConditions("Poison", party);
+					EventCardUtilities.addNegativeConditions("Poison", party);
 					break;
 				case 4:
-					changePartyGold(2, party);
+					EventCardUtilities.changeGold(2, party);
 					if(gloomhaven.getReputationLevel()>9)
-						changePartyGold(1, party);
+						EventCardUtilities.changeGold(1, party);
 					break;
 				case 5:
 					gloomhaven.addCollectiveItems(ItemLoader.Load(106));
 					break;
 				case 6:
-					//TODO: Lose 1 mark each
-					//Not implemented
+					EventCardUtilities.changeBattleGoalTotal(-1, party);
 					break;
 				case 7:
-					changeXP(5, party);
+					EventCardUtilities.changeXP(5, party);
 					break;
 				case 8:
-					changePartyGold(-5, party);
+					EventCardUtilities.changeGold(-5, party);
 					break;
 				case 9:
 					//TODO: Need consume 1 collective item
@@ -53,15 +52,15 @@ public final class RoadEventCardUtilities {
 						party.get(i).takeDamage(3);
 					break;
 				case 4:
-					changePartyGold(10, party);
+					EventCardUtilities.changeGold(10, party);
 					gloomhaven.changeReputation(2);
 					break;
 				case 5:
-					addNegativeConditions("Curse", party);
+					EventCardUtilities.addNegativeConditions("Curse", party);
 					gloomhaven.changeReputation(1);
 					break;
 				case 6:
-					addNegativeConditions("Wound", party);
+					EventCardUtilities.addNegativeConditions("Wound", party);
 					break;
 				case 8:
 					for(int i=0; i<party.size(); i++)
@@ -73,25 +72,5 @@ public final class RoadEventCardUtilities {
 			}
 		}
 	}
-	
-	public static void changeXP(int xp, List<Player> party) {
-		for(int i=0; i<party.size(); i++)
-			party.get(i).getCharacterData().setXp(party.get(i).getCharacterData().getXp()+xp);
-	}
-	
-	public static void changePartyGold(int gold, List<Player> party) {
-		for(int i=0; i<party.size(); i++)
-			party.get(i).getCharacterData().changeGold(gold);
-	}
-	
-	public static void addNegativeConditions(String negativeConditions, List<Player> party) {
-		for(int i=0; i<party.size(); i++)
-			party.get(i).getNegativeConditions().setNegativeConditions(negativeConditions);
-	}
-	
-	public static void addPositiveConditions(String positiveConditions, List<Player> party) {
-		for(int i=0; i<party.size(); i++)
-			party.get(i).getPositiveConditions().setPositiveConditions(positiveConditions);
-		
-	}
+
 }

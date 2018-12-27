@@ -151,9 +151,14 @@ public final class ItemLoader {
 				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked", 4);
 				item.inventoryTracker(2);
 				break;
-			case 31:
+			case 106:
 				//TODO: Need to utilize items when attacked
 				item = new Item(id, 40, "Necklace of Teeth", "Head", "continuous", "when_attacked", 0);
+				item.inventoryTracker(1);
+				break;
+			case 125:
+				//Not implemented
+				item=new Item(id, 50, "Curious Gear", "Small Item", "consumed", "during_turn", 0);
 				item.inventoryTracker(1);
 				break;
 		}

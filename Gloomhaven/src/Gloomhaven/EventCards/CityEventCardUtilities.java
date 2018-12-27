@@ -3,12 +3,13 @@ package Gloomhaven.EventCards;
 import java.util.List;
 
 import Gloomhaven.City;
+import Gloomhaven.ItemLoader;
 import Gloomhaven.Characters.Player;
 
 public final class CityEventCardUtilities {
 
 	
-	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party) {
+	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> cityDeck, List<EventCard> roadDeck) {
 		int id=card.getID();
 		int choice=card.getChoice();
 		if(choice==1) {
@@ -27,11 +28,11 @@ public final class CityEventCardUtilities {
 					//TODO: Need a way for party to give collective gold
 					break;
 				case 3:
-					//TODO: Need to add collective gear
+					gloomhaven.addCollectiveItems(ItemLoader.Load(125));
 					gloomhaven.addGlobalAchievements("Ancient Technology");
 					break;
 				case 5:
-					//TOD0: Need to add and destroy battle goal check marks
+					EventCardUtilities.changeBattleGoalTotal(-1, party);
 					gloomhaven.changeReputation(1);
 					gloomhaven.changeProsperity(1);
 					break;
@@ -56,11 +57,112 @@ public final class CityEventCardUtilities {
 					break;
 				case 9:
 					for(int i=0; i<party.size(); i++)
-						changePartyGold(party, 10);
+						EventCardUtilities.changeGold(10, party);
 					if(gloomhaven.getReputationLevel()<-9) {
-						changePartyGold(party, 5);
+						EventCardUtilities.changeGold(5, party);
 					}
 					break;
+				case 11:
+					if(card.wasThresholdMet()) {
+						//TODO: Add random item design
+						if(gloomhaven.getReputationLevel()>9)
+							gloomhaven.changeReputation(-1);
+					}else {
+						gloomhaven.changeReputation(-1);
+					}
+					break;
+				case 12:
+					gloomhaven.changeReputation(-1);
+					break;
+				case 13:
+					EventCardUtilities.addPositiveConditions("Bless", party);
+					EventCardUtilities.changeGold(-3, party);
+					break;
+				case 14:
+					EventCardUtilities.changeXP(10, party);
+					break;
+				case 15:
+					if(!card.wasThresholdMet())
+						gloomhaven.changeReputation(-2);
+					break;
+				case 16:
+					if(card.wasThresholdMet())
+						cityDeck.add(new EventCard("City", 70));
+					break;
+				case 17:
+					//TODO: Need to have it so I can collective take gold and disperse it
+					EventCardUtilities.changeGold(10, party);
+					break;
+				case 18:
+					gloomhaven.changeReputation(-1);
+					break;
+				case 19:
+					//TODO: Need to have it so it can have 3 options, not 2
+					if(card.wasThresholdMet())
+						gloomhaven.changeReputation(2);
+					break;
+				case 20:
+					//TODO: Need to have it so I can collective take gold and disperse it
+					if(card.wasThresholdMet())
+						EventCardUtilities.changeGold(10, party);
+					else {
+						EventCardUtilities.changeXP(5, party);
+						EventCardUtilities.changeGold(10, party);
+					}
+					break;
+				case 21:
+					//TODO: Need to have it so I can collective take gold and disperse it
+					if(card.wasThresholdMet()) {
+						cityDeck.add(new EventCard("City", 70));
+						EventCardUtilities.changeGold(5, party);
+					}
+					break;
+				case 22:
+					gloomhaven.changeReputation(2);
+					break;
+				case 23:
+					gloomhaven.changeReputation(1);
+					break;
+				case 24:
+					EventCardUtilities.changeXP(10, party);
+					break;
+				case 25:
+					//TODO: Need to have it so I can collective take gold and disperse it
+					//TODO: Need a way to pay collective gold
+					if(card.wasThresholdMet())
+						EventCardUtilities.changeGold(5, party);
+					else
+						EventCardUtilities.changeGold(-10, party);
+					break;
+				case 26:
+					if(card.wasThresholdMet())
+						gloomhaven.changeReputation(2);
+					break;
+				case 27:
+					if(card.wasThresholdMet())
+						gloomhaven.changeProsperity(1);
+					else
+						gloomhaven.changeReputation(-1);
+					break;
+				case 28:
+					if(card.wasThresholdMet())
+						EventCardUtilities.changeGold(10, party);
+					else
+						gloomhaven.changeReputation(-3);
+					break;
+				case 29:
+					if(card.wasThresholdMet())
+						gloomhaven.changeProsperity(1);
+					break;
+				case 30:
+					if(card.wasThresholdMet()) {
+						EventCardUtilities.changeGold(5, party);
+						gloomhaven.addCollectiveItems(ItemLoader.Load(105));
+					}else {
+						EventCardUtilities.changeGold(-5, party);
+					}
+					break;
+					
 			}
 		}else if(choice==2) {
 			switch(id) {
@@ -68,13 +170,14 @@ public final class CityEventCardUtilities {
 					gloomhaven.changeReputation(1);
 					break;
 				case 4:
-					//TODO: Need to add and destroy battle goal check marks
+					EventCardUtilities.changeBattleGoalTotal(-1, party);
 					gloomhaven.changeReputation(1);
+					
 					break;
 				case 5:
-					changePartyGold(party, 5);
+					EventCardUtilities.changeGold(5, party);
 					if(gloomhaven.getReputationLevel()<-4)
-						changePartyGold(party, 5);
+						EventCardUtilities.changeGold(5, party);
 					break;
 				case 6:
 					//TODO: Need to gain random item design
@@ -90,12 +193,72 @@ public final class CityEventCardUtilities {
 				case 9:
 					gloomhaven.changeProsperity(1);
 					break;
+				case 11:
+					if(gloomhaven.getReputationLevel()<-4)
+						gloomhaven.changeReputation(1);
+					break;
+				case 12:
+					EventCardUtilities.changeBattleGoalTotal(-1, party);
+					EventCardUtilities.changeGold(10, party);
+					gloomhaven.changeReputation(1);
+					break;
+				case 14:
+					gloomhaven.changeReputation(2);
+					break;
+				case 15:
+					if(!card.wasThresholdMet())
+						EventCardUtilities.changeBattleGoalTotal(-1, party);
+					break;
+				case 17:
+					//TODO need to unlock map spaces
+					break;
+				case 18:
+					EventCardUtilities.changeGold(2, party);
+					break;
+				case 19:
+					if(card.wasThresholdMet()) {
+						//TODO: Need to have it so I can collective take gold and disperse it
+						EventCardUtilities.changeGold(-5, party);
+						gloomhaven.changeReputation(-1);
+					}else {
+						EventCardUtilities.changeGold(-5, party);
+					}
+					break;
+				case 20:
+					gloomhaven.changeProsperity(-1);
+					break;
+				case 21:
+					cityDeck.add(new EventCard("City", 65));
+					break;
+				case 22:
+					EventCardUtilities.changeBattleGoalTotal(1, party);
+					break;
+				case 23:
+					EventCardUtilities.addPositiveConditions("Bless", party);
+					break;
+				case 24:
+					gloomhaven.changeProsperity(1);
+					break;
+				case 26:
+					//TODO: Need to have it so I can collective take gold and disperse it
+					if(card.wasThresholdMet())
+						EventCardUtilities.changeGold(10, party);
+					else
+						gloomhaven.changeReputation(-1);
+					break;
+				case 27:
+					cityDeck.add(new EventCard("City", 60));
+					break;
+				case 29:
+					if(card.wasThresholdMet())
+						gloomhaven.changeProsperity(1);
+					break;
+				case 30:
+					gloomhaven.changeReputation(-1);
+					break;
+			
 			}
 		}
 	}
 	
-	public static void changePartyGold(List<Player> party, int gold) {
-		for(int i=0; i<party.size(); i++)
-			party.get(i).getCharacterData().changeGold(gold);
-	}
 }

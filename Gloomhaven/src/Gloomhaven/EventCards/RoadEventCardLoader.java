@@ -29,7 +29,7 @@ public final class RoadEventCardLoader {
 			case 8:
 				return "Pay the thieves.";
 			case 9:
-				return "Help out the guard.";
+				return "Help out the guard.";		
 		}
 		
 		return option;
@@ -85,7 +85,7 @@ public final class RoadEventCardLoader {
 				
 				return true;
 			case 9:
-				return false;
+				return false;		
 		}
 		
 		return false;
@@ -113,6 +113,7 @@ public final class RoadEventCardLoader {
 				return "Lose 5 gold each";
 			case 9:
 				return "Consume 1 collective item.";
+				
 		}
 		
 		return option;
@@ -143,5 +144,12 @@ public final class RoadEventCardLoader {
 		}
 		
 		return option;
+	}
+	
+	public static boolean thresholdForResults(int id, int choice) {
+		
+		
+		
+		return false;
 	}
 }

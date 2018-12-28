@@ -19,6 +19,7 @@ public class BattleGoalCard {
 	public void setThresholdKeyword(String keyword) {this.thresholdKeyword=keyword;}
 	public void setThresholdAmount(int amount) {this.thresholdAmount=amount;}
 	public void setOverUnderThresholdKeyword(String keyword) {this.overUnderThresholdKeyword=keyword;}
+	public int getID() {return id;}
 	public String getName() {return name;}
 	public String getText() {return text;}
 	public int getReward() {return reward;}

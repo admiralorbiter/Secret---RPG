@@ -246,7 +246,9 @@ public final class UtilitiesAB {
 		
 		if(enemy.getCharacterData().getHealth()<=0) {
 			System.out.println(player.getName()+"   killed enemy "+enemy.getClassID());
-			player.addStats(new StatsTracker(enemy.getClassID(), 1));
+			player.getStats().addKilledEnemy(enemy);
+			if(enemy.isElite())
+				player.getStats().increaseEliteKillCount();
 		}
 	}
 	

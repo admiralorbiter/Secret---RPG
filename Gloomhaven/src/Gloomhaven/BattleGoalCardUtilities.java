@@ -1,10 +1,7 @@
 package Gloomhaven;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import Gloomhaven.Characters.Player;
 
@@ -13,14 +10,74 @@ public final class BattleGoalCardUtilities {
 	public static List<BattleGoalCard> loadFullDeck(){
 		List<BattleGoalCard> battleGoalDeck = new ArrayList<BattleGoalCard>();
 		
-		for(int i=458; i<481; i++)
+		for(int i=458; i<=481; i++)
 			battleGoalDeck.add(load(i));
 		
 		return battleGoalDeck;
 	}
 	
 	public static void evaluateBattleGoals(Player player) {
+		BattleGoalCard card = player.getBattleGoalCard();
+		int stat=0;
 		
+		System.out.println("BattleGoalCardUtilities.java Stat: "+stat);
+		System.out.println("Current battle goal points: "+player.getBattleGoalTotal());
+		System.out.println(card.getThresholdKeyword()+"  "+card.getOverUnderThresholdKeyword()+"  "+card.getThresholdAmount());
+		
+		if(card.getThresholdKeyword().equals("hand_and_discard_size")) {
+			stat=player.getHandAndDiscardSize();
+		}else if(card.getThresholdKeyword().equals("experience")) {
+			stat=player.getStats().getScenarioExperience();
+		}else if(card.getThresholdKeyword().equals("hitpoints")) {
+			stat=player.getCharacterData().getHealth();
+		}else if(card.getThresholdKeyword().equals("loot_treasure")) {
+			stat=player.getStats().getTreasureLootTotal();
+		}
+		else if(card.getThresholdKeyword().equals("loot_money")) {
+			stat=player.getStats().getGoldLootTotal();
+		}else if(card.getThresholdKeyword().equals("loot")) {
+			stat=player.getStats().getTotalLoot();
+		}else if(card.getThresholdKeyword().equals("kills")) {
+			stat=player.getStats().getNumberOfScenarioKills();
+		}else if(card.getThresholdKeyword().equals("elite_kills")) {
+			stat=player.getStats().getScenarioEliteEnemiesKilled();
+		}else if(card.getThresholdKeyword().equals("items")) {
+			stat=player.getStats().getScenarioItemsUsed();
+		}else if(card.getThresholdKeyword().equals("short_rests")) {
+			stat=player.getStats().getScenarioShortRests();
+		}
+		else if(card.getThresholdKeyword().equals("long_rests")) {
+			stat=player.getStats().getScenarioLongRests();
+		}else {
+			System.out.println(card.getText()+"  is not implemented currently.");
+		}
+		
+		if(card.getOverUnderThresholdKeyword().equals("unique")) {
+			switch(card.getID()) {
+				case 463:
+					if(stat==player.getCharacterData().getMaxHealth())
+						player.changeBattleGoalTotal(card.getReward());
+					break;
+				case 473:
+					if(stat>=(player.getCharacterData().getLevel()+2))
+						player.changeBattleGoalTotal(card.getReward());
+					break;
+			}
+		}
+		else if(card.getOverUnderThresholdKeyword().equals("more")) {
+			if(stat>=card.getThresholdAmount())
+				player.changeBattleGoalTotal(card.getReward());
+		} else if(card.getOverUnderThresholdKeyword().equals("less")) {
+			if(stat<=card.getThresholdAmount())
+				player.changeBattleGoalTotal(card.getReward());
+		}else if(card.getOverUnderThresholdKeyword().equals("equal")) {
+			if(stat==card.getThresholdAmount())
+				player.changeBattleGoalTotal(card.getReward());
+		}else {
+			System.out.println("BattleGoalCardUtilities.java - Error evaluating battle goals with id: "+card.getID());
+		}
+		
+		System.out.println("New battle goal points: "+player.getBattleGoalTotal());
 	}
 	
 	public static BattleGoalCard load(int id) {
@@ -32,7 +89,7 @@ public final class BattleGoalCardUtilities {
 				card.setName("Streamliner");
 				card.setText("Have five or more total cards in your hand and discard at the end of the scneario.");
 				card.setReward(1);
-				card.setThresholdKeyword("hand_size");
+				card.setThresholdKeyword("hand_and_discard_size");
 				card.setThresholdAmount(5);
 				card.setOverUnderThresholdKeyword("more");
 				return card;
@@ -74,7 +131,7 @@ public final class BattleGoalCardUtilities {
 				card.setReward(1);
 				card.setThresholdKeyword("hitpoints");
 				card.setThresholdAmount(-1);
-				card.setOverUnderThresholdKeyword("equal");
+				card.setOverUnderThresholdKeyword("unique");
 				return card;
 			case 464:
 				card.setName("Neutralizer");
@@ -88,7 +145,7 @@ public final class BattleGoalCardUtilities {
 				card.setName("Plunderer");
 				card.setText("Loot a treasure overlay tile during the scenario.");
 				card.setReward(1);
-				card.setThresholdKeyword("loot");
+				card.setThresholdKeyword("loot_treasure");
 				card.setThresholdAmount(1);
 				card.setOverUnderThresholdKeyword("more");
 				return card;
@@ -112,7 +169,7 @@ public final class BattleGoalCardUtilities {
 				card.setName("Hoarder");
 				card.setText("Loot five or more money tokens during the scenario.");
 				card.setReward(1);
-				card.setThresholdKeyword("loot");
+				card.setThresholdKeyword("loot_money");
 				card.setThresholdAmount(5);
 				card.setOverUnderThresholdKeyword("more");
 				return card;
@@ -154,7 +211,7 @@ public final class BattleGoalCardUtilities {
 				card.setReward(1);
 				card.setThresholdKeyword("items");
 				card.setThresholdAmount(-1);
-				card.setOverUnderThresholdKeyword("more");
+				card.setOverUnderThresholdKeyword("unique");
 				return card;
 			case 474:
 				card.setName("Aggressor");
@@ -194,7 +251,7 @@ public final class BattleGoalCardUtilities {
 				card.setReward(1);
 				card.setThresholdKeyword("unique");
 				card.setThresholdAmount(-1);
-				card.setOverUnderThresholdKeyword("more");
+				card.setOverUnderThresholdKeyword("unique");
 				return card;
 			case 479:
 				card.setName("Executioner");

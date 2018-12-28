@@ -87,7 +87,6 @@ public class Scenario {
 		//Adds those bonus to the players stats
 		for(int i=0; i<party.size(); i++) {
 			ItemLoader.continuousEffects(party.get(i));
-			party.get(i).addStats(new StatsTracker(setup.getArea(), 1));
 		}
 		
 		//Sets up the room and the enemies based on the scene id

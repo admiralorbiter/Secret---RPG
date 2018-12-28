@@ -53,10 +53,20 @@ public class Player extends character {
 	
 	Setting setting = new Setting();
 	
-	private List<StatsTracker> stats = new ArrayList<StatsTracker>();
+	private StatsTracker stats = new StatsTracker();
 	
 	private BattleGoalCard battleGoal = null;
 	private int currentBattleGoalCount=0;
+	
+	public int getHandAndDiscardSize() {
+		int count=0;
+		for(int i=0; i<abilityDeck.size(); i++) {
+			if(!abilityDeck.get(i).isLostFlag())
+				count++;
+		}
+		
+		return count;
+	}
 	
 	public Player(int id, String classID) {
 		setRoundBonus(new CardDataObject());
@@ -111,16 +121,8 @@ public class Player extends character {
 		
 		
 	}
-	
-	public void addStats(StatsTracker stat) {
-
-		for(int i=0; i<stats.size(); i++)
-			if(stats.get(i).getWhatIsBeingTracked().equals(stat.getWhatIsBeingTracked()))
-				stats.get(i).setCount(stats.get(i).getCount()+1);
-			else {
-				stats.add(stat);
-			}
-	}
+	public void setStats(StatsTracker stats) {this.stats=stats;}
+	public StatsTracker getStats() {return stats;}
 	
 	public int getMaxHandCount() {return maxHandCount;}
 	public void setMaxHandCount(int maxHandCount) {this.maxHandCount = maxHandCount;}
@@ -160,6 +162,7 @@ public class Player extends character {
 	public void setLongRest() {
 		longRest=true;
 		initiative=99;
+		stats.addLongRest();
 	}
 	
 	//Choose to discard a card instead of taking damage
@@ -682,6 +685,9 @@ public class Player extends character {
 	}
 	
 	public void takeShortRest() {
+		
+		stats.addShortRest();
+		
 		collectDiscardPile();
 		Random rand = new Random();
 		boolean running=true;
@@ -818,7 +824,10 @@ public class Player extends character {
 		System.out.println(name+" was attacked for "+damage+" making thier health "+data.getHealth());
 	}
 	
-	public void increaseXP(int xpGained) {data.setXp(data.getXp()+xpGained);}
+	public void increaseXP(int xpGained) {
+		data.setXp(data.getXp()+xpGained);
+		stats.xpGained(xpGained);
+	}
 	
 	public void removeItem(Item item) {
 		items.remove(item);
@@ -879,5 +888,5 @@ public class Player extends character {
 	
 	public void setBattleGoalCard(BattleGoalCard card) {this.battleGoal=card;}
 	public BattleGoalCard getBattleGoalCard() {return battleGoal;}
-	
+	public int getBattleGoalTotal() {return currentBattleGoalCount;}
 }

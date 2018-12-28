@@ -33,6 +33,9 @@ public class StatsTracker {
 	public void addShortRest() {scenario_shortRests++;}
 	public void increaseEliteKillCount() {scenario_eliteEnemiesKilled++;}
 	public void addKilledEnemy(Enemy enemy) {scenario_enemiesKilled.add(enemy);}
+	public void addGold(int amount) {scenario_goldLoot=scenario_goldLoot+amount;}
+	public void addTreasure(String treasure) {scenario_treasureLoot.add(treasure);}
+	public void increaseItemUse() {scenario_itemUses++;}
 	public void endScenario() {
 		for(int i=0; i<scenario_enemiesKilled.size(); i++) {
 			enemiesKilled.add(scenario_enemiesKilled.get(i));

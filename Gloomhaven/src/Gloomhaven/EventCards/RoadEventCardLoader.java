@@ -1,5 +1,7 @@
 package Gloomhaven.EventCards;
 
+import Gloomhaven.City;
+
 public final class RoadEventCardLoader {
 	public static String cardText(int id) {
 		String option="Need to add text for each event card";
@@ -146,10 +148,17 @@ public final class RoadEventCardLoader {
 		return option;
 	}
 	
-	public static boolean thresholdForResults(int id, int choice) {
+	public static void thresholdForResults(EventCard card, City gloomhaven) {
+		int id=card.getID();
+		int choice = card.getChoice();
 		
+		card.setThreshold(false);
 		
+		if(choice==1) {
+			
+		}else if(choice==2) {
+			
+		}
 		
-		return false;
 	}
 }

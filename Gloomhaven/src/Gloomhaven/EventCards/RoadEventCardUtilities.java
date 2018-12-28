@@ -8,7 +8,7 @@ import Gloomhaven.Characters.Player;
 
 public final class RoadEventCardUtilities {
 	
-	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party) {
+	public static void resolveRoadEvent(EventCard card, City gloomhaven, List<Player> party) {
 		int id=card.getID();
 		int choice=card.getChoice();
 		if(choice==1) {

@@ -151,6 +151,106 @@ public final class ItemLoader {
 				item = new Item(id, 30, "Studded Leather", "Body", "spent", "when_attacked", 4);
 				item.inventoryTracker(2);
 				break;
+			case 71:
+				item = new Item(id, 50, "Boots of Levitation", "Boots", "continuous", "continuous", -1);
+				item.inventoryTracker(2);
+				break;
+			case 72:
+				item = new Item(id, 50, "Boots of Happiness", "Boots", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 73:
+				item = new Item(id, 50, "Blinking Cape", "Body", "consumed", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;	
+			case 74:
+				item = new Item(id, 40, "Swordedge Armor", "Body", "spent", "when_attacked", -1);
+				item.inventoryTracker(2);
+				break;
+			case 75:
+				item = new Item(id, 25, "Circlet of Elements", "Head", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 76:
+				item = new Item(id, 40, "Chain Hood", "Head", "continuous", "continuous", -1);
+				item.inventoryTracker(2);
+				break;
+			case 77:
+				item = new Item(id, 30, "Frigid Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;	
+			case 78:
+				item = new Item(id, 30, "Storm Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;	
+			case 79:
+				item = new Item(id, 30, "Inferno Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 80:
+				item = new Item(id, 30, "Tremor Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;	
+			case 81:
+				item = new Item(id, 30, "Brilliant Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 82:
+				item = new Item(id, 30, "Night Blade", "One-Hand", "continuous", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 83:
+				item = new Item(id, 30, "Wand of Frost", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 84:
+				item = new Item(id, 30, "Wand of Storms", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 85:
+				item = new Item(id, 30, "Wand of Infernos", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 86:
+				item = new Item(id, 30, "Wand of Tremors", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 87:
+				item = new Item(id, 30, "Wand of Brilliance", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 88:
+				item = new Item(id, 30, "Wand of Darkness", "One-Hand", "spent", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 89:
+				item = new Item(id, 10, "Minor Cure Potion", "Small Item", "consumed", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 90:
+				item = new Item(id, 30, "Major Cure Potion", "Small Item", "consumed", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 91:
+				item = new Item(id, 20, "Steel Ring", "Small Item", "consumed", "when_attacked", -1);
+				item.inventoryTracker(2);
+				break;
+			case 92:
+				item = new Item(id, 25, "Dampening Ring", "Small Item", "consumed", "special", -1);
+				item.inventoryTracker(2);
+				break;
+			case 93:
+				item = new Item(id, 30, "Scroll of Power", "Small Item", "consumed", "during_ally_attack", -1);
+				item.inventoryTracker(2);
+				break;
+			case 94:
+				item = new Item(id, 30, "Scroll of Healing", "Small Item", "consumed", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
+			case 95:
+				item = new Item(id, 50, "Scroll of Stamina", "Small Item", "consumed", "during_turn", -1);
+				item.inventoryTracker(2);
+				break;
 			case 106:
 				//TODO: Need to utilize items when attacked
 				item = new Item(id, 40, "Necklace of Teeth", "Head", "continuous", "when_attacked", 0);
@@ -173,6 +273,10 @@ public final class ItemLoader {
 				deck.addCard(new AttackModifierCard(1, -1));
 				break;
 			case 23:
+				System.out.println("ItemLoader.java AddAttackModifer: -1 Mod Added due to Item");
+				deck.addCard(new AttackModifierCard(1, -1));
+				break;	
+			case 76:
 				System.out.println("ItemLoader.java AddAttackModifer: -1 Mod Added due to Item");
 				deck.addCard(new AttackModifierCard(1, -1));
 				break;	
@@ -208,6 +312,17 @@ public final class ItemLoader {
 			}
 		}
 		
+		return items;
+	}
+	
+	public static List<Item> loadAllRandomItemDesign(){
+		List<Item> items = new ArrayList<Item>();
+		for(int i=71; i<=95; i++) {
+			items.add(Load(i));
+			items.get(items.size()-1).setIndexNum(1);
+			items.add(Load(i));
+			items.get(items.size()-1).setIndexNum(2);
+		}
 		return items;
 	}
 	

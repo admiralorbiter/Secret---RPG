@@ -7,7 +7,9 @@ import java.util.Random;
 
 import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.CityEventCardLoader;
+import Gloomhaven.EventCards.CityEventCardUtilities;
 import Gloomhaven.EventCards.EventCard;
+import Gloomhaven.EventCards.RoadEventCardLoader;
 import Gloomhaven.EventCards.RoadEventCardUtilities;
 
 public class Event {
@@ -32,11 +34,11 @@ public class Event {
 		this.type=type;
 		this.deck=deck;
 		finished=false;
-		eventIndex = r.nextInt(deck.size()-1)+1;
+		eventIndex = r.nextInt(deck.size()-1);
 		state=State.SELECTION;
 	}
 	
-	public void playRound(KeyEvent key, Graphics g , List<Player> party , City gloomhaven) {
+	public void playRound(KeyEvent key, Graphics g , List<Player> party , City gloomhaven, Shop shop) {
 		k=UtilitiesGeneral.parseKeyCharacter(key);
 		num=UtilitiesGeneral.parseKeyNum(key);
 		if(deck.get(eventIndex)!=null)
@@ -54,7 +56,10 @@ public class Event {
 					deck.get(eventIndex).setChoice(1);
 					deck.get(eventIndex).getResults();
 					
-					CityEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
+					if(type.equals("City"))
+						CityEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
+					else
+						RoadEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
 					
 					if(deck.get(eventIndex).hasThreshold())
 						state=State.THRESHOLD;
@@ -62,10 +67,13 @@ public class Event {
 						state=State.FINISHED;
 					
 				}else if(key.getKeyCode()==KeyEvent.VK_2 && deck.get(eventIndex).getChoice()==0) {
-					deck.get(eventIndex).setChoice(1);
+					deck.get(eventIndex).setChoice(2);
 					deck.get(eventIndex).getResults();
 					
-					CityEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
+					if(type.equals("City"))
+						CityEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
+					else
+						RoadEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
 					
 					if(deck.get(eventIndex).hasThreshold())
 						state=State.THRESHOLD;
@@ -99,21 +107,36 @@ public class Event {
 					for(int j=0; j<classes.size(); j++) {
 						if(party.get(i).getClass().equals(classes.get(j)))
 							deck.get(eventIndex).setThresholdMet(true);
+							System.out.println("Event.java -playRound Loc 102: Successfully met class criteria");
 					}
 				}
+				
+				state=State.FINISHED;
 			}
 		}
 		else if(state==State.FINISHED) {
-			finishRound(party, gloomhaven);
+			finishRound(party, gloomhaven, shop);
 		}
 
 	}
 	
-	public void finishRound(List<Player> party, City gloomhaven) {
+	public void finishRound(List<Player> party, City gloomhaven, Shop shop) {
 		finished=true;
-		RoadEventCardUtilities.resolveCityEvent(deck.get(eventIndex), gloomhaven, party);
-		if(CityEventCardLoader.destroyCard(deck.get(eventIndex).getID(), deck.get(eventIndex).getChoice()))
-			deck.remove(eventIndex);
+		
+		if(type.equals("City")) {
+			CityEventCardUtilities.resolveCityEvent(deck.get(eventIndex), gloomhaven, party, deck, shop);
+			
+			if(CityEventCardLoader.destroyCard(deck.get(eventIndex).getID(), deck.get(eventIndex).getChoice()))
+				deck.remove(eventIndex);
+		}
+		else {
+			RoadEventCardUtilities.resolveRoadEvent(deck.get(eventIndex), gloomhaven, party);
+			
+			if(RoadEventCardLoader.destroyCard(deck.get(eventIndex).getID(), deck.get(eventIndex).getChoice()))
+				deck.remove(eventIndex);
+		}
+		
+	
 		eventIndex=0;
 	}
 	

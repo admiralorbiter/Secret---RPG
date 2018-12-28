@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
@@ -16,6 +17,7 @@ public class Shop {
 	Setting setting = new Setting();
 	
 	List<Item> supply = new ArrayList<Item>();
+	List<Item> randomItemDesign = new ArrayList<Item>();
 	
 	int currentParty=0;
 	int maxPlayers=0;
@@ -24,6 +26,8 @@ public class Shop {
 		shopImage = new ImageIcon("src/Gloomhaven/shop.png");
 		if(prosperityLevel==1)
 			supply=ItemLoader.loadAllLevel1Items();
+		
+		randomItemDesign=ItemLoader.loadAllRandomItemDesign();
 		
 		currentParty=0;
 	}
@@ -85,5 +89,20 @@ public class Shop {
 			System.out.println("Not enough gold");
 			return false;
 		}
+	}
+	
+	public void retrieveRandomItemDesign(Player player) {
+		Random random = new Random();
+		int index=random.nextInt(randomItemDesign.size()-1);
+		
+		player.addItem(randomItemDesign.get(index));
+		Item item = randomItemDesign.get(index);
+		randomItemDesign.remove(index);
+		
+		for(int i=0; i<randomItemDesign.size(); i++) {
+			if(randomItemDesign.get(i).getID()==item.getID())
+				supply.add(randomItemDesign.get(i));
+		}
+	
 	}
 }

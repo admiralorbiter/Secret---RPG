@@ -851,6 +851,10 @@ public class Player extends character {
 			items.add(collectiveItems.get(i));
 	}
 	
+	public void addItem(Item item) {
+		items.add(item);
+	}
+	
 	public void changeBattleGoalTotal(int change) {
 		battleGoal=battleGoal+change;
 		

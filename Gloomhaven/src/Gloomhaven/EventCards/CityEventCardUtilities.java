@@ -4,14 +4,16 @@ import java.util.List;
 
 import Gloomhaven.City;
 import Gloomhaven.ItemLoader;
+import Gloomhaven.Shop;
 import Gloomhaven.Characters.Player;
 
 public final class CityEventCardUtilities {
 
 	
-	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> cityDeck, List<EventCard> roadDeck) {
+	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> deck, Shop shop) {
 		int id=card.getID();
 		int choice=card.getChoice();
+		
 		if(choice==1) {
 			switch(id) {
 				case 1:
@@ -87,7 +89,7 @@ public final class CityEventCardUtilities {
 					break;
 				case 16:
 					if(card.wasThresholdMet())
-						cityDeck.add(new EventCard("City", 70));
+						deck.add(new EventCard("City", 70));
 					break;
 				case 17:
 					//TODO: Need to have it so I can collective take gold and disperse it
@@ -119,7 +121,7 @@ public final class CityEventCardUtilities {
 				case 21:
 					//TODO: Need to have it so I can collective take gold and disperse it
 					if(gloomhaven.getReputationLevel()>7) {
-						cityDeck.add(new EventCard("City", 70));
+						deck.add(new EventCard("City", 70));
 						EventCardUtilities.changeGold(5, party);
 					}
 					break;
@@ -187,6 +189,7 @@ public final class CityEventCardUtilities {
 					break;
 				case 6:
 					//TODO: Need to gain random item design
+					shop.retrieveRandomItemDesign(party.get(0));
 					if(gloomhaven.getReputationLevel()>4)
 						gloomhaven.changeReputation(-1);
 					break;
@@ -234,7 +237,7 @@ public final class CityEventCardUtilities {
 					gloomhaven.changeProsperity(-1);
 					break;
 				case 21:
-					cityDeck.add(new EventCard("City", 65));
+					deck.add(new EventCard("City", 65));
 					break;
 				case 22:
 					EventCardUtilities.changeBattleGoalTotal(1, party);
@@ -253,7 +256,7 @@ public final class CityEventCardUtilities {
 						gloomhaven.changeReputation(-1);
 					break;
 				case 27:
-					cityDeck.add(new EventCard("City", 60));
+					deck.add(new EventCard("City", 60));
 					break;
 				case 29:
 					if(card.wasThresholdMet())

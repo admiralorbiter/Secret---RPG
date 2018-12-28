@@ -10,7 +10,7 @@ import Gloomhaven.Characters.Player;
 public final class CityEventCardUtilities {
 
 	
-	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> deck, Shop shop) {
+	public static void resolveCityEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> cityDeck, List<EventCard> roadDeck, Shop shop) {
 		int id=card.getID();
 		int choice=card.getChoice();
 		
@@ -26,12 +26,11 @@ public final class CityEventCardUtilities {
 							gloomhaven.changeReputation(-1);
 					}
 					break;
-				case 2:
-					//TODO: Need a way for party to give collective gold
-					break;
 				case 3:
-					gloomhaven.addCollectiveItems(ItemLoader.Load(125));
-					gloomhaven.addGlobalAchievements("Ancient Technology");
+					if(card.wasThresholdMet()) {
+						gloomhaven.addCollectiveItems(ItemLoader.Load(125));
+						gloomhaven.addGlobalAchievements("Ancient Technology");
+					}
 					break;
 				case 5:
 					EventCardUtilities.changeBattleGoalTotal(-1, party);
@@ -55,7 +54,8 @@ public final class CityEventCardUtilities {
 				case 8:
 					//TODO: Need a way to pay collective gold
 					//TODO: Unlock map places
-					gloomhaven.addPartyAchievement("A Map to Treasure");
+					if(card.wasThresholdMet())
+						gloomhaven.addPartyAchievement("A Map to Treasure");
 					break;
 				case 9:
 					for(int i=0; i<party.size(); i++)
@@ -66,7 +66,7 @@ public final class CityEventCardUtilities {
 					break;
 				case 11:
 					if(card.wasThresholdMet()) {
-						//TODO: Add random item design
+						shop.retrieveRandomItemDesign(party.get(0));
 						if(gloomhaven.getReputationLevel()>9)
 							gloomhaven.changeReputation(-1);
 					}else {
@@ -89,7 +89,7 @@ public final class CityEventCardUtilities {
 					break;
 				case 16:
 					if(card.wasThresholdMet())
-						deck.add(new EventCard("City", 70));
+						cityDeck.add(new EventCard("City", 70));
 					break;
 				case 17:
 					//TODO: Need to have it so I can collective take gold and disperse it
@@ -121,7 +121,7 @@ public final class CityEventCardUtilities {
 				case 21:
 					//TODO: Need to have it so I can collective take gold and disperse it
 					if(gloomhaven.getReputationLevel()>7) {
-						deck.add(new EventCard("City", 70));
+						roadDeck.add(new EventCard("Road", 65));
 						EventCardUtilities.changeGold(5, party);
 					}
 					break;
@@ -189,7 +189,6 @@ public final class CityEventCardUtilities {
 						EventCardUtilities.changeGold(5, party);
 					break;
 				case 6:
-					//TODO: Need to gain random item design
 					shop.retrieveRandomItemDesign(party.get(0));
 					if(gloomhaven.getReputationLevel()>4)
 						gloomhaven.changeReputation(-1);
@@ -238,7 +237,7 @@ public final class CityEventCardUtilities {
 					gloomhaven.changeProsperity(-1);
 					break;
 				case 21:
-					deck.add(new EventCard("City", 65));
+					roadDeck.add(new EventCard("Road", 65));
 					break;
 				case 22:
 					EventCardUtilities.changeBattleGoalTotal(1, party);
@@ -257,7 +256,7 @@ public final class CityEventCardUtilities {
 						gloomhaven.changeReputation(-1);
 					break;
 				case 27:
-					deck.add(new EventCard("City", 60));
+					cityDeck.add(new EventCard("City", 60));
 					break;
 				case 29:
 					if(card.wasThresholdMet())

@@ -126,7 +126,7 @@ public class Event {
 		finished=true;
 		
 		if(type.equals("City")) {
-			CityEventCardUtilities.resolveCityEvent(deck.get(eventIndex), gloomhaven, party, deck, shop);
+			CityEventCardUtilities.resolveCityEvent(deck.get(eventIndex), gloomhaven, party, deck, secondDeck, shop);
 			
 			if(CityEventCardLoader.destroyCard(deck.get(eventIndex).getID(), deck.get(eventIndex).getChoice()))
 				deck.remove(eventIndex);

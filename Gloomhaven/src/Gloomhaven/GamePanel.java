@@ -48,16 +48,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	public GamePanel() {
 		
 		for(int i=1; i<=30; i++) {
-			//cityDeck.add(new EventCard("City", i));
+			cityDeck.add(new EventCard("City", i));
 			if(i<10)
 				roadDeck.add(new EventCard("Road", i));
 		}
-
-		cityDeck.add(new EventCard("City", 6));
-		cityDeck.add(new EventCard("City", 6));
-		cityDeck.add(new EventCard("City", 6));
-		cityDeck.add(new EventCard("City", 6));
-		cityDeck.add(new EventCard("City", 6));
 		
 		addKeyListener(this);
 		addMouseListener(this);

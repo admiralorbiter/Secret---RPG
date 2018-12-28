@@ -11,6 +11,9 @@ public final class RoadEventCardUtilities {
 	public static void resolveRoadEvent(EventCard card, City gloomhaven, List<Player> party) {
 		int id=card.getID();
 		int choice=card.getChoice();
+		
+		//System.out.println("Resolve Road Event    "+id+","+choice);
+		
 		if(choice==1) {
 			switch(id) {
 				case 1:

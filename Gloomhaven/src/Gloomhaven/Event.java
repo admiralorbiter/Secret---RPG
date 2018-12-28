@@ -18,7 +18,8 @@ public class Event {
 		SELECTION,
 		THRESHOLD,
 		PAY_COLLECTIVE_GOLD,
-		FINISHED;
+		FINISHED, 
+		DONE;
 	}
 	Setting setting = new Setting();
 	private State state;
@@ -61,10 +62,6 @@ public class Event {
 					else
 						RoadEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
 					
-					if(deck.get(eventIndex).hasThreshold())
-						state=State.THRESHOLD;
-					else
-						state=State.FINISHED;
 					
 				}else if(key.getKeyCode()==KeyEvent.VK_2 && deck.get(eventIndex).getChoice()==0) {
 					deck.get(eventIndex).setChoice(2);
@@ -74,11 +71,16 @@ public class Event {
 						CityEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
 					else
 						RoadEventCardLoader.thresholdForResults(deck.get(eventIndex), gloomhaven);
-					
-					if(deck.get(eventIndex).hasThreshold())
-						state=State.THRESHOLD;
-					else
-						state=State.FINISHED;
+
+				}
+				
+				if(key!=null) {
+					if(key.getKeyCode()==KeyEvent.VK_SPACE && deck.get(eventIndex).getChoice()!=0) {
+						if(deck.get(eventIndex).hasThreshold())
+							state=State.THRESHOLD;
+						else
+							state=State.FINISHED;
+					}
 				}
 			}
 		}
@@ -138,6 +140,7 @@ public class Event {
 		
 	
 		eventIndex=0;
+		state=State.DONE;
 	}
 	
 	public int getEventIndex() {return eventIndex;}

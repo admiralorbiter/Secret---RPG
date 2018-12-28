@@ -1,7 +1,23 @@
 package Gloomhaven;
 
+import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import Gloomhaven.Characters.Player;
+
 public final class BattleGoalCardUtilities {
 
+	public static List<BattleGoalCard> loadFullDeck(){
+		List<BattleGoalCard> battleGoalDeck = new ArrayList<BattleGoalCard>();
+		
+		for(int i=458; i<481; i++)
+			battleGoalDeck.add(load(i));
+		
+		return battleGoalDeck;
+	}
 	
 	public static BattleGoalCard load(int id) {
 		BattleGoalCard card = new BattleGoalCard(id);

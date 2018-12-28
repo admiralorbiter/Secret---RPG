@@ -11,6 +11,7 @@ import java.util.Random;
 
 import Gloomhaven.AttackModifierCard;
 import Gloomhaven.AttackModifierDeck;
+import Gloomhaven.BattleGoalCard;
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.Hex;
 import Gloomhaven.Item;
@@ -54,7 +55,8 @@ public class Player extends character {
 	
 	private List<StatsTracker> stats = new ArrayList<StatsTracker>();
 	
-	private int battleGoal=0;
+	private BattleGoalCard battleGoal = null;
+	private int currentBattleGoalCount=0;
 	
 	public Player(int id, String classID) {
 		setRoundBonus(new CardDataObject());
@@ -869,10 +871,13 @@ public class Player extends character {
 	}
 	
 	public void changeBattleGoalTotal(int change) {
-		battleGoal=battleGoal+change;
+		currentBattleGoalCount=currentBattleGoalCount+change;
 		
-		if(this.battleGoal<0)
-			battleGoal=0;
+		if(this.currentBattleGoalCount<0)
+			currentBattleGoalCount=0;
 	}
+	
+	public void setBattleGoalCard(BattleGoalCard card) {this.battleGoal=card;}
+	public BattleGoalCard getBattleGoalCard() {return battleGoal;}
 	
 }

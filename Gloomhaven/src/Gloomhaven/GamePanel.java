@@ -29,6 +29,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	    TOWN,
 	    CITY_EVENT,
 	    ROAD_EVENT,
+	    PICK_BATTLE_GOAL_CARD,
+	    SCENARIO_TEXT,
 	    SCENARIO,
 	    END;
 	}
@@ -40,17 +42,24 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	City gloomhaven = new City();
 	List<EventCard> cityDeck = new ArrayList<EventCard>();
 	List<EventCard> roadDeck = new ArrayList<EventCard>();
+	List<BattleGoalCard> battleGoalDeck = new ArrayList<BattleGoalCard>();
+	
 	Shop shop = new Shop(gloomhaven.getProspLevel());
 	Event event;
 	int xClick=-99;
 	int yClick=-99;
-
+	int partyIndex=0;
+	
+	BattleGoalSelection battleGoalSelection=null;
+	
 	public GamePanel() {
 		
 		for(int i=1; i<=30; i++) {
 			cityDeck.add(new EventCard("City", i));
 			roadDeck.add(new EventCard("Road", i));
 		}
+		
+		battleGoalDeck = BattleGoalCardUtilities.loadFullDeck();
 		
 		addKeyListener(this);
 		addMouseListener(this);
@@ -86,7 +95,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 						event = new Event("City", cityDeck);
 						state=GameState.CITY_EVENT;
 					}
-		}else if(state==GameState.CITY_EVENT) {
+		}
+		else if(state==GameState.CITY_EVENT) {
 			event.playRound(key, g, party, gloomhaven, shop, roadDeck);
 			
 			if(key!=null) {
@@ -95,16 +105,44 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 					state=GameState.ROAD_EVENT;
 				}
 			}
-		}else if(state==GameState.ROAD_EVENT) {
+		}
+		else if(state==GameState.ROAD_EVENT) {
 			event.playRound(key, g, party, gloomhaven, shop, cityDeck);
 			
 			if(key!=null) {
 				if(event.isFinished()) {
 					//event = null;
-					state=GameState.SCENARIO;
+					partyIndex=0;
+					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);
+					state=GameState.PICK_BATTLE_GOAL_CARD;
 				}
 			}
-		}else if(state==GameState.SCENARIO) {
+		}
+		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {
+			g.drawString("Pick Battle Goal Card", setting.getGraphicsX(), setting.getGraphicsYTop());
+			
+			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);
+			
+			if(finished==true) {
+				partyIndex++;
+				if(partyIndex==party.size()) {
+					partyIndex=0;
+					state=GameState.SCENARIO_TEXT;
+				}else {
+					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);
+				}
+			}
+		}
+		else if(state==GameState.SCENARIO_TEXT) {
+			g.drawString("Scenario Intro Text", setting.getGraphicsX(), setting.getGraphicsYTop());
+			g.drawString("Press space to continue", setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			
+			if(key!=null) {
+				if(key.getKeyCode()==KeyEvent.VK_SPACE)
+					state=GameState.SCENARIO;
+			}
+		}
+		else if(state==GameState.SCENARIO) {
 			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round
 			//if(scene.finished())									//If scenario is off, end state of game

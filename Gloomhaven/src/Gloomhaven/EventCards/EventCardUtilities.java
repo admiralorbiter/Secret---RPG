@@ -31,4 +31,9 @@ public final class EventCardUtilities {
 		for(int i=0; i<party.size(); i++)
 			party.get(i).changeBattleGoalTotal(-1);
 	}
+	
+	public static void takeDamage(int damage, List<Player> party) {
+		for(int i=0; i<party.size(); i++)
+			party.get(i).takeDamage(damage);
+	}
 }

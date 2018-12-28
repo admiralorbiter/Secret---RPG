@@ -39,7 +39,7 @@ public class Event {
 		state=State.SELECTION;
 	}
 	
-	public void playRound(KeyEvent key, Graphics g , List<Player> party , City gloomhaven, Shop shop) {
+	public void playRound(KeyEvent key, Graphics g , List<Player> party , City gloomhaven, Shop shop, List<EventCard> secondDeck) {
 		k=UtilitiesGeneral.parseKeyCharacter(key);
 		num=UtilitiesGeneral.parseKeyNum(key);
 		if(deck.get(eventIndex)!=null)
@@ -117,12 +117,12 @@ public class Event {
 			}
 		}
 		else if(state==State.FINISHED) {
-			finishRound(party, gloomhaven, shop);
+			finishRound(party, gloomhaven, shop, secondDeck);
 		}
 
 	}
 	
-	public void finishRound(List<Player> party, City gloomhaven, Shop shop) {
+	public void finishRound(List<Player> party, City gloomhaven, Shop shop, List<EventCard> secondDeck) {
 		finished=true;
 		
 		if(type.equals("City")) {
@@ -132,7 +132,7 @@ public class Event {
 				deck.remove(eventIndex);
 		}
 		else {
-			RoadEventCardUtilities.resolveRoadEvent(deck.get(eventIndex), gloomhaven, party);
+			RoadEventCardUtilities.resolveRoadEvent(deck.get(eventIndex), gloomhaven, party, secondDeck);
 			
 			if(RoadEventCardLoader.destroyCard(deck.get(eventIndex).getID(), deck.get(eventIndex).getChoice()))
 				deck.remove(eventIndex);

@@ -170,7 +170,8 @@ public final class CityEventCardUtilities {
 						EventCardUtilities.changeGold(-5, party);
 					}
 					break;
-					
+				default:
+					System.out.println("Card had no effect.");
 			}
 		}else if(choice==2) {
 			switch(id) {
@@ -265,8 +266,11 @@ public final class CityEventCardUtilities {
 				case 30:
 					gloomhaven.changeReputation(-1);
 					break;
-			
+				default:
+					System.out.println("Card had no effect.");
 			}
+		}else {
+			System.out.println("Error in cityeventcardutiltiies with the choice: "+choice);
 		}
 	}
 	

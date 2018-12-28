@@ -49,8 +49,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		
 		for(int i=1; i<=30; i++) {
 			cityDeck.add(new EventCard("City", i));
-			if(i<10)
-				roadDeck.add(new EventCard("Road", i));
+			roadDeck.add(new EventCard("Road", i));
 		}
 		
 		addKeyListener(this);
@@ -88,7 +87,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 						state=GameState.CITY_EVENT;
 					}
 		}else if(state==GameState.CITY_EVENT) {
-			event.playRound(key, g, party, gloomhaven, shop);
+			event.playRound(key, g, party, gloomhaven, shop, roadDeck);
 			
 			if(key!=null) {
 				if(event.isFinished()) {
@@ -97,7 +96,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				}
 			}
 		}else if(state==GameState.ROAD_EVENT) {
-			event.playRound(key, g, party, gloomhaven, shop);
+			event.playRound(key, g, party, gloomhaven, shop, cityDeck);
 			
 			if(key!=null) {
 				if(event.isFinished()) {

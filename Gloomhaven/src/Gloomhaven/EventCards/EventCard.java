@@ -51,4 +51,5 @@ public class EventCard {
 		return "Error in eventcard.java - get results function.";
 	}
 
+	public boolean hasThreshold() {return threshold;}
 }

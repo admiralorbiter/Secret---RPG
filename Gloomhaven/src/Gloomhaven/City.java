@@ -25,8 +25,12 @@ public class City {
 	public void setReputationLevel(int repLevel) {this.reputationLevel=repLevel;}
 	public List<String> getGlobalAchievements() {return globalAchievements;}
 	public void addGlobalAchievements(String achievement) {globalAchievements.add(achievement);}
-	public void changeReputation(int change) {this.reputationLevel=this.reputationLevel-change;}
-	public void changeProsperity(int change) {this.prospLevel=this.prospLevel-change;}
+	public void changeReputation(int change) {this.reputationLevel=this.reputationLevel+change;}
+	public void changeProsperity(int change) {
+		prospLevel=prospLevel+change;
+		if(prospLevel<0)
+			prospLevel=0;
+	}
 	public List<String> getPartyAchievements(){return partyAchievements;}
 	public void addPartyAchievement(String achievement) {partyAchievements.add(achievement);}
 	public List<Item> getCollectiveItems(){return collectiveItems;}

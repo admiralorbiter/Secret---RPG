@@ -41,8 +41,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	List<EventCard> cityDeck = new ArrayList<EventCard>();
 	List<EventCard> roadDeck = new ArrayList<EventCard>();
 	Shop shop = new Shop(gloomhaven.getProspLevel());
-	Random r = new Random();
-	int randomEvent;
+	Event event;
 	int xClick=-99;
 	int yClick=-99;
 
@@ -85,57 +84,24 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
 					if(shop.atLastPartyMember()) {
-						randomEvent = r.nextInt(cityDeck.size())+1;
+						event = new Event("City", cityDeck);
 						state=GameState.CITY_EVENT;
 					}
 		}else if(state==GameState.CITY_EVENT) {
-			g.drawString("City Event "+cityDeck.get(randomEvent).getID(), setting.getGraphicsX(),  setting.getGraphicsYTop());
-			g.drawString("1: "+cityDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
-			g.drawString("2: "+cityDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
-			
-			if(cityDeck.get(randomEvent).getChoice()!=0) {
-				g.drawString(cityDeck.get(randomEvent).getResults(), setting.getGraphicsX(), setting.getGraphicsYTop()+150);
-				g.drawString("Press space to continue", 10, setting.getHeight()-100);
-			}
+			event.playRound(key, g, party, gloomhaven);
 			
 			if(key!=null) {
-				if(key.getKeyCode()==KeyEvent.VK_1 && cityDeck.get(randomEvent).getChoice()==0) {
-					cityDeck.get(randomEvent).setChoice(1);
-				}else if(key.getKeyCode()==KeyEvent.VK_2 && cityDeck.get(randomEvent).getChoice()==0) {
-					cityDeck.get(randomEvent).setChoice(1);
-				}
-				
-				if(key.getKeyCode()==KeyEvent.VK_SPACE && cityDeck.get(randomEvent).getChoice()!=0) {
-					CityEventCardUtilities.resolveCityEvent(cityDeck.get(randomEvent), gloomhaven, party, cityDeck, roadDeck);
-					if(CityEventCardLoader.destroyCard(cityDeck.get(randomEvent).getID(), cityDeck.get(randomEvent).getChoice()))
-						cityDeck.remove(randomEvent);
-					randomEvent = r.nextInt(roadDeck.size())+1;
+				if(event.isFinished()) {
+					event = new Event("Road", roadDeck);
 					state=GameState.ROAD_EVENT;
 				}
 			}
 		}else if(state==GameState.ROAD_EVENT) {
-			g.drawString("Road Event "+roadDeck.get(randomEvent).getID(), setting.getGraphicsX(),  setting.getGraphicsYTop());
-			//Insert Road Event Stuff here
-			
-			g.drawString("1: "+roadDeck.get(randomEvent).getOptionA(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
-			g.drawString("2: "+roadDeck.get(randomEvent).getOptionB(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
-			
-			if(roadDeck.get(randomEvent).getChoice()!=0) {
-				g.drawString(roadDeck.get(randomEvent).getResults(), setting.getGraphicsX(), setting.getGraphicsYTop()+150);
-				g.drawString("Press space to continue", 10, setting.getHeight()-100);
-			}
+			event.playRound(key, g, party, gloomhaven);
 			
 			if(key!=null) {
-				if(key.getKeyCode()==KeyEvent.VK_1 && roadDeck.get(randomEvent).getChoice()==0) {
-					roadDeck.get(randomEvent).setChoice(1);
-				}else if(key.getKeyCode()==KeyEvent.VK_2 && roadDeck.get(randomEvent).getChoice()==0) {
-					roadDeck.get(randomEvent).setChoice(1);
-				}
-				
-				if(key.getKeyCode()==KeyEvent.VK_SPACE && roadDeck.get(randomEvent).getChoice()!=0) {
-					RoadEventCardUtilities.resolveCityEvent(roadDeck.get(randomEvent), gloomhaven, party);
-					if(CityEventCardLoader.destroyCard(roadDeck.get(randomEvent).getID(), roadDeck.get(randomEvent).getChoice()))
-						roadDeck.remove(randomEvent);
+				if(event.isFinished()) {
+					event = null;
 					state=GameState.SCENARIO;
 				}
 			}

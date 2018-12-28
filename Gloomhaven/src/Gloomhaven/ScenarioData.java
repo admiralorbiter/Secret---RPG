@@ -1,11 +1,18 @@
 package Gloomhaven;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ScenarioData {
 	private String name;
 	private int id;
 	private String requirements="None";
 	private String goal;
 	private MapLocation location;
+	private boolean specialRules=false;
+	private List<MapLocation> newLocations = new ArrayList<MapLocation>();
+	private List<String> partyAchievements = new ArrayList<String>();
+	private List<String> globalAchievements = new ArrayList<String>();
 	
 	public ScenarioData(int id) {
 		this.id=id;
@@ -21,5 +28,10 @@ public class ScenarioData {
 	public void setGoal(String goal) {this.goal = goal;}
 	public MapLocation getLocation() {return location;}
 	public void setLocation(MapLocation location) {this.location=location;}
+	public List<MapLocation> getNewLocations(){return newLocations;}
+	public List<String> getPartyAchievements(){return partyAchievements;}
+	public void setSpecialRules(boolean flag) {this.specialRules=flag;}
+	public boolean getSpecialRulesFlag() {return specialRules;}
+	public List<String> getGlobalAchievements(){return globalAchievements;}
 	
 }

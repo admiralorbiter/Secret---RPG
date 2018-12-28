@@ -243,6 +243,11 @@ public final class UtilitiesAB {
 		
 		System.out.println("Utility Class Damage 2: "+attack);
 		enemy.takeDamage(attack);
+		
+		if(enemy.getCharacterData().getHealth()<=0) {
+			System.out.println(player.getName()+"   killed enemy "+enemy.getClassID());
+			player.addStats(new StatsTracker(enemy.getClassID(), 1));
+		}
 	}
 	
 	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCard abilityCard) {

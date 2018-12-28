@@ -81,10 +81,13 @@ public class Scenario {
 	public Scenario(String sceneID, List<Player> party, City gloomhaven) {
 		this.party=party;				//Imports party into scenario
 		
+		SetupScenario setup = new SetupScenario(sceneID);
+		
 		//Loads the items that will continuous effects for the player
 		//Adds those bonus to the players stats
 		for(int i=0; i<party.size(); i++) {
 			ItemLoader.continuousEffects(party.get(i));
+			party.get(i).addStats(new StatsTracker(setup.getArea(), 1));
 		}
 		
 		//Sets up the room and the enemies based on the scene id

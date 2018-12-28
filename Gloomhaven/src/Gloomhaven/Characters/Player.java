@@ -16,6 +16,7 @@ import Gloomhaven.Hex;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
 import Gloomhaven.Setting;
+import Gloomhaven.StatsTracker;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.CardDataObject.CardDataObject;
@@ -50,6 +51,8 @@ public class Player extends character {
 	private boolean createAnyElement=false;
 	
 	Setting setting = new Setting();
+	
+	private List<StatsTracker> stats = new ArrayList<StatsTracker>();
 	
 	private int battleGoal=0;
 	
@@ -105,6 +108,16 @@ public class Player extends character {
 		}
 		
 		
+	}
+	
+	public void addStats(StatsTracker stat) {
+
+		for(int i=0; i<stats.size(); i++)
+			if(stats.get(i).getWhatIsBeingTracked().equals(stat.getWhatIsBeingTracked()))
+				stats.get(i).setCount(stats.get(i).getCount()+1);
+			else {
+				stats.add(stat);
+			}
 	}
 	
 	public int getMaxHandCount() {return maxHandCount;}

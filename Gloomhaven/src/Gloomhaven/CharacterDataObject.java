@@ -15,7 +15,7 @@ public class CharacterDataObject {
 	public CharacterDataObject(String flag) {
 		
 		//TODO: Move this into settings or class
-		int TEST_HEALTH=50;
+		int TEST_HEALTH=6;
 		int TEST_SHIELD=0;
 		int scenarioLevel=1;
 		
@@ -29,6 +29,7 @@ public class CharacterDataObject {
 				health=TEST_HEALTH+scenarioLevel;
 				shield=TEST_SHIELD+scenarioLevel;
 				maxHealth=TEST_HEALTH+scenarioLevel;
+				break;
 			default:
 				level=1;
 				health=450;

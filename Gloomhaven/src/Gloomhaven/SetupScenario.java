@@ -43,4 +43,13 @@ public class SetupScenario {
 		
 		return id;
 	}
+	
+	public String getArea() {
+		switch(scenarioID) {
+			case "Test":
+				return "Test";
+		}
+		
+		return "Test";
+	}
 }

@@ -1,5 +1,10 @@
 package Gloomhaven.EventCards;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Gloomhaven.City;
+
 public final class CityEventCardLoader {
 
 	public static String cardText(int id) {
@@ -363,55 +368,139 @@ public final class CityEventCardLoader {
 		return option;
 	}
 	
-	public static boolean thresholdForResults(int id, int choice) {
+	public static void thresholdForResults(EventCard card, City gloomhaven) {
+		int id=card.getID();
+		int choice = card.getChoice();
+		
+		card.setThreshold(false);
 		
 		if(choice==1) {
 			switch(id) {
 				case 2:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(10);
+					card.setThreshold(true);
+					break;
 				case 3:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(10);
+					card.setThreshold(true);
+					break;
 				case 8:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					if(gloomhaven.getReputationLevel()>9)
+						card.setThresholdAmount(15);
+					else
+						card.setThresholdAmount(20);
+					card.setThreshold(true);
+					break;
 				case 11:
-					return true;
-				case 15:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(3);
+					card.setThreshold(true);
+					break;
 				case 16:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(10);
+					card.setThreshold(true);
+					break;
 				case 19:
-					return true;
-				case 20:
-					return true;
-				case 21:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(20);
+					card.setThreshold(true);
+					break;
 				case 25:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 26:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 27:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 28:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 29:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 30:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 			}
 		}else if(choice==2) {
 			switch(id) {
 				case 15:
-					return true;
-				case 19:
-					return true;
+					card.setThresholdType("PayCollectiveGold");
+					card.setThresholdAmount(15);
+					card.setThreshold(true);
+					break;
 				case 26:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
 				case 29:
-					return true;
+					card.setThresholdType("Class");
+					card.setThreshold(true);
+					break;
+			}
+		}
+	}
+	
+	public static List<String> thresholdClassList(EventCard card){
+		int id=card.getID();
+		int choice = card.getChoice();
+		List<String> classes = new ArrayList<String>();
+		if(choice==1) {
+			switch(id) {
+				case 25:
+					classes.add("Brute");
+					classes.add("Cragheart");
+					classes.add("Berseker");
+					return classes;
+				case 26:
+					classes.add("Tinkerer");
+					return classes;
+				case 27:
+					classes.add("Spellweaver");
+					classes.add("Doomstalker");
+					classes.add("Soothsinger");
+					return classes;
+				case 28:
+					classes.add("Scoundrel");
+					classes.add("Mind Thief");
+					classes.add("Nighshroud");
+					return classes;
+				case 29:
+					classes.add("Cragheart");
+					classes.add("Elementalist");
+					return classes;
+				case 30:
+					classes.add("Mind Thief");
+					return classes;
+			}
+		}else if(choice==2) {
+			switch(id) {
+				case 26:
+					classes.add("Scoundrel");
+					classes.add("Mind Thief");
+					classes.add("Nightshroud");
+					return classes;
+				case 29:
+					classes.add("Scoundrel");
+					classes.add("Sawbones");
+					classes.add("Soothsinger");
+					return classes;
 			}
 		}
 		
-		return false;
+		return classes;
 	}
 	
 }

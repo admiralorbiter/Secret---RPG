@@ -36,6 +36,7 @@ public class CharacterDataObject {
 				shield=0;
 				level=1;
 				maxHealth=450;
+				gold=100;
 		}
 	}
 	

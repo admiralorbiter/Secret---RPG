@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			if(i<10)
 				roadDeck.add(new EventCard("Road", i));
 		}
-		
+
 		addKeyListener(this);
 		addMouseListener(this);
 		setBackground(new Color(64, 64, 64));
@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			
 			if(key!=null) {
 				if(event.isFinished()) {
-					event = null;
+					//event = null;
 					state=GameState.SCENARIO;
 				}
 			}

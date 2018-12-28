@@ -8,10 +8,12 @@ public class EventCard {
 	int id;
 	String type;
 	String text;
+	String thresholdType="None";
 	
 	
 	boolean threshold;
 	boolean thresholdMet=false;
+	int thresholdAmount=0;
 	int choice=0;//1 is top 2 is bottom 3 is alttop 4 is altbottom
 	
 	public EventCard(String type, int id) {
@@ -40,6 +42,10 @@ public class EventCard {
 	public int getChoice() {return choice;}
 	public void setChoice(int choice) {this.choice=choice;}
 	public boolean wasThresholdMet() {return thresholdMet;}
+	public String getThresholdType() {return thresholdType;}
+	public void setThresholdType(String type) {this.thresholdType=type;}
+	public void setThresholdAmount(int amount) {this.thresholdAmount=amount;}
+	
 	public String getResults() {
 		if(choice==1) {
 			return resultA;
@@ -52,4 +58,7 @@ public class EventCard {
 	}
 
 	public boolean hasThreshold() {return threshold;}
+	public void setThreshold(boolean threshold) {this.threshold=threshold;}
+	public void setThresholdMet(boolean threshold) {this.thresholdMet=threshold;}
+	public int getThresholdAmount() {return thresholdAmount;}
 }

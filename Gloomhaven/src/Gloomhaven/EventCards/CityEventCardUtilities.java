@@ -82,7 +82,7 @@ public final class CityEventCardUtilities {
 					EventCardUtilities.changeXP(10, party);
 					break;
 				case 15:
-					if(!card.wasThresholdMet())
+					if(gloomhaven.getReputationLevel()<6)
 						gloomhaven.changeReputation(-2);
 					break;
 				case 16:
@@ -98,12 +98,18 @@ public final class CityEventCardUtilities {
 					break;
 				case 19:
 					//TODO: Need to have it so it can have 3 options, not 2
-					if(card.wasThresholdMet())
+					if(card.wasThresholdMet() && gloomhaven.getReputationLevel()>9)
 						gloomhaven.changeReputation(2);
+					else if(card.wasThresholdMet()==false && gloomhaven.getReputationLevel()<-4) {
+						EventCardUtilities.changeGold(-5, party);
+						gloomhaven.changeReputation(-1);
+					}	else if(card.wasThresholdMet()==false) {
+						EventCardUtilities.changeGold(-5, party);
+					}
 					break;
 				case 20:
 					//TODO: Need to have it so I can collective take gold and disperse it
-					if(card.wasThresholdMet())
+					if(gloomhaven.getReputationLevel()>9)
 						EventCardUtilities.changeGold(10, party);
 					else {
 						EventCardUtilities.changeXP(5, party);
@@ -112,7 +118,7 @@ public final class CityEventCardUtilities {
 					break;
 				case 21:
 					//TODO: Need to have it so I can collective take gold and disperse it
-					if(card.wasThresholdMet()) {
+					if(gloomhaven.getReputationLevel()>7) {
 						cityDeck.add(new EventCard("City", 70));
 						EventCardUtilities.changeGold(5, party);
 					}
@@ -216,7 +222,7 @@ public final class CityEventCardUtilities {
 					EventCardUtilities.changeGold(2, party);
 					break;
 				case 19:
-					if(card.wasThresholdMet()) {
+					if(gloomhaven.getReputationLevel()<-4) {
 						//TODO: Need to have it so I can collective take gold and disperse it
 						EventCardUtilities.changeGold(-5, party);
 						gloomhaven.changeReputation(-1);

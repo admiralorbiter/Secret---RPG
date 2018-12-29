@@ -12,6 +12,9 @@ import java.util.Random;
 
 import javax.swing.*;
 
+import Gloomhaven.BattleGoals.BattleGoalCard;
+import Gloomhaven.BattleGoals.BattleGoalCardUtilities;
+import Gloomhaven.BattleGoals.BattleGoalSelection;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.CityEventCardLoader;

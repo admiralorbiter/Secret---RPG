@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.AttackModifierDeck;
 import Gloomhaven.CharacterDataObject;
+import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Counter;
 import Gloomhaven.CardDataObject.Effects;

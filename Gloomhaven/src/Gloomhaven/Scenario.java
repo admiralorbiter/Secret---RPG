@@ -46,6 +46,8 @@ public class Scenario {
 	    END;
 	}
 	
+	private ScenarioData data;
+	
 	private State state;
 	private List<Player> party;
 	private Room room;
@@ -78,10 +80,10 @@ public class Scenario {
 	
 	private City gloomhaven;
 	
-	public Scenario(String sceneID, List<Player> party, City gloomhaven) {
+	public Scenario(int sceneID, List<Player> party, City gloomhaven) {
 		this.party=party;				//Imports party into scenario
 		
-		SetupScenario setup = new SetupScenario(sceneID);
+		data = ScenarioDataLoader.loadScenarioData(sceneID);
 		
 		//Loads the items that will continuous effects for the player
 		//Adds those bonus to the players stats

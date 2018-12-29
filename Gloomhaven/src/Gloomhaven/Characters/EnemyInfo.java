@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.AttackModifierCard;
 import Gloomhaven.Room;
 import Gloomhaven.Setting;
 import Gloomhaven.UtilitiesAB;
 import Gloomhaven.UtilitiesTargeting;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
+import Gloomhaven.AttackModifier.AttackModifierCard;
 
 public class EnemyInfo {
 	

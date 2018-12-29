@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.AttackModifierCard;
-import Gloomhaven.AttackModifierDeck;
-import Gloomhaven.BattleGoalCard;
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.Hex;
 import Gloomhaven.Item;
@@ -20,6 +17,9 @@ import Gloomhaven.Setting;
 import Gloomhaven.StatsTracker;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
+import Gloomhaven.AttackModifier.AttackModifierCard;
+import Gloomhaven.AttackModifier.AttackModifierDeck;
+import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.CardDataObject.CardDataObject;
 
 public class Player extends character {

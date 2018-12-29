@@ -84,8 +84,8 @@ public class Setting {
 	public Color getEnemyColor() {return enemyColor;}
 	//[Testing]
 	private int NUM_PLAYERS=1;
-	private String SCENE_ID="Test";
-	public String getSceneID() {return SCENE_ID;}
+	private int SCENE_ID=1;
+	public int getSceneID() {return SCENE_ID;}
 	public int getNumPlayers() {return NUM_PLAYERS;}
 	
 	//Functions

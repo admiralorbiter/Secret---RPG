@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.BattleGoals;
 
 public class BattleGoalCard {
 	private String name="";

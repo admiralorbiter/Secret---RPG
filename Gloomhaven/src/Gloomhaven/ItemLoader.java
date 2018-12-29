@@ -3,6 +3,8 @@ package Gloomhaven;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.AttackModifier.AttackModifierCard;
+import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Player;
 

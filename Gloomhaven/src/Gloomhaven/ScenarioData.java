@@ -1,5 +1,6 @@
 package Gloomhaven;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class ScenarioData {
 	private List<MapLocation> newLocations = new ArrayList<MapLocation>();
 	private List<String> partyAchievements = new ArrayList<String>();
 	private List<String> globalAchievements = new ArrayList<String>();
+	private int roomTotal=0;
+	private Point boardSize;
 	
 	public ScenarioData(int id) {
 		this.id=id;
@@ -33,5 +36,9 @@ public class ScenarioData {
 	public void setSpecialRules(boolean flag) {this.specialRules=flag;}
 	public boolean getSpecialRulesFlag() {return specialRules;}
 	public List<String> getGlobalAchievements(){return globalAchievements;}
+	public void setRoomTotal(int roomTotal) {this.roomTotal=roomTotal;}
+	public int getRoomTotal() {return roomTotal;}
+	public void setBoardSize(Point size) {boardSize=size;}
+	public Point getBoardSize() {return boardSize;}
 	
 }

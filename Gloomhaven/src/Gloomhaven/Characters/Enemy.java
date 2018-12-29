@@ -11,22 +11,26 @@ public class Enemy extends character{
 	
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
+	private Point startingPosition;
 	
-	public Enemy(int id, String classID) {
+	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		
 		setID("E"+id+classID);
 		setClassID(classID);
 		setName("Enemy");
+		
 		data = new CharacterDataObject(classID);
 		
-		if(classID.equals("TestElite")) {
-			eliteFlag=true;
+		eliteFlag=elite;
+		
+		//Testing Need to actually udate stats.
+		if(elite) {
 			baseStats=new SimpleCardData(4, 3, 6);
-		}
-		else {
-			eliteFlag=true;
+		}else {
 			baseStats=new SimpleCardData(3, 2, 5);
 		}
+		
+		this.startingPosition=startingPosition;
 	}
 	
 	public SimpleCardData getBaseStats() {return baseStats;}

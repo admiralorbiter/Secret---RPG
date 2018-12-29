@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.AttackModifier;
 
 public class AttackModifierCard {
 	int multiplier;
@@ -17,7 +17,7 @@ public class AttackModifierCard {
 		free=true;
 	}
 	
-	AttackModifierCard(int multiplier, int plusAttack){
+	public AttackModifierCard(int multiplier, int plusAttack){
 		this.multiplier=multiplier;
 		this.plusAttack=plusAttack;
 		

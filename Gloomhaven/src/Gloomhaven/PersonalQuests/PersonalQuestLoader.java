@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.PersonalQuests;
 
 public final class PersonalQuestLoader {
 	public static PersonalQuestCard load(int id) {

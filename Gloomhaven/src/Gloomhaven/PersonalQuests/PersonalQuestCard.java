@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.PersonalQuests;
 
 public class PersonalQuestCard {
 	private String title="Person Quest Card Error";

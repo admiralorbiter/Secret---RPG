@@ -27,13 +27,13 @@ public class Room {
 	private int width=0;
 	private int height=0;
 	
-	public Room(String id, List<Player> party, List<Enemy> enemies){
+	public Room(int id, List<Player> party, List<Enemy> enemies){
 		Point point;																									//Temp point used to set enemy
 		//String id=setup.getRoomID();
 		//SetupScenario setup = new SetupScenario(sceneID);
 		//enemies=setup.getEnemies();	
 		switch(id) {
-			case "Test":
+			case 1:
 				dimensions.add(new Point(9, 9));
 				dimensions.add(new Point(3, 3));
 				width=13;
@@ -88,7 +88,7 @@ public class Room {
 			    		setTilePlayer(party.get(0), point);
 			    	}else if(quickIDtemp.equals("Enemy")) {
 			    		
-			    		enemies.add(new Enemy(enemyCount, idtemp));
+			    		enemies.add(new Enemy(enemyCount, idtemp, 0, false, new Point(3,6)));
 			    		setTileEnemy(enemies.get(enemyCount), point);
 			    		enemyCount++;
 			    	}else if(quickIDtemp.equals("Door")) {

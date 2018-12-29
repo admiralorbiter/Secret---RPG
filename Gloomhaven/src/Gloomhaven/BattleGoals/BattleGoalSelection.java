@@ -1,10 +1,11 @@
-package Gloomhaven;
+package Gloomhaven.BattleGoals;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 
 public class BattleGoalSelection {

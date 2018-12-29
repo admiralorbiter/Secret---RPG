@@ -60,4 +60,6 @@ public class Enemy extends character{
 			}
 		}
 	}
+	
+	public Point getStartingPosition() {return startingPosition;}
 }

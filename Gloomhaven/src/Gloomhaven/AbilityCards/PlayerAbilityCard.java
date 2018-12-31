@@ -77,7 +77,7 @@ public class PlayerAbilityCard extends AbilityCard {
 	public void showCard(Graphics g) {
 		Setting setting = new Setting();
 		if(getImage()!=null)
-			g.drawImage(getImage().getImage(), 10, setting.getGraphicsYTop()+70, 285, 425  , null);
-		g.drawString("Press Space to Select this card. ", 20, setting.getGraphicsYTop()+70+450);
+			g.drawImage(getImage().getImage(), 10, Setting.graphicsYTop+70, 285, 425  , null);
+		g.drawString("Press Space to Select this card. ", 20, Setting.graphicsYTop+70+450);
 	}
 }

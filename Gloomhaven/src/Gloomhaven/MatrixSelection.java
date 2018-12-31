@@ -56,9 +56,9 @@ public class MatrixSelection {
 				drawCol++;
 			}
 			g.setColor(Color.black);
-			g.fillRect(setting.getWidth()/2+drawCol*x, setting.getHeight()/6+15+drawRow*y, x-5, y-5);
+			g.fillRect(Setting.width/2+drawCol*x, Setting.height/6+15+drawRow*y, x-5, y-5);
 			g.setColor(Color.WHITE);
-			g.drawString(text.get(i).getName(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+25+drawRow*y);
+			g.drawString(text.get(i).getName(), Setting.width/2+drawCol*x, Setting.height/6+25+drawRow*y);
 			//g.drawString(text.get(i).getText(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+65+drawRow*y);
 			
 			
@@ -76,12 +76,12 @@ public class MatrixSelection {
 					charLength++;
 				}
 				char c = text.get(i).getText().charAt(j);
-				g.drawString(String.valueOf(c), setting.getWidth()/2+drawCol*x+charLength*pixelsForEachChar, setting.getHeight()/6+20+drawRow*y+rowLength*11);
+				g.drawString(String.valueOf(c), Setting.width/2+drawCol*x+charLength*pixelsForEachChar, Setting.height/6+20+drawRow*y+rowLength*11);
 			}
 			rowLength++;
 			charLength=1;
 			g.setColor(Color.RED);
-			g.drawString("Gold: "+text.get(i).getGold(), setting.getWidth()/2+drawCol*x+charLength*pixelsForEachChar, setting.getHeight()/6+20+drawRow*y+rowLength*11);
+			g.drawString("Gold: "+text.get(i).getGold(), Setting.width/2+drawCol*x+charLength*pixelsForEachChar, Setting.height/6+20+drawRow*y+rowLength*11);
 			g.setColor(Color.WHITE);
 		}
 		Point selectionPoint = new Point(findSelection(xClick, yClick));
@@ -96,8 +96,8 @@ public class MatrixSelection {
 	public Point findSelection(int xClick, int yClick) {
 		Point point = new Point(-99, -99);
 		
-		int x = xClick-setting.getWidth()/2;
-		int y=yClick-setting.getHeight()/6+15;
+		int x = xClick-Setting.width/2;
+		int y=yClick-Setting.height/6+15;
 		int w=width/col;
 		int h=height/row;
 			

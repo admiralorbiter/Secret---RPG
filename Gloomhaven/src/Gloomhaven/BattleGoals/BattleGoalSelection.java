@@ -9,8 +9,7 @@ import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 
 public class BattleGoalSelection {
-	
-	Setting setting = new Setting();
+
 	int index1=-1;
 	int index2=-1;
 	
@@ -26,8 +25,8 @@ public class BattleGoalSelection {
 	public boolean chooseCard(Graphics g, KeyEvent key, Player player, List<BattleGoalCard> deck) {
 			
 			
-		g.drawString("1: "+deck.get(index1).getName()+": "+deck.get(index1).getText()+"    "+deck.get(index1).getReward(), setting.getGraphicsX(), setting.getGraphicsYTop()+50);
-		g.drawString("2: "+deck.get(index2).getName()+": "+deck.get(index2).getText()+"    "+deck.get(index2).getReward(), setting.getGraphicsX(), setting.getGraphicsYTop()+75);
+		g.drawString("1: "+deck.get(index1).getName()+": "+deck.get(index1).getText()+"    "+deck.get(index1).getReward(), Setting.graphicsXLeft, Setting.graphicsYTop+50);
+		g.drawString("2: "+deck.get(index2).getName()+": "+deck.get(index2).getText()+"    "+deck.get(index2).getReward(), Setting.graphicsXLeft, Setting.graphicsYTop+75);
 		
 		if(key!=null) {
 			if(key.getKeyCode()==KeyEvent.VK_1) {

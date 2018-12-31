@@ -1,65 +1,27 @@
 package Gloomhaven;
 
 import java.awt.Color;
-import java.util.concurrent.TimeUnit;
+import java.awt.Point;
 
-public class Setting {
-	private int SIZE_OF_HEX=60;
-	private Color DEFAULT_COLOR = Color.WHITE;
-	private int offsetY=0;
-	private int offsetX=350;
-	private Color HIGHLIGHT_COLOR = Color.GREEN;
-	private Color GUI_COLOR = Color.WHITE;
-	public Color getGUIColor() {return GUI_COLOR;}
-	private int WIDTH=1680;
-	private int HEIGHT=1050;
-	private String TITLE="Gloomhaven";
+public final class Setting {
+	public static int size=40;
+	public static boolean flatlayout=false;
+	public static Point center = new Point(500, 100);
 	
-	private int offsetYGraphicsBottom=HEIGHT*6/10;
-	private int offsetYGraphicsMid=HEIGHT*1/3;
+	public static int graphicsXLeft=10;
+	public static int graphicsYTop=25;
+	public static int rowSpacing=15;
+	public static int width=1900;
+	public static int height=1050;
 	
-	public String getTitle() {return TITLE;}
-	public int getWidth() {return WIDTH;}
-	public int getHeight() {return HEIGHT;}
-	public Color getHighlightColor() {return HIGHLIGHT_COLOR;}
-	public int getOffsetY() {return offsetY;}
-	public int getOffsetX() {return offsetX;}
-	public int getSizeOfHex(){return SIZE_OF_HEX;}
-	public Color getDefaultColor() {return DEFAULT_COLOR;}
-	char targetKey = 't';
-	public char getTargetKey() {return targetKey;}
-	char moveKey = 'm';
-	public char getMoveKey() {return moveKey;}
-	char restKey='r';
-	public char getRestKey() {return restKey;}
-	char healKey='h';
-	public char getHealKey() {return healKey;}
-	char discardKey='d';
-	public char getDiscardKey() {return discardKey;}
-	char up = 'w';
-	char left = 'a';
-	char right = 'd';
-	char down = 's';
-	public char up() {return up;}
-	public char left() {return left;}
-	public char right() {return right;}
-	public char down() {return down;}
-	private int offsetXGraphics=10;
-	private int offsetYGraphicsTop=25;
-	private int offsetXGraphicsMid=WIDTH/3;
-	private int offsetXGraphicsRight=WIDTH*5/6;
-	public int getGraphicsXRight() {return offsetXGraphicsRight;}
-	public int getGraphicsXMid() {return offsetXGraphicsMid;}
-	public int getGraphicsX() {return offsetXGraphics;}
-	public int getGraphicsYTop() {return offsetYGraphicsTop;}
-	public int getGraphicsYBottom() {return offsetYGraphicsBottom;}
-	public int getGraphicsYMid() {return offsetYGraphicsMid;}
+	public static String title="Gloomhaven";
+
+	public static Color defaultColor = Color.WHITE;
 	
-	
-	private String playerClass="Mind Thief";
-	
-	
-	public int getMaxHandCount() {
+	//Party Info
+	public static int numberOfPlayers=1;
+	public static String playerClass="Mind Thief";
+	public static int getMaxHandCount() {
 		if(playerClass=="Brute" || playerClass=="Mind Thief")
 			return 10;
 		if(playerClass=="Scoundrel")
@@ -74,28 +36,17 @@ public class Setting {
 		return 0;
 	}
 	
+	//Temp
+	public static int sceneID=1;
+
+	public static int graphicsYBottom=height-100;
+	public static int graphicsXRight=width-300;
+	public static int graphicsXMid=width/2;
+	public static int graphicsYMid=height/2;
+	public static int graphicsYQ1=height/4;
 	
-	public String getPlayerClass() {return playerClass;}
-	private Color playerColor = Color.GREEN;
-	public Color getPlayerColor() {return playerColor;}
-	private Color enemyEliteColor = Color.yellow;
-	public Color getEliteEnemyColor() {return enemyEliteColor;}
-	private Color enemyColor = Color.CYAN;
-	public Color getEnemyColor() {return enemyColor;}
-	//[Testing]
-	private int NUM_PLAYERS=1;
-	private int SCENE_ID=1;
-	public int getSceneID() {return SCENE_ID;}
-	public int getNumPlayers() {return NUM_PLAYERS;}
 	
-	//Functions
-	//[Test] Function that delays for a certain amount of seconds
-	private void delayBySeconds(int sec) {
-		try {
-			TimeUnit.SECONDS.sleep(sec);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-	
+	public static char restKey='r';
+	public static char discardKey='d';
+	public static char healKey='h';
 }

@@ -34,10 +34,10 @@ public class Shop {
 	
 	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
 		if(shopImage!=null)
-			g.drawImage(shopImage.getImage(), 50, 50, setting.getWidth()-200, setting.getHeight()-200, null);
+			g.drawImage(shopImage.getImage(), 50, 50, Setting.width-200, Setting.height-200, null);
 		
 		g.setColor(Color.black);
-		g.fillRect(setting.getWidth()/2, setting.getHeight()/6, 650, 650);
+		g.fillRect(Setting.width/2, Setting.height/6, 650, 650);
 		g.setColor(Color.white);
 		
 		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());
@@ -48,7 +48,7 @@ public class Shop {
 
 
 		g.setColor(Color.BLACK);
-		g.fillRect(75, setting.getHeight()-350, 300, 150);
+		g.fillRect(75, Setting.height-350, 300, 150);
 		g.setColor(Color.WHITE);
 		
 		if(selectionFlag>=0 && selectionFlag<supply.size())
@@ -58,9 +58,9 @@ public class Shop {
 				g.setColor(Color.red);
 		
 		for(int i=0; i<party.size(); i++) {
-			g.drawRect(90, setting.getHeight()-340+25*i, 200, 30);
+			g.drawRect(90, Setting.height-340+25*i, 200, 30);
 			g.setColor(Color.WHITE);
-			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, setting.getHeight()-325+25*i);
+			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, Setting.height-325+25*i);
 		}
 	}
 	

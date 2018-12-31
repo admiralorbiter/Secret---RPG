@@ -11,13 +11,13 @@ public class ScenarioBoard {
 	private Hex board[][];	
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 	private Point dimensions;
-	private ScenarioDrawBoard drawBoard;
+	private Draw drawBoard;
 	
 	public ScenarioBoard(ScenarioData data) {
 		dimensions = new Point(data.getBoardSize());
 		board=new Hex[(int) data.getBoardSize().getX()][(int) data.getBoardSize().getY()];
 		resetBoard();
-		drawBoard = new ScenarioDrawBoard(board, dimensions);
+		drawBoard = new Draw(board, dimensions);
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);	
 	}
 	

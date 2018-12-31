@@ -75,7 +75,7 @@ public class Player extends character {
 		setName("Jon");
 		data = new CharacterDataObject(classID);
 		
-		maxHandCount=setting.getMaxHandCount();
+		maxHandCount=Setting.getMaxHandCount();
 		
 		//items = ItemLoader.testLoadItems();
 		
@@ -371,7 +371,7 @@ public class Player extends character {
 
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
-				g.drawString("Choose top card.", 10, setting.getGraphicsYBottom());
+				g.drawString("Choose top card.", Setting.graphicsXLeft, Setting.graphicsYMid+100);
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -399,7 +399,7 @@ public class Player extends character {
 				
 			}
 			else {
-				g.drawString("Choose bottom card.", 10, setting.getGraphicsYBottom());
+				g.drawString("Choose bottom card.", Setting.graphicsXLeft, Setting.graphicsYMid+100);
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -431,14 +431,14 @@ public class Player extends character {
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).isCardFree()) {
-				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], 10, setting.getGraphicsYBottom()+15+i*30);
-				g.drawString("   			"+abilityDeck.get(i).getText()[2], 10, setting.getGraphicsYBottom()+30+i*30);
+				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], 10, Setting.graphicsYMid+100+Setting.rowSpacing+i*30);
+				g.drawString("   			"+abilityDeck.get(i).getText()[2], Setting.graphicsXLeft, Setting.graphicsYMid+100+Setting.rowSpacing*2+i*30);
 			}
 		}
 	}
 	
 	private void showPickedCards(KeyEvent e, Graphics g) {
-		int startingY=setting.getGraphicsYBottom();
+		int startingY=Setting.graphicsYBottom;
 		int offsetY=15;
 		
 		try {
@@ -475,7 +475,7 @@ public class Player extends character {
 	}
 	
 	private void showDuringTurnItemCards(List<Item> usableItems, Graphics g) {
-		int startingY=setting.getGraphicsYBottom()+15*13;
+		int startingY=Setting.graphicsYBottom+15*13;
 		int offsetY=15;
 		char buttons[] = buttons();
 		
@@ -597,68 +597,82 @@ public class Player extends character {
 	}
 
 	public void graphicsDrawCardsInPlay(Graphics g) {
-		g.drawString("Cards in play.", setting.getGraphicsXRight(), setting.getGraphicsYTop());
+
+		g.drawString("Cards in play.", Setting.graphicsXRight+10, Setting.graphicsYTop);
 		
+		int rows=1;
 		
-		if(augment!=null)
-			g.drawString(augment.getCardText(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+15);
+		if(augment!=null) {
+			g.drawString(augment.getCardText(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
+			rows++;
+		}
 		
 		for(int i=0; i<inPlay.size(); i++) {
-			g.drawString(inPlay.get(i).getName(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+30+15*i);
+			g.drawString(inPlay.get(i).getName(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
+			rows++;
 		}
 		
 		for(int j=0; j<counterTriggers.size(); j++) {
-			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), setting.getGraphicsXRight(), setting.getGraphicsYTop()+60+15*j);
+			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
 		}
+
+		rows++;
+		g.drawRect(Setting.graphicsXRight, Setting.graphicsYTop-Setting.rowSpacing, 200, Setting.rowSpacing*rows);
 	}
 	
 	public void graphicsPlayerInfo(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.drawRect(setting.getGraphicsXRight(), setting.getGraphicsYMid(), 200, 200);
-		g.drawString(name+"  "+getClassID(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+15);
+		g.setColor(Setting.defaultColor);
+		g.drawString(name+"  "+getClassID(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing);
 		
 		if(positiveConditions.isBless()) {
 			g.setColor(Color.YELLOW);
-			g.drawString("B", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
-			g.setColor(Color.WHITE);
+			g.drawString("B", Setting.graphicsXRight+100, Setting.graphicsYQ1+Setting.rowSpacing);
+			g.setColor(Setting.defaultColor);
 		}
 		
 		if(positiveConditions.isInvisibility()) {
 			g.setColor(Color.gray);
-			g.drawString("I", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
-			g.setColor(Color.WHITE);
+			g.drawString("I", Setting.graphicsXRight+120, Setting.graphicsYQ1+Setting.rowSpacing);
+			g.setColor(Setting.defaultColor);
 		}
 		
 		if(positiveConditions.isStrengthen()) {
 			g.setColor(Color.red);
-			g.drawString("S", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+50);
-			g.setColor(Color.WHITE);
+			g.drawString("S", Setting.graphicsXRight+140, Setting.graphicsYQ1+Setting.rowSpacing);
+			g.setColor(Setting.defaultColor);
 		}
 		
-		g.drawString("Level "+data.getLevel(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+30);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+45);
+		g.drawString("Level "+data.getLevel(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*2);
+		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*3);
 	
-		if(isAugmented()) {
-			g.drawString("Augment Active: ", setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+60);
-			g.drawString(augment.getCardText(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+75);
-		}
+		int rows=0;
 		
+		if(isAugmented()) {
+			g.drawString("Augment Active: ", Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4));
+			g.drawString(augment.getCardText(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*5);
+			rows=2;
+		}
 		
 		for(int i=0; i<counterTriggers.size();i++) {
-			g.drawString(counterTriggers.get(i).getTriggerFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+i*90);
+			rows++;
+			g.drawString(counterTriggers.get(i).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*4);
 		}
 		
 		for(int i=0; i<roundTriggers.size();i++) {
-			g.drawString(roundTriggers.get(i).getTriggerFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+i*150);
+			rows++;
+			g.drawString(roundTriggers.get(i).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4+rows));
 		}
 		
-		g.drawString("Gold: "+data.getGold(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+165);
+		g.drawString("Gold: "+data.getGold(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4+rows));
 		
 		if(roundBonus!=null)
 			if(roundBonus.getNegativeConditions()!=null)
-				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), setting.getGraphicsXRight()+10, setting.getGraphicsYMid()+180);
+				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(5+rows));
 		
-		g.setColor(setting.getDefaultColor());
+		
+		g.drawRect(Setting.graphicsXRight, Setting.graphicsYQ1, 200, Setting.rowSpacing*(6+rows));
+		
+		g.setColor(Setting.defaultColor);
 	}
 	
 	public boolean isAugmented() {

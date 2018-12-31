@@ -2,81 +2,33 @@ package Gloomhaven;
 
 import java.awt.Point;
 
-import Gloomhaven.Pathfinding.Network;
-import Gloomhaven.Pathfinding.Node;
-
 public class Hex {
 	
-	String quickID="-";
-	String id=" ";
-	String lootID=" ";
-	boolean empty=true;
-	boolean loot=false;
-	Point coordinate = new Point();
-	boolean door=false;
-	boolean open=true;
-	int roomID=0;
-	boolean hidden=true;
-	boolean neverShown=false;
+	Point offsetCoordinate;
+	int q,r,s;
 	
-	public Hex(int x, int y) {
-		coordinate = new Point(x,y);
-	}
-	
-	public void setHex(String quickID, String id) {
-		this.quickID=quickID;
+	public Hex(int x, int y, boolean flatlayout) {
 		
-		if(quickID.equals("Loot")) {
-			if(id.equals("Gold")) {
-				this.lootID="Gold";
-				this.id="lootGold";
-				loot=true;
-			}
-		}else if(quickID.equals("Obs")) {
-			this.id=id;
-			empty=false;
-		}
-		else {
-			this.id=id;
-			empty=false;
-		}
-	}
-	
-	public void setHex(String quickID, String id, int room) {
-		this.quickID=quickID;
-		this.roomID=room;
-		this.id=id;
-		open=false;
-		door=true;
-	}
-	
-	
-	public String getLootID() {return lootID;}
-	
-	public void reset() {
-		quickID="-";
-		id=" ";
-		loot=false;
-		empty=true;
-	}
-	public boolean doorOpen() {return open;}
-	public String getQuickID() {return quickID;}
-	public String getID() {return id;}
-	public boolean getSpaceFree() {return empty;}
-	public boolean getLoot() {return loot;}
-	public boolean getDoor() {return door;}
-	public boolean getHidden() {return hidden;}
-	public void toggleShowHex() {hidden=false;}
-	public Point getCoordinates() {return coordinate;}
-	public boolean showHex() {
-		if(neverShown)
-			return false;
-		else if(hidden)
-			return false;
+		this.offsetCoordinate=new Point(x, y);
 		
-		return true;
+		Hex hex;
+		if(flatlayout)
+			hex=UtilitiesHex.flatOffsetToCube(1, new Point(x, y));
+		else
+			hex=UtilitiesHex.pointyOffsetToCube(1, new Point(x, y));
+		
+		this.q=hex.q;
+		this.r=hex.r;
+		this.s=hex.s;
+			
 	}
-	public void disableHex() {neverShown=true;}
-	public int getRoomID() {return roomID;}
+	
+	public Hex(int q, int r, int s) {
+		this.q=q;
+		this.r=r;
+		this.s=s;
+	}
+	
+	public void setOffsetCoordinate(Point coordinate) {this.offsetCoordinate=coordinate;}
 	
 }

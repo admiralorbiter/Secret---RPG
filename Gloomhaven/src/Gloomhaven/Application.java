@@ -7,8 +7,8 @@ public class Application extends JFrame {
 	GamePanel game;
 	Setting setting = new Setting();
 	public Application() {
-		setSize(setting.getWidth(), setting.getHeight());
-		setTitle(setting.getTitle());
+		setSize(Setting.width, Setting.height);
+		setTitle(Setting.title);
 		game = new GamePanel();
 		add(game);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

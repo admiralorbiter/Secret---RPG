@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	    SCENARIO,
 	    END;
 	}
-	Setting setting = new Setting();
+	
 	GameState state=GameState.TESTING_SETUP;						//State of the Game
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
@@ -78,19 +78,21 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	//Initials Scenario, Town Event, Road Event
 	void initGame() {
 		//[Temp] Need unique IDs and class 
-		for(int id=0; id<setting.getNumPlayers(); id++)
-			party.add(new Player(id, setting.getPlayerClass()));				//Adds the players to the party
-		scene= new Scenario(setting.getSceneID(), party, gloomhaven);			//Creates the scenario
+		for(int id=0; id<Setting.numberOfPlayers; id++)
+			party.add(new Player(id, Setting.playerClass));				//Adds the players to the party
+		scene= new Scenario(Setting.sceneID, party, gloomhaven);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
-		state=GameState.TOWN;										//Init Phase -> Town Phase
+		//state=GameState.TOWN;										//Init Phase -> Town Phase
+		state=GameState.SCENARIO;
 	}
 	
 	public void gameManager(Graphics g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TOWN) {
-			g.drawString("Town", setting.getGraphicsX(), setting.getGraphicsYTop());
+			g.drawString("Town", Setting.graphicsXLeft, Setting.graphicsYTop);
 			shop.drawShop(g, party, xClick, yClick);
-			g.drawString("Press space to continue", 10, setting.getHeight()-100);
+			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYBottom);
+			
 			//Insert Town State Stuff Here
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
@@ -122,7 +124,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {
-			g.drawString("Pick Battle Goal Card", setting.getGraphicsX(), setting.getGraphicsYTop());
+			g.drawString("Pick Battle Goal Card", Setting.graphicsXLeft, Setting.graphicsYTop);
 			
 			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);
 			
@@ -137,8 +139,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.SCENARIO_TEXT) {
-			g.drawString("Scenario Intro Text", setting.getGraphicsX(), setting.getGraphicsYTop());
-			g.drawString("Press space to continue", setting.getGraphicsX(), setting.getGraphicsYTop()+50);
+			g.drawString("Scenario Intro Text", Setting.graphicsXLeft, Setting.graphicsYTop);
+			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing);
 			
 			if(key!=null) {
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
@@ -146,7 +148,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.SCENARIO) {
-			g.drawString("Scenario", 0,  setting.getHeight()-30);
 			scene.playRound(key, g);								//Play Round
 			//if(scene.finished())									//If scenario is off, end state of game
 				//state=GameState.END;
@@ -158,7 +159,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(setting.getDefaultColor());						//Sets the paint component to the default color	
+		g.setColor(Setting.defaultColor);						//Sets the paint component to the default color	
 		if(!(state==GameState.TESTING_SETUP)) 						//If it isn't in the setup, then go through game manager
 			gameManager(g);
 	}

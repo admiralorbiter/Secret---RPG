@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
+import Gloomhaven.Hex;
+import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Counter;
@@ -41,6 +43,12 @@ public class character {
 	public String getName() {return name;}
 	public void setName(String name) {this.name=name;}
 	public Point getCoordinates() {return coordinates;}
+	public Hex getCubeCoordiantes(boolean flatlayout) {
+		if(flatlayout)
+			return UtilitiesHex.flatOffsetToCube(1, coordinates);
+		else
+			return UtilitiesHex.pointyOffsetToCube(1, coordinates);
+	}
 	public void setCoordinates(Point point) {this.coordinates=new Point(point);}
 	public AttackModifierDeck getAttackModDeck() {return attackModifierDeck;}
 	public void setAttackModDeck(AttackModifierDeck deck) {this.attackModifierDeck=deck;}
@@ -51,7 +59,6 @@ public class character {
 	public List<Counter> getRoundTriggers(){return roundTriggers;}
 	public PositiveConditions getPositiveConditions() {return positiveConditions;}
 	public NegativeConditions getNegativeConditions() {return negativeConditions;}
-	
 	
 	public void addCounter(Counter trigger) {
 		counterTriggers.add(trigger);

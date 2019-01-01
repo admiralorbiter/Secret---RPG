@@ -438,8 +438,8 @@ public class Player extends character {
 	}
 	
 	private void showPickedCards(KeyEvent e, Graphics g) {
-		int startingY=Setting.graphicsYBottom;
-		int offsetY=15;
+		int startingY=Setting.graphicsYMid+100;
+		int offsetY=Setting.rowSpacing;
 		
 		try {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT){

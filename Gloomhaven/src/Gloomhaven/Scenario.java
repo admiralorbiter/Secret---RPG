@@ -1,12 +1,15 @@
 package Gloomhaven;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
+import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.EnemyInfo;
 import Gloomhaven.Characters.Player;
@@ -108,16 +111,18 @@ public class Scenario {
 			case PLAYER_ATTACK_LOGIC:
 				playerAttackLogic();
 				break;
+			case PLAYER_ITEM:
+				usePlayerItem();
+				break;
+			case PLAYER_MOVE:
+				playerMove();
+				break;
+			case PLAYER_ATTACK:
+				playerAttack();
+				break;
 		}
-		
 		
 		/*
-		else if(state==State.PLAYER_CHOICE) {
-			playerCardChoice();
-		}
-		else if(state==State.PLAYER_ATTACK_LOGIC) {
-			playerAttackLogic();
-		}
 		else if(state==State.PLAYER_ITEM) {
 			usePlayerItem();
 		}
@@ -169,6 +174,9 @@ public class Scenario {
 				break;
 			case PLAYER_DEFENSE:
 				g.drawString("Press "+Setting.discardKey+" to discard card or "+Setting.healKey+" to take damage.", Setting.graphicsXLeft, Setting.graphicsYBottom);
+				break;
+			case PLAYER_ATTACK_LOGIC:
+				g.drawString("Move "+UsePlayerAbilityCard.getMove(card)+"     Attack: "+UsePlayerAbilityCard.getAttack(card)+"  (Loc: Scenario -Player Attack Logic)", Setting.graphicsXLeft, Setting.graphicsYBottom);
 				break;
 		}
 	}
@@ -368,8 +376,10 @@ public class Scenario {
 	
 	private void playerCardChoice() {
 		int cardPick=party.get(currentPlayer).pickPlayCard(key, num, k, g);								//Prints ability cards then waits for one to pick
-		if(cardPick>=1 && cardPick<=8)
+		if(cardPick>=1 && cardPick<=8) {
+			card = party.get(currentPlayer).playCard();
 			state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
+		}
 		if(cardPick>=100) {
 			itemUsed=cardPick-100;
 			state=State.PLAYER_ITEM;
@@ -377,8 +387,62 @@ public class Scenario {
 	}
 	
 	private void playerAttackLogic() {
-		card = party.get(currentPlayer).playCard();
+
+		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, null);
 		
+		if(UsePlayerAbilityCard.getMove(card)>0)
+			state=State.PLAYER_MOVE;
+		else if(UsePlayerAbilityCard.getCardData(card).getConsumeElementalFlag())
+			state=State.USE_ANY_INFUSION;
+		else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0)
+			state=State.PLAYER_ATTACK;
+		else {
+			if(party.get(currentPlayer).getCardChoice()==false) {
+				state=State.PLAYER_CHOICE;
+			}else {
+				//if turn is over
+				if(turnIndex==party.size())
+					state=State.ROUND_END_DISCARD;
+				else {
+					turnIndex++;
+					state=State.ATTACK;
+				}
+			}
+		}
+	}
+	
+	private void usePlayerItem() {
+		List<Item> usableItems = ItemLoader.onTurn(party.get(currentPlayer).getItems());
+		
+		if(usableItems.get(itemUsed).getConsumed())
+			ItemLoader.consumeItem(party.get(currentPlayer), usableItems.get(itemUsed));
+		else if(usableItems.get(itemUsed).getSpent())
+			ItemLoader.spendItem(party.get(currentPlayer), usableItems.get(itemUsed));
+		
+		if(party.get(currentPlayer).getCreateAnyElement())
+			state=State.CREATE_INFUSION;
+		else
+			state=State.PLAYER_CHOICE;
+	}
+	
+	private void playerMove() {
+		boolean finished=false;
+		
+		if(party.get(currentPlayer).canMove()) {
+			/*
+			g.setColor(Color.yellow);
+			Draw.drawHex(g, party.get(currentPlayer).getCoordinates());
+			
+			g.setColor(Color.red);
+			Draw.range(g, new Hex(3, 5, -8), 3);
+			*/
+			
+			g.setColor(Color.red);
+			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
+		}
+	}
+	
+	private void playerAttack() {
 		
 	}
 	

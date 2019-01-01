@@ -31,7 +31,21 @@ public final class Draw {
 		}
 	}
 	
+	public static void range(Graphics g, Hex point, int range) {
+		
+		for(int q=-range; q<=range; q++) {
+			int r1=Math.max(-range, -q-range);
+			int r2 = Math.min(range, -q+range);
+			for(int r = r1; r<=r2; r++) {
+				int s=-q-r;
+				Hex hex = UtilitiesHex.add(new Hex(q, s, r), point);
+				drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			}
+		}
+	}
+	
 	public static void hexagonBoard(Graphics g, int size, boolean flatlayout, Point center, int radius) {
+	
 		for(int q=-radius; q<=radius; q++) {
 			int r1=Math.max(-radius, -q-radius);
 			int r2 = Math.min(radius, -q+radius);
@@ -41,6 +55,7 @@ public final class Draw {
 			}
 		}
 	}
+
 	
 	public static void rectangleBoardUpDown(Graphics g, int size, boolean flatlayout, Point center,  Point dimensions) {
 		int height=(int) dimensions.getY();
@@ -66,6 +81,10 @@ public final class Draw {
 		}
 	}
 	
+	public static void drawHex(Graphics g, Point h) {
+		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center);
+	}
+	
 	public static void drawHex(Graphics g, Hex h, int size, boolean flatlayout, Point center) {
 		drawHex(g, h.q, h.r, h.s, size, flatlayout, center);
 	}
@@ -83,9 +102,8 @@ public final class Draw {
 	}
 
 	public static void drawHex(Graphics g, int q, int r, int s, int size, boolean flatlayout, Point center) {
-
 		HexLayout layout;
-		
+
 		if(flatlayout)
 			layout = new HexLayout(UtilitiesHex.getFlatLayoutOrientation(), new Point(size, size), center);
 		else

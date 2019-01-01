@@ -21,7 +21,7 @@ public class Room {
 	//TODO change dimensions back to a single point that covers the whole map
 	private List<Point> dimensions = new ArrayList<Point>();
 	//private Point dimensions;																							//Dimensions of the room
-	private Hex board[][];																								//Room board made of hexs
+	private HexCoordinate board[][];																								//Room board made of hexs
 	private Point selectionCoordinates = new Point(0, 0);																//Where the selection icon is located
 	private int roomIndex;
 	private int width=0;
@@ -38,7 +38,7 @@ public class Room {
 				dimensions.add(new Point(3, 3));
 				width=13;
 				height=11;
-				board=new Hex[width][height];
+				board=new HexCoordinate[width][height];
 				resetBoard();
 				showRoom(0);
 				roomIndex=0;
@@ -138,7 +138,7 @@ public class Room {
 				
 			default:
 				dimensions.get(0).setLocation(new Point(0, 0));
-				board=new Hex[0][0];
+				board=new HexCoordinate[0][0];
 				resetBoard();
 		}
 	}
@@ -151,7 +151,7 @@ public class Room {
 	public Point getDimensions() {return dimensions.get(roomIndex);}
 	//public Point getDimensions() {return new Point(width, height);}
 	public boolean isSpaceEmpty(Point space) {return board[(int) space.getX()][(int) space.getY()].getSpaceFree();}
-	public Hex[][] getBoard(){return board;}
+	public HexCoordinate[][] getBoard(){return board;}
 	public int getWidth() {return width;}
 	public int getHeight() {return height;}
 	
@@ -159,7 +159,7 @@ public class Room {
 	private void resetBoard(int index) {
 		for(int x=0; x<dimensions.get(index).getX(); x++) {
 			for(int y=0; y<dimensions.get(index).getY(); y++) {
-				board[x][y]=new Hex(x, y);
+				board[x][y]=new HexCoordinate(x, y);
 			}
 		}
 	}
@@ -168,7 +168,7 @@ public class Room {
 	private void resetBoard() {
 		for(int x=0; x<width; x++) {
 			for(int y=0; y<height; y++) {
-				board[x][y]=new Hex(x, y);
+				board[x][y]=new HexCoordinate(x, y);
 			}
 		}
 	}
@@ -513,6 +513,7 @@ public class Room {
 	//Moves the player from one point to another
 	public void movePlayer(Player player, Point ending) {	
 		Point starting=player.getCoordinates();
+		
 		if(board[(int) ending.getX()][(int) ending.getY()].getQuickID().equals("Loot")) {
 			player.addLoot(board[(int) ending.getY()][(int) ending.getY()]);
 		}

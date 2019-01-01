@@ -49,4 +49,9 @@ public final class Setting {
 	public static char restKey='r';
 	public static char discardKey='d';
 	public static char healKey='h';
+	public static char moveKey='m';
+	public static char up='w';
+	public static char down='s';
+	public static char left='a';
+	public static char right='d';
 }

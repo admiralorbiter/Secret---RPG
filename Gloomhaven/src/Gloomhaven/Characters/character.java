@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
-import Gloomhaven.Hex;
+import Gloomhaven.HexCoordinate;
 import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
@@ -43,7 +43,7 @@ public class character {
 	public String getName() {return name;}
 	public void setName(String name) {this.name=name;}
 	public Point getCoordinates() {return coordinates;}
-	public Hex getCubeCoordiantes(boolean flatlayout) {
+	public HexCoordinate getCubeCoordiantes(boolean flatlayout) {
 		if(flatlayout)
 			return UtilitiesHex.flatOffsetToCube(1, coordinates);
 		else

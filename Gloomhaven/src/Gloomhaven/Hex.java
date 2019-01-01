@@ -1,34 +1,33 @@
 package Gloomhaven;
 
-import java.awt.Point;
+public class Hex extends HexCoordinate {
 
-public class Hex {
+	private String quickID="";
 	
-	Point offsetCoordinate;
-	int q,r,s;
+	private String lootID="";
+	private boolean loot=false;
+	
+	private boolean door=false;
 	
 	public Hex(int x, int y, boolean flatlayout) {
-		
-		this.offsetCoordinate=new Point(x, y);
-		
-		Hex hex;
-		if(flatlayout)
-			hex=UtilitiesHex.flatOffsetToCube(1, new Point(x, y));
-		else
-			hex=UtilitiesHex.pointyOffsetToCube(1, new Point(x, y));
-		
-		this.q=hex.q;
-		this.r=hex.r;
-		this.s=hex.s;
-			
+		super(x, y, flatlayout);
 	}
 	
 	public Hex(int q, int r, int s) {
-		this.q=q;
-		this.r=r;
-		this.s=s;
+		super(q, r, s);
 	}
 	
-	public void setOffsetCoordinate(Point coordinate) {this.offsetCoordinate=coordinate;}
-	
+	 public String getQuickID() {return quickID;}
+	 public String getLootID() {return lootID;}
+	 public boolean hasLoot() {return loot;}
+	 public boolean hasDoor() {return door;}
+	 public void setLootID(String lootID) {
+		 this.lootID=lootID;
+		 loot=true;
+	 }
+	 
+	 public void removeLoot() {
+		 lootID="";
+		 loot=false;
+	 }
 }

@@ -11,6 +11,7 @@ import java.util.Random;
 
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.Hex;
+import Gloomhaven.HexCoordinate;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
 import Gloomhaven.Setting;
@@ -192,6 +193,7 @@ public class Player extends character {
 	}
 	
 	public void addLoot(Hex hex) {
+		
 		System.out.println("Player.java Loc 142: Player successfully looted "+hex.getLootID().equals("Gold"));
 		
 		if(hex.getLootID().equals("Gold")) {
@@ -202,6 +204,7 @@ public class Player extends character {
 			lootInventory.add(hex.getLootID());
 			stats.addTreasure(hex.getLootID());
 		}
+		
 	}
 
 	public int pickPlayCard(KeyEvent e, int key, char k, Graphics g) {

@@ -66,12 +66,66 @@ public class Scenario {
 	
 	private PlayerAbilityCard card = null;
 	
+	private Point selectionCoordinate;
+	
+	private Hex[][] board;
+	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven) {
 		this.gloomhaven=gloomhaven;
 		this.party=party;
 		data = ScenarioDataLoader.loadScenarioData(sceneID);
 		enemyInfo = new EnemyInfo(data);
+		board = new Hex[data.getBoardSize().x][data.getBoardSize().y];
 		state=State.CARD_SELECTION;
+	}
+	
+	private void selection() {
+		selectionCoordinate=party.get(currentPlayer).getCoordinates();
+		
+		if(k==Setting.up) {
+			if(selectionCoordinate.y-1>=0) {
+				selectionCoordinate.y=selectionCoordinate.y-1;
+			}
+			
+		}
+		if(k==Setting.left) {
+			if(selectionCoordinate.x-1>=0) {
+				selectionCoordinate.x=selectionCoordinate.x-1;
+			}
+		}
+		if(k==Setting.down) {
+			if(selectionCoordinate.y+1<=data.getBoardSize().getY()) {
+				selectionCoordinate.y=selectionCoordinate.y+1;
+			}
+		}
+		if(k==Setting.right) {
+			if(selectionCoordinate.x+1<=data.getBoardSize().getX()) {
+				selectionCoordinate.x=selectionCoordinate.x+1;
+			}
+		}
+	}
+	
+	private void movePlayer(Player player, Point ending) {	
+		Point starting=player.getCoordinates();
+		
+		if(board[(int) ending.getX()][(int) ending.getY()].hasLoot()) {
+			loot(player, ending);
+		}
+		
+		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].doorOpen()==false)) {
+			showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
+		}
+				
+		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
+		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
+		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
+		board[(int) starting.getX()][(int) starting.getY()].reset();
+	}
+	
+	private void loot(Player player, Point loot) {
+		
+		player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
+		board[(int) loot.getX()][(int) loot.getY()].removeLoot();
 	}
 	
 	public void playRound(KeyEvent key, Graphics g) {
@@ -177,6 +231,9 @@ public class Scenario {
 				break;
 			case PLAYER_ATTACK_LOGIC:
 				g.drawString("Move "+UsePlayerAbilityCard.getMove(card)+"     Attack: "+UsePlayerAbilityCard.getAttack(card)+"  (Loc: Scenario -Player Attack Logic)", Setting.graphicsXLeft, Setting.graphicsYBottom);
+				break;
+			case PLAYER_MOVE:
+				g.drawString("Press "+Setting.moveKey+" to move.", Setting.graphicsXLeft, Setting.graphicsYBottom);
 				break;
 		}
 	}
@@ -429,16 +486,19 @@ public class Scenario {
 		boolean finished=false;
 		
 		if(party.get(currentPlayer).canMove()) {
-			/*
-			g.setColor(Color.yellow);
-			Draw.drawHex(g, party.get(currentPlayer).getCoordinates());
-			
 			g.setColor(Color.red);
-			Draw.range(g, new Hex(3, 5, -8), 3);
-			*/
+			selection();
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
 			
-			g.setColor(Color.red);
-			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
+			if(k==Setting.moveKey) {
+				if(board[selectionCoordinate.x][selectionCoordinate.y].equals("P"))
+					finished=true;
+				else if(UsePlayerAbilityCard.hasJump(card)) {
+					if(board[selectionCoordinate.x][selectionCoordinate.y].equals("L"))
+						party.get(currentPlayer).addLoot(board[selectionCoordinate.x][selectionCoordinate.y]);
+					
+				}
+			}
 		}
 	}
 	

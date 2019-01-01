@@ -403,7 +403,7 @@ public final class UtilitiesAB {
 	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
-	public static boolean checkMeleeRange(character entity, Hex board[][], String lookingForID, Point dimensions) {
+	public static boolean checkMeleeRange(character entity, HexCoordinate board[][], String lookingForID, Point dimensions) {
 		
 		Point coordinates = entity.getCoordinates();
 		int x=(int) coordinates.getX();
@@ -443,14 +443,14 @@ public final class UtilitiesAB {
 	}
 	
 	//[Rem] This has to be a way to abstract this for both player and enemies
-	public static List<Player> createMeleeTargetList(Hex board[][],List<Player> party, Enemy enemy, Point dimensions){
+	public static List<Player> createMeleeTargetList(HexCoordinate board[][],List<Player> party, Enemy enemy, Point dimensions){
 		List<Player> targets = new ArrayList<Player>();
 		checkRange(board, "P", 1, party, targets, enemy, dimensions);
 		
 		return targets;
 	}
 	
-	public static List<Player> playersInRangeEstimate(Hex board[][], List<Player> party, Enemy enemy, Point dimensions){
+	public static List<Player> playersInRangeEstimate(HexCoordinate board[][], List<Player> party, Enemy enemy, Point dimensions){
 		List<Player> targets = new ArrayList<Player>();
 		
 		if(enemy.getBaseStats().getRange()<=1)
@@ -470,7 +470,7 @@ public final class UtilitiesAB {
 	}
 
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
-	public static void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Enemy enemy, Point dimensions) {
+	public static void checkRange(HexCoordinate board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Enemy enemy, Point dimensions) {
 		List<String> idList = new ArrayList<String>();
 		
 		

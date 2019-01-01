@@ -31,14 +31,14 @@ public final class Draw {
 		}
 	}
 	
-	public static void range(Graphics g, Hex point, int range) {
+	public static void range(Graphics g, HexCoordinate point, int range) {
 		
 		for(int q=-range; q<=range; q++) {
 			int r1=Math.max(-range, -q-range);
 			int r2 = Math.min(range, -q+range);
 			for(int r = r1; r<=r2; r++) {
 				int s=-q-r;
-				Hex hex = UtilitiesHex.add(new Hex(q, s, r), point);
+				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), point);
 				drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
 			}
 		}
@@ -85,13 +85,17 @@ public final class Draw {
 		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center);
 	}
 	
-	public static void drawHex(Graphics g, Hex h, int size, boolean flatlayout, Point center) {
+	public static void drawHex(Graphics g, HexCoordinate h) {
+		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center);
+	}
+	
+	public static void drawHex(Graphics g, HexCoordinate h, int size, boolean flatlayout, Point center) {
 		drawHex(g, h.q, h.r, h.s, size, flatlayout, center);
 	}
 	
 	public static void drawHex(Graphics g, Point h, int size, boolean flatlayout, Point center) {
 		
-		Hex hex;
+		HexCoordinate hex;
 		
 		if(flatlayout)
 			hex = UtilitiesHex.flatOffsetToCube(1, h);
@@ -110,7 +114,7 @@ public final class Draw {
 			layout = new HexLayout(UtilitiesHex.getPointyLayoutOrientation(), new Point(size, size), center);
 		
 		
-		List<Point2D> corners = UtilitiesHex.polygonCorners(layout, new Hex(q, r, s));
+		List<Point2D> corners = UtilitiesHex.polygonCorners(layout, new HexCoordinate(q, r, s));
 		int tX[] = new int[8];
 		int tY[] = new int[8];
 
@@ -125,9 +129,9 @@ public final class Draw {
 			g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
 		
 			if(flatlayout)
-				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new Hex(q, r, s)).getX()+","+UtilitiesHex.flatOffsetFromCube(1, new Hex(q, r, s)).getY(), tX[3]+20, tY[3]+40);
+				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
 			else
-				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new Hex(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new Hex(q, r, s)).getY(), tX[3]+20, tY[3]+40);
+				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
 	
 		}
 	}

@@ -44,7 +44,7 @@ public final class UtilitiesTargeting {
 	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public static List<Point> createTargetList(Hex board[][], int range, Point starting, String quickID, Point dimensions) {
+	public static List<Point> createTargetList(HexCoordinate board[][], int range, Point starting, String quickID, Point dimensions) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {

@@ -7,47 +7,47 @@ import java.util.List;
 
 public final class UtilitiesHex {
 
-	private static List<Hex> getHexDirectionList(){
-		List<Hex> directionList = new ArrayList<Hex>();
+	private static List<HexCoordinate> getHexDirectionList(){
+		List<HexCoordinate> directionList = new ArrayList<HexCoordinate>();
 		
-		directionList.add(new Hex(1, 0, -1));
-		directionList.add(new Hex(1, -1, 0));
-		directionList.add(new Hex(0, -1,1));
-		directionList.add(new Hex(-1, 0, 1));
-		directionList.add(new Hex(-1, 1, 0));
-		directionList.add(new Hex(0, 1, -1));
+		directionList.add(new HexCoordinate(1, 0, -1));
+		directionList.add(new HexCoordinate(1, -1, 0));
+		directionList.add(new HexCoordinate(0, -1,1));
+		directionList.add(new HexCoordinate(-1, 0, 1));
+		directionList.add(new HexCoordinate(-1, 1, 0));
+		directionList.add(new HexCoordinate(0, 1, -1));
 		
 		return directionList;
 	}
 	
-	public static boolean equals(Hex a, Hex b) {
+	public static boolean equals(HexCoordinate a, HexCoordinate b) {
 		return a.q==b.q && a.r==b.r && a.s==b.s; 
 	}
 	
-	public static Hex add(Hex a, Hex b) {
+	public static HexCoordinate add(HexCoordinate a, HexCoordinate b) {
 
-		return  new Hex(a.q+b.q, a.r+b.r, a.s+b.s);
+		return  new HexCoordinate(a.q+b.q, a.r+b.r, a.s+b.s);
 	}
 	
-	public static Hex subtract(Hex a, Hex b) {
-		return  new Hex(a.q-b.q, a.r-b.r, a.s-b.s);
+	public static HexCoordinate subtract(HexCoordinate a, HexCoordinate b) {
+		return  new HexCoordinate(a.q-b.q, a.r-b.r, a.s-b.s);
 	}
 	
-	public static Hex multiply(Hex a, int k) {
-		return  new Hex(a.q*k, a.r+k, a.s+k);
+	public static HexCoordinate multiply(HexCoordinate a, int k) {
+		return  new HexCoordinate(a.q*k, a.r+k, a.s+k);
 	}
 	
-	public static int length(Hex hex) {
+	public static int length(HexCoordinate hex) {
 		return (int)((Math.abs(hex.q)+Math.abs(hex.r)+Math.sqrt(hex.s))/2);
 	}
 	
-	public static int distance(Hex a, Hex b) {
+	public static int distance(HexCoordinate a, HexCoordinate b) {
 		return length(subtract(a, b));
 	}
 	
-	public static Hex direction(int direction /*0 to 5*/) {
+	public static HexCoordinate direction(int direction /*0 to 5*/) {
 		
-		List<Hex> directionList = getHexDirectionList();
+		List<HexCoordinate> directionList = getHexDirectionList();
 
 		if(direction>=0 && direction<=5)
 			return directionList.get(direction);
@@ -55,7 +55,7 @@ public final class UtilitiesHex {
 		return null;
 	}
 	
-	public static Hex neighbor(Hex hex, int direction) {
+	public static HexCoordinate neighbor(HexCoordinate hex, int direction) {
 		return add(hex, direction(direction));
 	}
 	
@@ -69,7 +69,7 @@ public final class UtilitiesHex {
 																0.0);
 	}
 	
-	public static Point2D hexToPixel(HexLayout layout, Hex h) {
+	public static Point2D hexToPixel(HexLayout layout, HexCoordinate h) {
 		HexOrientation M = layout.getOrientation();
 		double x=(M.f0*h.q+M.f1*h.r)*layout.getSize().getX()+layout.getOrigin().getX();
 		double y=(M.f2*h.q+M.f3*h.r)*layout.getSize().getY()+layout.getOrigin().getY();
@@ -91,7 +91,7 @@ public final class UtilitiesHex {
 		return new Point2D.Double(size.getX()*Math.cos(angle), size.getY()*Math.sin(angle));
 	}
 	
-	public static List<Point2D> polygonCorners(HexLayout layout, Hex h){
+	public static List<Point2D> polygonCorners(HexLayout layout, HexCoordinate h){
 		List<Point2D> corners = new ArrayList<Point2D>();
 		
 		Point2D center = hexToPixel(layout, h);
@@ -103,7 +103,7 @@ public final class UtilitiesHex {
 		return corners;
 	}
 	
-	public static Hex hexRound(FractionalHex h) {
+	public static HexCoordinate hexRound(FractionalHex h) {
 		int q = (int) (Math.round(h.q));
 		int r = (int) (Math.round(h.r));
 		int s = (int) (Math.round(h.s));
@@ -120,20 +120,20 @@ public final class UtilitiesHex {
 			s=-q-r;
 		}
 		
-		return new Hex(q, r, s);	
+		return new HexCoordinate(q, r, s);	
 	}
 	
 	public static float lerp(double a, double b, double t) {
 	    return (float) (a * (1-t) + b * t);
 	}
 	
-	public static FractionalHex hexLerp(Hex a, Hex b, double t) {
+	public static FractionalHex hexLerp(HexCoordinate a, HexCoordinate b, double t) {
 		return new FractionalHex(lerp(a.q, b.q, t), lerp(a.r, b.r, t), lerp(a.s, b.s, t));
 	}
 	
-	public static List<Hex> hexLineDraw(Hex a, Hex b){
+	public static List<HexCoordinate> hexLineDraw(HexCoordinate a, HexCoordinate b){
 		int N = distance(a, b);
-		List<Hex> results = new ArrayList<Hex>();
+		List<HexCoordinate> results = new ArrayList<HexCoordinate>();
 		double step = 1.0/Math.max(N, 1);
 		for(int i=0; i<=N; i++) {
 			results.add(hexRound(hexLerp(a, b, step*i)));
@@ -141,39 +141,46 @@ public final class UtilitiesHex {
 		return results;
 	}
 	
-	public static Hex hexRotateLeft(Hex a) {
-		return new Hex(-a.s, -a.q, -a.r);
+	public static HexCoordinate hexRotateLeft(HexCoordinate a) {
+		return new HexCoordinate(-a.s, -a.q, -a.r);
 	}
 	
-	public static Hex hexRotateRight(Hex a) {
-		return new Hex(-a.r, -a.s, -a.q);
+	public static HexCoordinate hexRotateRight(HexCoordinate a) {
+		return new HexCoordinate(-a.r, -a.s, -a.q);
 	}
 	
 	//Offset if even offset=1 and if odd offset=-1
-	public static Point flatOffsetFromCube(int offset, Hex h) {
+	public static Point flatOffsetFromCube(int offset, HexCoordinate h) {
 	    int col = h.q;
 	    int row = h.r + (int)((h.q + offset * (h.q & 1)) / 2);
 	    return new Point(col, row);
 	}
 
-	public static Hex flatOffsetToCube(int offset, Point h) {
+	public static HexCoordinate flatOffsetToCube(int offset, Point h) {
 	    int q = h.x;
 	    int r = h.y - (int)((h.x + offset * (h.x & 1)) / 2);
 	    int s = -q - r;
-	    return new Hex(q, r, s);
+	    return new HexCoordinate(q, r, s);
 	}
 
-	public static Point pointyOffsetFromCube(int offset, Hex h) {
+	public static Point pointyOffsetFromCube(int offset, HexCoordinate h) {
 	    int col = h.q + (int)((h.r + offset * (h.r & 1)) / 2);
 	    int row = h.r;
 	    return new Point(col, row);
 	}
 
-	public static Hex pointyOffsetToCube(int offset, Point h) {
+	public static HexCoordinate pointyOffsetToCube(int offset, Point h) {
 	    int q = h.x - (int)((h.y + offset * (h.y & 1)) / 2);
 	    int r = h.y;
 	    int s = -q - r;
-	    return new Hex(q, r, s);
+	    return new HexCoordinate(q, r, s);
+	}
+	
+	public static HexCoordinate getCubeCoordinates(boolean flatlayout, Point coordinates) {
+		if(flatlayout)
+			return UtilitiesHex.flatOffsetToCube(1, coordinates);
+		else
+			return UtilitiesHex.pointyOffsetToCube(1, coordinates);
 	}
 }
 

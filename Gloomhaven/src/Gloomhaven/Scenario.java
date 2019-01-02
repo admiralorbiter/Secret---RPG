@@ -76,11 +76,17 @@ public class Scenario {
 		data = ScenarioDataLoader.loadScenarioData(sceneID);
 		enemyInfo = new EnemyInfo(data);
 		board = new Hex[data.getBoardSize().x][data.getBoardSize().y];
+		
+		for(int x=0; x<data.getBoardSize().x; x++) {
+			for(int y=0; y<data.getBoardSize().y; y++) {
+				board[x][y] = new Hex(x, y, Setting.flatlayout);
+			}
+		}
+		
 		state=State.CARD_SELECTION;
 	}
 	
 	private void selection() {
-		selectionCoordinate=party.get(currentPlayer).getCoordinates();
 		
 		if(k==Setting.up) {
 			if(selectionCoordinate.y-1>=0) {
@@ -106,20 +112,26 @@ public class Scenario {
 	}
 	
 	private void movePlayer(Player player, Point ending) {	
-		Point starting=player.getCoordinates();
-		
+	
 		if(board[(int) ending.getX()][(int) ending.getY()].hasLoot()) {
 			loot(player, ending);
 		}
 		
-		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].doorOpen()==false)) {
-			showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
+		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].isDoorOpen()==false)) {
+			//showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
 		}
-				
+		
+		/*
 		String quickID=board[(int) starting.getX()][(int) starting.getY()].getQuickID();
 		String id=board[(int) starting.getX()][(int) starting.getY()].getID();
+		
 		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
 		board[(int) starting.getX()][(int) starting.getY()].reset();
+		*/
+		
+		player.setCoordinates(ending);
+		
+		board[(int) ending.getX()][(int) ending.getY()].setSpaceEmpty(true);
 	}
 	
 	private void loot(Player player, Point loot) {
@@ -234,6 +246,9 @@ public class Scenario {
 				break;
 			case PLAYER_MOVE:
 				g.drawString("Press "+Setting.moveKey+" to move.", Setting.graphicsXLeft, Setting.graphicsYBottom);
+				break;
+			case PLAYER_ATTACK:
+				g.drawString("Press "+Setting.targetKey+" to target.", Setting.graphicsXLeft, Setting.graphicsYBottom);
 				break;
 		}
 	}
@@ -359,6 +374,7 @@ public class Scenario {
 		enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
 		
 		List<Player> targets = new ArrayList<Player>();
+		targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), data.getBoardSize(), party);
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
 
 		if(targets.size()>0) {
@@ -444,7 +460,8 @@ public class Scenario {
 	}
 	
 	private void playerAttackLogic() {
-
+		selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
+		
 		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, null);
 		
 		if(UsePlayerAbilityCard.getMove(card)>0)
@@ -488,22 +505,87 @@ public class Scenario {
 		if(party.get(currentPlayer).canMove()) {
 			g.setColor(Color.red);
 			selection();
+			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
+			g.setColor(Color.BLUE);
 			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
 			
 			if(k==Setting.moveKey) {
-				if(board[selectionCoordinate.x][selectionCoordinate.y].equals("P"))
+				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("P"))
 					finished=true;
+				else if(UsePlayerAbilityCard.hasFlying(card)) {
+					movePlayer(party.get(currentPlayer), selectionCoordinate);
+					finished=true;
+				}
 				else if(UsePlayerAbilityCard.hasJump(card)) {
-					if(board[selectionCoordinate.x][selectionCoordinate.y].equals("L"))
-						party.get(currentPlayer).addLoot(board[selectionCoordinate.x][selectionCoordinate.y]);
-					
+					movePlayer(party.get(currentPlayer), selectionCoordinate);
+					finished=true;
+				}
+				else {
+					if(board[selectionCoordinate.x][selectionCoordinate.y].isSpaceEmpty()) {
+						movePlayer(party.get(currentPlayer), selectionCoordinate);
+						finished=true;
+					}
+				}
+
+			}
+		}else {
+			finished=true;
+		}
+		
+		//Next State: Player Attack, Attack Logic, Round End
+		if(finished) {
+			if(UsePlayerAbilityCard.getCardData(card).getConsumeElementalFlag()) {
+				state=State.USE_ANY_INFUSION;
+			}
+			else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0) {
+				state=State.PLAYER_ATTACK;
+			}else if(UsePlayerAbilityCard.getCardData(card).getEffects().getPush()>0) {
+				state=State.PLAYER_PUSH_SELECTION;
+			}else {
+				if(party.get(currentPlayer).getCardChoice()==false) {
+					state=State.PLAYER_CHOICE;
+				}else {
+					//if turn is over
+					if(turnIndex==party.size())
+						state=State.ROUND_END_DISCARD;
+					else {
+						turnIndex++;
+						state=State.ATTACK;
+					}
 				}
 			}
 		}
 	}
 	
 	private void playerAttack() {
+		boolean finished=false;
 		
+		if(party.get(currentPlayer).canAttack()) {
+			
+			//Creates target list of enemy coordinates
+			List<Point> targets = new ArrayList<Point>();
+			
+			int cardRange=UsePlayerAbilityCard.getRange(card);
+			
+			if(UsePlayerAbilityCard.getRange(card)>=0) {
+				if(UsePlayerAbilityCard.getRange(card)==0)
+					cardRange=1;
+	
+				if(UsePlayerAbilityCard.hasTargetHeal(card)) {
+					for(int range=1; range<=cardRange; range++)
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCoordinates(), "P", data.getBoardSize());
+					targets.add(party.get(currentPlayer).getCoordinates());
+				}
+				else {
+					for(int range=1; range<=cardRange; range++)
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCoordinates(), "E", data.getBoardSize());
+					
+				}
+			}
+			
+			
+			
+		}
 	}
 	
 }

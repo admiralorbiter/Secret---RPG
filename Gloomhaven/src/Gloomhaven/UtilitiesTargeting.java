@@ -6,9 +6,10 @@ import java.util.List;
 
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Characters.character;
 
 public final class UtilitiesTargeting {
-
+	/*
 	public static Point findOppisiteHex(Point povCoordinate, Point targetCoordinate) {
 	
 		if(povCoordinate.getX()==targetCoordinate.getX()) {
@@ -41,10 +42,29 @@ public final class UtilitiesTargeting {
 		}
 		return new Point(targetCoordinate);
 	}
+	*/
+	
+	public static List<Player> createTargetListPlayer(Hex board[][], int range, Point starting, Point dimensions, List<Player> party){
+		List<Point> targetPoints = new ArrayList<Point>();
+		
+		createTargetList(board, range, starting, "P", dimensions);
+		
+		List<Player> targets = new ArrayList<Player>();
+		
+		for(int i=0; i<targetPoints.size(); i++) {
+			for(int j=0; j<party.size(); j++) {
+				if(party.get(j).getCoordinates().x==targetPoints.get(j).x && party.get(j).getCoordinates().x==targetPoints.get(j).y) {
+					targets.add(party.get(j));
+				}
+			}
+		}
+		
+		return targets;
+	}
 	
 	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
 	//https://www.redblobgames.com/grids/hexagons/
-	public static List<Point> createTargetList(HexCoordinate board[][], int range, Point starting, String quickID, Point dimensions) {
+	public static List<Point> createTargetList(Hex board[][], int range, Point starting, String quickID, Point dimensions) {
 		List<Point> targets = new ArrayList<Point>();
 		
 		for(int x=-range; x<=range; x++) {
@@ -79,6 +99,8 @@ public final class UtilitiesTargeting {
 		return targets;
 	}
 	
+	
+	/*
 	public static boolean targetAloneToAlly(Enemy enemy, Room room) {
 		List<Point> targets = new ArrayList<Point>();
 		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "E", room.getDimensions());
@@ -107,4 +129,5 @@ public final class UtilitiesTargeting {
 		else
 			return false;
 	}
+	*/
 }

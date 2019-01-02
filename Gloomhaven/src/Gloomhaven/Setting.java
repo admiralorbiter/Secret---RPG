@@ -54,4 +54,5 @@ public final class Setting {
 	public static char down='s';
 	public static char left='a';
 	public static char right='d';
+	public static char targetKey='t';
 }

@@ -810,7 +810,7 @@ public class Scenario {
 	
 	private void playerPush() {
 		boolean finished=false;
-		System.out.println(direction);
+		
 		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction);
 		g.setColor(Color.cyan);
 		Draw.drawHex(g, pushPoint);

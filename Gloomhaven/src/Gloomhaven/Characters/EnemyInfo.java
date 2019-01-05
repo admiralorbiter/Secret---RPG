@@ -83,5 +83,14 @@ public class EnemyInfo {
 		return null;
 	}
 	
+	public List<Enemy> getEnemies(){return enemies;}
+	
+	public void updateEnemyList(int id, int room) {
+		List<Enemy> enemiesInRoom = ScenarioEnemyLoader.getEnemies(id, room);
+		
+		for(int i=0; i<enemiesInRoom.size(); i++)
+			enemies.add(enemiesInRoom.get(i));
+	}
+	
 	
 }

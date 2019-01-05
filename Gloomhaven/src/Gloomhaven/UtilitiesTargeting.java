@@ -86,10 +86,12 @@ public final class UtilitiesTargeting {
 						
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY()) {
-								if(board[xToPlot][yToPlot]!=null)
+								if(board[xToPlot][yToPlot]!=null) {
+
 									if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
 										targets.add(new Point(xToPlot,yToPlot));
 									}
+								}
 							}
 						}
 

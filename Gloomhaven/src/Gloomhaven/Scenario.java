@@ -830,9 +830,13 @@ public class Scenario {
 		}
 		
 		if(finished) {
+			
 			card.increaseAbilityCardCounter();
-
-			if(UsePlayerAbilityCard.getCardData(card).getEffects().getPush()>card.getAbilityCardCount())
+			/*
+			 * I know the +1 below doesn't make sense but because most of the cards attack before pushing, it starts with 1. I think* they all
+			 * attack first. If they don't, I will need to just clear the abilitycounter when I pick a push target
+			 */
+			if((UsePlayerAbilityCard.getCardData(card).getEffects().getPush()+1)>card.getAbilityCardCount())
 			{
 				//oppPoint=new Point(pointToMove);
 				state=State.PLAYER_PUSH;

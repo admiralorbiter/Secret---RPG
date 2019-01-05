@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -80,6 +81,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		//[Temp] Need unique IDs and class 
 		for(int id=0; id<Setting.numberOfPlayers; id++)
 			party.add(new Player(id, Setting.playerClass));				//Adds the players to the party
+		
+		party.get(0).setCoordinates(new Point(6, 5));
+		
 		scene= new Scenario(Setting.sceneID, party, gloomhaven);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		//state=GameState.TOWN;										//Init Phase -> Town Phase

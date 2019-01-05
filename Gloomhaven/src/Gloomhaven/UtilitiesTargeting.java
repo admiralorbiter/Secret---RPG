@@ -1,5 +1,7 @@
 package Gloomhaven;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,6 @@ import java.util.List;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.character;
-
 public final class UtilitiesTargeting {
 	/*
 	public static Point findOppisiteHex(Point povCoordinate, Point targetCoordinate) {
@@ -99,11 +100,81 @@ public final class UtilitiesTargeting {
 		return targets;
 	}
 	
+	public static void highlightTargets(List<Point> targets, Graphics g) {
+		for(int i=0; i<targets.size(); i++) {
+			g.setColor(Setting.highlightColor);
+			Draw.drawHex(g, targets.get(i));
+			g.setColor(Setting.defaultColor);
+		}
+	}
 	
-	/*
-	public static boolean targetAloneToAlly(Enemy enemy, Room room) {
+	public static void drawAttack(Graphics g, HexCoordinate center, int direction, int num) {
+		g.setColor(Color.cyan);
+		Draw.drawHex(g, center, Setting.size, Setting.flatlayout, Setting.center);
+		g.setColor(Color.cyan);
+
+		HexCoordinate hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction));
+		Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		
+		/*
+		 * Note: I no longer need to check if the direction is out of bounds since I do
+		 * direciton modulo 6 in the direction function.
+		 */
+		
+		if(num>=2) {	
+			if(direction+1<=5) 
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction+1));
+			else
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(0));
+			
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		}
+		if(num>=3) {
+			if(direction-1>=0) 
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction-1));
+			else
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(5));
+					
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		}
+		if(num>=4) {
+			if(direction+2<=5) 
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction+2));
+			else if(direction+2==6)
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(0));
+			else
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(1));
+			
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		}
+		if(num>=5) {
+			if(direction-2>=0) 
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction-2));
+			else if(direction-2==-1)
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(5));
+			else
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(4));
+					
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		}
+		if(num>=6) {
+			if(direction+3<=5) 
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction+3));
+			else if(direction+3==6)
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(0));
+			else if(direction+3==7)
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(1));
+			else if(direction+3==8)
+				hex = UtilitiesHex.add(center, UtilitiesHex.direction(2));
+			
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		}
+	}
+	
+	
+	public static boolean targetAloneToAlly(Enemy enemy, Hex[][] board, Point dimensions) {
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "E", room.getDimensions());
+		targets=createTargetList(board, 1, enemy.getCoordinates(), "E", dimensions);
 		
 		if(targets.size()>0)
 			return false;
@@ -111,10 +182,10 @@ public final class UtilitiesTargeting {
 		return true;
 	}
 	
-	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Room room) {
+	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Hex[][] board, Point dimensions) {
 		
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(room.getBoard(), 1, enemy.getCoordinates(), "P", room.getDimensions());
+		targets=createTargetList(board, 1, enemy.getCoordinates(), "P", dimensions);
 
 		if(targets.size()>0) {
 			for(int i=0; i<targets.size(); i++) {
@@ -129,5 +200,5 @@ public final class UtilitiesTargeting {
 		else
 			return false;
 	}
-	*/
+	
 }

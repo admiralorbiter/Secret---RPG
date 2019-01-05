@@ -16,7 +16,7 @@ import Gloomhaven.Characters.character;
 
 public final class UtilitiesAB {
 
-	public static void resolveCard(Player player, PlayerAbilityCard abilityCard, InfusionTable elements, Room room) {
+	public static void resolveCard(Player player, PlayerAbilityCard abilityCard, InfusionTable elements, Hex[][] board, ScenarioData data) {
 
 		
 		CardDataObject card = new CardDataObject();
@@ -46,9 +46,9 @@ public final class UtilitiesAB {
 			
 			if(card.getEffects().getLoot()>0) {
 				List<Point> loot = new ArrayList<Point>();
-				loot=UtilitiesTargeting.createTargetList(room.getBoard(), card.getEffects().getLoot()+1, player.getCoordinates(), "Loot", room.getDimensions());
+				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCoordinates(), "Loot", data.getBoardSize());
 				
-				room.loot(player, loot);
+				//room.loot(player, loot);
 			}
 			
 			if(card.getEffects().getShield()>0) {
@@ -143,7 +143,7 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 	}
 	
-	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card, Room room, boolean adjacentBonus, InfusionTable elements) {
+	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card, Hex[][] board, boolean adjacentBonus, InfusionTable elements, ScenarioData data) {
 		
 		//int attack=card.getAttack();
 		int attack = player.getAttack(card);
@@ -164,7 +164,7 @@ public final class UtilitiesAB {
 		for(int i=0; i<player.getRoundTriggers().size(); i++) {
 			if(player.getRoundTriggers().get(i).isTriggerOnAttack()) {
 				if(player.getRoundTriggers().get(i).getTriggerFlag().equals("EnemyAlone")) {
-					if(UtilitiesTargeting.targetAloneToAlly(enemy, room)) {
+					if(UtilitiesTargeting.targetAloneToAlly(enemy, board, data.getBoardSize())) {
 						if(player.getRoundTriggers().get(i).getBonusData().getAttack()>0)
 							attack=attack+player.getRoundTriggers().get(i).getBonusData().getAttack();
 						
@@ -213,7 +213,7 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		if(player.isAugmented() && checkMeleeRange(player,room.getBoard(),"E" , new Point(room.getWidth(), room.getHeight()))) {
+		if(player.isAugmented() && checkMeleeRange(player,board,"E" , data.getBoardSize())) {
 			if(player.getAugmentCard().getEffects()!=null)
 				if(player.getAugmentCard().getEffects().getShield()>0)
 					player.getCharacterData().setShield(1);
@@ -229,7 +229,7 @@ public final class UtilitiesAB {
 					}
 				}
 		}
-		
+
 		int enemyShield=enemy.getCharacterData().getShield();
 		if(enemyShield>0){
 			int playerPierce=card.getEffects().getPierce();
@@ -327,7 +327,7 @@ public final class UtilitiesAB {
 		return (int) Math.max(Math.abs(p1.y-p2.y), Math.abs(p1.x-p2.x)+Math.floor(Math.abs(p1.y-p2.y)/2)+penalty)-1;
 		
 	}
-	
+	/*
 	public static void drawArrows(Graphics g, Point player, Point opposite) {
 		
 		Setting setting = new Setting();
@@ -400,10 +400,10 @@ public final class UtilitiesAB {
 		}
 		return -1;
 	}
-	
+	*/
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
-	public static boolean checkMeleeRange(character entity, HexCoordinate board[][], String lookingForID, Point dimensions) {
+	public static boolean checkMeleeRange(character entity, Hex board[][], String lookingForID, Point dimensions) {
 		
 		Point coordinates = entity.getCoordinates();
 		int x=(int) coordinates.getX();
@@ -443,14 +443,14 @@ public final class UtilitiesAB {
 	}
 	
 	//[Rem] This has to be a way to abstract this for both player and enemies
-	public static List<Player> createMeleeTargetList(HexCoordinate board[][],List<Player> party, Enemy enemy, Point dimensions){
+	public static List<Player> createMeleeTargetList(Hex board[][],List<Player> party, Enemy enemy, Point dimensions){
 		List<Player> targets = new ArrayList<Player>();
 		checkRange(board, "P", 1, party, targets, enemy, dimensions);
 		
 		return targets;
 	}
 	
-	public static List<Player> playersInRangeEstimate(HexCoordinate board[][], List<Player> party, Enemy enemy, Point dimensions){
+	public static List<Player> playersInRangeEstimate(Hex board[][], List<Player> party, Enemy enemy, Point dimensions){
 		List<Player> targets = new ArrayList<Player>();
 		
 		if(enemy.getBaseStats().getRange()<=1)
@@ -470,7 +470,7 @@ public final class UtilitiesAB {
 	}
 
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
-	public static void checkRange(HexCoordinate board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Enemy enemy, Point dimensions) {
+	public static void checkRange(Hex board[][], String lookingForID, int range, List<Player> party, List<Player> targets, Enemy enemy, Point dimensions) {
 		List<String> idList = new ArrayList<String>();
 		
 		

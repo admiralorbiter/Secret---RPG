@@ -7,22 +7,23 @@ public class Target {
 	private String flag ="Enemy";
 	
 	private boolean self=false;
+	private boolean melee=true;
+	private boolean range=false;
+	
+	
+	
+	
 	
 	private boolean allAdjacentEnemies=false;
 	private boolean allAdjacentAllies=false;
 	private boolean allEnemiesInRoom=false;
 	private boolean allAlliesInRoom=false;
 	private boolean allEnemiesOnPath=false;
-	private boolean opposingAttack=false;
-	private boolean circle=false;
-	private boolean semiCircle=false;
-	private boolean sortOfSemiCircle=false;
-	private boolean triangle=false;
-	private boolean line=false;
-	private boolean ally=false;
 	private boolean allAllies=false;
 	private boolean allAdjacent=false;
-	private boolean oneAdjacent=false;
+
+	
+	
 	
 	private int lineLength=0;
 	
@@ -79,12 +80,6 @@ public class Target {
 			case "Self":
 				self=true;
 				break;
-			case "OpposingAttack":
-				opposingAttack=true;
-				break;
-			case "OneAdjacentEnemy":
-				oneAdjacent=true;
-				break;
 			case "AllAdjacent":
 				allAdjacent=true;
 				break;
@@ -102,24 +97,6 @@ public class Target {
 				break;
 			case "AllEnemiesOnPath":
 				allEnemiesOnPath=true;
-				break;
-			case "Circle":
-				circle=true;
-				break;
-			case "SemiCircle":
-				semiCircle=true;
-				break;
-			case "SortOfSemiCircle":
-				sortOfSemiCircle=true;
-				break;
-			case "Line":
-				line=true;
-				break;
-			case "Triangle":
-				triangle=true;
-				break;
-			case "Ally":
-				ally=true;
 				break;
 			case "AllAllies":
 				allAllies=true;
@@ -147,19 +124,8 @@ public class Target {
 	public void setAllyTargets(int allyTargets) {this.allyTargets = allyTargets;}
 	public int getTargets() {return targets;}
 	public void setTargets(int targets) {this.targets = targets;}
-	public boolean getOpposingAttack() {return opposingAttack;}
-	public void setOpposingAttack(boolean opposingAttack) {this.opposingAttack=opposingAttack;}
-	public boolean getCircle() {return circle;}
-	public void setCircle(boolean circle) {this.circle = circle;}
-	public boolean getSemiCircle() {return semiCircle;}
-	public void setSemiCircle(boolean semiCircle) {this.semiCircle=semiCircle;}
-	public boolean getSortOfSemiCircle() {return sortOfSemiCircle;}
-	public void setSortaOfSemiCircle(boolean sortaSemi) {this.sortOfSemiCircle=sortaSemi;}
-	public boolean getTriangle() {return triangle;}
-	public void setTriangle(boolean triangle) {this.triangle = triangle;}
-	public boolean isLine() {return line;}
-	public void setLine(boolean line) {this.line = line;}
 	public int getLineLength() {return lineLength;}
 	public void setLineLength(int lineLength) {this.lineLength = lineLength;}	
-	
+	public boolean getMelee() {return melee;}
+	public void setMelee(boolean melee) {this.melee=melee;}
 }

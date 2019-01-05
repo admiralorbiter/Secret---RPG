@@ -7,7 +7,7 @@ public class CharacterDataObject {
 	private int level;
 	private int health;
 	private int xp;
-	private int shield;
+	private int shield=0;
 	private int gold;
 	
 	Setting setting = new Setting();

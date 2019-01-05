@@ -29,7 +29,7 @@ public class character {
 	
 	CardDataObject roundBonus = new CardDataObject();
 	
-	CharacterDataObject data;
+	protected CharacterDataObject data;
 
 	public character() {
 		

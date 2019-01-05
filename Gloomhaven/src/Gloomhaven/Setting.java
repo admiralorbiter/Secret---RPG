@@ -17,6 +17,9 @@ public final class Setting {
 	public static String title="Gloomhaven";
 
 	public static Color defaultColor = Color.WHITE;
+	public static Color highlightColor = Color.YELLOW;
+	public static Color playerColor = Color.RED;
+	public static Color enemyColor = Color.MAGENTA;
 	
 	//Party Info
 	public static int numberOfPlayers=1;

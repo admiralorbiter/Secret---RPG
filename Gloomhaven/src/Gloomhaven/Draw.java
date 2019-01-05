@@ -1,9 +1,13 @@
 package Gloomhaven;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
+
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.Player;
 
 public final class Draw {
 	
@@ -32,6 +36,8 @@ public final class Draw {
 	}
 	
 	public static void range(Graphics g, HexCoordinate point, int range) {
+		
+		g.setColor(Color.blue);
 		
 		for(int q=-range; q<=range; q++) {
 			int r1=Math.max(-range, -q-range);
@@ -135,6 +141,16 @@ public final class Draw {
 	
 		}
 	}
+	
+	public static void drawParty(Graphics g, List<Player> party) {
+		g.setColor(Setting.playerColor);
+		for(int i=0; i<party.size(); i++) {
+			drawHex(g, party.get(i).getCoordinates());
+		}
+		g.setColor(Setting.defaultColor);
+	}
+	
+	
 	/*
 	private static Color getColor(Hex hex) {
 		

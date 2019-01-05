@@ -3,7 +3,7 @@ package Gloomhaven;
 public class Hex extends HexCoordinate {
 
 	private String quickID=" ";
-	
+	private String id=" ";
 	private int roomID=-1;
 	
 	private String lootID="";
@@ -23,6 +23,8 @@ public class Hex extends HexCoordinate {
 	}
 	
 	 public String getQuickID() {return quickID;}
+	 public void setQuickID(String id) {this.quickID=id;}
+	 public String getID() {return id;}
 	 public String getLootID() {return lootID;}
 	 public boolean hasLoot() {return loot;}
 	 public boolean hasDoor() {return door;}

@@ -20,6 +20,17 @@ public final class UtilitiesHex {
 		return directionList;
 	}
 	
+	public static int getDirection(HexCoordinate a, HexCoordinate b) {
+		HexCoordinate hex = subtract(a, b);
+		List<HexCoordinate> hexDirectionList = getHexDirectionList();
+		
+		for(int i=0; i<hexDirectionList.size(); i++)
+			if(equals(hexDirectionList.get(i), hex))
+				return i;
+		
+		return -1;
+	}
+	
 	public static boolean equals(HexCoordinate a, HexCoordinate b) {
 		return a.q==b.q && a.r==b.r && a.s==b.s; 
 	}
@@ -46,6 +57,9 @@ public final class UtilitiesHex {
 	}
 	
 	public static HexCoordinate direction(int direction /*0 to 5*/) {
+		
+		if(direction>5 || direction<0)
+			direction=direction&6;
 		
 		List<HexCoordinate> directionList = getHexDirectionList();
 
@@ -178,9 +192,16 @@ public final class UtilitiesHex {
 	
 	public static HexCoordinate getCubeCoordinates(boolean flatlayout, Point coordinates) {
 		if(flatlayout)
-			return UtilitiesHex.flatOffsetToCube(1, coordinates);
+			return flatOffsetToCube(1, coordinates);
 		else
-			return UtilitiesHex.pointyOffsetToCube(1, coordinates);
+			return pointyOffsetToCube(1, coordinates);
+	}
+	
+	public static Point getOffset(boolean flatlayout, HexCoordinate hex) {
+		if(flatlayout)
+			return flatOffsetFromCube(1, hex);
+		else
+			return pointyOffsetFromCube(1, hex);
 	}
 }
 

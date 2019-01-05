@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.Draw;
 import Gloomhaven.ScenarioData;
 import Gloomhaven.Setting;
+import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
 
@@ -24,6 +26,16 @@ public class EnemyInfo {
 		startingAbilityCardCount=8;
 		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new EnemyAbilityCard("Test", i+1, 1));
+		
+		enemies.add(new Enemy(1, "Test", 0, false, new Point(6,4)));
+	}
+	
+	public void drawEnemies(Graphics g) {
+		g.setColor(Setting.enemyColor);
+		for(int i=0; i<enemies.size(); i++) {
+			Draw.drawHex(g, enemies.get(i).getCoordinates());
+		}
+		g.setColor(Setting.enemyColor);
 	}
 	
 	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
@@ -58,6 +70,16 @@ public class EnemyInfo {
 	
 	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
 			
+	}
+	
+	public Enemy getEnemy(Point p) {
+		for(int i=0; i<enemies.size(); i++)
+		{
+			
+			if(enemies.get(i).getCoordinates().equals(p))
+				return enemies.get(i);
+		}
+		return null;
 	}
 	
 	

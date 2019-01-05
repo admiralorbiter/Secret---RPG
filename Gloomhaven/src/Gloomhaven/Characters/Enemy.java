@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
+import Gloomhaven.Hex;
+import Gloomhaven.HexCoordinate;
+import Gloomhaven.Setting;
+import Gloomhaven.UtilitiesHex;
 import Gloomhaven.CardDataObject.SimpleCardData;
 
 public class Enemy extends character{
@@ -18,9 +22,9 @@ public class Enemy extends character{
 		setID("E"+id+classID);
 		setClassID(classID);
 		setName("Enemy");
-		
+
 		data = new CharacterDataObject(classID);
-		
+
 		eliteFlag=elite;
 		
 		//Testing Need to actually udate stats.
@@ -31,6 +35,7 @@ public class Enemy extends character{
 		}
 		
 		this.startingPosition=startingPosition;
+		setCoordinates(startingPosition);
 	}
 	
 	public SimpleCardData getBaseStats() {return baseStats;}
@@ -62,4 +67,22 @@ public class Enemy extends character{
 	}
 	
 	public Point getStartingPosition() {return startingPosition;}
+	
+	public void move(HexCoordinate hex, Point dimensions) {
+		Point coordinate = UtilitiesHex.getOffset(Setting.flatlayout, hex);
+		
+		if(coordinate.x>=0 && coordinate.x<dimensions.x) {
+			if(coordinate.y>=0 && coordinate.y<dimensions.y) {
+				setCoordinates(coordinate);
+			}
+		}
+	}
+	
+	public void move(Point coordinate, Point dimensions) {
+		if(coordinate.x>=0 && coordinate.x<dimensions.x) {
+			if(coordinate.y>=0 && coordinate.y<dimensions.y) {
+				setCoordinates(coordinate);
+			}
+		}
+	}
 }

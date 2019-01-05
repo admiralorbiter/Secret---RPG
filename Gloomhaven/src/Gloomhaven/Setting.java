@@ -5,7 +5,7 @@ import java.awt.Point;
 
 public final class Setting {
 	public static int size=40;
-	public static boolean flatlayout=false;
+	public static boolean flatlayout=true;
 	public static Point center = new Point(500, 100);
 	
 	public static int graphicsXLeft=10;

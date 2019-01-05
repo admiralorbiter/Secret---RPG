@@ -87,6 +87,14 @@ public final class Draw {
 		}
 	}
 	
+	public static void rectangleBoardSideways(Graphics g, Hex[][] board, Point dimensions) {
+		for(int x=0; x<dimensions.x; x++) {
+			for(int y=0; y<dimensions.y; y++) {
+				drawHex(g, board[x][y]);
+			}
+		}
+	}
+	
 	public static void drawHex(Graphics g, Point h) {
 		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center);
 	}
@@ -110,6 +118,13 @@ public final class Draw {
 		
 		drawHex(g, hex, size, flatlayout, center);
 	}
+	
+	public static void drawHex(Graphics g, Hex hex) {
+		if(hex!=null) {
+			if(!hex.isHidden())
+				drawHex(g, hex.offsetCoordinate);
+		}
+	}
 
 	public static void drawHex(Graphics g, int q, int r, int s, int size, boolean flatlayout, Point center) {
 		HexLayout layout;
@@ -132,13 +147,14 @@ public final class Draw {
 		g.drawPolygon(tX, tY, 6);
 		
 		if(size>=40) {
-			g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
-		
-			if(flatlayout)
-				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
-			else
+			if(flatlayout) {
+				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
+				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);
+			}
+			else {
 				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
-	
+				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
+			}
 		}
 	}
 	

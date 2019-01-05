@@ -4,7 +4,7 @@ public class Hex extends HexCoordinate {
 
 	private String quickID=" ";
 	private String id=" ";
-	private int roomID=-1;
+	private int roomID=0;
 	
 	private String lootID="";
 	private boolean loot=false;
@@ -13,6 +13,8 @@ public class Hex extends HexCoordinate {
 	private boolean doorOpen=false;
 	
 	boolean empty=true;
+	
+	boolean hidden=false;
 	
 	public Hex(int x, int y, boolean flatlayout) {
 		super(x, y, flatlayout);
@@ -25,6 +27,7 @@ public class Hex extends HexCoordinate {
 	 public String getQuickID() {return quickID;}
 	 public void setQuickID(String id) {this.quickID=id;}
 	 public String getID() {return id;}
+	 public void setID(String id) {this.id=id;}
 	 public String getLootID() {return lootID;}
 	 public boolean hasLoot() {return loot;}
 	 public boolean hasDoor() {return door;}
@@ -33,6 +36,10 @@ public class Hex extends HexCoordinate {
 	 public boolean isSpaceEmpty() {return empty;}
 	 public void setRoomID(int id) {this.roomID=id;}
 	 public void setSpaceEmpty(boolean empty) {this.empty=empty;}
+	 public boolean isHidden() {return hidden;}
+	 public void setHidden(boolean hidden) {this.hidden=hidden;}
+	 public void setDoor(boolean door) {this.door=door;}
+	 public void setDoorOpen(boolean doorOpen) {this.doorOpen=doorOpen;}
 	 
 	 public void setLootID(String lootID) {
 		 this.lootID=lootID;

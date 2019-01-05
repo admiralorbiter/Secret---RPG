@@ -28,7 +28,8 @@ public final class ScenarioDataLoader {
 				data.getPartyAchievements().add("First Steps");
 				data.getNewLocations().add(new MapLocation('G', 11));
 				data.setRoomTotal(3);
-				data.setBoardSize(new Point(13, 11));
+				data.setStartingposition(new Point(7, 12));
+				data.setBoardSize(new Point(11, 13));
 				return data;
 			case 2:
 				data.setName("Barrow Lair");

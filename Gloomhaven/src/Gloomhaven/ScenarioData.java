@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Characters.Enemy;
+
 public class ScenarioData {
 	private String name;
 	private int id;
@@ -16,6 +18,8 @@ public class ScenarioData {
 	private List<String> globalAchievements = new ArrayList<String>();
 	private int roomTotal=0;
 	private Point boardSize;
+	private Point startingPosition;
+	private int[] enemiesInRoom;
 	
 	public ScenarioData(int id) {
 		this.id=id;
@@ -40,5 +44,11 @@ public class ScenarioData {
 	public int getRoomTotal() {return roomTotal;}
 	public void setBoardSize(Point size) {boardSize=size;}
 	public Point getBoardSize() {return boardSize;}
+	public Point getStartingPosition() {return startingPosition;}
+	public void setStartingposition(Point p) {startingPosition=new Point(p);}
+		
+	public List<Enemy> getEnemies(int room) {
+		return ScenarioEnemyLoader.getEnemies(id, room);
+	}
 	
 }

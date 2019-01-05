@@ -81,19 +81,14 @@ public class Scenario {
 		this.party=party;
 		data = ScenarioDataLoader.loadScenarioData(sceneID);
 		enemyInfo = new EnemyInfo(data);
-		board = new Hex[data.getBoardSize().x][data.getBoardSize().y];
+		board = ScenarioBoardLoader.loadBoardLayout(sceneID, data);
 		
-		for(int x=0; x<data.getBoardSize().x; x++) {
-			for(int y=0; y<data.getBoardSize().y; y++) {
-				board[x][y] = new Hex(x, y, Setting.flatlayout);
-			}
-		}
 		
-	
-		//temp
-		board[party.get(0).getCoordinates().x][party.get(0).getCoordinates().y].setQuickID("P");
-		board[enemyInfo.getEnemy(0).getCoordinates().x][enemyInfo.getEnemy(0).getCoordinates().y].setQuickID("E");
 		
+		//enemies=data.getEnemies(0);
+		//TODO: Have the party pick thier starting positions
+		party.get(0).setCoordinates(data.getStartingPosition());
+		UtilitiesBoard.updatePositions(board, party, enemies);
 		state=State.CARD_SELECTION;
 	}
 	
@@ -142,6 +137,7 @@ public class Scenario {
 		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].isDoorOpen()==false)) {
 			//showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
+			ScenarioBoardLoader.showRoom(board, data.getId(), board[ending.x][ending.y].getRoomID());
 		}
 		
 		/*
@@ -288,7 +284,7 @@ public class Scenario {
 		
 		
 		elements.graphicsDrawTable(g);
-		Draw.rectangleBoardSideways(g, Setting.size, Setting.flatlayout, Setting.center, data.getBoardSize());
+		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
 		Draw.drawParty(g, party);
 		enemyInfo.drawEnemies(g);
 		GUIScenario.EntityTable(g, party);
@@ -401,6 +397,8 @@ public class Scenario {
 	private void enemyAttack() {
 		enemyInfo.drawAbilityCard(g);
 		enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
+		
+		UtilitiesBoard.updatePositions(board, party, enemies);
 		
 		List<Player> targets = new ArrayList<Player>();
 		targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), data.getBoardSize(), party);
@@ -566,6 +564,8 @@ public class Scenario {
 		
 		//Next State: Player Attack, Attack Logic, Round End
 		if(finished) {
+			UtilitiesBoard.updatePositions(board, party, enemies);
+			
 			if(UsePlayerAbilityCard.getCardData(card).getConsumeElementalFlag()) {
 				state=State.USE_ANY_INFUSION;
 			}
@@ -830,7 +830,7 @@ public class Scenario {
 		}
 		
 		if(finished) {
-			
+			UtilitiesBoard.updatePositions(board, party, enemies);
 			card.increaseAbilityCardCounter();
 			/*
 			 * I know the +1 below doesn't make sense but because most of the cards attack before pushing, it starts with 1. I think* they all
@@ -867,6 +867,8 @@ public class Scenario {
 		
 		//Next State: Next card, Attack Logic, End Round
 		if(finished) {
+			UtilitiesBoard.updatePositions(board, party, enemies);
+			
 			if(party.get(currentPlayer).getCardChoice()==false) {
 				state=State.PLAYER_CHOICE;
 			}else {

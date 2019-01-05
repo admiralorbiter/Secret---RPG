@@ -1,6 +1,10 @@
 package Gloomhaven;
 
 import java.awt.Point;
+import java.util.List;
+
+import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Characters.Player;
 
 public final class UtilitiesBoard {
 	//Converts cube coord to a coord to plot
@@ -47,5 +51,17 @@ public final class UtilitiesBoard {
 		cubeCoord[y]=-cubeCoord[x]-cubeCoord[z];
 		
 		return cubeCoord;
+	}
+	
+	public static void updatePositions(Hex[][] board, List<Player> party, List<Enemy> enemies) {
+		for(int i=0; i<party.size(); i++) {
+			board[party.get(i).getCoordinates().x][party.get(i).getCoordinates().y].setQuickID("P");
+			board[party.get(i).getCoordinates().x][party.get(i).getCoordinates().y].setID(party.get(i).getID());
+		}
+		
+		for(int i=0; i<enemies.size(); i++) {
+			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setQuickID("E");
+			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setID(enemies.get(i).getID());
+		}
 	}
 }

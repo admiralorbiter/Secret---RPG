@@ -84,12 +84,12 @@ public final class UtilitiesTargeting {
 						int xToPlot=(int)(convertedPoint.getX()+starting.getX());
 						int yToPlot=(int) (convertedPoint.getY()+starting.getY());
 						
-						if(xToPlot>=0 && xToPlot<=dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<=dimensions.getY()) {
-								//System.out.println(board[xToPlot][yToPlot].getQuickID());
-								if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
-									targets.add(new Point(xToPlot,yToPlot));
-								}
+						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
+							if(yToPlot>=0 && yToPlot<dimensions.getY()) {
+								if(board[xToPlot][yToPlot]!=null)
+									if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
+										targets.add(new Point(xToPlot,yToPlot));
+									}
 							}
 						}
 

@@ -8,6 +8,7 @@ import java.util.Random;
 
 import Gloomhaven.Draw;
 import Gloomhaven.ScenarioData;
+import Gloomhaven.ScenarioEnemyLoader;
 import Gloomhaven.Setting;
 import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
@@ -27,7 +28,7 @@ public class EnemyInfo {
 		for(int i=0; i<startingAbilityCardCount; i++)
 			abilityDeck.add(new EnemyAbilityCard("Test", i+1, 1));
 		
-		enemies.add(new Enemy(1, "Test", 0, false, new Point(6,4)));
+		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
 	}
 	
 	public void drawEnemies(Graphics g) {

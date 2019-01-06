@@ -85,6 +85,13 @@ public class EnemyInfo {
 	
 	public List<Enemy> getEnemies(){return enemies;}
 	
+	public void update() {
+		for(int i=0; i<enemies.size(); i++) {
+			if(enemies.get(i).getCharacterData().getHealth()<=0)
+				enemies.remove(i);
+		}
+	}
+	
 	public void updateEnemyList(int id, int room) {
 		List<Enemy> enemiesInRoom = ScenarioEnemyLoader.getEnemies(id, room);
 		

@@ -12,7 +12,7 @@ public class CharacterDataObject {
 	
 	Setting setting = new Setting();
 	
-	public CharacterDataObject(String flag) {
+	public CharacterDataObject(String flag, boolean eliteFlag) {
 		
 		//TODO: Move this into settings or class
 		int TEST_HEALTH=6;
@@ -20,15 +20,20 @@ public class CharacterDataObject {
 		int scenarioLevel=1;
 		
 		switch(flag) {
-			case "Test":
+			case "Bandit Guard":
 				health=TEST_HEALTH;
 				shield=TEST_SHIELD;
 				maxHealth=TEST_HEALTH;
 				break;
-			case "TestElite":
-				health=TEST_HEALTH+scenarioLevel;
-				shield=TEST_SHIELD+scenarioLevel;
-				maxHealth=TEST_HEALTH+scenarioLevel;
+			case "Bandit Archer":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
+				break;
+			case "Living Bones":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
 				break;
 			default:
 				level=1;
@@ -38,6 +43,12 @@ public class CharacterDataObject {
 				level=1;
 				maxHealth=450;
 				gold=100;
+		}
+		
+		if(eliteFlag) {
+			health=health+scenarioLevel;
+			shield=shield+scenarioLevel;
+			maxHealth=maxHealth+scenarioLevel;
 		}
 	}
 	

@@ -75,8 +75,10 @@ public class Scenario {
 	
 	private Enemy enemyControlled;
 	private Enemy enemyTarget;
+	private Shop shop;
 	
-	public Scenario(int sceneID, List<Player> party, City gloomhaven) {
+	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
+		this.shop=shop;
 		this.gloomhaven=gloomhaven;
 		this.party=party;
 		data = ScenarioDataLoader.loadScenarioData(sceneID);
@@ -129,8 +131,11 @@ public class Scenario {
 			direction=5;
 	}
 	
-	private void movePlayer(Player player, Point ending) {	
+	private boolean movePlayer(Player player, Point ending) {	
 	
+		if(board[ending.x][ending.y].hasObstacle() || board[ending.x][ending.y].isHidden() || board[ending.x][ending.y].getQuickID().equals("E"))
+			return false;
+		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasLoot()) {
 			loot(player, ending);
 		}
@@ -148,19 +153,28 @@ public class Scenario {
 		board[(int) ending.getX()][(int) ending.getY()].setHex(quickID, id);
 		board[(int) starting.getX()][(int) starting.getY()].reset();
 		*/
+
 		board[player.getCoordinates().x][player.getCoordinates().y].setQuickID(" ");
 		board[player.getCoordinates().x][player.getCoordinates().y].setID(" ");
 		player.setCoordinates(ending);
+		
+		return true;
 
 	}
 	
 	private void loot(Player player, Point loot) {
 		
-		player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
-		board[(int) loot.getX()][(int) loot.getY()].removeLoot();
+		if(board[loot.x][loot.y].getLootID().equals("Gold")) {
+			player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
+			board[(int) loot.getX()][(int) loot.getY()].removeLoot();
+		}
+		else {
+			TreasureLoader.load(Integer.parseInt(board[loot.x][loot.y].getLootID()), shop, party.get(currentPlayer));
+			board[loot.x][loot.y].removeLoot();
+		}
 	}
 	
-	public void playRound(KeyEvent key, Graphics g) {
+	public boolean playRound(KeyEvent key, Graphics g) {
 		
 		this.g=g;
 		this.key=key;
@@ -228,6 +242,8 @@ public class Scenario {
 				roundEndRest();
 				break;
 		}
+		
+		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies());
 	}
 	
 	private void graphics() {
@@ -288,6 +304,7 @@ public class Scenario {
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
 		Draw.drawParty(g, party);
 		enemyInfo.drawEnemies(g);
+		enemyInfo.update();
 		GUIScenario.EntityTable(g, party);
 		
 		party.get(0).graphicsPlayerInfo(g);
@@ -324,7 +341,7 @@ public class Scenario {
 	private void initiative() {
 		int enemyInit=enemyInfo.getInitiative();
 		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
-		
+		System.out.println("Loc: Scenario.java: Init Enemy - "+enemyInit+"     Player - "+party.get(0).getInitiative());
 		//Goes through the party and enemy and gives a turn number
 		//The party is in order, so i just have to fit the enemy in
 		//[Rem] Doesn't work if the players have the same init	
@@ -404,7 +421,7 @@ public class Scenario {
 		List<Player> targets = new ArrayList<Player>();
 		targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), data.getBoardSize(), party);
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
-
+		
 		if(targets.size()>0) {
 			
 			int min=100;
@@ -413,6 +430,7 @@ public class Scenario {
 			for(int i=0; i<targets.size(); i++) {
 				if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), party.get(currentPlayer).getCoordinates())<min) {
 					targetIndex=i;
+					min=UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), party.get(currentPlayer).getCoordinates());
 				}else if(UtilitiesAB.distance(enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), party.get(currentPlayer).getCoordinates())==min) {
 					if(targets.get(targetIndex).getInitiative()>targets.get(i).getInitiative()) {
 						targetIndex=i;
@@ -421,6 +439,7 @@ public class Scenario {
 			}
 			
 			targetID=targets.get(targetIndex).getID();													//[Temp] Picks first one on the list
+		
 			if(targets.get(targetIndex).hasRetaliate())
 				System.out.println("Scenario.java Loc 276: Reminder that if the player attacks a target with retalite it doesn't resolve anymore");
 			state=State.PLAYER_DEFENSE;															//Next State: Player Defense
@@ -539,22 +558,22 @@ public class Scenario {
 			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
 			
 			if(k==Setting.moveKey) {
-				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("P"))
-					finished=true;
-				else if(UsePlayerAbilityCard.hasFlying(card)) {
-					movePlayer(party.get(currentPlayer), selectionCoordinate);
-					finished=true;
-				}
-				else if(UsePlayerAbilityCard.hasJump(card)) {
-					if(board[selectionCoordinate.x][selectionCoordinate.y].isSpaceEmpty()) {
-						movePlayer(party.get(currentPlayer), selectionCoordinate);
+				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout))<UsePlayerAbilityCard.getMove(card)) {
+				
+					if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("P"))
 						finished=true;
+					else if(UsePlayerAbilityCard.hasFlying(card)) {
+						finished=movePlayer(party.get(currentPlayer), selectionCoordinate);
 					}
-				}
-				else {
-					if(board[selectionCoordinate.x][selectionCoordinate.y].isSpaceEmpty()) {
-						movePlayer(party.get(currentPlayer), selectionCoordinate);
-						finished=true;
+					else if(UsePlayerAbilityCard.hasJump(card)) {
+						if(board[selectionCoordinate.x][selectionCoordinate.y].isSpaceEmpty()) {
+							finished=movePlayer(party.get(currentPlayer), selectionCoordinate);
+						}
+					}
+					else {
+						if(board[selectionCoordinate.x][selectionCoordinate.y].isSpaceEmpty()) {
+							finished=movePlayer(party.get(currentPlayer), selectionCoordinate);
+						}
 					}
 				}
 

@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			party.add(new Player(id, Setting.playerClass));				//Adds the players to the party
 	
 		
-		scene= new Scenario(Setting.sceneID, party, gloomhaven);			//Creates the scenario
+		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		//state=GameState.TOWN;										//Init Phase -> Town Phase
 		state=GameState.SCENARIO;
@@ -151,7 +151,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.SCENARIO) {
-			scene.playRound(key, g);								//Play Round
+			if(scene.playRound(key, g))								//Play Round
+				state=GameState.END;
 			//if(scene.finished())									//If scenario is off, end state of game
 				//state=GameState.END;
 		}else if(state==GameState.END) {

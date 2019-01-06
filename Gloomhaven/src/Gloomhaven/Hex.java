@@ -13,6 +13,7 @@ public class Hex extends HexCoordinate {
 	private boolean doorOpen=false;
 	
 	boolean empty=true;
+	boolean obstacle=false;
 	
 	boolean hidden=false;
 	
@@ -40,9 +41,16 @@ public class Hex extends HexCoordinate {
 	 public void setHidden(boolean hidden) {this.hidden=hidden;}
 	 public void setDoor(boolean door) {this.door=door;}
 	 public void setDoorOpen(boolean doorOpen) {this.doorOpen=doorOpen;}
+	 public boolean hasObstacle() {return obstacle;}
 	 
+	 public void setObstacle(boolean obstacle) {
+		 this.obstacle=obstacle;
+		 quickID="O";
+	}
+
 	 public void setLootID(String lootID) {
 		 this.lootID=lootID;
+		 quickID="L";
 		 loot=true;
 	 }
 	 

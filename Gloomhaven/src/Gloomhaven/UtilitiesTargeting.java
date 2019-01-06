@@ -48,15 +48,16 @@ public final class UtilitiesTargeting {
 	public static List<Player> createTargetListPlayer(Hex board[][], int range, Point starting, Point dimensions, List<Player> party){
 		List<Point> targetPoints = new ArrayList<Point>();
 		
-		createTargetList(board, range, starting, "P", dimensions);
-		
+		targetPoints=createTargetList(board, range, starting, "P", dimensions);
+	
 		List<Player> targets = new ArrayList<Player>();
 		
 		for(int i=0; i<targetPoints.size(); i++) {
 			for(int j=0; j<party.size(); j++) {
-				if(party.get(j).getCoordinates().x==targetPoints.get(j).x && party.get(j).getCoordinates().x==targetPoints.get(j).y) {
+				
+				if(targetPoints.get(i).equals(party.get(j).getCoordinates()))
 					targets.add(party.get(j));
-				}
+
 			}
 		}
 		

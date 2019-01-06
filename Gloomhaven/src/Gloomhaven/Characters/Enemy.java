@@ -23,7 +23,7 @@ public class Enemy extends character{
 		setClassID(classID);
 		setName("Enemy");
 
-		data = new CharacterDataObject(classID);
+		data = new CharacterDataObject(classID, elite);
 
 		eliteFlag=elite;
 		

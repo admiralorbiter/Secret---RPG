@@ -147,7 +147,7 @@ public final class UtilitiesAB {
 		
 		//int attack=card.getAttack();
 		int attack = player.getAttack(card);
-		System.out.println("Utility Class Damage: "+attack);
+		System.out.println("Base Damage: "+attack);
 		
 		if(card.getNegativeConditions()!=null) {
 			System.out.println("UtilitiesAB.java resolveAttack: Setting ngeative condition "+card.getNegativeConditions().getFlag());
@@ -241,7 +241,7 @@ public final class UtilitiesAB {
 			}
 		}
 		
-		System.out.println("Utility Class Damage 2: "+attack);
+		System.out.println("Final Attack: "+attack);
 		enemy.takeDamage(attack);
 		
 		if(enemy.getCharacterData().getHealth()<=0) {
@@ -250,6 +250,7 @@ public final class UtilitiesAB {
 			if(enemy.isElite())
 				player.getStats().increaseEliteKillCount();
 		}
+		System.out.println("");
 	}
 	
 	private static void resolveNewAugmentedCard(Player player, CardDataObject card, PlayerAbilityCard abilityCard) {

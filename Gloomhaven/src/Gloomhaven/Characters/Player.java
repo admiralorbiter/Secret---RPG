@@ -74,7 +74,7 @@ public class Player extends character {
 		setID("P"+id);
 		setClassID(classID);
 		setName("Jon");
-		data = new CharacterDataObject(classID);
+		data = new CharacterDataObject(classID, false);
 		
 		maxHandCount=Setting.getMaxHandCount();
 		
@@ -201,8 +201,10 @@ public class Player extends character {
 			stats.addGold(1);
 		}
 		else {
-			lootInventory.add(hex.getLootID());
-			stats.addTreasure(hex.getLootID());
+			
+			//TreasureLoader(String.valueOf(hex.getLootID()), shop);
+			//lootInventory.add(hex.getLootID());
+			//stats.addTreasure(hex.getLootID());
 		}
 		
 	}
@@ -785,7 +787,7 @@ public class Player extends character {
 	public int getAttack(CardDataObject attackCard) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
-		System.out.println(attackCard.getData().getAttack()+"  "+card.getPlusAttack()+"  "+card.getMultiplier());
+		System.out.println("A:"+attackCard.getData().getAttack()+"  +AM"+card.getPlusAttack()+"  XM"+card.getMultiplier());
 		int damage = (attackCard.getData().getAttack()+card.getPlusAttack())*card.getMultiplier();
 		
 		if(roundTriggers.size()>0) {

@@ -32,6 +32,10 @@ public class Shop {
 		currentParty=0;
 	}
 	
+	public void addItemToSupply(Item item) {
+		supply.add(item);
+	}
+	
 	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
 		if(shopImage!=null)
 			g.drawImage(shopImage.getImage(), 50, 50, Setting.width-200, Setting.height-200, null);
@@ -92,17 +96,20 @@ public class Shop {
 	}
 	
 	public void retrieveRandomItemDesign(Player player) {
-		Random random = new Random();
-		int index=random.nextInt(randomItemDesign.size()-1);
-		
-		player.addItem(randomItemDesign.get(index));
-		Item item = randomItemDesign.get(index);
-		randomItemDesign.remove(index);
-		
-		for(int i=0; i<randomItemDesign.size(); i++) {
-			if(randomItemDesign.get(i).getID()==item.getID())
-				supply.add(randomItemDesign.get(i));
+		if(randomItemDesign.size()>0) {
+			Random random = new Random();
+			int index=random.nextInt(randomItemDesign.size()-1);
+			
+			player.addItem(randomItemDesign.get(index));
+			Item item = randomItemDesign.get(index);
+			randomItemDesign.remove(index);
+			
+			for(int i=0; i<randomItemDesign.size(); i++) {
+				if(randomItemDesign.get(i).getID()==item.getID()) {
+					supply.add(randomItemDesign.get(i));
+					randomItemDesign.remove(i);
+				}
+			}
 		}
-	
 	}
 }

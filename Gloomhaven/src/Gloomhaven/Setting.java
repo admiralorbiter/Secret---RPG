@@ -20,7 +20,8 @@ public final class Setting {
 	public static Color highlightColor = Color.YELLOW;
 	public static Color playerColor = Color.RED;
 	public static Color enemyColor = Color.MAGENTA;
-	
+	public static Color lootColor = Color.YELLOW;
+	public static Color obstacleColor = Color.GREEN;
 	//Party Info
 	public static int numberOfPlayers=1;
 	public static String playerClass="Mind Thief";

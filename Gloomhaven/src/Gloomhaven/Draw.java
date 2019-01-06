@@ -90,8 +90,16 @@ public final class Draw {
 	public static void rectangleBoardSideways(Graphics g, Hex[][] board, Point dimensions) {
 		for(int x=0; x<dimensions.x; x++) {
 			for(int y=0; y<dimensions.y; y++) {
-				drawHex(g, board[x][y]);
-			}
+				if(board[x][y]!=null) {
+					if(board[x][y].hasLoot())
+						g.setColor(Setting.lootColor);
+					else if(board[x][y].hasObstacle())
+						g.setColor(Setting.obstacleColor);
+					else
+						g.setColor(Setting.defaultColor);
+					drawHex(g, board[x][y]);
+				}
+			}	
 		}
 	}
 	

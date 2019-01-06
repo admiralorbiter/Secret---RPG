@@ -13,6 +13,31 @@ public final class ScenarioBoardLoader {
 		
 		switch(id) {
 			case 1:
+				//Set Gold
+				board[1][6].setLootID("Gold");
+				board[1][6].setID("Gold");
+				board[2][6].setLootID("Gold");
+				board[2][6].setID("Gold");
+				board[0][1].setLootID("Gold");
+				board[0][1].setID("Gold");
+				board[1][2].setLootID("Gold");
+				board[1][2].setID("Gold");
+				board[2][1].setLootID("Gold");
+				board[2][1].setID("Gold");
+				
+				//tables
+				board[3][2].setObstacle(true);
+				board[3][2].setID("Table");
+				board[3][3].setObstacle(true);
+				board[3][3].setID("Table");
+				board[3][5].setObstacle(true);
+				board[3][5].setID("Table");
+				board[3][6].setObstacle(true);
+				board[3][6].setID("Table");
+				
+				board[0][6].setLootID("7");
+				board[0][6].setID("Treasure");
+				
 				board[10][0]=null;
 				board[10][1]=null;
 				board[10][2]=null;

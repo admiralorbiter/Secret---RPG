@@ -15,7 +15,7 @@ public class CharacterDataObject {
 	public CharacterDataObject(String flag, boolean eliteFlag) {
 		
 		//TODO: Move this into settings or class
-		int TEST_HEALTH=6;
+		int TEST_HEALTH=3;
 		int TEST_SHIELD=0;
 		int scenarioLevel=1;
 		

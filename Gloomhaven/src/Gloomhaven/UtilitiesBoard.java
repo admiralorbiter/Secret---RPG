@@ -61,6 +61,7 @@ public final class UtilitiesBoard {
 		}
 		
 		for(int i=0; i<enemies.size(); i++) {
+		
 			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setQuickID("E");
 			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setID(enemies.get(i).getID());
 		}

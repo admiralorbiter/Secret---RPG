@@ -45,7 +45,7 @@ public final class UtilitiesTargeting {
 	}
 	*/
 	
-	public static List<Player> createTargetListPlayer(Hex board[][], int range, Point starting, Point dimensions, List<Player> party){
+	public static List<Player> createTargetListPlayer(Hex board[][], int range, HexCoordinate starting, Point dimensions, List<Player> party){
 		List<Point> targetPoints = new ArrayList<Point>();
 		
 		targetPoints=createTargetList(board, range, starting, "P", dimensions);
@@ -58,6 +58,32 @@ public final class UtilitiesTargeting {
 				if(targetPoints.get(i).equals(party.get(j).getCoordinates()))
 					targets.add(party.get(j));
 
+			}
+		}
+		
+		return targets;
+	}
+	
+	public static List<Point> createTargetList(Hex board[][], int range, HexCoordinate starting, String quickID, Point dimensions){
+		List<Point> targets = new ArrayList<Point>();
+		
+		for(int q=-range; q<=range; q++) {
+			int r1=Math.max(-range, -q-range);
+			int r2 = Math.min(range, -q+range);
+			for(int r = r1; r<=r2; r++) {
+				int s=-q-r;
+				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), starting);
+				Point p = UtilitiesHex.getOffset(Setting.flatlayout, hex);
+				if(p.x>=0 && p.x<dimensions.x) {
+					if(p.y>=0 && p.y<dimensions.y) {
+						if(board[p.x][p.y]!=null) {
+							if(board[p.x][p.y].getQuickID().equals(quickID)){
+								targets.add(new Point(p));
+							}
+						}
+					}
+				}
+				
 			}
 		}
 		
@@ -88,7 +114,12 @@ public final class UtilitiesTargeting {
 						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
 							if(yToPlot>=0 && yToPlot<dimensions.getY()) {
 								if(board[xToPlot][yToPlot]!=null) {
-
+									/*
+									if(xToPlot==8 && yToPlot==5)
+										System.out.println(board[xToPlot][yToPlot].getQuickID()+", "+quickID);
+										*/
+									if(quickID.equals("E"))
+										System.out.println(xToPlot+", "+yToPlot);
 									if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
 										targets.add(new Point(xToPlot,yToPlot));
 									}
@@ -177,7 +208,7 @@ public final class UtilitiesTargeting {
 	
 	public static boolean targetAloneToAlly(Enemy enemy, Hex[][] board, Point dimensions) {
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(board, 1, enemy.getCoordinates(), "E", dimensions);
+		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(Setting.flatlayout), "E", dimensions);
 		
 		if(targets.size()>0)
 			return false;
@@ -188,7 +219,7 @@ public final class UtilitiesTargeting {
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Hex[][] board, Point dimensions) {
 		
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(board, 1, enemy.getCoordinates(), "P", dimensions);
+		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(Setting.flatlayout), "P", dimensions);
 
 		if(targets.size()>0) {
 			for(int i=0; i<targets.size(); i++) {

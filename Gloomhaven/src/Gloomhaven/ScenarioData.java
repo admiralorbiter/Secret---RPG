@@ -19,7 +19,8 @@ public class ScenarioData {
 	private int roomTotal=0;
 	private Point boardSize;
 	private Point startingPosition;
-	private int[] enemiesInRoom;
+	private int totalEnemies;
+	private int enemiesKilled=0;
 	
 	public ScenarioData(int id) {
 		this.id=id;
@@ -46,7 +47,10 @@ public class ScenarioData {
 	public Point getBoardSize() {return boardSize;}
 	public Point getStartingPosition() {return startingPosition;}
 	public void setStartingposition(Point p) {startingPosition=new Point(p);}
-		
+	public int getTotalEnemies() {return totalEnemies;}
+	public void setTotalEnemies(int totalEnemies) {this.totalEnemies=totalEnemies;}
+	public void increaseEnemiesKilled() {enemiesKilled++;}
+	public int getEnemiesKilled() {return enemiesKilled;}
 	public List<Enemy> getEnemies(int room) {
 		return ScenarioEnemyLoader.getEnemies(id, room);
 	}

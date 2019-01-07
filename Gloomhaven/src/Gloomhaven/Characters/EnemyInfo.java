@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import Gloomhaven.Draw;
+import Gloomhaven.Hex;
 import Gloomhaven.ScenarioData;
 import Gloomhaven.ScenarioEnemyLoader;
 import Gloomhaven.Setting;
@@ -85,10 +86,15 @@ public class EnemyInfo {
 	
 	public List<Enemy> getEnemies(){return enemies;}
 	
-	public void update() {
+	public void update(Hex[][] board, ScenarioData data) {
+		
 		for(int i=0; i<enemies.size(); i++) {
-			if(enemies.get(i).getCharacterData().getHealth()<=0)
+			if(enemies.get(i).getCharacterData().getHealth()<=0) {
+				data.increaseEnemiesKilled();
+				board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setQuickID(" ");
+				board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setID(" ");
 				enemies.remove(i);
+			}
 		}
 	}
 	

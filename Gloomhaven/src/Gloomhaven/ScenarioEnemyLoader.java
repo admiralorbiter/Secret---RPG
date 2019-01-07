@@ -23,7 +23,7 @@ public final class ScenarioEnemyLoader {
 				enemies.add(new Enemy(6, "Living Bones", 2, false, new Point(0,3)));
 				enemies.add(new Enemy(7, "Living Bones", 2, false, new Point(0,4)));
 				enemies.add(new Enemy(8, "Bandit Guard", 2, false, new Point(2,3)));
-				enemies.add(new Enemy(9, "Bandit Guard", 2, false, new Point(2,0)));
+				enemies.add(new Enemy(9, "Bandit Guard", 2, false, new Point(2,4)));
 			}
 		}
 		

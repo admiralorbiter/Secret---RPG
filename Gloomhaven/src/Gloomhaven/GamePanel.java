@@ -86,7 +86,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		//state=GameState.TOWN;										//Init Phase -> Town Phase
-		state=GameState.SCENARIO;
+		state=GameState.TOWN;
 	}
 	
 	public void gameManager(Graphics g) {	
@@ -156,6 +156,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			//if(scene.finished())									//If scenario is off, end state of game
 				//state=GameState.END;
 		}else if(state==GameState.END) {
+			for(int i=0; i<party.size(); i++)
+				BattleGoalCardUtilities.evaluateBattleGoals(party.get(i));
 			System.exit(0);											//[Temp] End of the game, just exit program
 		}
 	}

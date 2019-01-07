@@ -46,7 +46,7 @@ public final class UtilitiesAB {
 			
 			if(card.getEffects().getLoot()>0) {
 				List<Point> loot = new ArrayList<Point>();
-				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCoordinates(), "Loot", data.getBoardSize());
+				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCubeCoordiantes(Setting.flatlayout), "Loot", data.getBoardSize());
 				
 				//room.loot(player, loot);
 			}
@@ -75,7 +75,7 @@ public final class UtilitiesAB {
 		
 		if(card.hasAugment())
 			resolveNewAugmentedCard(player, card, abilityCard);
-		
+	
 	}
 	
 	//Note need to have the player choose which direction out of the 3 possible ones to push.
@@ -143,10 +143,18 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 	}
 	
-	public static void resolveAttack(Enemy enemy, Player player, CardDataObject card, Hex[][] board, boolean adjacentBonus, InfusionTable elements, ScenarioData data) {
+	public static void resolveAttack(Enemy enemy, Player player, PlayerAbilityCard abilityCard, Hex[][] board, boolean adjacentBonus, InfusionTable elements, ScenarioData data) {
 		
 		//int attack=card.getAttack();
-		int attack = player.getAttack(card);
+		CardDataObject card =UsePlayerAbilityCard.getCardData(abilityCard);
+		
+		int attack=attack = 0;
+
+		if(abilityCard.getFlag()=="AltTop")
+			attack=6;
+		else
+			card.getData().getAttack();
+		
 		System.out.println("Base Damage: "+attack);
 		
 		if(card.getNegativeConditions()!=null) {

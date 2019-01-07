@@ -144,6 +144,7 @@ public class Scenario {
 			//showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
 			ScenarioBoardLoader.showRoom(board, data.getId(), board[ending.x][ending.y].getRoomID());
 			enemyInfo.updateEnemyList(data.getId(), board[ending.x][ending.y].getRoomID());
+			System.out.println("Opening Door");
 		}
 		
 		/*
@@ -243,7 +244,7 @@ public class Scenario {
 				break;
 		}
 		
-		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies());
+		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data);
 	}
 	
 	private void graphics() {
@@ -304,7 +305,7 @@ public class Scenario {
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
 		Draw.drawParty(g, party);
 		enemyInfo.drawEnemies(g);
-		enemyInfo.update();
+		enemyInfo.update(board, data);
 		GUIScenario.EntityTable(g, party);
 		
 		party.get(0).graphicsPlayerInfo(g);
@@ -419,7 +420,8 @@ public class Scenario {
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
 		List<Player> targets = new ArrayList<Player>();
-		targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCoordinates(), data.getBoardSize(), party);
+		if(enemyInfo.getEnemies().size()!=0)
+			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(Setting.flatlayout), data.getBoardSize(), party);
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
 		
 		if(targets.size()>0) {
@@ -625,12 +627,12 @@ public class Scenario {
 	
 				if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 					for(int range=1; range<=cardRange; range++)
-						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCoordinates(), "P", data.getBoardSize());
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "P", data.getBoardSize());
 					targets.add(party.get(currentPlayer).getCoordinates());
 				}
 				else {
 					for(int range=1; range<=cardRange; range++) {
-						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCoordinates(), "E", data.getBoardSize());
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
 					}
 				}
 			}
@@ -762,7 +764,7 @@ public class Scenario {
 			if(targets.contains(selection)) {
 				card.increaseAbilityCardCounter();
 				boolean adjacentBonus=false;
-				UtilitiesAB.resolveAttack(enemyInfo.getEnemy(selection), party.get(currentPlayer), UsePlayerAbilityCard.getCardData(card), board, adjacentBonus, elements, data);
+				UtilitiesAB.resolveAttack(enemyInfo.getEnemy(selection), party.get(currentPlayer), card, board, adjacentBonus, elements, data);
 				return true;
 			}
 		}
@@ -781,7 +783,7 @@ public class Scenario {
 				cardRange=1;
 
 				for(int range=1; range<=cardRange; range++)
-					targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCoordinates(), "E", data.getBoardSize());
+					targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
 		}
 		
 		//If there are targets, highlight the targets and wait for selection
@@ -957,7 +959,7 @@ public class Scenario {
 				cardRange=1;
 	
 				for(int range=1; range<=cardRange; range++)
-					targets=UtilitiesTargeting.createTargetList(board, range, enemy.getCoordinates(), "E", data.getBoardSize());
+					targets=UtilitiesTargeting.createTargetList(board, range, enemy.getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
 		}
 		
 		if(targets.size()>0) {

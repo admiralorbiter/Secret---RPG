@@ -12,7 +12,13 @@ public final class UsePlayerAbilityCard {
 		
 		if(flag=="Bottom")
 			return card.getBottomData();
+		/*
+		if(flag=="AltTop")
+			return null;
 		
+		if(flag=="AltBottom")
+			return null;
+		*/
 		return new CardDataObject();
 	}
 	

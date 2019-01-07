@@ -5,9 +5,9 @@ import java.util.List;
 import Gloomhaven.Characters.Enemy;
 
 public final class ScenarioEvaluateEnd {
-	public static boolean evaluateOne(List<Enemy> enemies) {
+	public static boolean evaluateOne(List<Enemy> enemies, ScenarioData data) {
 
-		if(enemies.size()==0)
+		if(enemies.size()==0 && data.getTotalEnemies()==data.getEnemiesKilled())
 			return true;
 		
 		return false;

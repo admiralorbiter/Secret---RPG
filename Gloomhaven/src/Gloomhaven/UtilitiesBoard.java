@@ -5,6 +5,7 @@ import java.util.List;
 
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Hex.Hex;
 
 public final class UtilitiesBoard {
 	//Converts cube coord to a coord to plot

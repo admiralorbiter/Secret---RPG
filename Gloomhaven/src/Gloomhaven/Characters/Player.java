@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Random;
 
 import Gloomhaven.CharacterDataObject;
-import Gloomhaven.Hex;
-import Gloomhaven.HexCoordinate;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
 import Gloomhaven.Setting;
@@ -22,6 +20,8 @@ import Gloomhaven.AttackModifier.AttackModifierCard;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.CardDataObject.CardDataObject;
+import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.HexCoordinate;
 
 public class Player extends character {
 

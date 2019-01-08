@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
-import Gloomhaven.Hex;
-import Gloomhaven.HexCoordinate;
 import Gloomhaven.Setting;
-import Gloomhaven.UtilitiesHex;
 import Gloomhaven.CardDataObject.SimpleCardData;
+import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.UtilitiesHex;
 
 public class Enemy extends character{
 	

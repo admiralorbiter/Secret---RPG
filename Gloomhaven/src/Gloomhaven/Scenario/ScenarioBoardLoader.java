@@ -1,4 +1,7 @@
-package Gloomhaven;
+package Gloomhaven.Scenario;
+
+import Gloomhaven.Setting;
+import Gloomhaven.Hex.Hex;
 
 public final class ScenarioBoardLoader {
 	

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.Draw;
-import Gloomhaven.Hex;
-import Gloomhaven.ScenarioData;
-import Gloomhaven.ScenarioEnemyLoader;
 import Gloomhaven.Setting;
-import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
+import Gloomhaven.Hex.Draw;
+import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.UtilitiesHex;
+import Gloomhaven.Scenario.ScenarioData;
+import Gloomhaven.Scenario.ScenarioEnemyLoader;
 
 public class EnemyInfo {
 	

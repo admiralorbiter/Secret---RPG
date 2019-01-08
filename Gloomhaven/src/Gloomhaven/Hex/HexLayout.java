@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Hex;
 
 import java.awt.Point;
 

@@ -2,26 +2,21 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.*;
 
 import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.BattleGoals.BattleGoalCardUtilities;
 import Gloomhaven.BattleGoals.BattleGoalSelection;
-import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.Characters.Player;
-import Gloomhaven.EventCards.CityEventCardLoader;
-import Gloomhaven.EventCards.CityEventCardUtilities;
 import Gloomhaven.EventCards.EventCard;
-import Gloomhaven.EventCards.RoadEventCardUtilities;
+import Gloomhaven.Scenario.Scenario;
 
 
 public class GamePanel extends JPanel implements KeyListener, MouseListener{
@@ -29,7 +24,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	public enum GameState {
 	    TITLE_STATE,
 	    TESTING_SETUP,
-	    PARTY_SETUP,
 	    TOWN,
 	    CITY_EVENT,
 	    ROAD_EVENT,
@@ -86,12 +80,23 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		//state=GameState.TOWN;										//Init Phase -> Town Phase
-		state=GameState.TOWN;
+		state=GameState.TITLE_STATE;
 	}
 	
 	public void gameManager(Graphics g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
-		if(state==GameState.TOWN) {
+		if(state==GameState.TITLE_STATE) {
+			g.drawImage(new ImageIcon("src/Gloomhaven/img/TitleScreen.png").getImage(), 0, 0, Setting.width, Setting.height, null);
+			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYBottom);
+			
+			if(key!=null)
+				if(key.getKeyCode()==KeyEvent.VK_SPACE)
+					if(shop.atLastPartyMember()) {
+						event = new Event("City", cityDeck);
+						state=GameState.TOWN;
+					}
+		}
+		else if(state==GameState.TOWN) {
 			g.drawString("Town", Setting.graphicsXLeft, Setting.graphicsYTop);
 			shop.drawShop(g, party, xClick, yClick);
 			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYBottom);
@@ -156,8 +161,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			//if(scene.finished())									//If scenario is off, end state of game
 				//state=GameState.END;
 		}else if(state==GameState.END) {
-			for(int i=0; i<party.size(); i++)
+			for(int i=0; i<party.size(); i++) {
 				BattleGoalCardUtilities.evaluateBattleGoals(party.get(i));
+				party.get(i).getStats().endScenario();
+			}
 			System.exit(0);											//[Temp] End of the game, just exit program
 		}
 	}

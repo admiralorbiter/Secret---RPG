@@ -8,42 +8,11 @@ import java.util.List;
 
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
-import Gloomhaven.Characters.character;
+import Gloomhaven.Hex.Draw;
+import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.UtilitiesHex;
 public final class UtilitiesTargeting {
-	/*
-	public static Point findOppisiteHex(Point povCoordinate, Point targetCoordinate) {
-	
-		if(povCoordinate.getX()==targetCoordinate.getX()) {
-			if(povCoordinate.getY()<targetCoordinate.getY()) {
-				povCoordinate.translate(1, 2);
-				return povCoordinate;
-			}
-			else if(povCoordinate.getY()>targetCoordinate.getY()) {
-				povCoordinate.translate(1, -2);
-				return povCoordinate;
-			}
-		}else if(povCoordinate.getX()>targetCoordinate.getX()) {
-			if(povCoordinate.getY()==targetCoordinate.getY()) {
-				povCoordinate.translate(-2, 0);
-				return povCoordinate;
-			}
-			else if(povCoordinate.getY()<targetCoordinate.getY()) {
-				povCoordinate.translate(-1, 2);
-				return povCoordinate;
-			}
-			else if(povCoordinate.getY()>targetCoordinate.getY()) {
-				povCoordinate.translate(-1, -2);
-				return povCoordinate;
-			}
-		}else {
-			if(povCoordinate.getY()==targetCoordinate.getY()) {
-				povCoordinate.translate(2, 0);
-				return povCoordinate;
-			}
-		}
-		return new Point(targetCoordinate);
-	}
-	*/
 	
 	public static List<Player> createTargetListPlayer(Hex board[][], int range, HexCoordinate starting, Point dimensions, List<Player> party){
 		List<Point> targetPoints = new ArrayList<Point>();
@@ -89,51 +58,7 @@ public final class UtilitiesTargeting {
 		
 		return targets;
 	}
-	
-	//Uses cube coordinates to figure out the distance is correct, then converts it to my coordinate system then displays the hex
-	//https://www.redblobgames.com/grids/hexagons/
-	public static List<Point> createTargetList(Hex board[][], int range, Point starting, String quickID, Point dimensions) {
-		List<Point> targets = new ArrayList<Point>();
-		
-		for(int x=-range; x<=range; x++) {
-			for(int y=-range; y<=range; y++) {
-				for(int z=-range; z<=range; z++) {
-					if(x+y+z==0) {
-						Point convertedPoint = new Point();
-			
-						//Converts cube coord to a coord to plot
-						//https://www.redblobgames.com/grids/hexagons/#conversions
-						if(starting.getY()%2!=0)
-							convertedPoint=UtilitiesBoard.cubeToCoordOdd(x, y, z);
-						else
-							convertedPoint=UtilitiesBoard.cubeToCoordEven(x, y, z);
 
-						int xToPlot=(int)(convertedPoint.getX()+starting.getX());
-						int yToPlot=(int) (convertedPoint.getY()+starting.getY());
-						
-						if(xToPlot>=0 && xToPlot<dimensions.getX()) 
-							if(yToPlot>=0 && yToPlot<dimensions.getY()) {
-								if(board[xToPlot][yToPlot]!=null) {
-									/*
-									if(xToPlot==8 && yToPlot==5)
-										System.out.println(board[xToPlot][yToPlot].getQuickID()+", "+quickID);
-										*/
-									if(quickID.equals("E"))
-										System.out.println(xToPlot+", "+yToPlot);
-									if(board[xToPlot][yToPlot].getQuickID().equals(quickID)){
-										targets.add(new Point(xToPlot,yToPlot));
-									}
-								}
-							}
-						}
-
-					}
-				}
-			}
-		
-		return targets;
-	}
-	
 	public static void highlightTargets(List<Point> targets, Graphics g) {
 		for(int i=0; i<targets.size(); i++) {
 			g.setColor(Setting.highlightColor);

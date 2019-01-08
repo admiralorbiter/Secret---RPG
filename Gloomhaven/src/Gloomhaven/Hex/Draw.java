@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Hex;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,11 +6,12 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import Gloomhaven.Characters.Enemy;
+import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 
 public final class Draw {
 	
+	@SuppressWarnings("ucd")
 	public static  void parallelogramBoard(Graphics g, int size, boolean flatlayout, Point center, int radius) {
 		for(int y=-radius; y<=radius; y++) {
 			for(int x=-radius; x<=radius; x++) {			
@@ -24,6 +25,7 @@ public final class Draw {
 		}
 	}
 	
+	@SuppressWarnings("ucd")
 	public static void triangleBoard(Graphics g, int size, boolean flatlayout, Point center, int radius) {
 		for(int x=0; x<=radius; x++) {
 			for(int y=0; y<=radius-x; y++) {		
@@ -50,6 +52,7 @@ public final class Draw {
 		}
 	}
 	
+	@SuppressWarnings("ucd")
 	public static void hexagonBoard(Graphics g, int size, boolean flatlayout, Point center, int radius) {
 	
 		for(int q=-radius; q<=radius; q++) {
@@ -63,6 +66,7 @@ public final class Draw {
 	}
 
 	
+	@SuppressWarnings("ucd")
 	public static void rectangleBoardUpDown(Graphics g, int size, boolean flatlayout, Point center,  Point dimensions) {
 		int height=(int) dimensions.getY();
 		int width=(int) dimensions.getX();
@@ -75,6 +79,7 @@ public final class Draw {
 		}
 	}
 	
+	@SuppressWarnings("ucd")
 	public static void rectangleBoardSideways(Graphics g, int size, boolean flatlayout, Point center,  Point dimensions) {
 		int height=(int) dimensions.getY();
 		int width=(int) dimensions.getX();	
@@ -173,28 +178,4 @@ public final class Draw {
 		}
 		g.setColor(Setting.defaultColor);
 	}
-	
-	
-	/*
-	private static Color getColor(Hex hex) {
-		
-		Setting setting = new Setting();
-		
-		if(hex.getQuickID()=="P")
-			return setting.getPlayerColor();
-		else if(hex.getQuickID()=="E")
-		{
-			if(hex.getID().contains("Elite"))
-				return setting.getEliteEnemyColor();
-			else
-				return setting.getEnemyColor();
-			
-		}else if(hex.getQuickID()=="Loot") {
-			return Color.ORANGE;
-		}
-		
-		return Color.WHITE;
-		
-	}
-	*/
 }

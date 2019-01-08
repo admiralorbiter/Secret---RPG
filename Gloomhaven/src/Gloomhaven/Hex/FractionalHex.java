@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Hex;
 
 public class FractionalHex {
 	

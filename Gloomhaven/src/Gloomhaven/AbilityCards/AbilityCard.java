@@ -37,9 +37,8 @@ public class AbilityCard {
 	public void setInPlayFlag(boolean inPlayFlag) {this.inPlayFlag = inPlayFlag;}
 
 	public void showCard(Graphics g) {
-		Setting setting = new Setting();
 		if(getImage()!=null)
-			g.drawImage(getImage().getImage(), 10, setting.getGraphicsYTop()+70, 285, 425  , null);
+			g.drawImage(getImage().getImage(), 10, Setting.graphicsYTop+70, 285, 425  , null);
 	}
 	
 	public boolean isCardFree() {

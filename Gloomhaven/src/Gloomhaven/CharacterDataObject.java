@@ -10,8 +10,6 @@ public class CharacterDataObject {
 	private int shield=0;
 	private int gold;
 	
-	Setting setting = new Setting();
-	
 	public CharacterDataObject(String flag, boolean eliteFlag) {
 		
 		//TODO: Move this into settings or class

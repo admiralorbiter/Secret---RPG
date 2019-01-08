@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Hex;
 
 public class HexOrientation {
 	public double f0, f1, f2, f3;

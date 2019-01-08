@@ -7,7 +7,6 @@ public class Item {
 	int id;
 	int gold;
 	String name;
-	int level;
 	String text="Needs to be created in the uploader";
 	
 	boolean consumed=false;

@@ -2,10 +2,11 @@ package Gloomhaven;
 
 import javax.swing.JFrame;
 
+@SuppressWarnings("ucd")
 public class Application extends JFrame {
 
 	GamePanel game;
-	Setting setting = new Setting();
+
 	public Application() {
 		setSize(Setting.width, Setting.height);
 		setTitle(Setting.title);

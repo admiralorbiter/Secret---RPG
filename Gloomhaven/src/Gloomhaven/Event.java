@@ -17,14 +17,12 @@ public class Event {
 	public enum State{
 		SELECTION,
 		THRESHOLD,
-		PAY_COLLECTIVE_GOLD,
 		FINISHED, 
 		DONE;
 	}
-	Setting setting = new Setting();
+	
 	private State state;
 	private char k;					//character from keyboard
-	private int num;				//number from keyboard
 	private String type;
 	private List<EventCard> deck;
 	private Random r = new Random();
@@ -41,7 +39,7 @@ public class Event {
 	
 	public void playRound(KeyEvent key, Graphics g , List<Player> party , City gloomhaven, Shop shop, List<EventCard> secondDeck) {
 		k=UtilitiesGeneral.parseKeyCharacter(key);
-		num=UtilitiesGeneral.parseKeyNum(key);
+
 		if(deck.get(eventIndex)!=null)
 			g.drawString(type+" "+deck.get(eventIndex).getID()+"         "+state, Setting.graphicsXLeft,  Setting.graphicsYTop);
 		if(state==State.SELECTION) {
@@ -74,13 +72,11 @@ public class Event {
 
 				}
 				
-				if(key!=null) {
-					if(key.getKeyCode()==KeyEvent.VK_SPACE && deck.get(eventIndex).getChoice()!=0) {
-						if(deck.get(eventIndex).hasThreshold())
-							state=State.THRESHOLD;
-						else
-							state=State.FINISHED;
-					}
+				if(key.getKeyCode()==KeyEvent.VK_SPACE && deck.get(eventIndex).getChoice()!=0) {
+					if(deck.get(eventIndex).hasThreshold())
+						state=State.THRESHOLD;
+					else
+						state=State.FINISHED;
 				}
 			}
 		}

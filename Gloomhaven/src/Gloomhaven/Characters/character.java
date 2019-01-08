@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.CharacterDataObject;
-import Gloomhaven.HexCoordinate;
-import Gloomhaven.UtilitiesHex;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Counter;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.PositiveConditions;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.UtilitiesHex;
 
 public class character {
 	

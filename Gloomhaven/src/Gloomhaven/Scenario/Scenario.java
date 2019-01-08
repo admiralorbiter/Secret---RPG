@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Gloomhaven.Scenario;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,12 +8,29 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import Gloomhaven.City;
+import Gloomhaven.GUIScenario;
+import Gloomhaven.InfusionTable;
+import Gloomhaven.Item;
+import Gloomhaven.ItemLoader;
+import Gloomhaven.Setting;
+import Gloomhaven.Shop;
+import Gloomhaven.TreasureLoader;
+import Gloomhaven.UtilitiesAB;
+import Gloomhaven.UtilitiesBoard;
+import Gloomhaven.UtilitiesGeneral;
+import Gloomhaven.UtilitiesLoot;
+import Gloomhaven.UtilitiesTargeting;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.EnemyInfo;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Hex.Draw;
+import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.UtilitiesHex;
 
 public class Scenario {
 	public enum State {
@@ -85,7 +102,8 @@ public class Scenario {
 		enemyInfo = new EnemyInfo(data);
 		board = ScenarioBoardLoader.loadBoardLayout(sceneID, data);
 		
-		
+		for(int i=0; i<party.size(); i++)
+			party.get(i).getStats().startScenario();
 		
 		//enemies=data.getEnemies(0);
 		//TODO: Have the party pick thier starting positions
@@ -137,7 +155,7 @@ public class Scenario {
 			return false;
 		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasLoot()) {
-			loot(player, ending);
+			UtilitiesLoot.loot(board, shop, player, ending);
 		}
 		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].isDoorOpen()==false)) {
@@ -161,18 +179,6 @@ public class Scenario {
 		
 		return true;
 
-	}
-	
-	private void loot(Player player, Point loot) {
-		
-		if(board[loot.x][loot.y].getLootID().equals("Gold")) {
-			player.addLoot(board[(int) loot.getX()][(int) loot.getY()]);
-			board[(int) loot.getX()][(int) loot.getY()].removeLoot();
-		}
-		else {
-			TreasureLoader.load(Integer.parseInt(board[loot.x][loot.y].getLootID()), shop, party.get(currentPlayer));
-			board[loot.x][loot.y].removeLoot();
-		}
 	}
 	
 	public boolean playRound(KeyEvent key, Graphics g) {
@@ -306,7 +312,7 @@ public class Scenario {
 		Draw.drawParty(g, party);
 		enemyInfo.drawEnemies(g);
 		enemyInfo.update(board, data);
-		GUIScenario.EntityTable(g, party);
+		GUIScenario.EntityTable(g, party, enemyInfo.getEnemies());
 		
 		party.get(0).graphicsPlayerInfo(g);
 		party.get(0).graphicsDrawCardsInPlay(g);
@@ -511,7 +517,7 @@ public class Scenario {
 	private void playerAttackLogic() {
 		selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
 		
-		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, board, data);
+		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, board, data, shop);
 		
 		if(UsePlayerAbilityCard.getMove(card)>0)
 			state=State.PLAYER_MOVE;

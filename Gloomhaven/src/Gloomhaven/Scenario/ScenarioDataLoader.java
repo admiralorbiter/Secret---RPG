@@ -1,9 +1,10 @@
-package Gloomhaven;
+package Gloomhaven.Scenario;
 
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.MapLocation;
 import Gloomhaven.Characters.Enemy;
 
 public final class ScenarioDataLoader {

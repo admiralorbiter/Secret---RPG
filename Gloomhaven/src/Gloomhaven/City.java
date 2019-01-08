@@ -14,8 +14,10 @@ public class City {
 		
 	}
 	
-	public City(int prospLevel, int reputationLevel) {
-		
+	// TODO from UCDetector: Constructor "City.City(int,int)" has 0 references
+	public City(int prospLevel, int reputationLevel) { // NO_UCD (unused code)
+		this.prospLevel=prospLevel;
+		this.reputationLevel=reputationLevel;
 	}
 	
 	//Setters and Getters

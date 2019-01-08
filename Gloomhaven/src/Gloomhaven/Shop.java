@@ -13,9 +13,6 @@ import Gloomhaven.Characters.Player;
 public class Shop {
 	
 	ImageIcon shopImage=null;
-	
-	Setting setting = new Setting();
-	
 	List<Item> supply = new ArrayList<Item>();
 	List<Item> randomItemDesign = new ArrayList<Item>();
 	
@@ -23,7 +20,7 @@ public class Shop {
 	int maxPlayers=0;
 	public Shop(int prosperityLevel) {
 		
-		shopImage = new ImageIcon("src/Gloomhaven/shop.png");
+		shopImage = new ImageIcon("src/Gloomhaven/img/shop.png");
 		if(prosperityLevel==1)
 			supply=ItemLoader.loadAllLevel1Items();
 		

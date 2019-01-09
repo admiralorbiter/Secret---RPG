@@ -61,13 +61,28 @@ public class AttackModifierDeck {
 		return null;//should never get here.
 	}
 	
-	private void shuffleDeck() {
+	public void shuffleDeck() {
 		for(int i=0; i<deck.size(); i++)
 			deck.get(i).setFree();
 	}
 	
 	public void addCard(AttackModifierCard card) {
 		deck.add(card);
+	}
+	
+	public boolean firstIsBest(AttackModifierCard card, AttackModifierCard secondCard) {
+
+		if(secondCard.getMultiplier()>card.getMultiplier())
+			return false;
+		
+		if(secondCard.getPlusAttack()>card.getPlusAttack())
+			return false;
+		
+		return true;
+	}
+	
+	public void remove(AttackModifierCard card) {
+		deck.remove(card);
 	}
 
 }

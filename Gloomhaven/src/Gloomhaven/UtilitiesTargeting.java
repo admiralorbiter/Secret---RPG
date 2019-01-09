@@ -141,6 +141,7 @@ public final class UtilitiesTargeting {
 		return true;
 	}
 	
+	@SuppressWarnings("ucd")
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Hex[][] board, Point dimensions) {
 		
 		List<Point> targets = new ArrayList<Point>();

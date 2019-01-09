@@ -28,6 +28,7 @@ public final class UtilitiesBoard {
 		return point;
 	}
 	
+	@SuppressWarnings("ucd")
 	public static int[] oddToCubeCoord(Point p) {
 		int cubeCoord[] = new int[3];
 		int x=0;
@@ -41,6 +42,7 @@ public final class UtilitiesBoard {
 		return cubeCoord;
 	}
 	
+	@SuppressWarnings("ucd")
 	public static int[] evenToCubeCoord(Point p) {
 		int cubeCoord[] = new int[3];
 		int x=0;
@@ -66,18 +68,5 @@ public final class UtilitiesBoard {
 			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setQuickID("E");
 			board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setID(enemies.get(i).getID());
 		}
-		
-		
-		/*
-		System.out.println("Position updated");
-		for(int x=0; x<11; x++) {
-			for(int y=0; y<13; y++) {
-				if(board[x][y]!=null)
-					if(board[x][y].getQuickID()!=" ")
-						System.out.println(board[x][y].getQuickID()+":   "+x+","+y);
-			}
-		}
-		System.out.println("");
-		*/
 	}
 }

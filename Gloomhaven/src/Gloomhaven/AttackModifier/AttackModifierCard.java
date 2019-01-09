@@ -1,20 +1,25 @@
 package Gloomhaven.AttackModifier;
 
 public class AttackModifierCard {
-	int multiplier;
-	int plusAttack;
+	int multiplier=1;
+	int plusAttack=0;
 	
-	boolean shuffle;
-	boolean rolling;
-	boolean free;
+	boolean shuffle=false;
+	boolean rolling=false;
+	boolean free=true;
+	boolean bless=false;
+	boolean curse=false;
 	
 	AttackModifierCard(){
-		multiplier=1;
-		plusAttack=0;
-		
-		shuffle=false;
-		rolling=false;
-		free=true;
+	}
+	
+	public AttackModifierCard(String condition){
+		if(condition.equals("Bless"))
+			bless=true;
+		else if(condition.equals("Curse"))
+			curse=true;
+		else
+			System.out.println("Error with condition attack modifier card");
 	}
 	
 	public AttackModifierCard(int multiplier, int plusAttack){
@@ -40,4 +45,6 @@ public class AttackModifierCard {
 	public boolean getShuffle() {return shuffle;}
 	public void setFree() {free=true;}
 	public void discard() {free=false;}
+	public boolean hasBless() {return bless;}
+	public boolean hasCurse() {return curse;}
 }

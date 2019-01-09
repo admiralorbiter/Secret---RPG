@@ -784,10 +784,42 @@ public class Player extends character {
 		return currentAbilityDeckSize;
 	}
 
-	public int getAttack(CardDataObject attackCard) {
+	public int getAttack(CardDataObject attackCard, boolean advantage, boolean disadvantage) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
-		System.out.println("A:"+attackCard.getData().getAttack()+"  +AM"+card.getPlusAttack()+"  XM"+card.getMultiplier());
+		
+		if(card.hasBless() || advantage==true || positiveConditions.isBless()) {
+			if(card.hasBless()) {
+				attackModifierDeck.remove(card);
+				card = attackModifierDeck.pickRandomModifierCard();
+			}
+			
+			AttackModifierCard secondCard = attackModifierDeck.pickRandomModifierCard();
+			
+			System.out.println("Card 1 - A:"+attackCard.getData().getAttack()+"  +AM:"+card.getPlusAttack()+"  XM:"+card.getMultiplier());
+			System.out.println("Card 2 - A:"+attackCard.getData().getAttack()+"  +AM:"+secondCard.getPlusAttack()+"  XM:"+secondCard.getMultiplier());
+			
+			if(attackModifierDeck.firstIsBest(card, secondCard)==false)
+				card=secondCard;
+		}
+		
+		if(card.hasCurse() || disadvantage==true || negativeConditions.isCurse()) {
+			if(card.hasCurse()) {
+				attackModifierDeck.remove(card);
+				card = attackModifierDeck.pickRandomModifierCard();
+			}
+			
+			AttackModifierCard secondCard = attackModifierDeck.pickRandomModifierCard();
+			
+			System.out.println("Card 1 - A:"+attackCard.getData().getAttack()+"  +AM:"+card.getPlusAttack()+"  XM:"+card.getMultiplier());
+			System.out.println("Card 2 - A:"+attackCard.getData().getAttack()+"  +AM:"+secondCard.getPlusAttack()+"  XM:"+secondCard.getMultiplier());
+			
+			if(attackModifierDeck.firstIsBest(card, secondCard))
+				card=secondCard;
+		}
+		
+		System.out.println("Final Attack Mod - A:"+attackCard.getData().getAttack()+"  +AM:"+card.getPlusAttack()+"  XM:"+card.getMultiplier());
+		
 		int damage = (attackCard.getData().getAttack()+card.getPlusAttack())*card.getMultiplier();
 		
 		if(roundTriggers.size()>0) {
@@ -798,7 +830,10 @@ public class Player extends character {
 				}
 			}
 		}
-				
+		
+		if(card.getShuffle())
+			attackModifierDeck.shuffleDeck();
+		
 		return damage;
 	}
 	

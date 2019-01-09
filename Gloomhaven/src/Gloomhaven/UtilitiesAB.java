@@ -6,6 +6,7 @@ import java.util.List;
 
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
+import Gloomhaven.AttackModifier.AttackModifierCard;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.Characters.Enemy;
@@ -36,8 +37,12 @@ public final class UtilitiesAB {
 		if(card.getInfuseElementalFlag())
 			elements.infuse(card.getInfuseElemental());
 
-		if(card.getPositiveConditions()!=null)
+		if(card.getPositiveConditions()!=null) {
 			player.getPositiveConditions().setPositiveConditions(card.getPositiveConditions());
+			
+			if(player.getPositiveConditions().isBless())
+				player.getAttackModDeck().addCard(new AttackModifierCard("Bless"));
+		}
 				
 		if(card.getEffects()!=null) {
 					
@@ -97,7 +102,7 @@ public final class UtilitiesAB {
 		if(abilityCard.getFlag()=="AltTop")
 			attack=6;
 		else
-			card.getData().getAttack();
+			attack=player.getAttack(card, false, false);
 		
 		System.out.println("Base Damage: "+attack);
 		

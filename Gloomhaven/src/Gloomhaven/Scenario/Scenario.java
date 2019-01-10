@@ -338,7 +338,7 @@ public class Scenario {
 			if((currentPlayer+1)!=party.size())
 				currentPlayer++;
 			else {
-				enemyInfo.pickRandomAbilityCard();
+				enemyInfo.initiationRound();
 				currentPlayer=0;
 				state=State.INITIATIVE;
 			}

@@ -11,6 +11,7 @@ import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Characters.UtilitiesCharacters;
 import Gloomhaven.Characters.character;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Scenario.ScenarioData;
@@ -102,7 +103,8 @@ public final class UtilitiesAB {
 		if(abilityCard.getFlag()=="AltTop")
 			attack=6;
 		else
-			attack=player.getAttack(card, false, false);
+			attack=UtilitiesCharacters.getAttack(player, card, player.getAttackModDeck(), false, false);
+			//attack=player.getAttack(card, false, false);
 		
 		System.out.println("Base Damage: "+attack);
 		

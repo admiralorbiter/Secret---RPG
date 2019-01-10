@@ -1,5 +1,8 @@
 package Gloomhaven.AbilityCards;
 
+import Gloomhaven.Archer;
+import Gloomhaven.Guard;
+import Gloomhaven.LivingBones;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardInterfaces.CardInterface;
 import Gloomhaven.CardInterfaces.CardsEnemyTest;
@@ -12,13 +15,22 @@ public class EnemyAbilityCard extends AbilityCard {
 		
 		CardInterface classCardData=null;
 		
-		if(enemyClass.equals("Test")) {
+		if(enemyClass.equals("Archer")) {
+			classCardData = new Archer();
+		}
+		else if(enemyClass.equals("LivingBones")) {
+			classCardData = new LivingBones();
+		}
+		else if(enemyClass.equals("Guard")) {
+			classCardData = new Guard();
+		}
+		else {
 			classCardData = new CardsEnemyTest();
 		}
 		
 		cardData=classCardData.getData(cardID);
 		setInitiative(classCardData.getInitiative(cardID));
-		setName(classCardData.getName(cardID));
+		setName(enemyClass);
 	}
 	
 	public int getAttack() {
@@ -31,6 +43,14 @@ public class EnemyAbilityCard extends AbilityCard {
 	
 	public int getRange() {
 		return cardData.getData().getRange();
+	}
+	
+	public String getText() {
+		return cardData.getCardText();
+	}
+	
+	public CardDataObject getData() {
+		return cardData;
 	}
 	
 }

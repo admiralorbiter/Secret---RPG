@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.EnemyAbilityDeck;
 import Gloomhaven.Setting;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
@@ -18,18 +19,15 @@ import Gloomhaven.Scenario.ScenarioEnemyLoader;
 public class EnemyInfo {
 	
 	private List<Enemy> enemies = new ArrayList<Enemy>();
-	private List<EnemyAbilityCard> abilityDeck = new ArrayList<EnemyAbilityCard>();
-	private int abilityCardIndex;
-	private int startingAbilityCardCount;
 	private int turnNumber;
+	private List<EnemyAbilityDeck> enemyDecks = new ArrayList<EnemyAbilityDeck>();
 	
 	public EnemyInfo(ScenarioData data) {
-		abilityCardIndex=0;
-		startingAbilityCardCount=8;
-		for(int i=0; i<startingAbilityCardCount; i++)
-			abilityDeck.add(new EnemyAbilityCard("Test", i+1, 1));
-		
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
+		
+		List<String> enemyClassTypes = getEnemyTypeList();
+		for(int i=0; i<enemyClassTypes.size(); i++)
+			enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
 	}
 	
 	public void drawEnemies(Graphics g) {
@@ -40,34 +38,24 @@ public class EnemyInfo {
 		g.setColor(Setting.enemyColor);
 	}
 	
-	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
+	public void initiationRound() {
+		for(int i=0; i<enemyDecks.size(); i++)
+			enemyDecks.get(i).pickRandomAbilityCard();
+	}
+	
 	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
 	public int getTurnNumber() {return turnNumber;}
 	public Enemy getEnemy(int index) {return enemies.get(index);}
 	public int getCount() {return enemies.size();}
 	
-	public void pickRandomAbilityCard() {
-		Random rand = new Random();
-		boolean running=true;
-		do
-		{
-		 int pick = rand.nextInt(abilityDeck.size());
-		 if(abilityDeck.get(pick).isCardFree()) {
-			 abilityCardIndex=pick;
-			 running=false;
-		 }
-		}
-		while(running);
-	}
-	
-	public void drawAbilityCard(Graphics g) {
-		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
-		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
-	}
-	
-	public int getAttack(int enemyTurnIndex) {
-		AttackModifierCard card = enemies.get(enemyTurnIndex).attackModifierDeck.pickRandomModifierCard();
-		return card.getMultiplier()*(enemies.get(enemyTurnIndex).getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.getPlusAttack());
+	public List<String> getEnemyTypeList(){
+		List<String> enemyTypeList = new ArrayList<String>();
+		
+		for(int i=0; i<enemies.size(); i++)
+			if(!enemyTypeList.contains(enemies.get(i).getClassID()))
+				enemyTypeList.add(enemies.get(i).getClassID());
+		
+		return enemyTypeList;
 	}
 	
 	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
@@ -103,6 +91,20 @@ public class EnemyInfo {
 		
 		for(int i=0; i<enemiesInRoom.size(); i++)
 			enemies.add(enemiesInRoom.get(i));
+		
+		List<String> enemyClassTypes = getEnemyTypeList();
+		List<String> enemyClassDecks = new ArrayList<String>();
+		
+		for(int i=0; i<enemyDecks.size(); i++)
+			enemyClassDecks.add(enemyDecks.get(i).getDeckID());
+		
+		if(enemyClassTypes.size()>enemyDecks.size()) {
+			for(int i=0; i<enemyClassTypes.size(); i++) {
+				if(!enemyClassDecks.get(i).contains(enemyClassTypes.get(i))) {
+					enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
+				}
+			}
+		}
 	}
 	
 	

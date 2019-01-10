@@ -32,6 +32,9 @@ public final class ScenarioDataLoader {
 				data.setStartingposition(new Point(7, 12));
 				data.setBoardSize(new Point(11, 13));
 				data.setTotalEnemies(10);
+				data.getEnemyTypeList().add("Guard");
+				data.getEnemyTypeList().add("Archer");
+				data.getEnemyTypeList().add("LivingBones");
 				return data;
 			case 2:
 				data.setName("Barrow Lair");

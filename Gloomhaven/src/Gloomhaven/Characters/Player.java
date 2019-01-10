@@ -783,7 +783,7 @@ public class Player extends character {
 		}
 		return currentAbilityDeckSize;
 	}
-
+	/*
 	public int getAttack(CardDataObject attackCard, boolean advantage, boolean disadvantage) {
 		System.out.println("Attack Break Down: (Loc: Player.java -getAttack Line843");
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
@@ -836,7 +836,7 @@ public class Player extends character {
 		
 		return damage;
 	}
-	
+	*/
 	@Override
 	public void takeDamage(int damage) {
 		

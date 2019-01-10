@@ -3,6 +3,7 @@ package Gloomhaven.Characters;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -41,6 +42,10 @@ public class EnemyInfo {
 	public void initiationRound() {
 		for(int i=0; i<enemyDecks.size(); i++)
 			enemyDecks.get(i).pickRandomAbilityCard();
+	}
+	
+	public void test() {
+		enemyDecks.sort(Comparator.comparingInt(EnemyAbilityDeck::getInitiative));
 	}
 	
 	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}

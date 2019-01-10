@@ -346,6 +346,7 @@ public class Scenario {
 	}
 	
 	private void initiative() {
+		enemyInfo.initiationRound();
 		int enemyInit=enemyInfo.getInitiative();
 		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
 		System.out.println("Loc: Scenario.java: Init Enemy - "+enemyInit+"     Player - "+party.get(0).getInitiative());

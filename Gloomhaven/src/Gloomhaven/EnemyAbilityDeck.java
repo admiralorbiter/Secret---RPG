@@ -16,16 +16,20 @@ public class EnemyAbilityDeck {
 	private int abilityCardIndex=0;
 	private AttackModifierDeck attackModifierDeck= new AttackModifierDeck("Standard");
 	private String deckID;
+	private int turnNumber;
 	
 	public EnemyAbilityDeck(String classID) {
 		int abilityCardCount=8;
-		this.deckID=deckID;
+		this.deckID=classID;
 		for(int i=0; i<abilityCardCount; i++)
 			abilityDeck.add(new EnemyAbilityCard(classID, i+1, 1));
 	}
 	
 	public int getAbilityCardIndex() {return abilityCardIndex;}
 	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
+	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
+	public int getTurnNumber() {return turnNumber;}
+	
 	
 	public void pickRandomAbilityCard() {
 		Random rand = new Random();

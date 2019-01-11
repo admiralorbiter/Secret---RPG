@@ -22,6 +22,7 @@ public class EnemyInfo {
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 	private int turnNumber;
 	private List<EnemyAbilityDeck> enemyDecks = new ArrayList<EnemyAbilityDeck>();
+	private String[][] initList;
 	
 	public EnemyInfo(ScenarioData data) {
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
@@ -40,10 +41,45 @@ public class EnemyInfo {
 	}
 	
 	public void initiationRound() {
-		for(int i=0; i<enemyDecks.size(); i++)
+		initList = new String[enemyDecks.size()][2];
+		
+		for(int i=0; i<enemyDecks.size(); i++) {
 			enemyDecks.get(i).pickRandomAbilityCard();
+			initList[i][0]=enemyDecks.get(i).getDeckID();
+			initList[i][1]=Integer.toString(enemyDecks.get(i).getInitiative());
+		}
+		
+		if(enemyDecks.size()>1)
+			sort(initList, enemyDecks.size());
 	}
 	
+	public void sort(String[][] initList, int size) {
+		displaySort(initList, size);
+		for(int i=0; i<size-1; i++) {
+			int min = i;
+			for(int j=i+1; j<size; j++) {
+				if(Integer.valueOf(initList[j][1])<Integer.valueOf(initList[min][1])) {
+					min=j;
+				}
+			}
+			String tempDeckID = initList[min][0];
+			String tempInit=initList[min][1];
+			
+			initList[i][0]=initList[min][0];
+			initList[i][1]=initList[min][1];
+			
+			initList[min][0]=tempDeckID;
+			initList[min][1]=tempInit;
+		}
+		displaySort(initList, size);
+	}
+	
+	private void displaySort(String[][] initList, int size) {
+		for(int i=0; i<size; i++) {
+			System.out.print(initList[i][0]+" "+initList[i][1]+" , ");
+		}
+		System.out.println("");
+	}
 	public void test() {
 		enemyDecks.sort(Comparator.comparingInt(EnemyAbilityDeck::getInitiative));
 	}
@@ -52,7 +88,7 @@ public class EnemyInfo {
 	public int getTurnNumber() {return turnNumber;}
 	public Enemy getEnemy(int index) {return enemies.get(index);}
 	public int getCount() {return enemies.size();}
-	
+	public List<EnemyAbilityDeck> getEnemyAbilityDeck(){return enemyDecks;}
 	public List<String> getEnemyTypeList(){
 		List<String> enemyTypeList = new ArrayList<String>();
 		
@@ -112,5 +148,10 @@ public class EnemyInfo {
 		}
 	}
 	
+	public void drawAbilityCard(Graphics g) {
+		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
+		for(int i=0; i<enemyDecks.size(); i++)
+		//	g.drawString("Attack: "+enemyDecks.get(i).ge+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
+	}
 	
 }

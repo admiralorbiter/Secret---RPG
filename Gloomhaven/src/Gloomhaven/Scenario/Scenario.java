@@ -347,12 +347,13 @@ public class Scenario {
 	
 	private void initiative() {
 		enemyInfo.initiationRound();
-		int enemyInit=enemyInfo.getInitiative();
+		//int enemyInit=enemyInfo.getInitiative();
 		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
-		System.out.println("Loc: Scenario.java: Init Enemy - "+enemyInit+"     Player - "+party.get(0).getInitiative());
+		
 		//Goes through the party and enemy and gives a turn number
 		//The party is in order, so i just have to fit the enemy in
 		//[Rem] Doesn't work if the players have the same init	
+		/*
 		for(int i=0; i<party.size(); i++) {
 
 			if(enemyInit==party.get(i).getInitiative()) {
@@ -375,6 +376,9 @@ public class Scenario {
 				party.get(i).setTurnNumber(i+1);
 			}
 		}
+		*/
+		
+		UtilitiesGeneral.setTurnNumbers(party, enemyInfo);
 		
 		currentPlayer=0;
 		turnIndex=0;

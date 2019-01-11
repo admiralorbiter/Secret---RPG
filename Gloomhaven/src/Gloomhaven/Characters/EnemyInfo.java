@@ -150,7 +150,7 @@ public class EnemyInfo {
 	
 	public void drawAbilityCard(Graphics g) {
 		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
-		for(int i=0; i<enemyDecks.size(); i++)
+		//for(int i=0; i<enemyDecks.size(); i++)
 		//	g.drawString("Attack: "+enemyDecks.get(i).ge+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
 	}
 	

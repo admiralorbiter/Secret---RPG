@@ -482,7 +482,7 @@ public class Scenario {
 		int playerIndex = getTargetIndex();
 		
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {
-			int damage = enemyInfo.getAttack(enemyTurnIndex);
+			int damage = 2;//enemyInfo.getAttack(enemyTurnIndex);
 			party.get(playerIndex).takeDamage(damage);
 			if(party.get(playerIndex).getCharacterData().getHealth()<=0)
 				party.remove(playerIndex);

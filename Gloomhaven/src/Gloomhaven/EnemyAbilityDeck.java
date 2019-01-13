@@ -50,9 +50,11 @@ public class EnemyAbilityDeck {
 		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
 	}
 	public String getDeckID() {return deckID;}
-	/*
+	
 	public int getAttack(Enemy enemy) {
 		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
 		return card.getMultiplier()*(enemy.getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.getPlusAttack());
-	}*/
+	}
+	
+	public EnemyAbilityCard getEnemyAbilityCard() {return abilityDeck.get(abilityCardIndex);}
 }

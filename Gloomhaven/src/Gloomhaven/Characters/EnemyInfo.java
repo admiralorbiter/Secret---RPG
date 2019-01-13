@@ -23,6 +23,7 @@ public class EnemyInfo {
 	private int turnNumber;
 	private List<EnemyAbilityDeck> enemyDecks = new ArrayList<EnemyAbilityDeck>();
 	private String[][] initList;
+	private int enemyDeckIndex;
 	
 	public EnemyInfo(ScenarioData data) {
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
@@ -103,6 +104,17 @@ public class EnemyInfo {
 			
 	}
 	
+	public List<Enemy> getTurnEnemies(){
+		List<Enemy> enemiesForTurn = new ArrayList<Enemy>();
+		
+		for(int i=0; i<enemies.size(); i++) {
+			if(enemyDecks.get(enemyDeckIndex).getDeckID()==enemies.get(i).getClassID())
+				enemiesForTurn.add(enemies.get(i));
+		}
+		
+		return enemiesForTurn;
+	}
+	
 	public Enemy getEnemy(Point p) {
 		for(int i=0; i<enemies.size(); i++)
 		{
@@ -148,10 +160,14 @@ public class EnemyInfo {
 		}
 	}
 	
+	public int getAttack(int index) {return enemyDecks.get(enemyDeckIndex).getAttack(enemies.get(index));}
+	
+	public void setEnemyDeckIndex(int index) {this.enemyDeckIndex=index;}
+	public String getDeckClass() {return enemyDecks.get(enemyDeckIndex).getDeckID();}
+	
 	public void drawAbilityCard(Graphics g) {
 		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
-		//for(int i=0; i<enemyDecks.size(); i++)
-		//	g.drawString("Attack: "+enemyDecks.get(i).ge+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
+		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
 	}
 	
 }

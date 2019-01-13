@@ -76,6 +76,7 @@ public class Scenario {
 	private int currentPlayer=0;
 	private int turnIndex=0;
 	private int enemyTurnIndex=0;
+	private int enemyDeckIndex=0;
 	private String targetID;
 	private int itemUsed;
 	
@@ -84,7 +85,7 @@ public class Scenario {
 	
 	private PlayerAbilityCard card = null;
 	
-	private Point selectionCoordinate;
+	private Point selectionCoordinate; 
 	
 	private Hex[][] board;
 	
@@ -386,27 +387,28 @@ public class Scenario {
 	}
 	
 	private void matchTurnWithEnemyOrPlayer() {
-		if(enemyInfo.getTurnNumber()==turnIndex) {													//If enemy turns, do enemy attack
-			enemyTurnIndex=0;																	//Resets enemy turn index
-			state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
+		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
+			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {													//If enemy turns, do enemy attack
+				enemyTurnIndex=0;																	//Resets enemy turn index
+				//enemyDeckIndex=i;
+				enemyInfo.setEnemyDeckIndex(i);
+				state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
+			}
 		}
-		else {
-
-			//Next State: Long Rest or Player Choice
-			for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
-				if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
-					if(party.get(i).onRest()) {					
-						currentPlayer=i;
-						party.get(i).resetCardChoice();
-						state=State.LONG_REST;
-						break;
-					}
-					else {
-						currentPlayer=i;
-						party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
-						state=State.PLAYER_CHOICE;
-						break;
-					}
+		//Next State: Long Rest or Player Choice
+		for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
+			if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
+				if(party.get(i).onRest()) {					
+					currentPlayer=i;
+					party.get(i).resetCardChoice();
+					state=State.LONG_REST;
+					break;
+				}
+				else {
+					currentPlayer=i;
+					party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
+					state=State.PLAYER_CHOICE;
+					break;
 				}
 			}
 		}
@@ -431,7 +433,7 @@ public class Scenario {
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
 		List<Player> targets = new ArrayList<Player>();
-		if(enemyInfo.getEnemies().size()!=0)
+		if(enemyInfo.getTurnEnemies().size()!=0)
 			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(Setting.flatlayout), data.getBoardSize(), party);
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
 		
@@ -463,8 +465,8 @@ public class Scenario {
 	
 	private void enemyControlLogic() {
 		
-		if(enemyTurnIndex==(enemyInfo.getCount()-1)) {												//If it has gone through all the enemies, go to next state
-			if(turnIndex==party.size())																	//If if it is on the last turn, End Round
+		if(enemyTurnIndex==(enemyInfo.getEnemies().size()-1)) {												//If it has gone through all the enemies, go to next state
+			if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()))																//If if it is on the last turn, End Round
 				state=State.ROUND_END_DISCARD;														
 			else {
 				turnIndex++;																				//End turn go back to attack logic state
@@ -473,7 +475,9 @@ public class Scenario {
 		}
 		else {
 			enemyTurnIndex++;																		//Cycle through enemies and go to enemy attack state
-			state=State.ENEMY_ATTACK;
+			
+			if(enemyInfo.getEnemy(enemyTurnIndex).getClassID().equals(enemyInfo.getDeckClass()))
+				state=State.ENEMY_ATTACK;
 		}
 	}
 	
@@ -482,7 +486,7 @@ public class Scenario {
 		int playerIndex = getTargetIndex();
 		
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {
-			int damage = 2;//enemyInfo.getAttack(enemyTurnIndex);
+			int damage = enemyInfo.getAttack(enemyTurnIndex);
 			party.get(playerIndex).takeDamage(damage);
 			if(party.get(playerIndex).getCharacterData().getHealth()<=0)
 				party.remove(playerIndex);

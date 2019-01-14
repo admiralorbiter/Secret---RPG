@@ -24,6 +24,7 @@ public class EnemyInfo {
 	private List<EnemyAbilityDeck> enemyDecks = new ArrayList<EnemyAbilityDeck>();
 	private String[][] initList;
 	private int enemyDeckIndex;
+	private boolean updateEnemyFlag=false;
 	
 	public EnemyInfo(ScenarioData data) {
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
@@ -49,13 +50,13 @@ public class EnemyInfo {
 			initList[i][0]=enemyDecks.get(i).getDeckID();
 			initList[i][1]=Integer.toString(enemyDecks.get(i).getInitiative());
 		}
-		
+
 		if(enemyDecks.size()>1)
 			sort(initList, enemyDecks.size());
 	}
 	
 	public void sort(String[][] initList, int size) {
-		displaySort(initList, size);
+		//displaySort(initList, size);
 		for(int i=0; i<size-1; i++) {
 			int min = i;
 			for(int j=i+1; j<size; j++) {
@@ -63,8 +64,8 @@ public class EnemyInfo {
 					min=j;
 				}
 			}
-			String tempDeckID = initList[min][0];
-			String tempInit=initList[min][1];
+			String tempDeckID = initList[i][0];
+			String tempInit=initList[i][1];
 			
 			initList[i][0]=initList[min][0];
 			initList[i][1]=initList[min][1];
@@ -72,10 +73,11 @@ public class EnemyInfo {
 			initList[min][0]=tempDeckID;
 			initList[min][1]=tempInit;
 		}
-		displaySort(initList, size);
+		//displaySort(initList, size);
 	}
 	
 	private void displaySort(String[][] initList, int size) {
+		System.out.println("Sort List:");
 		for(int i=0; i<size; i++) {
 			System.out.print(initList[i][0]+" "+initList[i][1]+" , ");
 		}
@@ -139,7 +141,10 @@ public class EnemyInfo {
 		}
 	}
 	
+	public void setUpdateEnemyFlag(boolean flag) {this.updateEnemyFlag=flag;}
+	public boolean getUpdateEnemyFlag() {return updateEnemyFlag;}
 	public void updateEnemyList(int id, int room) {
+		setUpdateEnemyFlag(false);
 		List<Enemy> enemiesInRoom = ScenarioEnemyLoader.getEnemies(id, room);
 		
 		for(int i=0; i<enemiesInRoom.size(); i++)
@@ -153,8 +158,10 @@ public class EnemyInfo {
 		
 		if(enemyClassTypes.size()>enemyDecks.size()) {
 			for(int i=0; i<enemyClassTypes.size(); i++) {
-				if(!enemyClassDecks.get(i).contains(enemyClassTypes.get(i))) {
-					enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
+				for(int j=0; j<enemyClassDecks.size(); j++) {
+					if(!enemyClassDecks.get(j).contains(enemyClassTypes.get(i))) {
+						enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
+					}
 				}
 			}
 		}
@@ -166,7 +173,7 @@ public class EnemyInfo {
 	public String getDeckClass() {return enemyDecks.get(enemyDeckIndex).getDeckID();}
 	
 	public void drawAbilityCard(Graphics g) {
-		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
+		g.drawString("Enemy Ability Card "+enemyDecks.get(enemyDeckIndex).getDeckID(), Setting.graphicsXLeft, Setting.graphicsYMid);
 		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
 	}
 	

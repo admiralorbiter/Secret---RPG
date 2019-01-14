@@ -39,6 +39,7 @@ public class Scenario {
 	    ATTACK,
 	    ENEMY_ATTACK,
 	    ENEMY_MOVE,
+	    ENEMY_CONTROL_LOGIC,
 	    PLAYER_CHOICE,
 	    PLAYER_DEFENSE,
 	    PLAYER_DISCARD,
@@ -94,6 +95,7 @@ public class Scenario {
 	private Enemy enemyControlled;
 	private Enemy enemyTarget;
 	private Shop shop;
+	private Point updatePoint;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
 		this.shop=shop;
@@ -162,7 +164,9 @@ public class Scenario {
 		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].isDoorOpen()==false)) {
 			//showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
 			ScenarioBoardLoader.showRoom(board, data.getId(), board[ending.x][ending.y].getRoomID());
-			enemyInfo.updateEnemyList(data.getId(), board[ending.x][ending.y].getRoomID());
+			//enemyInfo.updateEnemyList(data.getId(), board[ending.x][ending.y].getRoomID());
+			updatePoint=new Point(ending);
+			enemyInfo.setUpdateEnemyFlag(true);
 			System.out.println("Opening Door");
 		}
 		
@@ -205,6 +209,9 @@ public class Scenario {
 				break;
 			case ENEMY_ATTACK:
 				enemyAttack();
+				break;
+			case ENEMY_CONTROL_LOGIC:
+				enemyControlLogic();
 				break;
 			case PLAYER_DEFENSE:
 				playerDefense();
@@ -339,7 +346,6 @@ public class Scenario {
 			if((currentPlayer+1)!=party.size())
 				currentPlayer++;
 			else {
-				enemyInfo.initiationRound();
 				currentPlayer=0;
 				state=State.INITIATIVE;
 			}
@@ -387,6 +393,7 @@ public class Scenario {
 	}
 	
 	private void matchTurnWithEnemyOrPlayer() {
+		
 		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
 			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {													//If enemy turns, do enemy attack
 				enemyTurnIndex=0;																	//Resets enemy turn index
@@ -432,6 +439,8 @@ public class Scenario {
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
+		System.out.print("Loc: scenario.java - Enemy "+enemyInfo.getEnemy(enemyTurnIndex).getClassID()+" is attacking ");
+		
 		List<Player> targets = new ArrayList<Player>();
 		if(enemyInfo.getTurnEnemies().size()!=0)
 			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(Setting.flatlayout), data.getBoardSize(), party);
@@ -459,14 +468,14 @@ public class Scenario {
 				System.out.println("Scenario.java Loc 276: Reminder that if the player attacks a target with retalite it doesn't resolve anymore");
 			state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 		}else {
-			enemyControlLogic();																//Next State: Attack, Enemy Attack, Round End
+			state=State.ENEMY_CONTROL_LOGIC;																//Next State: Attack, Enemy Attack, Round End
 		}
 	}
 	
 	private void enemyControlLogic() {
 		
 		if(enemyTurnIndex==(enemyInfo.getEnemies().size()-1)) {												//If it has gone through all the enemies, go to next state
-			if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()))																//If if it is on the last turn, End Round
+			if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))																//If if it is on the last turn, End Round
 				state=State.ROUND_END_DISCARD;														
 			else {
 				turnIndex++;																				//End turn go back to attack logic state
@@ -487,6 +496,7 @@ public class Scenario {
 		
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {
 			int damage = enemyInfo.getAttack(enemyTurnIndex);
+
 			party.get(playerIndex).takeDamage(damage);
 			if(party.get(playerIndex).getCharacterData().getHealth()<=0)
 				party.remove(playerIndex);
@@ -494,7 +504,7 @@ public class Scenario {
 			if(party.size()==0)
 				state=State.ROUND_END_DISCARD;
 			else
-				enemyControlLogic();
+				state=State.ENEMY_CONTROL_LOGIC;
 		}
 		
 		if(k==Setting.discardKey)
@@ -539,7 +549,7 @@ public class Scenario {
 				state=State.PLAYER_CHOICE;
 			}else {
 				//if turn is over
-				if(turnIndex==party.size())
+				if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 					state=State.ROUND_END_DISCARD;
 				else {
 					turnIndex++;
@@ -615,7 +625,7 @@ public class Scenario {
 					state=State.PLAYER_CHOICE;
 				}else {
 					//if turn is over
-					if(turnIndex==party.size())
+					if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 						state=State.ROUND_END_DISCARD;
 					else {
 						turnIndex++;
@@ -763,7 +773,7 @@ public class Scenario {
 					state=State.PLAYER_CHOICE;
 				}else {
 					//if turn is over
-					if(turnIndex==party.size())
+					if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 						state=State.ROUND_END_DISCARD;
 					else {
 						turnIndex++;
@@ -834,7 +844,7 @@ public class Scenario {
 				state=State.PLAYER_CHOICE;
 			}else {
 				//if turn is over
-				if(turnIndex==party.size())
+				if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 					state=State.ROUND_END_DISCARD;
 				else {
 					turnIndex++;
@@ -881,7 +891,7 @@ public class Scenario {
 					state=State.PLAYER_CHOICE;
 				}else {
 					//if turn is over
-					if(turnIndex==party.size())
+					if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 						state=State.ROUND_END_DISCARD;
 					else {
 						turnIndex++;
@@ -909,7 +919,7 @@ public class Scenario {
 				state=State.PLAYER_CHOICE;
 			}else {
 				//if turn is over
-				if(turnIndex==party.size())
+				if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 					state=State.ROUND_END_DISCARD;
 				else {
 					turnIndex++;
@@ -1035,7 +1045,7 @@ public class Scenario {
 					state=State.PLAYER_CHOICE;
 				}else {
 					//if turn is over
-					if(turnIndex==party.size())
+					if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
 						state=State.ROUND_END_DISCARD;
 					else {
 						turnIndex++;
@@ -1048,6 +1058,9 @@ public class Scenario {
 	
 	private void roundEndDiscard() {
 		elements.endOfRound();
+		
+		if(enemyInfo.getUpdateEnemyFlag())
+			enemyInfo.updateEnemyList(data.getId(), board[updatePoint.x][updatePoint.y].getRoomID());
 		
 		for(int i=0; i<party.size(); i++)
 			party.get(i).endTurn();																//End of turn clean up for each player

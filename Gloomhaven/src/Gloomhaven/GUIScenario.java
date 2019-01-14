@@ -61,7 +61,7 @@ public final class GUIScenario {
 		
 		for(int i=0; i<enemies.size(); i++) {
 			g.setColor(Setting.defaultColor);
-			g.drawString(enemies.get(i).getName(), Setting.graphicsXRight+10, Setting.graphicsYMid+Setting.rowSpacing*entityCount);
+			g.drawString(enemies.get(i).getClassID(), Setting.graphicsXRight+10, Setting.graphicsYMid+Setting.rowSpacing*entityCount);
 			
 			if(enemies.get(i).getPositiveConditions()!=null) {
 				g.setColor(Color.YELLOW);

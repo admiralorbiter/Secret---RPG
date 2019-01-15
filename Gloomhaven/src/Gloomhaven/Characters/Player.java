@@ -46,6 +46,7 @@ public class Player extends character {
 	
 	private int maxHandCount;
 	private boolean longRest;
+	private boolean longRestFlag;
 	
 	private int displayCard=0;
 	private int turnNumber;
@@ -162,6 +163,7 @@ public class Player extends character {
 	//Used during the beginning of the round, then during their turn they take the long rest
 	public void setLongRest() {
 		longRest=true;
+		longRestFlag=true;
 		initiative=99;
 		stats.addLongRest();
 	}
@@ -739,7 +741,7 @@ public class Player extends character {
 				if(abilityDeck.get(key).isDiscardFlag()) {
 					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
-					longRest=false;
+					longRestFlag=false;
 				}
 			}
 		}
@@ -763,7 +765,7 @@ public class Player extends character {
 			return false;
 	}
 	
-	public boolean onRest() {return longRest;}
+	public boolean onRest() {return longRestFlag;}
 	
 	public int getInitiative() {
 		return initiative;

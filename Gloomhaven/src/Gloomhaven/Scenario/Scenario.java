@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import Gloomhaven.City;
 import Gloomhaven.GUIScenario;
 import Gloomhaven.InfusionTable;
@@ -314,6 +316,8 @@ public class Scenario {
 		g.drawString("State of Scenario      Prosperity: "+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel(), Setting.graphicsXLeft, Setting.graphicsYTop);
 		g.drawString(state.toString(), Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing);
 		
+		//ImageIcon bg1 = new ImageIcon("src/Gloomhaven/img/InfoPlate.jpg");
+		//g.drawImage(bg1.getImage(), 0, Setting.graphicsYMid, 700, 450, null);
 		
 		elements.graphicsDrawTable(g);
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize());

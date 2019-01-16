@@ -49,6 +49,13 @@ public final class Setting {
 	public static int graphicsYMid=height/2;
 	public static int graphicsYQ1=height/4;
 	
+	public static int gAbilityCardX=10;
+	public static int gAbilityCardY=100;
+	public static int gAbilityCardw=285;
+	public static int gAbilityCardh=425;
+	
+	public static int gCardX=10;
+	public static int gCardY=75;
 	
 	public static char restKey='r';
 	public static char discardKey='d';

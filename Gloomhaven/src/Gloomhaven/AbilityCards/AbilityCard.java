@@ -38,7 +38,7 @@ public class AbilityCard {
 
 	public void showCard(Graphics g) {
 		if(getImage()!=null)
-			g.drawImage(getImage().getImage(), 10, Setting.graphicsYTop+70, 285, 425  , null);
+			g.drawImage(getImage().getImage(), Setting.gAbilityCardX, Setting.gAbilityCardY, Setting.gAbilityCardw, Setting.gAbilityCardh, null);
 	}
 	
 	public boolean isCardFree() {

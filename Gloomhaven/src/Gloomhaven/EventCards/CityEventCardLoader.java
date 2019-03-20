@@ -94,7 +94,7 @@ public final class CityEventCardLoader {
 			case 3:
 				return "Refuse to pay. Never trust a Vermling.";
 			case 4:
-				return "Reassure the b oys and go find the cat.";
+				return "Reassure the boys and go find the cat.";
 			case 5:
 				return "Take the opportunity to steal some valuables in the area while people are distracted.";
 			case 6:

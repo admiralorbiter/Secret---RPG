@@ -9,6 +9,9 @@ public final class GUISettings {
 	public static int leadingBigText=50;
 	public static int padding=10;
 	
+	public static int eventImageW=640;
+	public static int eventImageH=640;
+	
 	//Tables
 	public static int entityTableH=300;
 	public static int entityTableW=200;
@@ -34,4 +37,5 @@ public final class GUISettings {
 	public static int gBottom = height-100;
 	public static int gRight = width-300;
 	public static int gYQ1 =height/4;
+	public static int gMidX=width/2;
 }

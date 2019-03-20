@@ -2,14 +2,19 @@ package Gloomhaven;
 import java.awt.Graphics;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import Gloomhaven.Event.State;
 import Gloomhaven.EventCards.EventCard;
 
 public final class GUIEvent {
 	
 	public static void drawEventHeader(Graphics g, String type, List<EventCard> deck, int eventIndex, State state) {
-		g.setFont(FontSettings.heading);
+		g.setFont(FontSettings.bigText);
 		g.drawString(type+" "+deck.get(eventIndex).getID()+"         "+state, GUISettings.gLeft,  GUISettings.gTop);
+		
+		if(type.contentEquals("City"))
+			g.drawImage(new ImageIcon("src/Gloomhaven/img/GloomhavenCity1.png").getImage(), GUISettings.gMidX, GUISettings.gTop, GUISettings.eventImageW, GUISettings.eventImageH, null);
 	}
 	
 	public static void drawSelection(Graphics g, List<EventCard> deck, int eventIndex) {

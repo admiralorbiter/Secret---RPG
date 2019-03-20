@@ -8,7 +8,7 @@ public final class GUIGamepanel {
 	
 	public static void drawTitle(Graphics g) {
 		g.setFont(FontSettings.heading);
-		g.drawImage(new ImageIcon("src/Gloomhaven/img/TitleScreen.png").getImage(), 0, 0, GUISettings.width, GUISettings.height, null);
+		g.drawImage(new ImageIcon("src/Gloomhaven/img/GloomhavenTitleScreen.png").getImage(), 0, 0, GUISettings.width, GUISettings.height, null);
 		g.drawString("Press space to continue", GUISettings.gLeft, GUISettings.gBottom);
 	}
 	

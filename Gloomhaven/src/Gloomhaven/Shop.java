@@ -34,8 +34,8 @@ public class Shop {
 	}
 	
 	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
-		int selectionFlag=GUI.drawShop(g, shopImage, party, supply, xClick, yClick);
-		GUI.drawShop(g, selectionFlag, buyItem(party, selectionFlag), party, supply);
+		GUI.drawShop(g, shopImage, party, supply, xClick, yClick);
+
 	}
 	
 	public int getCurrentParty() {return currentParty;}

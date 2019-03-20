@@ -134,7 +134,7 @@ public final class GUI {
 		g.setColor(Color.WHITE);
 	}
 	
-	public static int drawShop(Graphics g, ImageIcon shopImage, List<Player> party, List<Item> supply, int xClick, int yClick) {
+	public static void drawShop(Graphics g, ImageIcon shopImage, List<Player> party, List<Item> supply, int xClick, int yClick) {
 		if(shopImage!=null)
 			g.drawImage(shopImage.getImage(), 50, 50, GUISettings.width-200, GUISettings.height-200, null);
 		
@@ -147,25 +147,17 @@ public final class GUI {
 		for(int i=0; i<supply.size(); i++)
 			itemText.add(supply.get(i).getName());
 		int selectionFlag=matrix.drawSelection(g, supply, xClick, yClick);
-		return selectionFlag;
-	}
-	
-	public static void drawShop(Graphics g, int selectionFlag, boolean itemBought, List<Player> party, List<Item> supply) {
+		
 		g.setColor(Color.BLACK);
 		g.fillRect(75, GUISettings.height-350, 300, 150);
 		g.setColor(Color.WHITE);
-		
-		if(selectionFlag>=0 && selectionFlag<supply.size())
-			if(itemBought)
-					g.setColor(Color.WHITE);
-			else
-				g.setColor(Color.red);
 		
 		for(int i=0; i<party.size(); i++) {
 			g.drawRect(90, GUISettings.height-340+25*i, 200, 30);
 			g.setColor(Color.WHITE);
 			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, GUISettings.height-325+25*i);
 		}
+		
 	}
 
 }

@@ -34,35 +34,8 @@ public class Shop {
 	}
 	
 	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
-		if(shopImage!=null)
-			g.drawImage(shopImage.getImage(), 50, 50, Setting.width-200, Setting.height-200, null);
-		
-		g.setColor(Color.black);
-		g.fillRect(Setting.width/2, Setting.height/6, 650, 650);
-		g.setColor(Color.white);
-		
-		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());
-		List<String> itemText = new ArrayList<String>();
-		for(int i=0; i<supply.size(); i++)
-			itemText.add(supply.get(i).getName());
-		int selectionFlag=matrix.drawSelection(g, supply, xClick, yClick);
-
-
-		g.setColor(Color.BLACK);
-		g.fillRect(75, Setting.height-350, 300, 150);
-		g.setColor(Color.WHITE);
-		
-		if(selectionFlag>=0 && selectionFlag<supply.size())
-			if(buyItem(party, selectionFlag))
-					g.setColor(Color.WHITE);
-			else
-				g.setColor(Color.red);
-		
-		for(int i=0; i<party.size(); i++) {
-			g.drawRect(90, Setting.height-340+25*i, 200, 30);
-			g.setColor(Color.WHITE);
-			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, Setting.height-325+25*i);
-		}
+		int selectionFlag=GUI.drawShop(g, shopImage, party, supply, xClick, yClick);
+		GUI.drawShop(g, selectionFlag, buyItem(party, selectionFlag), party, supply);
 	}
 	
 	public int getCurrentParty() {return currentParty;}

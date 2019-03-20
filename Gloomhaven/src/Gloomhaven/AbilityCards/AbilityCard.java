@@ -4,6 +4,9 @@ import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 
+import Gloomhaven.FontSettings;
+import Gloomhaven.GUI;
+import Gloomhaven.GUISettings;
 import Gloomhaven.Setting;
 
 public class AbilityCard {
@@ -35,10 +38,9 @@ public class AbilityCard {
 	public void setDiscardFlag(boolean discardFlag) {this.discardFlag = discardFlag;}
 	public boolean isInPlayFlag() {return inPlayFlag;}
 	public void setInPlayFlag(boolean inPlayFlag) {this.inPlayFlag = inPlayFlag;}
-
+	
 	public void showCard(Graphics g) {
-		if(getImage()!=null)
-			g.drawImage(getImage().getImage(), Setting.gAbilityCardX, Setting.gAbilityCardY, Setting.gAbilityCardw, Setting.gAbilityCardh, null);
+		GUI.drawCard(g, getImage());
 	}
 	
 	public boolean isCardFree() {

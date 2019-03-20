@@ -8,7 +8,7 @@ public class Application extends JFrame {
 	GamePanel game;
 
 	public Application() {
-		setSize(Setting.width, Setting.height);
+		setSize(GUISettings.width, GUISettings.height);
 		setTitle(Setting.title);
 		game = new GamePanel();
 		add(game);

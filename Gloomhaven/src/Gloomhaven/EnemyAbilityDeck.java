@@ -46,8 +46,7 @@ public class EnemyAbilityDeck {
 	}
 	
 	public void drawAbilityCard(Graphics g) {
-		g.drawString("Enemy Ability Card", Setting.graphicsXLeft, Setting.graphicsYMid);
-		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
+		GUI.drawEnemyAbilityCard(g, abilityDeck, abilityCardIndex);
 	}
 	public String getDeckID() {return deckID;}
 	

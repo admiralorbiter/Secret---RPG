@@ -52,34 +52,8 @@ public class MatrixSelection {
 			else {
 				drawCol++;
 			}
-			g.setColor(Color.black);
-			g.fillRect(Setting.width/2+drawCol*x, Setting.height/6+15+drawRow*y, x-5, y-5);
-			g.setColor(Color.WHITE);
-			g.drawString(text.get(i).getName(), Setting.width/2+drawCol*x, Setting.height/6+25+drawRow*y);
-			//g.drawString(text.get(i).getText(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+65+drawRow*y);
 			
-			
-			int charLength=0;//x/5;
-			int rowLength=1;
-			int pixelsForEachChar=10;
-
-			for(int j=0; j<text.get(i).getText().length(); j++) {
-				
-				if(j%(x/pixelsForEachChar)==0) {
-					rowLength++;
-					charLength=0;
-				}
-				else {
-					charLength++;
-				}
-				char c = text.get(i).getText().charAt(j);
-				g.drawString(String.valueOf(c), Setting.width/2+drawCol*x+charLength*pixelsForEachChar, Setting.height/6+20+drawRow*y+rowLength*11);
-			}
-			rowLength++;
-			charLength=1;
-			g.setColor(Color.RED);
-			g.drawString("Gold: "+text.get(i).getGold(), Setting.width/2+drawCol*x+charLength*pixelsForEachChar, Setting.height/6+20+drawRow*y+rowLength*11);
-			g.setColor(Color.WHITE);
+			GUI.drawMatrixSelection(g, drawRow, drawCol, x, y, text, i);
 		}
 		Point selectionPoint = new Point(findSelection(xClick, yClick));
 		if(selectionPoint.getX()>=0 && selectionPoint.getX()<=col) {
@@ -93,8 +67,8 @@ public class MatrixSelection {
 	public Point findSelection(int xClick, int yClick) {
 		Point point = new Point(-99, -99);
 		
-		int x = xClick-Setting.width/2;
-		int y=yClick-Setting.height/6+15;
+		int x = xClick-GUISettings.width/2;
+		int y=yClick-GUISettings.height/6+15;
 		int w=width/col;
 		int h=height/row;
 			

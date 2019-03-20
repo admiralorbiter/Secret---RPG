@@ -8,12 +8,6 @@ public final class Setting {
 	public static boolean flatlayout=true;
 	public static Point center = new Point(500, 100);
 	
-	public static int graphicsXLeft=10;
-	public static int graphicsYTop=25;
-	public static int rowSpacing=15;
-	public static int width=1900;
-	public static int height=1050;
-	
 	public static String title="Gloomhaven";
 
 	public static Color defaultColor = Color.WHITE;
@@ -42,20 +36,6 @@ public final class Setting {
 	
 	//Temp
 	public static int sceneID=1;
-
-	public static int graphicsYBottom=height-100;
-	public static int graphicsXRight=width-300;
-	public static int graphicsXMid=width/2;
-	public static int graphicsYMid=height/2;
-	public static int graphicsYQ1=height/4;
-	
-	public static int gAbilityCardX=10;
-	public static int gAbilityCardY=100;
-	public static int gAbilityCardw=285;
-	public static int gAbilityCardh=425;
-	
-	public static int gCardX=10;
-	public static int gCardY=75;
 	
 	public static char restKey='r';
 	public static char discardKey='d';

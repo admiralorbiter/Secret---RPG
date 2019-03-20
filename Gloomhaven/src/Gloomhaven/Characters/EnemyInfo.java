@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Random;
 
 import Gloomhaven.EnemyAbilityDeck;
+import Gloomhaven.FontSettings;
+import Gloomhaven.GUI;
+import Gloomhaven.GUISettings;
 import Gloomhaven.Setting;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
@@ -173,8 +176,7 @@ public class EnemyInfo {
 	public String getDeckClass() {return enemyDecks.get(enemyDeckIndex).getDeckID();}
 	
 	public void drawAbilityCard(Graphics g) {
-		g.drawString("Enemy Ability Card "+enemyDecks.get(enemyDeckIndex).getDeckID(), Setting.graphicsXLeft, Setting.graphicsYMid);
-		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing);
+		GUI.drawEnemyAbilityCards(g, enemyDecks, enemyDeckIndex);
 	}
 	
 }

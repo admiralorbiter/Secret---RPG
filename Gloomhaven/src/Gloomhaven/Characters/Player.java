@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Random;
 
 import Gloomhaven.CharacterDataObject;
+import Gloomhaven.FontSettings;
+import Gloomhaven.GUI;
+import Gloomhaven.GUIScenario;
+import Gloomhaven.GUISettings;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
 import Gloomhaven.Setting;
@@ -170,7 +174,7 @@ public class Player extends character {
 	
 	//Choose to discard a card instead of taking damage
 	public boolean discardForHealth(int key, Graphics g) {
-		g.drawString("Pick card to discard.", 10, 50);
+		GUI.chooseDiscard(g);
 		drawAbilityCards(g);
 		int currentAbilityDeckSize=abilityCardsLeft();
 		
@@ -378,7 +382,7 @@ public class Player extends character {
 
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
-				g.drawString("Choose top card.", Setting.graphicsXLeft, Setting.graphicsYMid+100);
+				GUI.chooseTopCard(g);
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -406,7 +410,7 @@ public class Player extends character {
 				
 			}
 			else {
-				g.drawString("Choose bottom card.", Setting.graphicsXLeft, Setting.graphicsYMid+100);
+				GUI.chooseBottomCard(g);
 				
 				try {
 					if(e.getKeyCode()==KeyEvent.VK_SPACE) {
@@ -438,15 +442,12 @@ public class Player extends character {
 	public void drawAbilityCards(Graphics g) {
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).isCardFree()) {
-				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], 10, Setting.graphicsYMid+100+Setting.rowSpacing+i*30);
-				g.drawString("   			"+abilityDeck.get(i).getText()[2], Setting.graphicsXLeft, Setting.graphicsYMid+100+Setting.rowSpacing*2+i*30);
+				GUI.drawAbilityCardText(g, abilityDeck, i);
 			}
 		}
 	}
 	
 	private void showPickedCards(KeyEvent e, Graphics g) {
-		int startingY=Setting.graphicsYMid+100;
-		int offsetY=Setting.rowSpacing;
 		
 		try {
 			if(e.getKeyCode()==KeyEvent.VK_LEFT){
@@ -465,31 +466,21 @@ public class Player extends character {
 		abilityDeck.get(displayCard).showCard(g);
 		
 		if(topCard!=null) {
-			g.drawString("Cards", 10, startingY+offsetY*0);
-			g.drawString("Init: "+topCard.getText()[0], 10, startingY+offsetY*1);
-			g.drawString("1: Top of Card: "+topCard.getText()[1], 10, startingY+offsetY*2);
-			g.drawString("2: Bottom of Card "+topCard.getText()[2], 10, startingY+offsetY*3);
-			g.drawString("3: Top Alt - Attack +2", 10, startingY+offsetY*4);
-			g.drawString("4: Bottom Alt - Move +2", 10, startingY+offsetY*5);
+			GUI.drawAbilityCardTextTop(g, topCard);
 		}
 		if(bottomCard!=null) {
-			//g.drawString(bottomCard.getText()[0], 10, startingY+offsetY*6);
-			g.drawString("5: Top of Card "+bottomCard.getText()[1], 10, startingY+offsetY*7);
-			g.drawString("6: Bottom of Card "+bottomCard.getText()[2], 10, startingY+offsetY*8);
-			g.drawString("7: Top Alt - Attack +2", 10, startingY+offsetY*9);
-			g.drawString("8: Bottom Alt - Move +2", 10, startingY+offsetY*10);
+			GUI.drawAbilityCardTextBottom(g, bottomCard);
 		}
 	}
 	
 	private void showDuringTurnItemCards(List<Item> usableItems, Graphics g) {
-		int startingY=Setting.graphicsYBottom+15*13;
-		int offsetY=15;
+
 		char buttons[] = buttons();
 		
 		for(int i=0; i<usableItems.size(); i++) {
 			if(i==9)
 				break;
-			g.drawString(buttons[i]+": "+usableItems.get(i).getName(), 10, startingY+i*offsetY);
+			GUI.drawItemCardDuringTurn(g, buttons, usableItems, i);
 		}
 	}
 	
@@ -605,81 +596,11 @@ public class Player extends character {
 
 	public void graphicsDrawCardsInPlay(Graphics g) {
 
-		g.drawString("Cards in play.", Setting.graphicsXRight+10, Setting.graphicsYTop);
-		
-		int rows=1;
-		
-		if(augment!=null) {
-			g.drawString(augment.getCardText(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
-			rows++;
-		}
-		
-		for(int i=0; i<inPlay.size(); i++) {
-			g.drawString(inPlay.get(i).getName(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
-			rows++;
-		}
-		
-		for(int j=0; j<counterTriggers.size(); j++) {
-			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYTop+Setting.rowSpacing*rows);
-		}
-
-		rows++;
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsYTop-Setting.rowSpacing, 200, Setting.rowSpacing*rows);
+		GUIScenario.graphicsDrawCardsInPlay(g, augment, inPlay, counterTriggers);
 	}
 	
 	public void graphicsPlayerInfo(Graphics g) {
-		g.setColor(Setting.defaultColor);
-		g.drawString(name+"  "+getClassID(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing);
-		
-		if(positiveConditions.isBless()) {
-			g.setColor(Color.YELLOW);
-			g.drawString("B", Setting.graphicsXRight+100, Setting.graphicsYQ1+Setting.rowSpacing);
-			g.setColor(Setting.defaultColor);
-		}
-		
-		if(positiveConditions.isInvisibility()) {
-			g.setColor(Color.gray);
-			g.drawString("I", Setting.graphicsXRight+120, Setting.graphicsYQ1+Setting.rowSpacing);
-			g.setColor(Setting.defaultColor);
-		}
-		
-		if(positiveConditions.isStrengthen()) {
-			g.setColor(Color.red);
-			g.drawString("S", Setting.graphicsXRight+140, Setting.graphicsYQ1+Setting.rowSpacing);
-			g.setColor(Setting.defaultColor);
-		}
-		
-		g.drawString("Level "+data.getLevel(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*2);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*3);
-	
-		int rows=0;
-		
-		if(isAugmented()) {
-			g.drawString("Augment Active: ", Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4));
-			g.drawString(augment.getCardText(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*5);
-			rows=2;
-		}
-		
-		for(int i=0; i<counterTriggers.size();i++) {
-			rows++;
-			g.drawString(counterTriggers.get(i).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*4);
-		}
-		
-		for(int i=0; i<roundTriggers.size();i++) {
-			rows++;
-			g.drawString(roundTriggers.get(i).getTriggerFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4+rows));
-		}
-		
-		g.drawString("Gold: "+data.getGold(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(4+rows));
-		
-		if(roundBonus!=null)
-			if(roundBonus.getNegativeConditions()!=null)
-				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), Setting.graphicsXRight+10, Setting.graphicsYQ1+Setting.rowSpacing*(5+rows));
-		
-		
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsYQ1, 200, Setting.rowSpacing*(6+rows));
-		
-		g.setColor(Setting.defaultColor);
+		GUIScenario.graphicsPlayerInfo(g, name, getClassID(), positiveConditions, data, isAugmented(), augment, counterTriggers, roundTriggers, roundBonus);
 	}
 	
 	public boolean isAugmented() {
@@ -688,18 +609,9 @@ public class Player extends character {
 	}
 	
 	public void shortRestInfo(Graphics g) {
-		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", 10, 100);
-		showDiscardPile(g);
+		GUI.drawShortRestInfo(g, abilityDeck);
 	}
-	
-	public void showDiscardPile(Graphics g) {
-		g.drawString("Discard Pile:", 10, 115);
-		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).isDiscardFlag())
-				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+" "+abilityDeck.get(i).getText()[1]+" "+abilityDeck.get(i).getText()[2], 10, 130+i*15);
-		}
-	}
-	
+
 	public int discardPileSize() {
 		int count=0;
 		for(int i=0; i<abilityDeck.size(); i++) {
@@ -728,7 +640,8 @@ public class Player extends character {
 	}
 	
 	public void  takeLongRest(Graphics g, int key) {
-		showDiscardPile(g);
+		GUI.showDiscardPile(g, abilityDeck);
+		
 		if(cardChoice) {
 			if(key>=0 && key<=abilityDeck.size()) {
 				if(abilityDeck.get(key).isDiscardFlag()) {

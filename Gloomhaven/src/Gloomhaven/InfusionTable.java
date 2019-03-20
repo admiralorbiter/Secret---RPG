@@ -77,34 +77,8 @@ public class InfusionTable {
 	public boolean consumeAny(Graphics g, int num) {
 		//if(strong.size()==0 && wanning.size()==0)
 			//return true;
-		
-		int startingY=Setting.graphicsYBottom;
-		int offsetY=15;
-		int index=0;
-		if(strong.contains("Fire") || wanning.contains("Fire")){
-			g.drawString("1 Fire", 10, startingY+offsetY*index);
-			index++;
-		}
-		else if(strong.contains("Ice") || wanning.contains("Ice")){
-			g.drawString("2 Ice", 10, startingY+offsetY*index);
-			index++;
-		}
-		else if(strong.contains("Air") || wanning.contains("Air")){
-			g.drawString("3 Air", 10, startingY+offsetY*index);
-			index++;
-		}
-		else if(strong.contains("Earth") || wanning.contains("Earth")){
-			g.drawString("4 Earth", 10, startingY+offsetY*index);
-			index++;
-		}
-		else if(strong.contains("Light") || wanning.contains("Light")){
-			g.drawString("5 Light", 10, startingY+offsetY*index);
-			index++;
-		}
-		else if(strong.contains("Dark") || wanning.contains("Dark")){
-			g.drawString("6 Dark", 10, startingY+offsetY*index);
-			index++;
-		}
+
+		GUIInfusion.drawConsumeAny(g, strong, wanning);
 		
 		if(strong.size()==0 && wanning.size()==0)
 			return true;
@@ -161,53 +135,6 @@ public class InfusionTable {
 	}
 	
 	public void graphicsDrawTable(Graphics g) {
-		//g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*6);
-		//Earth
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33);
-		g.drawString("Earth:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33);
-		if(strong.contains("Earth"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33);
-		else if(wanning.contains("Earth"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33);
-		
-		//Air
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*2);
-		g.drawString("Air:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33*2);
-		if(strong.contains("Air"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*2);
-		else if(wanning.contains("Air"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*2);
-		
-		//Fire
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*3);
-		g.drawString("Fire:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33*3);
-		if(strong.contains("Fire"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*3);
-		else if(wanning.contains("Fire"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*3);
-		
-		//Water
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*4);
-		g.drawString("Water:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33*4);
-		if(strong.contains("Water"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*4);
-		else if(wanning.contains("Water"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*4);
-		
-		//Dark
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*5);
-		g.drawString("Dark:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33*5);
-		if(strong.contains("Dark"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*5);
-		else if(wanning.contains("Dark"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*5);
-		
-		//Light
-		g.drawRect(Setting.graphicsXRight, Setting.graphicsXMid+215, 200, 33*6);
-		g.drawString("Light:", Setting.graphicsXRight+10, Setting.graphicsXMid+200+33*6);
-		if(strong.contains("Light"))
-			g.drawString("Strong", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*6);
-		else if(wanning.contains("Light"))
-			g.drawString("Wanning", Setting.graphicsXRight+50, Setting.graphicsXMid+200+33*6);
+		GUIInfusion.drawInfusionTable(g, strong, wanning);
 	}
 }

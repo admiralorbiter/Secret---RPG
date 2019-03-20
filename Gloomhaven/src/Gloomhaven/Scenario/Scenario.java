@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import Gloomhaven.City;
+import Gloomhaven.FontSettings;
 import Gloomhaven.GUIScenario;
 import Gloomhaven.InfusionTable;
 import Gloomhaven.Item;
@@ -264,60 +265,12 @@ public class Scenario {
 	}
 	
 	private void graphics() {
-		switch(state) {
-			case CARD_SELECTION:
-				g.drawString("Picking Cards for your turn.", Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing*2);
-				//Allows the user to take a long rest if they have enough in the discard pile 
-				if(party.get(currentPlayer).discardPileSize()>1)	
-					g.drawString("Take a long rest with "+Setting.restKey, Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing*3);
-				break;
-			case INITIATIVE:
-				//List of all the initiatives for the round
-				g.drawString("Initiatives:", Setting.graphicsXLeft, Setting.graphicsYBottom);											
-				g.drawString("Enemy: Note - Need to fix enemyInfo", Setting.graphicsXLeft, Setting.graphicsYBottom+Setting.rowSpacing);								
-				for(int i=0; i<party.size();  i++) {
-					g.drawString("Player "+party.get(i).getID()+"      "+String.valueOf(party.get(i).getInitiative()), Setting.graphicsXLeft, Setting.graphicsYBottom+Setting.rowSpacing*(i+2));
-				}
-				break;
-			case PLAYER_DEFENSE:
-				g.drawString("Press "+Setting.discardKey+" to discard card or "+Setting.healKey+" to take damage.", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				break;
-			case PLAYER_ATTACK_LOGIC:
-				g.drawString("Move "+UsePlayerAbilityCard.getMove(card)+"     Attack: "+UsePlayerAbilityCard.getAttack(card)+"  (Loc: Scenario -Player Attack Logic)", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				break;
-			case PLAYER_MOVE:
-				g.drawString("Press "+Setting.moveKey+" to move.", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				break;
-			case PLAYER_ATTACK:
-				g.drawString("Press "+Setting.targetKey+" to target.", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				break;
-			case PLAYER_PUSH:
-				g.drawString("Press 1, 2, 3.", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				break;
-			case MINDCONTROL:
-				g.drawString("Press "+Setting.moveKey+"to move.", Setting.graphicsXLeft, Setting.graphicsYBottom);
-				g.drawString("Press "+Setting.targetKey+" to target.", Setting.graphicsXLeft, Setting.graphicsYBottom+Setting.rowSpacing);
-				break;
-			case CREATE_INFUSION:
-				g.drawString("Pick an infusion", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*0);
-				g.drawString("1 Fire", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*1);
-				g.drawString("2 Ice", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*2);
-				g.drawString("3 Air", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*3);
-				g.drawString("4 Earth", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*4);
-				g.drawString("5 Light", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*5);
-				g.drawString("6 Dark", Setting.graphicsXLeft, Setting.graphicsYMid+Setting.rowSpacing*6);
-				break;
-
-		}
+		GUIScenario.drawControlsAndHelp(g, state, party, currentPlayer, card);
 	}
 	
 	private void setupBeginningOfRound() {
 		//Title
-		g.drawString("State of Scenario      Prosperity: "+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel(), Setting.graphicsXLeft, Setting.graphicsYTop);
-		g.drawString(state.toString(), Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing);
-		
-		//ImageIcon bg1 = new ImageIcon("src/Gloomhaven/img/InfoPlate.jpg");
-		//g.drawImage(bg1.getImage(), 0, Setting.graphicsYMid, 700, 450, null);
+		GUIScenario.drawStateOfScenario(g, gloomhaven, state);
 		
 		elements.graphicsDrawTable(g);
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
@@ -345,6 +298,7 @@ public class Scenario {
 			party.get(currentPlayer).setLongRest();
 		else
 			party.get(currentPlayer).pickAbilityCards(key, num, g);
+		
 		
 		if(party.get(currentPlayer).cardsLocked()) {
 			if((currentPlayer+1)!=party.size())

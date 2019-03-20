@@ -5,6 +5,9 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Random;
 
+import Gloomhaven.FontSettings;
+import Gloomhaven.GUI;
+import Gloomhaven.GUISettings;
 import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 
@@ -24,9 +27,7 @@ public class BattleGoalSelection {
 	
 	public boolean chooseCard(Graphics g, KeyEvent key, Player player, List<BattleGoalCard> deck) {
 			
-			
-		g.drawString("1: "+deck.get(index1).getName()+": "+deck.get(index1).getText()+"    "+deck.get(index1).getReward(), Setting.gCardX, Setting.gCardY);
-		g.drawString("2: "+deck.get(index2).getName()+": "+deck.get(index2).getText()+"    "+deck.get(index2).getReward(), Setting.gCardX, Setting.gCardY+25);
+		GUI.drawBattleGoal(g, deck, index1, index2);
 		
 		if(key!=null) {
 			if(key.getKeyCode()==KeyEvent.VK_1) {

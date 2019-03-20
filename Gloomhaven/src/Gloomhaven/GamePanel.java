@@ -86,8 +86,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	public void gameManager(Graphics g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TITLE_STATE) {
-			g.drawImage(new ImageIcon("src/Gloomhaven/img/TitleScreen.png").getImage(), 0, 0, Setting.width, Setting.height, null);
-			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYBottom);
+			
+			GUIGamepanel.drawTitle(g);
 			
 			if(key!=null)
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)
@@ -97,9 +97,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 					}
 		}
 		else if(state==GameState.TOWN) {
-			g.drawString("Town", Setting.graphicsXLeft, Setting.graphicsYTop);
+			
 			shop.drawShop(g, party, xClick, yClick);
-			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYBottom);
+			GUIGamepanel.drawTown(g);
 			
 			//Insert Town State Stuff Here
 			if(key!=null)
@@ -132,8 +132,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {
-			g.drawString("Pick Battle Goal Card", Setting.graphicsXLeft, Setting.graphicsYTop);
-			
+
 			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);
 			
 			if(finished==true) {
@@ -147,8 +146,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.SCENARIO_TEXT) {
-			g.drawString("Scenario Intro Text", Setting.graphicsXLeft, Setting.graphicsYTop);
-			g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.graphicsYTop+Setting.rowSpacing);
+			GUIGamepanel.drawScenarioIntro(g);
 			
 			if(key!=null) {
 				if(key.getKeyCode()==KeyEvent.VK_SPACE)

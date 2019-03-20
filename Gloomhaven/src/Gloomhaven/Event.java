@@ -41,15 +41,11 @@ public class Event {
 		k=UtilitiesGeneral.parseKeyCharacter(key);
 
 		if(deck.get(eventIndex)!=null)
-			g.drawString(type+" "+deck.get(eventIndex).getID()+"         "+state, Setting.graphicsXLeft,  Setting.graphicsYTop);
+			GUIEvent.drawEventHeader(g, type, deck, eventIndex, state);
 		if(state==State.SELECTION) {
-			g.drawString("1: "+deck.get(eventIndex).getOptionA(), Setting.graphicsXLeft, Setting.graphicsYTop+50);
-			g.drawString("2: "+deck.get(eventIndex).getOptionB(), Setting.graphicsXLeft, Setting.graphicsYTop+75);
 			
-			if(deck.get(eventIndex).getChoice()!=0) {
-				g.drawString(deck.get(eventIndex).getResults(), Setting.graphicsXLeft, Setting.graphicsYTop+150);
-				g.drawString("Press space to continue", Setting.graphicsXLeft, Setting.height-100);
-			}
+			GUIEvent.drawSelection(g, deck, eventIndex);
+			
 			if(key!=null) {
 				if(key.getKeyCode()==KeyEvent.VK_1 && deck.get(eventIndex).getChoice()==0) {
 					deck.get(eventIndex).setChoice(1);
@@ -83,9 +79,7 @@ public class Event {
 		else if(state==State.THRESHOLD) {
 
 			if(deck.get(eventIndex).getThresholdType().equals("PayCollectiveGold")) {
-				g.drawString("You must collective pay: "+deck.get(eventIndex).getThresholdAmount(), Setting.graphicsXLeft, Setting.graphicsYTop+50);
-				g.drawString("Press y to take on "+deck.get(eventIndex).getThresholdAmount()+"   n to refuse to pay.", Setting.graphicsXLeft, Setting.graphicsYTop+75);
-		
+				GUIEvent.drawThreshold(g, deck, eventIndex);
 				//Temp
 				//TODO: Need to have it so it can be split between players.
 				if(key!=null) {

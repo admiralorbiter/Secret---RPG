@@ -13,7 +13,7 @@ public final class GUISettings {
 	public static int eventImageH=640;
 	
 	//Tables
-	public static int entityTableH=150;
+	public static int entityTableH=125;
 	public static int entityTableW=200;
 	public static int cardsInPlayTableW=200;
 	

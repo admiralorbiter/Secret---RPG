@@ -30,7 +30,7 @@ public final class GUI {
 	}
 	
 	public static void drawAbilityCardText(Graphics g, List<PlayerAbilityCard> abilityDeck, int i) {
-		g.setFont(FontSettings.body);
+		g.setFont(FontSettings.bodySmall);
 		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody+i*30);
 		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2+i*30);
 	}
@@ -72,6 +72,7 @@ public final class GUI {
 		g.drawString("Pick Battle Goal Card", GUISettings.gLeft, GUISettings.gTop);
 		g.drawString("1: "+deck.get(index1).getName()+": "+deck.get(index1).getText()+"    "+deck.get(index1).getReward(), GUISettings.gGoalX, GUISettings.gGoalY);
 		g.drawString("2: "+deck.get(index2).getName()+": "+deck.get(index2).getText()+"    "+deck.get(index2).getReward(), GUISettings.gGoalX, GUISettings.gGoalY+GUISettings.leadingBigText);
+		g.drawImage(new ImageIcon("src/Gloomhaven/img/BattleGoal.png").getImage(), GUISettings.gMidX, GUISettings.gYQ1, GUISettings.eventImageW, GUISettings.eventImageH, null);
 	}
 	
 	public static void drawEnemyAbilityCards(Graphics g, List<EnemyAbilityDeck> enemyDecks, int enemyDeckIndex) {

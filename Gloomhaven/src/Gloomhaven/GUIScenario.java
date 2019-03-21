@@ -119,7 +119,7 @@ public final class GUIScenario {
 	public static void graphicsDrawCardsInPlay(Graphics g, CardDataObject augment, List<PlayerAbilityCard> inPlay, List<Counter> counterTriggers) {
 
 		g.setFont(FontSettings.heading);
-		g.drawString("Cards in play.", GUISettings.gRight, GUISettings.gTop);
+		g.drawString("Cards in play.", GUISettings.gRight, GUISettings.gTop+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
 		int rows=1;
@@ -139,7 +139,7 @@ public final class GUIScenario {
 		}
 
 		rows++;
-		g.drawRect(GUISettings.gRight, GUISettings.gTop-GUISettings.padding, GUISettings.cardsInPlayTableW, GUISettings.leadingBody*rows);
+		g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gTop, GUISettings.cardsInPlayTableW, GUISettings.leadingBody*rows);
 	}
 	
 	public static void graphicsPlayerInfo(Graphics g, String name, String classID, PositiveConditions positiveConditions, CharacterDataObject data, boolean isAugmented, CardDataObject augment, List<Counter> counterTriggers, List<Counter> roundTriggers, CardDataObject roundBonus) {
@@ -195,7 +195,7 @@ public final class GUIScenario {
 				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), GUISettings.gRight+10, GUISettings.gYQ1+GUISettings.leadingBody*(5+rows));
 		
 		
-		g.drawRect(GUISettings.gRight, GUISettings.gYQ1, 200, GUISettings.leadingBody*(6+rows));
+		g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ1, 200, GUISettings.leadingBody*(6+rows));
 		
 		g.setColor(Setting.defaultColor);
 	}

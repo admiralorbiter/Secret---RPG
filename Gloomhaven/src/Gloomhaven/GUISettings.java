@@ -13,7 +13,7 @@ public final class GUISettings {
 	public static int eventImageH=640;
 	
 	//Tables
-	public static int entityTableH=300;
+	public static int entityTableH=150;
 	public static int entityTableW=200;
 	public static int cardsInPlayTableW=200;
 	
@@ -38,4 +38,6 @@ public final class GUISettings {
 	public static int gRight = width-300;
 	public static int gYQ1 =height/4;
 	public static int gMidX=width/2;
+	public static int gXQ3 = width*3/4;
+	public static int gYQ3 = height*3/4;
 }

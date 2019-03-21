@@ -13,8 +13,11 @@ public final class GUIEvent {
 		g.setFont(FontSettings.bigText);
 		g.drawString(type+" "+deck.get(eventIndex).getID()+"         "+state, GUISettings.gLeft,  GUISettings.gTop);
 		
-		if(type.contentEquals("City"))
-			g.drawImage(new ImageIcon("src/Gloomhaven/img/GloomhavenCity1.png").getImage(), GUISettings.gMidX, GUISettings.gTop, GUISettings.eventImageW, GUISettings.eventImageH, null);
+		if(type.equals("City"))
+			g.drawImage(new ImageIcon("src/Gloomhaven/img/GloomhavenCity1.png").getImage(), GUISettings.gMidX, GUISettings.gYQ1, GUISettings.eventImageW, GUISettings.eventImageH, null);
+	
+		if(type.equals("Road"))
+			g.drawImage(new ImageIcon("src/Gloomhaven/img/GloomhavenRoad.png").getImage(), GUISettings.gMidX, GUISettings.gYQ1, GUISettings.eventImageW, GUISettings.eventImageH, null);
 	}
 	
 	public static void drawSelection(Graphics g, List<EventCard> deck, int eventIndex) {

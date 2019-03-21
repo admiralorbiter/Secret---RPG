@@ -1,7 +1,7 @@
 package Gloomhaven.Scenario;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class Scenario {
 	private List<Player> party = new  ArrayList<Player>();
 	
 	private State state;
-	private Graphics g;
+	private Graphics2D g;
 	private KeyEvent key;
 	private char k;
 	private int num;
@@ -181,21 +181,23 @@ public class Scenario {
 		board[(int) starting.getX()][(int) starting.getY()].reset();
 		*/
 
+		//Resets the old tile
 		board[player.getCoordinates().x][player.getCoordinates().y].setQuickID(" ");
 		board[player.getCoordinates().x][player.getCoordinates().y].setID(" ");
+		board[player.getCoordinates().x][player.getCoordinates().y].setImage(null);
 		player.setCoordinates(ending);
 		
 		return true;
 
 	}
 	
-	public boolean playRound(KeyEvent key, Graphics g) {
+	public boolean playRound(KeyEvent key, Graphics2D g) {
 		
 		this.g=g;
 		this.key=key;
 		
 		setupBeginningOfRound();
-		graphics();
+		Graphics2D();
 		
 		switch(state) {
 			case CARD_SELECTION:
@@ -264,7 +266,7 @@ public class Scenario {
 		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data);
 	}
 	
-	private void graphics() {
+	private void Graphics2D() {
 		GUIScenario.drawControlsAndHelp(g, state, party, currentPlayer, card);
 	}
 	
@@ -540,7 +542,7 @@ public class Scenario {
 			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
 			
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
 			
 			if(k==Setting.moveKey) {
 				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout))<UsePlayerAbilityCard.getMove(card)) {
@@ -630,7 +632,7 @@ public class Scenario {
 					UtilitiesTargeting.drawAttack(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction, UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets());
 				}
 				else {
-					Draw.drawHex(g, selectionCoordinate);
+					Draw.drawHex(g, selectionCoordinate, null);
 				}
 				
 				if(k==Setting.targetKey) {
@@ -777,7 +779,7 @@ public class Scenario {
 			selection();
 			g.setColor(Color.cyan);
 			//if(UsePlayerAbilityCard.getCardData(card).getEffects().getRange()!=0)
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
 
 			//Space is used for selection of target
 			if(k==Setting.targetKey) {
@@ -817,7 +819,7 @@ public class Scenario {
 		
 		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction);
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, pushPoint);
+		Draw.drawHex(g, pushPoint, null);
 		
 		if(num>=1 && num<=3) {
 			if(num==1) {
@@ -900,7 +902,7 @@ public class Scenario {
 		
 		selection();
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
+		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
 				
 		if(k==Setting.moveKey) {
 			if(UtilitiesHex.distance(enemyPoint, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate))<=cardData.getData().getRange()) {
@@ -949,7 +951,7 @@ public class Scenario {
 			UtilitiesTargeting.highlightTargets(targets, g);
 			selection();
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate));
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
 			
 			if(k==Setting.targetKey) {
 				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("E")) {

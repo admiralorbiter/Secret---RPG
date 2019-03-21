@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.Setting;
 import Gloomhaven.CardDataObject.SimpleCardData;
@@ -16,6 +18,7 @@ public class Enemy extends character{
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
 	private Point startingPosition;
+	private ImageIcon image = null;
 	
 	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		
@@ -40,6 +43,7 @@ public class Enemy extends character{
 	
 	public SimpleCardData getBaseStats() {return baseStats;}
 	public boolean isElite() {return eliteFlag;}
+	public ImageIcon getImage() {return image;}
 	
 	public void push(Point playerCoordinate, int pushRange) {
 		//If player is above it on the x axis, push down

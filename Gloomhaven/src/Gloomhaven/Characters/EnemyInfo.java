@@ -1,6 +1,7 @@
 package Gloomhaven.Characters;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,10 +38,10 @@ public class EnemyInfo {
 			enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
 	}
 	
-	public void drawEnemies(Graphics g) {
+	public void drawEnemies(Graphics2D g) {
 		g.setColor(Setting.enemyColor);
 		for(int i=0; i<enemies.size(); i++) {
-			Draw.drawHex(g, enemies.get(i).getCoordinates());
+			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i).getImage());
 		}
 		g.setColor(Setting.enemyColor);
 	}

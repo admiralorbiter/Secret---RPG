@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -83,7 +84,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		state=GameState.TITLE_STATE;
 	}
 	
-	public void gameManager(Graphics g) {	
+	public void gameManager(Graphics2D g) {	
 		//Goes through the game loop town->roadevent->scene->town etc...
 		if(state==GameState.TITLE_STATE) {
 			
@@ -168,7 +169,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g1) {
+		Graphics2D g = (Graphics2D)g1;
 		super.paintComponent(g);
 		g.setColor(Setting.defaultColor);						//Sets the paint component to the default color	
 		if(!(state==GameState.TESTING_SETUP)) 						//If it isn't in the setup, then go through game manager

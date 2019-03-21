@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.ImageIcon;
+
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.FontSettings;
 import Gloomhaven.GUI;
@@ -73,6 +75,9 @@ public class Player extends character {
 		
 		return count;
 	}
+	
+	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/Player.png");
+	public ImageIcon getImage() {return image;}
 	
 	public Player(int id, String classID) {
 		setRoundBonus(new CardDataObject());

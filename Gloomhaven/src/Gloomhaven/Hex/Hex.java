@@ -1,5 +1,7 @@
 package Gloomhaven.Hex;
 
+import javax.swing.ImageIcon;
+
 public class Hex extends HexCoordinate {
 
 	private String quickID=" ";
@@ -16,6 +18,8 @@ public class Hex extends HexCoordinate {
 	boolean obstacle=false;
 	
 	boolean hidden=false;
+	
+	private ImageIcon image = null;
 	
 	public Hex(int x, int y, boolean flatlayout) {
 		super(x, y, flatlayout);
@@ -42,6 +46,9 @@ public class Hex extends HexCoordinate {
 	 public void setDoor(boolean door) {this.door=door;}
 	 public void setDoorOpen(boolean doorOpen) {this.doorOpen=doorOpen;}
 	 public boolean hasObstacle() {return obstacle;}
+	 
+	 public ImageIcon getImage() {return image;}
+	 public void setImage(ImageIcon image) {this.image=image;}
 	 
 	 public void setObstacle(boolean obstacle) {
 		 this.obstacle=obstacle;

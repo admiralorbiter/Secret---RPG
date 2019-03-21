@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,21 +60,21 @@ public final class UtilitiesTargeting {
 		return targets;
 	}
 
-	public static void highlightTargets(List<Point> targets, Graphics g) {
+	public static void highlightTargets(List<Point> targets, Graphics2D g) {
 		for(int i=0; i<targets.size(); i++) {
 			g.setColor(Setting.highlightColor);
-			Draw.drawHex(g, targets.get(i));
+			Draw.drawHex(g, targets.get(i), null);
 			g.setColor(Setting.defaultColor);
 		}
 	}
 	
-	public static void drawAttack(Graphics g, HexCoordinate center, int direction, int num) {
+	public static void drawAttack(Graphics2D g, HexCoordinate center, int direction, int num) {
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, center, Setting.size, Setting.flatlayout, Setting.center);
+		Draw.drawHex(g, center, Setting.size, Setting.flatlayout, Setting.center, null);
 		g.setColor(Color.cyan);
 
 		HexCoordinate hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction));
-		Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+		Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		
 		/*
 		 * Note: I no longer need to check if the direction is out of bounds since I do
@@ -86,7 +87,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(0));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		}
 		if(num>=3) {
 			if(direction-1>=0) 
@@ -94,7 +95,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(5));
 					
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		}
 		if(num>=4) {
 			if(direction+2<=5) 
@@ -104,7 +105,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(1));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		}
 		if(num>=5) {
 			if(direction-2>=0) 
@@ -114,7 +115,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(4));
 					
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		}
 		if(num>=6) {
 			if(direction+3<=5) 
@@ -126,7 +127,7 @@ public final class UtilitiesTargeting {
 			else if(direction+3==8)
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(2));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center);
+			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
 		}
 	}
 	

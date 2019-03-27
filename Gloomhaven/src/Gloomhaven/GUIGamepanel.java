@@ -14,7 +14,7 @@ public final class GUIGamepanel {
 	
 	public static void drawTown(Graphics g) {
 		g.setFont(FontSettings.heading);
-		g.drawString("Town", GUISettings.gLeft, GUISettings.gTop);
+		g.drawString("Town", GUISettings.gLeft, GUISettings.leadingBody);
 		g.drawString("Press space to continue", GUISettings.gLeft, GUISettings.gBottom);
 	}
 	

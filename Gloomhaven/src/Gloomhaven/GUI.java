@@ -14,6 +14,28 @@ import Gloomhaven.Characters.Player;
 import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUI {
+
+	
+	public static void drawLines(Graphics g) {
+		int lineLength=GUISettings.lineLength;
+
+		for(int x=0; x<GUISettings.width; x=x+lineLength) {
+			g.setColor(Setting.lineColor);
+			g.drawLine(x, 0, x, GUISettings.height);
+			g.setColor(Setting.defaultColor);
+			g.drawString(Integer.toString(x), x, 0);
+			g.drawString(Integer.toString(x), x, GUISettings.height-25);
+		}
+		
+		for(int y=0; y<GUISettings.height; y=y+lineLength) {
+			g.setColor(Setting.lineColor);
+			g.drawLine(0, y, GUISettings.width, y);
+			g.setColor(Setting.defaultColor);
+			g.drawString(Integer.toString(y), 0, y);
+			g.drawString(Integer.toString(y), GUISettings.width-25, y);
+		}
+
+	}
 	
 	public static void drawBoardRectangle(Graphics g, ScenarioData data) {
 		//g.drawRect(Setting.center.x-data.getBoardSize().x*Setting.size/2, Setting.center.y-data.getBoardSize().y*Setting.size/2, data.getBoardSize().x*Setting.size, data.getBoardSize().y*Setting.size);

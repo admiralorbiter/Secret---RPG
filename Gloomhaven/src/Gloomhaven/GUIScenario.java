@@ -18,10 +18,10 @@ public final class GUIScenario {
 	
 	public static void EntityTable(Graphics g, List<Player> party , List<Enemy> enemies) {
 		g.setColor(Setting.defaultColor);
-		g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gMid, GUISettings.entityTableW, GUISettings.entityTableH);
+		g.drawRect(GUISettings.entityTableX-GUISettings.padding, GUISettings.entityTableY, GUISettings.entityTableW, GUISettings.entityTableH);
 		
 		g.setFont(FontSettings.heading);
-		g.drawString("Entity Table", GUISettings.gRight, GUISettings.gMid+GUISettings.leadingBody);
+		g.drawString("Entity Table", GUISettings.entityTableX, GUISettings.entityTableY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
 		
@@ -29,42 +29,42 @@ public final class GUIScenario {
 		
 		for(int i=0; i<party.size(); i++) {
 			g.setColor(Setting.defaultColor);
-			g.drawString(party.get(i).getName(), GUISettings.gRight, GUISettings.gMid+GUISettings.leadingBody*entityCount);
+			g.drawString(party.get(i).getName(), GUISettings.entityTableX, GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			
 			if(party.get(i).getPositiveConditions()!=null) {
 				g.setColor(Color.YELLOW);
 				if(party.get(i).getPositiveConditions().isBless())
-					g.drawString("B", GUISettings.gRight+70,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("B", GUISettings.entityTableX+70,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.gray);
 				if(party.get(i).getPositiveConditions().isInvisibility())
-					g.drawString("I",GUISettings.gRight+80,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("I",GUISettings.entityTableX+80,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.red);
 				if(party.get(i).getPositiveConditions().isStrengthen())
-					g.drawString("S", GUISettings.gRight+90,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("S", GUISettings.entityTableX+90,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			}
 			
 			if(party.get(i).getNegativeConditions()!=null) {
 				g.setColor(new Color(238,130,238));
 				if(party.get(i).getNegativeConditions().isCurse())
-					g.drawString("C", GUISettings.gRight+100,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("C", GUISettings.entityTableX+100,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.ORANGE);
 				if(party.get(i).getNegativeConditions().isDisarm())
-					g.drawString("D", GUISettings.gRight+110,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("D", GUISettings.entityTableX+110,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.cyan);
 				if(party.get(i).getNegativeConditions().isImmobilize())
-					g.drawString("I", GUISettings.gRight+120,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("I", GUISettings.entityTableX+120,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.red);
 				if(party.get(i).getNegativeConditions().isWound())
-					g.drawString("W", GUISettings.gRight+125,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("W", GUISettings.entityTableX+125,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.LIGHT_GRAY);
 				if(party.get(i).getNegativeConditions().isMuddle())
-					g.drawString("M", GUISettings.gRight+140,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("M", GUISettings.entityTableX+140,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.GREEN);
 				if(party.get(i).getNegativeConditions().isPoison())
-					g.drawString("P", GUISettings.gRight+150,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("P", GUISettings.entityTableX+150,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.yellow);
 				if(party.get(i).getNegativeConditions().isStun())
-					g.drawString("S", GUISettings.gRight+160,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("S", GUISettings.entityTableX+160,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			}
 			
 			entityCount++;
@@ -72,42 +72,42 @@ public final class GUIScenario {
 		
 		for(int i=0; i<enemies.size(); i++) {
 			g.setColor(Setting.defaultColor);
-			g.drawString(enemies.get(i).getClassID(), GUISettings.gRight+10,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+			g.drawString(enemies.get(i).getClassID(), GUISettings.entityTableX+10,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			
 			if(enemies.get(i).getPositiveConditions()!=null) {
 				g.setColor(Color.YELLOW);
 				if(enemies.get(i).getPositiveConditions().isBless())
-					g.drawString("B", GUISettings.gRight+70,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("B", GUISettings.entityTableX+70,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.gray);
 				if(enemies.get(i).getPositiveConditions().isInvisibility())
-					g.drawString("I", GUISettings.gRight+80,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("I", GUISettings.entityTableX+80,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.red);
 				if(enemies.get(i).getPositiveConditions().isStrengthen())
-					g.drawString("S", GUISettings.gRight+90,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("S", GUISettings.entityTableX+90,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			}
 			
 			if(enemies.get(i).getNegativeConditions()!=null) {
 				g.setColor(new Color(238,130,238));
 				if(enemies.get(i).getNegativeConditions().isCurse())
-					g.drawString("C", GUISettings.gRight+100,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("C", GUISettings.entityTableX+100,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.ORANGE);
 				if(enemies.get(i).getNegativeConditions().isDisarm())
-					g.drawString("D", GUISettings.gRight+110,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("D", GUISettings.entityTableX+110,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.cyan);
 				if(enemies.get(i).getNegativeConditions().isImmobilize())
-					g.drawString("I", GUISettings.gRight+120,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("I", GUISettings.entityTableX+120,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.red);
 				if(enemies.get(i).getNegativeConditions().isWound())
-					g.drawString("W", GUISettings.gRight+125,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("W", GUISettings.entityTableX+125,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.LIGHT_GRAY);
 				if(enemies.get(i).getNegativeConditions().isMuddle())
-					g.drawString("M", GUISettings.gRight+140,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("M", GUISettings.entityTableX+140,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.GREEN);
 				if(enemies.get(i).getNegativeConditions().isPoison())
-					g.drawString("P", GUISettings.gRight+150,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("P", GUISettings.entityTableX+150,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 				g.setColor(Color.yellow);
 				if(enemies.get(i).getNegativeConditions().isStun())
-					g.drawString("S", GUISettings.gRight+160,  GUISettings.gMid+GUISettings.leadingBody*entityCount);
+					g.drawString("S", GUISettings.entityTableX+160,  GUISettings.entityTableY+GUISettings.leadingBody*entityCount);
 			}
 			
 			entityCount++;
@@ -119,27 +119,27 @@ public final class GUIScenario {
 	public static void graphicsDrawCardsInPlay(Graphics g, CardDataObject augment, List<PlayerAbilityCard> inPlay, List<Counter> counterTriggers) {
 
 		g.setFont(FontSettings.heading);
-		g.drawString("Cards in play.", GUISettings.gRight, GUISettings.gTop+GUISettings.leadingBody);
+		g.drawString("Cards in play.", GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
 		int rows=1;
 		
 		if(augment!=null) {
-			g.drawString(augment.getCardText(), GUISettings.gRight, GUISettings.gTop+GUISettings.leadingBody*rows);
+			g.drawString(augment.getCardText(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
 			rows++;
 		}
 		
 		for(int i=0; i<inPlay.size(); i++) {
-			g.drawString(inPlay.get(i).getName(), GUISettings.gRight, GUISettings.gTop+GUISettings.leadingBody*rows);
+			g.drawString(inPlay.get(i).getName(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
 			rows++;
 		}
 		
 		for(int j=0; j<counterTriggers.size(); j++) {
-			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), GUISettings.gRight, GUISettings.gTop+GUISettings.leadingBody*rows);
+			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
 		}
 
 		rows++;
-		g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gTop, GUISettings.cardsInPlayTableW, GUISettings.leadingBody*rows);
+		g.drawRect(GUISettings.cardsInPlayX-GUISettings.padding, GUISettings.cardsInPlayY, GUISettings.cardsInPlayTableW, GUISettings.leadingBody*rows);
 	}
 	
 	public static void graphicsPlayerInfo(Graphics g, String name, String classID, PositiveConditions positiveConditions, CharacterDataObject data, boolean isAugmented, CardDataObject augment, List<Counter> counterTriggers, List<Counter> roundTriggers, CardDataObject roundBonus) {

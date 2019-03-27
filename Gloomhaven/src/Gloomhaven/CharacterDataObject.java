@@ -13,8 +13,8 @@ public class CharacterDataObject {
 	public CharacterDataObject(String flag, boolean eliteFlag) {
 		
 		//TODO: Move this into settings or class
-		int TEST_HEALTH=3;
-		int TEST_SHIELD=0;
+		int TEST_HEALTH=Setting.TEST_HEALTH;
+		int TEST_SHIELD=Setting.TEST_SHIELD;
 		int scenarioLevel=1;
 		
 		switch(flag) {

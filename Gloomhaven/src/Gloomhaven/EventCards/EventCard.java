@@ -45,6 +45,7 @@ public class EventCard {
 	public String getThresholdType() {return thresholdType;}
 	public void setThresholdType(String type) {this.thresholdType=type;}
 	public void setThresholdAmount(int amount) {this.thresholdAmount=amount;}
+	public String getText() {return text;}
 	
 	public String getResults() {
 		if(choice==1) {

@@ -38,54 +38,54 @@ public final class GUIInfusion {
 	
 	public static void drawInfusionTable(Graphics g, List<String> strong, List<String> wanning) {
 		
-		g.drawImage(new ImageIcon("src/Gloomhaven/img/InfusionTable.png").getImage(), GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3-33, 200, 33*8, null);
+		g.drawImage(new ImageIcon("src/Gloomhaven/img/InfusionTable.png").getImage(), GUISettings.infusionTableX-GUISettings.padding, GUISettings.infusionTableY-33, 200, 33*8, null);
 		
 		
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33);
-		g.drawString("Earth:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody);
+		g.drawString("Earth:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody);
 		if(strong.contains("Earth"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody);
 		else if(wanning.contains("Earth"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody);
 		
 		//Air
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33*2);
-		g.drawString("Air:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody+33);
+		g.drawString("Air:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody+33);
 		if(strong.contains("Air"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33);
 		else if(wanning.contains("Air"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33);
 		
 		//Fire
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33*3);
-		g.drawString("Fire:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody+33*2);
+		g.drawString("Fire:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody+33*2);
 		if(strong.contains("Fire"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*2);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*2);
 		else if(wanning.contains("Fire"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*2);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*2);
 		
 		//Water
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33*4);
-		g.drawString("Water:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody+33*3);
+		g.drawString("Water:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody+33*3);
 		if(strong.contains("Water"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*3);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*3);
 		else if(wanning.contains("Water"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*3);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*3);
 		
 		//Dark
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33*5);
-		g.drawString("Dark:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody+33*4);
+		g.drawString("Dark:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody+33*4);
 		if(strong.contains("Dark"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*4);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*4);
 		else if(wanning.contains("Dark"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*4);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*4);
 		
 		//Light
 		//g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ3, 200, 33*6);
-		g.drawString("Light:", GUISettings.gRight+10, GUISettings.gYQ3+GUISettings.leadingBody+33*5);
+		g.drawString("Light:", GUISettings.infusionTableX+10, GUISettings.infusionTableY+GUISettings.leadingBody+33*5);
 		if(strong.contains("Light"))
-			g.drawString("Strong", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*5);
+			g.drawString("Strong", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*5);
 		else if(wanning.contains("Light"))
-			g.drawString("Wanning", GUISettings.gRight+50, GUISettings.gYQ3+GUISettings.leadingBody+33*5);
+			g.drawString("Wanning", GUISettings.infusionTableX+50, GUISettings.infusionTableY+GUISettings.leadingBody+33*5);
 	}
 }

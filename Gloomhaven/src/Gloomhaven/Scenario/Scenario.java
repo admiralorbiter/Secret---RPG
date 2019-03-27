@@ -197,6 +197,9 @@ public class Scenario {
 		this.g=g;
 		this.key=key;
 		
+		if(Setting.drawLines)
+			GUI.drawLines(g);
+		
 		setupBeginningOfRound();
 		Graphics2D();
 		
@@ -263,6 +266,11 @@ public class Scenario {
 				roundEndRest();
 				break;
 		}
+		
+		/*
+		if(Setting.drawLines)
+			GUI.drawLines(g);
+		*/
 		
 		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data);
 	}

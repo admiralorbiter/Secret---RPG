@@ -8,13 +8,18 @@ import javax.swing.ImageIcon;
 public final class Setting {
 	public static boolean test = false;
 	
+	public static boolean drawLines = false;
+	
 	public static int size=40;
 	public static boolean flatlayout=true;
-	public static Point center = new Point(500, 100);
+	public static Point center = new Point(GUISettings.width/3+50, 100);
+	
+	public static int TEST_HEALTH=1;
+	public static int TEST_SHIELD=0;
 	
 	public static String title="Gloomhaven";
-
-	public static Color defaultColor = Color.WHITE;
+	public static Color lineColor = Color.white;
+	public static Color defaultColor = Color.white;
 	public static Color highlightColor = Color.YELLOW;
 	public static Color playerColor = Color.RED;
 	public static Color enemyColor = Color.MAGENTA;

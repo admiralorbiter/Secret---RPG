@@ -120,23 +120,27 @@ public final class GUI {
 	
 	public static void drawShortRestInfo(Graphics g, List<PlayerAbilityCard> abilityDeck) {
 		g.setFont(FontSettings.body);
-		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText);
+		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", GUISettings.restX, GUISettings.restY+GUISettings.leadingBigText);
 		showDiscardPile(g, abilityDeck);
 	}
 	
 	public static void showDiscardPile(Graphics g, List<PlayerAbilityCard> abilityDeck) {
 		g.setFont(FontSettings.body);
-		g.drawString("Discard Pile:", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText+GUISettings.leadingBody);
+		g.drawString("Discard Pile:", GUISettings.gLeft, GUISettings.restY+GUISettings.leadingBigText+GUISettings.leadingBody);
 		for(int i=0; i<abilityDeck.size(); i++) {
-			if(abilityDeck.get(i).isDiscardFlag())
-				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+" "+abilityDeck.get(i).getText()[1]+" "+abilityDeck.get(i).getText()[2], 10, 130+i*15);
+			if(abilityDeck.get(i).isDiscardFlag()) {
+				g.setFont(FontSettings.bodySmall);
+				//g.drawString(i+": "+abilityDeck.get(i).getText()[0]+" "+abilityDeck.get(i).getText()[1]+" "+abilityDeck.get(i).getText()[2], GUISettings.restX, GUISettings.restY+GUISettings.leadingBigText+GUISettings.leadingBody+(i+1)*GUISettings.leadingBody);
+				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.restX, GUISettings.restY+GUISettings.leadingBigText+GUISettings.leadingBody+(i+1)*GUISettings.leadingBody*2);
+				g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.restX+GUISettings.restY+GUISettings.leadingBigText+GUISettings.leadingBody+(i+1)*GUISettings.leadingBody*2+3);
+			}
 		}
 	}
 	
 	public static void drawEnemyAbilityCard(Graphics g, List<EnemyAbilityCard> abilityDeck, int abilityCardIndex) {
 		g.setFont(FontSettings.body);
-		g.drawString("Enemy Ability Card", GUISettings.gLeft, GUISettings.gMid);
-		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody);
+		g.drawString("Enemy Ability Card", GUISettings.enemyAbilityCardX, GUISettings.enemyAbilityCardY);
+		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), GUISettings.enemyAbilityCardX, GUISettings.enemyAbilityCardY+GUISettings.leadingBody);
 	}
 	
 	public static void drawMatrixSelection(Graphics g, int drawRow, int drawCol, int x, int y, List<Item> text, int i) {

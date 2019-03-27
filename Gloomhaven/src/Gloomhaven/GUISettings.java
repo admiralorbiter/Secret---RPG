@@ -24,8 +24,8 @@ public final class GUISettings {
 	public static int eventImageH=640;
 	
 	//Entity Table
-	public static int entityTableX=10;
-	public static int entityTableY=100;
+	public static int entityTableX=325;
+	public static int entityTableY=250;
 	public static int entityTableH=125;
 	public static int entityTableW=200;
 
@@ -37,7 +37,15 @@ public final class GUISettings {
 	
 	//Infusion Table
 	public static int infusionTableX=10;
-	public static int infusionTableY=300;
+	public static int infusionTableY=250;
+	
+	//Long/Short Rest & Discard
+	public static int restX=10;
+	public static int restY=50;
+	
+	//enemyAbilityCard
+	public static int enemyAbilityCardX=10;
+	public static int enemyAbilityCardY=height/2+100;
 	
 	//public static int gAbilityCardw=285;
 	//public static int gAbilityCardh=425;

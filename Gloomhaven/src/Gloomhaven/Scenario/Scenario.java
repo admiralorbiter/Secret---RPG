@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.City;
 import Gloomhaven.FontSettings;
+import Gloomhaven.GUI;
 import Gloomhaven.GUIScenario;
 import Gloomhaven.InfusionTable;
 import Gloomhaven.Item;
@@ -275,6 +276,7 @@ public class Scenario {
 		GUIScenario.drawStateOfScenario(g, gloomhaven, state);
 		
 		elements.graphicsDrawTable(g);
+		GUI.drawBoardRectangle(g, data);
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
 		Draw.drawParty(g, party);
 		enemyInfo.drawEnemies(g);

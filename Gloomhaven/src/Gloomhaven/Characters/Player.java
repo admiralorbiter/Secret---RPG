@@ -384,7 +384,7 @@ public class Player extends character {
 		abilityDeck.get(displayCard).showCard(g);
 		
 		abilityCardsLeft();
-
+		GUI.abilityCardTitle(g);
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
 				GUI.chooseTopCard(g);

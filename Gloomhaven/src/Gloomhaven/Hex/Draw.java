@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Scenario.Scenario;
 
 public final class Draw {
 	
@@ -170,7 +171,7 @@ public final class Draw {
 		
 		
 		
-		if(size>=40 && Setting.test==true) {
+		if(size>=40 && Setting.test) {
 			if(flatlayout) {
 				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
 				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);

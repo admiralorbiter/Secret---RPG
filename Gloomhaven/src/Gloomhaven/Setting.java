@@ -3,6 +3,8 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Point;
 
+import javax.swing.ImageIcon;
+
 public final class Setting {
 	public static boolean test = false;
 	
@@ -19,6 +21,7 @@ public final class Setting {
 	public static Color lootColor = Color.YELLOW;
 	public static Color obstacleColor = Color.GREEN;
 	public static Color hextFill = Color.black;
+	public static Color playerInfoColor = Color.white;
 	//Party Info
 	public static int numberOfPlayers=1;
 	public static String playerClass="Mind Thief";
@@ -49,4 +52,6 @@ public final class Setting {
 	public static char left='a';
 	public static char right='d';
 	public static char targetKey='t';
+	
+	public static ImageIcon background = new ImageIcon("src/Gloomhaven/img/RoundedBackground.png");
 }

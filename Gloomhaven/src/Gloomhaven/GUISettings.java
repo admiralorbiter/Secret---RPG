@@ -9,6 +9,9 @@ public final class GUISettings {
 	public static int leadingBigText=50;
 	public static int padding=10;
 	
+	public static int playerInfoX=325;
+	public static int playerInfoY=25;
+	
 	public static int eventImageW=640;
 	public static int eventImageH=640;
 	
@@ -20,8 +23,10 @@ public final class GUISettings {
 	//Ability Card Draw
 	public static int gAbilityCardX=10;
 	public static int gAbilityCardY=100;
-	public static int gAbilityCardw=285;
-	public static int gAbilityCardh=425;
+	public static int gAbilityCardw=200;
+	public static int gAbilityCardh=300;
+	//public static int gAbilityCardw=285;
+	//public static int gAbilityCardh=425;
 	
 	public static int gGoalX=10;
 	public static int gGoalY=75;

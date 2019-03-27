@@ -143,59 +143,61 @@ public final class GUIScenario {
 	}
 	
 	public static void graphicsPlayerInfo(Graphics g, String name, String classID, PositiveConditions positiveConditions, CharacterDataObject data, boolean isAugmented, CardDataObject augment, List<Counter> counterTriggers, List<Counter> roundTriggers, CardDataObject roundBonus) {
-		g.setColor(Setting.defaultColor);
+		
+		g.drawImage(Setting.background.getImage(), GUISettings.playerInfoX-GUISettings.padding-25, GUISettings.playerInfoY-GUISettings.leadingBody, 200, GUISettings.leadingBody*(6), null);
+		
+		g.setColor(Setting.playerInfoColor);
 		g.setFont(FontSettings.heading);
-		g.drawString(name+"  "+classID, GUISettings.gRight, GUISettings.gYQ1+GUISettings.leadingBody);
+		g.drawString(name+"  "+classID, GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
 		
 		if(positiveConditions.isBless()) {
 			g.setColor(Color.YELLOW);
-			g.drawString("B", GUISettings.gRight+100, GUISettings.gYQ1+GUISettings.leadingBody);
-			g.setColor(Setting.defaultColor);
+			g.drawString("B", GUISettings.playerInfoX+125, GUISettings.playerInfoY+GUISettings.leadingBody);
+			g.setColor(Setting.playerInfoColor);
 		}
 		
 		if(positiveConditions.isInvisibility()) {
 			g.setColor(Color.gray);
-			g.drawString("I", GUISettings.gRight+120, GUISettings.gYQ1+GUISettings.leadingBody);
-			g.setColor(Setting.defaultColor);
+			g.drawString("I", GUISettings.playerInfoX+140, GUISettings.playerInfoY+GUISettings.leadingBody);
+			g.setColor(Setting.playerInfoColor);
 		}
 		
 		if(positiveConditions.isStrengthen()) {
 			g.setColor(Color.red);
-			g.drawString("S", GUISettings.gRight+140, GUISettings.gYQ1+GUISettings.leadingBody);
-			g.setColor(Setting.defaultColor);
+			g.drawString("S", GUISettings.playerInfoX+155, GUISettings.playerInfoY+GUISettings.leadingBody);
+			g.setColor(Setting.playerInfoColor);
 		}
 		
-		g.drawString("Level "+data.getLevel(), GUISettings.gRight, GUISettings.gYQ1+GUISettings.leadingBody*2);
-		g.drawString("Health "+data.getHealth()+"  XP"+data.getXp(), GUISettings.gRight, GUISettings.gYQ1+GUISettings.leadingBody*3);
+		g.drawString("Level "+data.getLevel(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*2);
+		g.drawString("Health "+data.getHealth()+"  XP "+data.getXp(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*3);
 	
 		int rows=0;
 		
 		if(isAugmented) {
-			g.drawString("Augment Active: ", GUISettings.gRight, GUISettings.gYQ1+GUISettings.leadingBody*(4));
-			g.drawString(augment.getCardText(), GUISettings.gRight, GUISettings.gYQ1+GUISettings.leadingBody*5);
+			g.drawString("Augment Active: ", GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*(4));
+			g.drawString(augment.getCardText(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*5);
 			rows=2;
 		}
 		
 		for(int i=0; i<counterTriggers.size();i++) {
 			rows++;
-			g.drawString(counterTriggers.get(i).getTriggerFlag(), GUISettings.gRight+10, GUISettings.gYQ1+GUISettings.leadingBody*4);
+			g.drawString(counterTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+10, GUISettings.playerInfoY+GUISettings.leadingBody*4);
 		}
 		
 		for(int i=0; i<roundTriggers.size();i++) {
 			rows++;
-			g.drawString(roundTriggers.get(i).getTriggerFlag(), GUISettings.gRight+10, GUISettings.gYQ1+GUISettings.leadingBody*(4+rows));
+			g.drawString(roundTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+10, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		}
 		
-		g.drawString("Gold: "+data.getGold(), GUISettings.gRight+10, GUISettings.gYQ1+GUISettings.leadingBody*(4+rows));
+		g.drawString("Gold: "+data.getGold(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		
 		if(roundBonus!=null)
 			if(roundBonus.getNegativeConditions()!=null)
-				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), GUISettings.gRight+10, GUISettings.gYQ1+GUISettings.leadingBody*(5+rows));
+				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), GUISettings.gRight+10, GUISettings.playerInfoY+GUISettings.leadingBody*(5+rows));
 		
-		
-		g.drawRect(GUISettings.gRight-GUISettings.padding, GUISettings.gYQ1, 200, GUISettings.leadingBody*(6+rows));
+		//g.drawRect(GUISettings.playerInfoX-GUISettings.padding, GUISettings.playerInfoY, 200, GUISettings.leadingBody*(6+rows));
 		
 		g.setColor(Setting.defaultColor);
 	}

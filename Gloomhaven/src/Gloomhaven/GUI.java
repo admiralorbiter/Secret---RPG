@@ -11,28 +11,43 @@ import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUI {
+	
+	public static void drawBoardRectangle(Graphics g, ScenarioData data) {
+		//g.drawRect(Setting.center.x-data.getBoardSize().x*Setting.size/2, Setting.center.y-data.getBoardSize().y*Setting.size/2, data.getBoardSize().x*Setting.size, data.getBoardSize().y*Setting.size);
+		//if(Setting.test)
+			g.drawRect(Setting.center.x-Setting.size, Setting.center.y-Setting.size, (data.getBoardSize().x-2)*Setting.size*2, (data.getBoardSize().y-2)*Setting.size*2+Setting.size);
+	}
 	
 	public static void chooseDiscard(Graphics g) {
 		g.setFont(FontSettings.body);
 		g.drawString("Pick card to discard.", GUISettings.gLeft, GUISettings.gTop);
 	}
 	
+	public static void abilityCardTitle(Graphics g) {
+		g.drawRect(GUISettings.gLeft-5, GUISettings.gMid-GUISettings.leadingBigText, GUISettings.width/3, GUISettings.leadingBody*(Setting.getMaxHandCount()+3)*2);
+		g.setFont(FontSettings.bigText);
+		g.drawString("Ability Cards", GUISettings.gLeft, GUISettings.gMid);
+		g.setFont(FontSettings.body);
+		g.drawString("Cards Left", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody);
+	}
+	
 	public static void chooseTopCard(Graphics g) {
 		g.setFont(FontSettings.body);
-		g.drawString("Choose top card.", GUISettings.gLeft, GUISettings.gMid);
+		g.drawString("Choose top card.", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2);
 	}
 	
 	public static void chooseBottomCard(Graphics g) {
 		g.setFont(FontSettings.body);
-		g.drawString("Choose bottom card.", GUISettings.gLeft, GUISettings.gMid);
+		g.drawString("Choose bottom card.", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2);
 	}
 	
 	public static void drawAbilityCardText(Graphics g, List<PlayerAbilityCard> abilityDeck, int i) {
 		g.setFont(FontSettings.bodySmall);
-		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody+i*30);
-		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2+i*30);
+		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*3+i*30);
+		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*4+i*30);
 	}
 	
 	public static void drawAbilityCardTextTop(Graphics g, PlayerAbilityCard topCard) {
@@ -83,13 +98,13 @@ public final class GUI {
 	
 	public static void drawShortRestInfo(Graphics g, List<PlayerAbilityCard> abilityDeck) {
 		g.setFont(FontSettings.body);
-		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", GUISettings.gLeft, GUISettings.gTop);
+		g.drawString("Take a short rest. Shuffle in discard pile and randomly discard? y/n", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText);
 		showDiscardPile(g, abilityDeck);
 	}
 	
 	public static void showDiscardPile(Graphics g, List<PlayerAbilityCard> abilityDeck) {
 		g.setFont(FontSettings.body);
-		g.drawString("Discard Pile:", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBody);
+		g.drawString("Discard Pile:", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText+GUISettings.leadingBody);
 		for(int i=0; i<abilityDeck.size(); i++) {
 			if(abilityDeck.get(i).isDiscardFlag())
 				g.drawString(i+": "+abilityDeck.get(i).getText()[0]+" "+abilityDeck.get(i).getText()[1]+" "+abilityDeck.get(i).getText()[2], 10, 130+i*15);

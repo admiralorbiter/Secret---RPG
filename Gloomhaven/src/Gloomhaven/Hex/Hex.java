@@ -19,7 +19,7 @@ public class Hex extends HexCoordinate {
 	
 	boolean hidden=false;
 	
-	private ImageIcon image = null;
+	private ImageIcon image = null;//new ImageIcon("src/Gloomhaven/img/Blank.png");
 	
 	public Hex(int x, int y, boolean flatlayout) {
 		super(x, y, flatlayout);

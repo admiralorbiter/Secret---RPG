@@ -76,7 +76,7 @@ public class Player extends character {
 		return count;
 	}
 	
-	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/Player.png");
+	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/MindthiefIcon.png");
 	public ImageIcon getImage() {return image;}
 	
 	public Player(int id, String classID) {

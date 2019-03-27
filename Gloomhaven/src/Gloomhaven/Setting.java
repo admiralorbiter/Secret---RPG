@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Point;
 
 public final class Setting {
+	public static boolean test = false;
+	
 	public static int size=40;
 	public static boolean flatlayout=true;
 	public static Point center = new Point(500, 100);
@@ -16,6 +18,7 @@ public final class Setting {
 	public static Color enemyColor = Color.MAGENTA;
 	public static Color lootColor = Color.YELLOW;
 	public static Color obstacleColor = Color.GREEN;
+	public static Color hextFill = Color.black;
 	//Party Info
 	public static int numberOfPlayers=1;
 	public static String playerClass="Mind Thief";

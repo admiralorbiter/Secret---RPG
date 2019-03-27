@@ -18,7 +18,7 @@ public class Enemy extends character{
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
 	private Point startingPosition;
-	private ImageIcon image = null;
+	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/EnemyIcon.png");;
 	
 	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		

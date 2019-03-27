@@ -161,10 +161,16 @@ public final class Draw {
 			tY[i]=(int) corners.get(i).getY();
 		}
 
+		Color oldColor = g.getColor();
+		
+		g.setColor(Setting.hextFill);
+		g.fillPolygon(tX, tY, 6);
+		g.setColor(oldColor);
 		g.drawPolygon(tX, tY, 6);
 		
 		
-		if(size>=40) {
+		
+		if(size>=40 && Setting.test==true) {
 			if(flatlayout) {
 				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
 				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);
@@ -176,12 +182,14 @@ public final class Draw {
 		}
 
 		if(image!=null) {
-			
-			AffineTransform at = AffineTransform.getTranslateInstance(tX[3], tY[3]);
-			//at.rotate(Math.toRadians(90));
-
-			g.drawImage(image.getImage(), at, null);
-
+			/*
+			AffineTransform at = AffineTransform.getTranslateInstance(tX[4], tY[4]);
+			Image newimg = image.getImage().getScaledInstance(size*2, size*2, java.awt.Image.SCALE_DEFAULT);
+			image.setImage(newimg);
+			at.translate(-size/2, 0);
+			at.rotate(Math.toRadians(90), image.getIconWidth()/2, image.getIconHeight()/2);
+			*/
+			g.drawImage(image.getImage(),  tX[4], tY[4]+size/2, size, size, null);
 		}
 	}
 

@@ -29,9 +29,11 @@ public class EnemyInfo {
 	private String[][] initList;
 	private int enemyDeckIndex;
 	private boolean updateEnemyFlag=false;
+	private int totalEnemyCount;
 	
 	public EnemyInfo(ScenarioData data) {
 		enemies=ScenarioEnemyLoader.getEnemies(data.getId(), 0);
+		totalEnemyCount=data.getTotalEnemies();
 		
 		List<String> enemyClassTypes = getEnemyTypeList();
 		for(int i=0; i<enemyClassTypes.size(); i++)
@@ -93,8 +95,15 @@ public class EnemyInfo {
 	
 	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
 	public int getTurnNumber() {return turnNumber;}
-	public Enemy getEnemy(int index) {return enemies.get(index);}
-	public int getCount() {return enemies.size();}
+	public Enemy getEnemy(int index) {
+		if(enemies.size()>0)
+			return enemies.get(index);
+		else
+			return null;
+	}
+	public int getCount() {
+		return totalEnemyCount;
+	}
 	public List<EnemyAbilityDeck> getEnemyAbilityDeck(){return enemyDecks;}
 	public List<String> getEnemyTypeList(){
 		List<String> enemyTypeList = new ArrayList<String>();
@@ -141,6 +150,7 @@ public class EnemyInfo {
 				board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setQuickID(" ");
 				board[enemies.get(i).getCoordinates().x][enemies.get(i).getCoordinates().y].setID(" ");
 				enemies.remove(i);
+				totalEnemyCount=totalEnemyCount-1;
 			}
 		}
 	}

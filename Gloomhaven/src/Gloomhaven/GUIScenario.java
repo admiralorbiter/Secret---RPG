@@ -122,7 +122,7 @@ public final class GUIScenario {
 		g.drawString("Cards in play.", GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
-		int rows=1;
+		int rows=2;
 		
 		if(augment!=null) {
 			g.drawString(augment.getCardText(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
@@ -144,11 +144,11 @@ public final class GUIScenario {
 	
 	public static void graphicsPlayerInfo(Graphics g, String name, String classID, PositiveConditions positiveConditions, CharacterDataObject data, boolean isAugmented, CardDataObject augment, List<Counter> counterTriggers, List<Counter> roundTriggers, CardDataObject roundBonus) {
 		
-		g.drawImage(Setting.background.getImage(), GUISettings.playerInfoX-GUISettings.padding-25, GUISettings.playerInfoY-GUISettings.leadingBody, 200, GUISettings.leadingBody*(6), null);
+		g.drawImage(Setting.background.getImage(), GUISettings.playerInfoX-GUISettings.padding, GUISettings.playerInfoY-GUISettings.leadingBody, GUISettings.playerInfoW, GUISettings.playerInfoH, null);
 		
 		g.setColor(Setting.playerInfoColor);
 		g.setFont(FontSettings.heading);
-		g.drawString(name+"  "+classID, GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody);
+		g.drawString(name+"  "+classID, GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
 		
@@ -170,32 +170,32 @@ public final class GUIScenario {
 			g.setColor(Setting.playerInfoColor);
 		}
 		
-		g.drawString("Level "+data.getLevel(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*2);
-		g.drawString("Health "+data.getHealth()+"  XP "+data.getXp(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*3);
+		g.drawString("Level "+data.getLevel(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*2);
+		g.drawString("Health "+data.getHealth()+"  XP "+data.getXp(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*3);
 	
 		int rows=0;
 		
 		if(isAugmented) {
-			g.drawString("Augment Active: ", GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*(4));
-			g.drawString(augment.getCardText(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*5);
+			g.drawString("Augment Active: ", GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4));
+			g.drawString(augment.getCardText(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*5);
 			rows=2;
 		}
 		
 		for(int i=0; i<counterTriggers.size();i++) {
 			rows++;
-			g.drawString(counterTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+10, GUISettings.playerInfoY+GUISettings.leadingBody*4);
+			g.drawString(counterTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*4);
 		}
 		
 		for(int i=0; i<roundTriggers.size();i++) {
 			rows++;
-			g.drawString(roundTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+10, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
+			g.drawString(roundTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		}
 		
-		g.drawString("Gold: "+data.getGold(), GUISettings.playerInfoX, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
+		g.drawString("Gold: "+data.getGold(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		
 		if(roundBonus!=null)
 			if(roundBonus.getNegativeConditions()!=null)
-				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), GUISettings.gRight+10, GUISettings.playerInfoY+GUISettings.leadingBody*(5+rows));
+				g.drawString("Bonus Condition on Attack: "+roundBonus.getNegativeConditions().getFlag(), GUISettings.gRight+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(5+rows));
 		
 		//g.drawRect(GUISettings.playerInfoX-GUISettings.padding, GUISettings.playerInfoY, 200, GUISettings.leadingBody*(6+rows));
 		

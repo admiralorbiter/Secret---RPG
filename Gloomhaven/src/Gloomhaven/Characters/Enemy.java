@@ -18,7 +18,7 @@ public class Enemy extends character{
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
 	private Point startingPosition;
-	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/EnemyIcon.png");;
+	private ImageIcon image = null;
 	
 	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		
@@ -27,13 +27,15 @@ public class Enemy extends character{
 		setName("Enemy");
 
 		data = new CharacterDataObject(classID, elite);
-
+		
 		eliteFlag=elite;
 		
 		//Testing Need to actually udate stats.
 		if(elite) {
+			image = new ImageIcon("src/Gloomhaven/img/EnemyIconElite.png");
 			baseStats=new SimpleCardData(4, 3, 6);
 		}else {
+			image = new ImageIcon("src/Gloomhaven/img/EnemyIcon.png");
 			baseStats=new SimpleCardData(3, 2, 5);
 		}
 		

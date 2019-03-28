@@ -369,7 +369,11 @@ public class Scenario {
 				enemyTurnIndex=0;																	//Resets enemy turn index
 				//enemyDeckIndex=i;
 				enemyInfo.setEnemyDeckIndex(i);
-				state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK
+				System.out.print("Match Turn with Enemy or Player");
+				if(enemyInfo.getEnemies().size()>0)
+					state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK	
+				else
+					state=State.ROUND_END_DISCARD;
 			}
 		}
 		//Next State: Long Rest or Player Choice
@@ -409,7 +413,7 @@ public class Scenario {
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
-		System.out.print("Loc: scenario.java - Enemy "+enemyInfo.getEnemy(enemyTurnIndex).getClassID()+" is attacking ");
+		//System.out.print("Loc: scenario.java - Enemy "+enemyInfo.getEnemy(enemyTurnIndex).getClassID()+" is attacking ");
 		
 		List<Player> targets = new ArrayList<Player>();
 		if(enemyInfo.getTurnEnemies().size()!=0)
@@ -454,9 +458,12 @@ public class Scenario {
 		}
 		else {
 			enemyTurnIndex++;																		//Cycle through enemies and go to enemy attack state
+			System.out.println("Enemy Control Logic");
 			
-			if(enemyInfo.getEnemy(enemyTurnIndex).getClassID().equals(enemyInfo.getDeckClass()))
-				state=State.ENEMY_ATTACK;
+			if(enemyInfo.getEnemies().size()>0)
+				if(enemyInfo.getEnemy(enemyTurnIndex).getClassID().equals(enemyInfo.getDeckClass())) {
+					state=State.ENEMY_ATTACK;
+				}
 		}
 	}
 	
@@ -1038,9 +1045,10 @@ public class Scenario {
 		if(party.size()==0) 
 			System.exit(1);																		//If party is dead, end program
 		
-		if(enemyInfo.getCount()==0)
+		if(enemyInfo.getCount()==0) {
+			System.out.println("No more enemies");
 			System.exit(1);																		//If all enemies are dead, end program
-		
+		}
 		currentPlayer=0;																		//Resets current player to use in round end rest state
 		state=State.ROUND_END_REST;	
 	}

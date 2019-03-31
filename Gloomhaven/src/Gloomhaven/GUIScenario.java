@@ -13,6 +13,7 @@ import Gloomhaven.CardDataObject.PositiveConditions;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Scenario.Scenario.State;
+import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUIScenario {
 	
@@ -252,8 +253,8 @@ public final class GUIScenario {
 		}
 	}
 	
-	public static void drawStateOfScenario(Graphics g, City gloomhaven, State state) {
-		g.drawString("State of Scenario      Prosperity: "+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel(), GUISettings.gLeft, GUISettings.gTop);
+	public static void drawStateOfScenario(Graphics g, City gloomhaven, State state, ScenarioData data) {
+		g.drawString("State of Scenario      Prosperity: "+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel()+"  "+data.getGoal(), GUISettings.gLeft, GUISettings.gTop);
 		g.drawString(state.toString(), GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBody);
 		
 	}

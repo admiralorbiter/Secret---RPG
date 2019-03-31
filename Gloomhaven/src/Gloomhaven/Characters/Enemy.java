@@ -18,7 +18,6 @@ public class Enemy extends character{
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
 	private Point startingPosition;
-	private ImageIcon image = null;
 	
 	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		
@@ -32,10 +31,10 @@ public class Enemy extends character{
 		
 		//Testing Need to actually udate stats.
 		if(elite) {
-			image = new ImageIcon("src/Gloomhaven/img/EnemyIconElite.png");
+			setImage(new ImageIcon("src/Gloomhaven/img/EnemyIconElite.png"));
 			baseStats=new SimpleCardData(4, 3, 6);
 		}else {
-			image = new ImageIcon("src/Gloomhaven/img/EnemyIcon.png");
+			setImage(new ImageIcon("src/Gloomhaven/img/EnemyIcon.png"));
 			baseStats=new SimpleCardData(3, 2, 5);
 		}
 		
@@ -45,7 +44,7 @@ public class Enemy extends character{
 	
 	public SimpleCardData getBaseStats() {return baseStats;}
 	public boolean isElite() {return eliteFlag;}
-	public ImageIcon getImage() {return image;}
+	public ImageIcon getImageIcon() {return image;}
 	
 	public void push(Point playerCoordinate, int pushRange) {
 		//If player is above it on the x axis, push down

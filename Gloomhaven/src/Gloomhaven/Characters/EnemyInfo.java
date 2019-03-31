@@ -43,7 +43,7 @@ public class EnemyInfo {
 	public void drawEnemies(Graphics2D g) {
 		g.setColor(Setting.enemyColor);
 		for(int i=0; i<enemies.size(); i++) {
-			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i).getImage());
+			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i));
 		}
 		g.setColor(Setting.enemyColor);
 	}

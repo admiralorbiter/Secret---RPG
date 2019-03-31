@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Characters.character;
 import Gloomhaven.Scenario.Scenario;
 
 public final class Draw {
@@ -107,25 +108,25 @@ public final class Draw {
 						g.setColor(Setting.obstacleColor);
 					else
 						g.setColor(Setting.defaultColor);
-					drawHex(g, board[x][y], board[x][y].getImage());
+					drawHex(g, board[x][y], null);
 				}
 			}	
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, ImageIcon image) {
-		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, image);
+	public static void drawHex(Graphics2D g, Point h, character entity) {
+		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, ImageIcon image) {
-		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, image);
+	public static void drawHex(Graphics2D g, HexCoordinate h, character entity) {
+		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, ImageIcon image) {
-		drawHex(g, h.q, h.r, h.s, size, flatlayout, center, image);
+	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, character entity) {
+		drawHex(g, h.q, h.r, h.s, size, flatlayout, center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, ImageIcon image) {
+	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, character entity) {
 		
 		HexCoordinate hex;
 		
@@ -134,17 +135,17 @@ public final class Draw {
 		else
 			hex = UtilitiesHex.pointyOffsetToCube(1, h);
 		
-		drawHex(g, hex, size, flatlayout, center, image);
+		drawHex(g, hex, size, flatlayout, center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, Hex hex, ImageIcon image) {
+	public static void drawHex(Graphics2D g, Hex hex, character entity) {
 		if(hex!=null) {
 			if(!hex.isHidden())
-				drawHex(g, hex.offsetCoordinate, image);
+				drawHex(g, hex.offsetCoordinate, entity);
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, ImageIcon image) {
+	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, character entity) {
 		HexLayout layout;
 
 		if(flatlayout)
@@ -173,31 +174,35 @@ public final class Draw {
 		
 		if(size>=40 && Setting.test) {
 			if(flatlayout) {
-				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
+				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
+				if(entity!=null)
+					g.drawString(entity.getID() , tX[3]+20, tY[3]);
 				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);
 			}
 			else {
 				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
-				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
+				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
+				if(entity!=null)
+					g.drawString(entity.getID() , tX[3]+20, tY[3]+20);
 			}
 		}
-
-		if(image!=null) {
-			/*
-			AffineTransform at = AffineTransform.getTranslateInstance(tX[4], tY[4]);
-			Image newimg = image.getImage().getScaledInstance(size*2, size*2, java.awt.Image.SCALE_DEFAULT);
-			image.setImage(newimg);
-			at.translate(-size/2, 0);
-			at.rotate(Math.toRadians(90), image.getIconWidth()/2, image.getIconHeight()/2);
-			*/
-			g.drawImage(image.getImage(),  tX[4], tY[4]+size/2, size, size, null);
-		}
+		if(entity!=null)
+			if(entity.getImageIcon()!=null && Setting.test!=true) {
+				/*
+				AffineTransform at = AffineTransform.getTranslateInstance(tX[4], tY[4]);
+				Image newimg = image.getImage().getScaledInstance(size*2, size*2, java.awt.Image.SCALE_DEFAULT);
+				image.setImage(newimg);
+				at.translate(-size/2, 0);
+				at.rotate(Math.toRadians(90), image.getIconWidth()/2, image.getIconHeight()/2);
+				*/
+				g.drawImage(entity.getImageIcon().getImage(),  tX[4], tY[4]+size/2, size, size, null);
+			}
 	}
 
 	public static void drawParty(Graphics2D g, List<Player> party) {
 		g.setColor(Setting.playerColor);
 		for(int i=0; i<party.size(); i++) {
-			drawHex(g, party.get(i).getCoordinates(), party.get(i).getImage());
+			drawHex(g, party.get(i).getCoordinates(), party.get(i));
 		}
 		g.setColor(Setting.defaultColor);
 	}

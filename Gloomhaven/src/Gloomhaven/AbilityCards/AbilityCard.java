@@ -40,7 +40,7 @@ public class AbilityCard {
 	public void setInPlayFlag(boolean inPlayFlag) {this.inPlayFlag = inPlayFlag;}
 	
 	public void showCard(Graphics g) {
-		if(Setting.test)
+		if(Setting.testAbilityCard)
 			GUI.drawCard(g, getImage());
 	}
 	

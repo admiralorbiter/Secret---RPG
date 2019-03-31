@@ -281,7 +281,7 @@ public class Scenario {
 	
 	private void setupBeginningOfRound() {
 		//Title
-		GUIScenario.drawStateOfScenario(g, gloomhaven, state);
+		GUIScenario.drawStateOfScenario(g, gloomhaven, state, data   );
 		
 		elements.graphicsDrawTable(g);
 		GUI.drawBoardRectangle(g, data);
@@ -408,7 +408,7 @@ public class Scenario {
 	}
 	
 	private void enemyAttack() {
-		enemyInfo.drawAbilityCard(g);
+		enemyInfo.drawAbilityCard(g);  
 		enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());

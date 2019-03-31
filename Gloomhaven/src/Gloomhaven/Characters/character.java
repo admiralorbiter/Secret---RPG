@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import Gloomhaven.CharacterDataObject;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
@@ -16,6 +18,7 @@ import Gloomhaven.Hex.UtilitiesHex;
 
 public class character {
 	
+	ImageIcon image=null;
 	String id;
 	String classID;
 	String name;
@@ -36,6 +39,8 @@ public class character {
 	}
 	
 	//GETTERS and SETTERS
+	public ImageIcon getImageIcon() {return image;}
+	public void setImage(ImageIcon image) {this.image=image;}
 	public String getID() {return id;}
 	public void setID(String id) {this.id=id;}
 	public String getClassID() {return classID;}

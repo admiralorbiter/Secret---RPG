@@ -75,15 +75,13 @@ public class Player extends character {
 		
 		return count;
 	}
-	
-	private ImageIcon image = new ImageIcon("src/Gloomhaven/img/MindthiefIcon.png");
-	public ImageIcon getImage() {return image;}
-	
+
 	public Player(int id, String classID) {
 		setRoundBonus(new CardDataObject());
 		setID("P"+id);
 		setClassID(classID);
 		setName("Jon");
+		setImage(new ImageIcon("src/Gloomhaven/img/MindthiefIcon.png"));
 		data = new CharacterDataObject(classID, false);
 		
 		maxHandCount=Setting.getMaxHandCount();
@@ -660,6 +658,7 @@ public class Player extends character {
 					abilityDeck.get(key).setCardInlostPile();
 					cardChoice=!cardChoice;
 					longRestFlag=false;
+					collectDiscardPile(); 
 				}
 			}
 		}

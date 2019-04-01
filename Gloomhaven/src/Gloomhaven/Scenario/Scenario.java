@@ -413,7 +413,7 @@ public class Scenario {
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
-		//System.out.print("Loc: scenario.java - Enemy "+enemyInfo.getEnemy(enemyTurnIndex).getClassID()+" is attacking ");
+		System.out.print("Loc: scenario.java - Enemy "+enemyInfo.getEnemy(enemyTurnIndex).getClassID()+" is attacking ");
 		
 		List<Player> targets = new ArrayList<Player>();
 		if(enemyInfo.getTurnEnemies().size()!=0)
@@ -453,6 +453,8 @@ public class Scenario {
 				state=State.ROUND_END_DISCARD;														
 			else {
 				turnIndex++;																				//End turn go back to attack logic state
+				if(Setting.stateTest)
+					System.out.println("Going to state attack with "+turnIndex+" as a turn index.");
 				state=State.ATTACK;
 			}	
 		}
@@ -462,6 +464,8 @@ public class Scenario {
 			
 			if(enemyInfo.getEnemies().size()>0)
 				if(enemyInfo.getEnemy(enemyTurnIndex).getClassID().equals(enemyInfo.getDeckClass())) {
+					if(Setting.stateTest)
+						System.out.println("Going to enemy attack state: "+enemyInfo.getEnemy(enemyTurnIndex).getClassID());
 					state=State.ENEMY_ATTACK;
 				}
 		}

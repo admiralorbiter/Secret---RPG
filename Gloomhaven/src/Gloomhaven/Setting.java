@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 public final class Setting {
 	public static boolean test = true;
 	public static boolean testAbilityCard = false;
+	public static boolean stateTest=true;
 	
 	public static boolean drawLines = false;
 	
@@ -17,6 +18,9 @@ public final class Setting {
 	
 	public static int TEST_HEALTH=1;
 	public static int TEST_SHIELD=0;
+	
+	public static int ALTATTACK=4;
+	public static int ALTMOVE=4;
 	
 	public static String title="Gloomhaven";
 	public static Color lineColor = Color.white;

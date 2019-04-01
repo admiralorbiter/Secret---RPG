@@ -17,8 +17,8 @@ public class PlayerAbilityCard extends AbilityCard {
 	
 	private CardDataObject topData = new CardDataObject();
 	private CardDataObject bottomData = new CardDataObject();
-	private int topAttack=2;
-	private int bottomMove=2;
+	private int topAttack=Setting.ALTATTACK;
+	private int bottomMove=Setting.ALTMOVE;
 	private String useFlag="Schrodinger's Card";
 	private int abilityCardCounter=0;//used to count stuff like how many targets hit
 	public PlayerAbilityCard(String playerClass, int cardID, int cardLevel) {

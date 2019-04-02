@@ -10,7 +10,7 @@ public final class ScenarioBoardLoader {
 		
 		for(int x=0; x<data.getBoardSize().x; x++) {
 			for(int y=0; y<data.getBoardSize().y; y++) {
-				board[x][y] = new Hex(x, y, Setting.flatlayout);
+				board[x][y] = new Hex(x, y, data.getHexLayout());
 			}
 		}
 		
@@ -125,7 +125,152 @@ public final class ScenarioBoardLoader {
 				}
 				break;
 			case 2:
+				board[7][4].setDoor(true);
+				board[7][4].setRoomID(1);
 				
+				board[10][8].setDoor(true);
+				board[10][8].setRoomID(2);
+				
+				board[9][11].setDoor(true);
+				board[9][11].setRoomID(3);
+				
+				board[5][11].setDoor(true);
+				board[5][11].setRoomID(4);
+				
+				board[4][8].setDoor(true);
+				board[4][8].setRoomID(5);
+				
+				//Sarcophagus
+				board[7][9].setObstacle(true);
+				board[7][9].setID("Sarcophagus");
+				board[8][9].setObstacle(true);
+				board[8][9].setID("Sarcophagus");
+				board[6][6].setObstacle(true);
+				board[6][6].setID("Sarcophagus");
+				board[6][7].setObstacle(true);
+				board[6][7].setID("Sarcophagus");
+				board[8][6].setObstacle(true);
+				board[8][6].setID("Sarcophagus");
+				board[9][7].setObstacle(true);
+				board[9][7].setID("Sarcophagus");
+				
+				board[9][15].setLootID("67");
+				board[9][15].setID("Treasure");
+				
+				//room 1
+				board[4][8].setHidden(true);
+				for(int x=6; x<=9; x++) {
+					board[x][5].setHidden(true);
+				}
+				for(int x=5; x<=9; x++) {
+					for(int y=6; y<=11; y++) {
+						board[x][y].setHidden(true);
+					}
+				}
+				board[10][7].setHidden(true);
+				board[10][8].setHidden(true);
+				board[10][9].setHidden(true);
+				board[10][11].setHidden(true);
+				
+				//room 2
+				for(int x=12; x<16; x++) {
+					board[x][7].setHidden(true);
+					board[x-1][8].setHidden(true);
+				}
+				
+				//room 3
+				board[10][14].setHidden(true);
+				board[11][11].setHidden(true);
+				board[9][12].setHidden(true);
+				board[10][12].setHidden(true);
+				board[9][13].setHidden(true);
+				board[10][13].setHidden(true);
+				board[8][14].setHidden(true);
+				board[9][14].setHidden(true);
+				board[9][15].setHidden(true);
+				
+				//room 4
+				board[3][11].setHidden(true);
+				board[4][11].setHidden(true);
+				board[3][12].setHidden(true);
+				board[4][12].setHidden(true);
+				board[4][13].setHidden(true);
+				board[5][13].setHidden(true);
+				board[4][14].setHidden(true);
+				board[5][14].setHidden(true);
+				board[5][15].setHidden(true);
+				
+				//room 5
+				for(int x=0; x<=3; x++) {
+					board[x][7].setHidden(true);
+					board[x][8].setHidden(true);
+				}
+				
+				for(int x=0; x<6; x++) {
+					for(int y=0; y<6; y++) {
+						board[x][y]=null;
+					}
+				}
+				board[9][0]=null;
+				board[9][2]=null;
+				board[9][4]=null;
+				for(int x=10; x<16; x++) {
+					for(int y=0; y<6; y++) {
+						board[x][y]=null;
+					}
+				}
+				board[6][4]=null;
+				board[8][4]=null;
+				
+				for(int x=0; x<5; x++) {
+					board[x][6]=null;
+					board[x][9]=null;
+					board[x][10]=null;
+				}
+				board[10][6]=null;
+				for(int x=11; x<16; x++) {
+					board[x][6]=null;
+					board[x][9]=null;
+					board[x][10]=null;
+				}
+				
+				int add=0;
+				for(int rows=0; rows<5; rows++) {
+					if(rows==2 || rows==4)
+						add++;
+					
+					for(int x=0; x<3+add; x++) {
+						board[x][11+rows]=null;
+					}
+				}
+				
+				board[10][10]=null;
+				
+				int sub=0;
+				for(int rows=0; rows<5; rows++) {
+					if(rows==1 || rows==3)
+						sub++;
+					
+					for(int x=12-sub; x<16; x++) {
+						board[x][11+rows]=null;
+					}
+				}
+				
+				board[7][15]=null;
+				board[6][14]=null;
+				board[7][14]=null;
+				board[6][13]=null;
+				board[7][13]=null;
+				board[8][13]=null;
+				board[5][12]=null;
+				board[6][12]=null;
+				board[7][12]=null;
+				board[8][12]=null;
+				board[8][15]=null;
+				board[6][15]=null;
+				board[4][7]=null;
+				board[11][7]=null;
+				board[15][8]=null;
 				break;
 		}
 		
@@ -155,6 +300,59 @@ public final class ScenarioBoardLoader {
 						}
 					}
 					board[5][4].setDoorOpen(true);
+				}
+				break;
+			case 2:
+				if(room==1) {
+					board[7][4].setDoorOpen(true);
+					board[4][8].setHidden(false);
+					for(int x=6; x<=9; x++) {
+						board[x][5].setHidden(false);
+					}
+					for(int x=5; x<=9; x++) {
+						for(int y=6; y<=11; y++) {
+							board[x][y].setHidden(false);
+						}
+					}
+					board[10][7].setHidden(false);
+					board[10][8].setHidden(false);
+					board[10][9].setHidden(false);
+					board[10][11].setHidden(false);
+				}else if(room==2) {
+					board[10][8].setDoorOpen(true);
+					for(int x=12; x<16; x++) {
+						board[x][7].setHidden(false);
+						board[x-1][8].setHidden(false);
+					}
+				}else if(room==3) {
+					board[9][11].setDoorOpen(true);
+					//room 3
+					board[10][14].setHidden(false);
+					board[11][11].setHidden(false);
+					board[9][12].setHidden(false);
+					board[10][12].setHidden(false);
+					board[9][13].setHidden(false);
+					board[10][13].setHidden(false);
+					board[8][14].setHidden(false);
+					board[9][14].setHidden(false);
+					board[9][15].setHidden(false);
+				}else if(room==4) {
+					board[5][11].setDoorOpen(true);
+					board[3][11].setHidden(false);
+					board[4][11].setHidden(false);
+					board[3][12].setHidden(false);
+					board[4][12].setHidden(false);
+					board[4][13].setHidden(false);
+					board[5][13].setHidden(false);
+					board[4][14].setHidden(false);
+					board[5][14].setHidden(false);
+					board[5][15].setHidden(false);
+				}else if(room==5) {
+					board[4][8].setDoorOpen(true);
+					for(int x=0; x<=3; x++) {
+						board[x][7].setHidden(false);
+						board[x][8].setHidden(false);
+					}
 				}
 				break;
 		}

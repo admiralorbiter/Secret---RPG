@@ -50,7 +50,7 @@ public final class ScenarioDataLoader {
 				data.getNewLocations().add(new MapLocation('E', 11));
 				
 				data.setRoomTotal(6);
-				data.setStartingposition(new Point(0, 8));
+				data.setStartingposition(new Point(7, 1));
 				data.setBoardSize(new Point(16, 16));
 				data.getEnemyTypeList().add("Bandit Archer");
 				data.getEnemyTypeList().add("Bandit Commander");

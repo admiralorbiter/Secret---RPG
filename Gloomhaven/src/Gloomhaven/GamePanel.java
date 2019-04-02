@@ -111,7 +111,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
 		//state=GameState.TOWN;										//Init Phase -> Town Phase
-		state=GameState.TITLE_STATE;
+		if(Setting.straightToScenario)
+			state=GameState.SCENARIO;
+		else
+			state=GameState.TITLE_STATE;
 	}
 	
 	public void gameManager(Graphics2D g) {	

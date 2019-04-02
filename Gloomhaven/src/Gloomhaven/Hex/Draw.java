@@ -53,7 +53,8 @@ public final class Draw {
 			for(int r = r1; r<=r2; r++) {
 				int s=-q-r;
 				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), point);
-				drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+
+				drawHex(g, hex, Setting.size, point.getLayout(), Setting.center, null);
 			}
 		}
 	}
@@ -172,17 +173,17 @@ public final class Draw {
 		
 		
 		
-		if(size>=40 && Setting.test) {
+		if(Setting.test) {
 			if(flatlayout) {
-				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
-				if(entity!=null)
+				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
+				if(size>=40 && entity!=null)
 					g.drawString(entity.getID() , tX[3]+20, tY[3]);
 				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);
 			}
 			else {
 				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
-				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
-				if(entity!=null)
+				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
+				if(size>=40 && entity!=null)
 					g.drawString(entity.getID() , tX[3]+20, tY[3]+20);
 			}
 		}

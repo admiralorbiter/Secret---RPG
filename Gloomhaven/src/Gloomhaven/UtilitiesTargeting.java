@@ -43,7 +43,7 @@ public final class UtilitiesTargeting {
 			for(int r = r1; r<=r2; r++) {
 				int s=-q-r;
 				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), starting);
-				Point p = UtilitiesHex.getOffset(Setting.flatlayout, hex);
+				Point p = UtilitiesHex.getOffset(starting.getLayout(), hex);
 				if(p.x>=0 && p.x<dimensions.x) {
 					if(p.y>=0 && p.y<dimensions.y) {
 						if(board[p.x][p.y]!=null) {
@@ -70,11 +70,11 @@ public final class UtilitiesTargeting {
 	
 	public static void drawAttack(Graphics2D g, HexCoordinate center, int direction, int num) {
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, center, Setting.size, Setting.flatlayout, Setting.center, null);
+		Draw.drawHex(g, center, Setting.size, center.getLayout(), Setting.center, null);
 		g.setColor(Color.cyan);
 
 		HexCoordinate hex = UtilitiesHex.add(center, UtilitiesHex.direction(direction));
-		Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+		Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		
 		/*
 		 * Note: I no longer need to check if the direction is out of bounds since I do
@@ -87,7 +87,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(0));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+			Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		}
 		if(num>=3) {
 			if(direction-1>=0) 
@@ -95,7 +95,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(5));
 					
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+			Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		}
 		if(num>=4) {
 			if(direction+2<=5) 
@@ -105,7 +105,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(1));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+			Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		}
 		if(num>=5) {
 			if(direction-2>=0) 
@@ -115,7 +115,7 @@ public final class UtilitiesTargeting {
 			else
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(4));
 					
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+			Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		}
 		if(num>=6) {
 			if(direction+3<=5) 
@@ -127,14 +127,14 @@ public final class UtilitiesTargeting {
 			else if(direction+3==8)
 				hex = UtilitiesHex.add(center, UtilitiesHex.direction(2));
 			
-			Draw.drawHex(g, hex, Setting.size, Setting.flatlayout, Setting.center, null);
+			Draw.drawHex(g, hex, Setting.size, center.getLayout(), Setting.center, null);
 		}
 	}
 	
 	
-	public static boolean targetAloneToAlly(Enemy enemy, Hex[][] board, Point dimensions) {
+	public static boolean targetAloneToAlly(Enemy enemy, Hex[][] board, Point dimensions, boolean flatlayout) {
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(Setting.flatlayout), "E", dimensions);
+		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(flatlayout), "E", dimensions);
 		
 		if(targets.size()>0)
 			return false;
@@ -146,7 +146,7 @@ public final class UtilitiesTargeting {
 	public static boolean targetAdjacentToAlly(Enemy enemy, List<Player> party, int playerIndex, Hex[][] board, Point dimensions) {
 		
 		List<Point> targets = new ArrayList<Point>();
-		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(Setting.flatlayout), "P", dimensions);
+		targets=createTargetList(board, 1, enemy.getCubeCoordiantes(board[enemy.getStartingPosition().x][enemy.getStartingPosition().y].getLayout()), "P", dimensions);
 
 		if(targets.size()>0) {
 			for(int i=0; i<targets.size(); i++) {

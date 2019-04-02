@@ -29,6 +29,10 @@ public class Hex extends HexCoordinate {
 		super(q, r, s);
 	}
 	
+	public Hex(int q, int r, int s, boolean flatlayout) {
+		super(q, r, s);
+	}
+	
 	 public String getQuickID() {return quickID;}
 	 public void setQuickID(String id) {this.quickID=id;}
 	 public String getID() {return id;}

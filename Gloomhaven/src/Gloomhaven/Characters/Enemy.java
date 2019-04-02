@@ -74,7 +74,7 @@ public class Enemy extends character{
 	public Point getStartingPosition() {return startingPosition;}
 	
 	public void move(HexCoordinate hex, Point dimensions) {
-		Point coordinate = UtilitiesHex.getOffset(Setting.flatlayout, hex);
+		Point coordinate = UtilitiesHex.getOffset(hex.getLayout(), hex);
 		
 		if(coordinate.x>=0 && coordinate.x<dimensions.x) {
 			if(coordinate.y>=0 && coordinate.y<dimensions.y) {

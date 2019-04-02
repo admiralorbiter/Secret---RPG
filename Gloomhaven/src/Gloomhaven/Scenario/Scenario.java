@@ -427,7 +427,7 @@ public class Scenario {
 		
 		List<Player> targets = new ArrayList<Player>();
 		if(enemyInfo.getTurnEnemies().size()!=0)
-			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(Setting.flatlayout), data.getBoardSize(), party);
+			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(data.getHexLayout()), data.getBoardSize(), party);
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
 		
 		if(targets.size()>0) {
@@ -569,13 +569,13 @@ public class Scenario {
 		if(party.get(currentPlayer).canMove()) {
 			g.setColor(Color.red);
 			selection();
-			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
+			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), UsePlayerAbilityCard.getMove(card));
 			
 			g.setColor(Color.cyan);
 			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 			
 			if(k==Setting.moveKey) {
-				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout))<UsePlayerAbilityCard.getMove(card)) {
+				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()))<UsePlayerAbilityCard.getMove(card)) {
 				
 					if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("P"))
 						finished=true;
@@ -642,12 +642,12 @@ public class Scenario {
 	
 				if(UsePlayerAbilityCard.hasTargetHeal(card)) {
 					for(int range=1; range<=cardRange; range++)
-						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "P", data.getBoardSize());
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), "P", data.getBoardSize());
 					targets.add(party.get(currentPlayer).getCoordinates());
 				}
 				else {
 					for(int range=1; range<=cardRange; range++) {
-						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
+						targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), "E", data.getBoardSize());
 					}
 				}
 			}
@@ -659,7 +659,7 @@ public class Scenario {
 				g.setColor(Color.cyan);
 						
 				if(UsePlayerAbilityCard.getRange(card)==0) {
-					UtilitiesTargeting.drawAttack(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction, UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets());
+					UtilitiesTargeting.drawAttack(g, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction, UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets());
 				}
 				else {
 					Draw.drawHex(g, selectionCoordinate, null, data.getHexLayout());
@@ -681,43 +681,43 @@ public class Scenario {
 					}
 					else if(UsePlayerAbilityCard.getRange(card)==0) {
 						int num = UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets();
-						HexCoordinate hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction);
-						selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+						HexCoordinate hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction);
+						selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 						
 						finished=attackProcedure(new Point(selectionCoordinate), targets);
 						
 						if(num>=2) {
-							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction+1);
-							selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction+1);
+							selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 							boolean temp=attackProcedure(new Point(selectionCoordinate), targets);
 							if(temp)
 								finished=true;
 						}
 						if(num>=3) {
-							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction-1);
-							selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction-1);
+							selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 							boolean temp=attackProcedure(new Point(selectionCoordinate), targets);
 							if(temp)
 								finished=true;
 						}
 						
 						if(num>=4) {
-							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction+2);
-							selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction+2);
+							selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 							attackProcedure(new Point(selectionCoordinate), targets);
 						}
 						
 						if(num>=5) {
-							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction-2);
-							selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction-2);
+							selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 							boolean temp=attackProcedure(new Point(selectionCoordinate), targets);
 							if(temp)
 								finished=true;
 						}
 						
 						if(num>=6) {
-							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction+3);
-							selectionCoordinate=new Point(UtilitiesHex.getOffset(Setting.flatlayout, hex));
+							hex=UtilitiesHex.neighbor(party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction+3);
+							selectionCoordinate=new Point(UtilitiesHex.getOffset(data.getHexLayout(), hex));
 							boolean temp=attackProcedure(new Point(selectionCoordinate), targets);
 							if(temp)
 								finished=true;
@@ -798,7 +798,7 @@ public class Scenario {
 				cardRange=1;
 
 				for(int range=1; range<=cardRange; range++)
-					targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
+					targets=UtilitiesTargeting.createTargetList(board, range, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), "E", data.getBoardSize());
 		}
 		
 		//If there are targets, highlight the targets and wait for selection
@@ -818,7 +818,7 @@ public class Scenario {
 
 						//oppPoint = new Point(UtilitiesTargeting.findOppisiteHex(party.get(currentPlayer).getCoordinates(), enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinates()));
 						enemyTarget=enemyInfo.getEnemy(selectionCoordinate);
-						direction=UtilitiesHex.getDirection(enemyTarget.getCubeCoordiantes(Setting.flatlayout), party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout));
+						direction=UtilitiesHex.getDirection(enemyTarget.getCubeCoordiantes(data.getHexLayout()), party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()));
 						//tempHoldVar=new Point(enemyInfo.getEnemyFromID(room.getID(room.getSelectionCoordinates())).getCoordinates());
 						state=State.PLAYER_PUSH;
 					}
@@ -847,19 +847,19 @@ public class Scenario {
 	private void playerPush() {
 		boolean finished=false;
 		
-		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction);
+		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(data.getHexLayout()), direction);
 		g.setColor(Color.cyan);
 		Draw.drawHex(g, pushPoint, null, data.getHexLayout());
 		
 		if(num>=1 && num<=3) {
 			if(num==1) {
-				pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction+1);
+				pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(data.getHexLayout()), direction+1);
 				enemyTarget.move(pushPoint, data.getBoardSize());
 			}else if(num==2) {
 				enemyTarget.move(pushPoint, data.getBoardSize());
 			}
 			else {
-				pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction-1);
+				pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(data.getHexLayout()), direction-1);
 				enemyTarget.move(pushPoint, data.getBoardSize());
 			}
 			finished=true;
@@ -923,7 +923,7 @@ public class Scenario {
 		boolean finished=false;
 		
 		//Highlight tiles that players can move to
-		HexCoordinate enemyPoint=enemy.getCubeCoordiantes(Setting.flatlayout);
+		HexCoordinate enemyPoint=enemy.getCubeCoordiantes(data.getHexLayout());
 		CardDataObject cardData = UsePlayerAbilityCard.getCardData(card);
 		
 		for(int r=1; r<=cardData.getData().getRange(); r++) {
@@ -935,7 +935,7 @@ public class Scenario {
 		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 				
 		if(k==Setting.moveKey) {
-			if(UtilitiesHex.distance(enemyPoint, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate))<=cardData.getData().getRange()) {
+			if(UtilitiesHex.distance(enemyPoint, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate))<=cardData.getData().getRange()) {
 				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("E")) {
 					return true;
 				}
@@ -974,7 +974,7 @@ public class Scenario {
 				cardRange=1;
 	
 				for(int range=1; range<=cardRange; range++)
-					targets=UtilitiesTargeting.createTargetList(board, range, enemy.getCubeCoordiantes(Setting.flatlayout), "E", data.getBoardSize());
+					targets=UtilitiesTargeting.createTargetList(board, range, enemy.getCubeCoordiantes(data.getHexLayout()), "E", data.getBoardSize());
 		}
 		
 		if(targets.size()>0) {
@@ -1059,7 +1059,7 @@ public class Scenario {
 			System.exit(1);																		//If party is dead, end program
 		
 		if(enemyInfo.getCount()==0) {
-			System.out.println("No more enemies");
+			System.out.println("No more enemies probably a mistake");
 			System.exit(1);																		//If all enemies are dead, end program
 		}
 		currentPlayer=0;																		//Resets current player to use in round end rest state

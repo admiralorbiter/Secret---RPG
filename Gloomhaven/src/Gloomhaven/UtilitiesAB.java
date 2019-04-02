@@ -52,7 +52,7 @@ public final class UtilitiesAB {
 			
 			if(card.getEffects().getLoot()>0) {
 				List<Point> loot = new ArrayList<Point>();
-				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCubeCoordiantes(Setting.flatlayout), "Loot", data.getBoardSize());
+				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCubeCoordiantes(data.getHexLayout()), "Loot", data.getBoardSize());
 				for(int i=0; i<loot.size(); i++)
 					UtilitiesLoot.loot(board, shop, player, loot.get(i));
 			}
@@ -123,7 +123,7 @@ public final class UtilitiesAB {
 		for(int i=0; i<player.getRoundTriggers().size(); i++) {
 			if(player.getRoundTriggers().get(i).isTriggerOnAttack()) {
 				if(player.getRoundTriggers().get(i).getTriggerFlag().equals("EnemyAlone")) {
-					if(UtilitiesTargeting.targetAloneToAlly(enemy, board, data.getBoardSize())) {
+					if(UtilitiesTargeting.targetAloneToAlly(enemy, board, data.getBoardSize(), data.getHexLayout())) {
 						if(player.getRoundTriggers().get(i).getBonusData().getAttack()>0)
 							attack=attack+player.getRoundTriggers().get(i).getBonusData().getAttack();
 						

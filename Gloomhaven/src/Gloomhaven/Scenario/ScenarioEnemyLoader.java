@@ -51,6 +51,29 @@ public final class ScenarioEnemyLoader {
 					enemies.add(new Enemy(13, "Living Corpse", 5, false, new Point(2, 7)));
 					enemies.add(new Enemy(14, "Living Corpse", 5, false, new Point(1, 8)));
 				}
+				break;
+			case 3:
+				if(room==0) {
+					enemies.add(new Enemy(0, "Inox Guard", 0, false, new Point(6, 10)));
+					enemies.add(new Enemy(1, "Inox Guard", 0, false, new Point(6, 11)));
+					enemies.add(new Enemy(2, "Inox Guard", 0, false, new Point(10, 10)));
+					enemies.add(new Enemy(3, "Inox Guard", 0, false, new Point(10, 11)));
+					enemies.add(new Enemy(4, "Inox Archer", 0, false, new Point(7, 6)));
+					enemies.add(new Enemy(5, "Inox Shaman", 0, true, new Point(8, 6)));
+					enemies.add(new Enemy(6, "Inox Archer", 0, false, new Point(9, 6)));
+				}else if(room==1) {
+					enemies.add(new Enemy(7, "Inox Shaman", 1, true, new Point(7, 2)));
+					enemies.add(new Enemy(8, "Inox Archer", 1, false, new Point(8, 0)));
+				}else if(room==2) {
+					enemies.add(new Enemy(9, "Inox Guard", 2, false, new Point(2, 5)));
+				}else if(room==3) {
+					enemies.add(new Enemy(10, "Inox Shaman", 3, true, new Point(15, 6)));
+				}else if(room==4) {
+					enemies.add(new Enemy(11, "Inox Guard", 4, true, new Point(2, 11)));
+				}else if(room==5) {
+					enemies.add(new Enemy(12, "Inox Guard", 5, true, new Point(14, 11)));
+				}
+				break;
 		
 		}
 		return enemies;

@@ -9,6 +9,7 @@ public class CharacterDataObject {
 	private int xp;
 	private int shield=0;
 	private int gold;
+	private boolean bossFlag=false;
 	
 	public CharacterDataObject(String flag, boolean eliteFlag) {
 		
@@ -29,6 +30,27 @@ public class CharacterDataObject {
 				maxHealth=TEST_HEALTH;
 				break;
 			case "Living Bones":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
+				break;
+			case "Bandit Commander":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
+				bossFlag=true;
+				break;
+			case "Inox Guard":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
+				break;
+			case "Inox Archer":
+				health=TEST_HEALTH;
+				shield=TEST_SHIELD;
+				maxHealth=TEST_HEALTH;
+				break;
+			case "Inox Shaman":
 				health=TEST_HEALTH;
 				shield=TEST_SHIELD;
 				maxHealth=TEST_HEALTH;
@@ -63,6 +85,7 @@ public class CharacterDataObject {
 	public void setShield(int shield) {this.shield = shield;}
 	public int getGold() {return gold;}
 	public void setGold(int gold) {this.gold = gold;}
+	public boolean getBossFlag() {return bossFlag;}
 	
 	public void changeGold(int change) {
 		gold=gold+change;

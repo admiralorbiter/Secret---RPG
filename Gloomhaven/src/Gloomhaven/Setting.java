@@ -13,7 +13,7 @@ public final class Setting {
 	
 	public static boolean drawLines = false;
 	
-	public static int size=39;
+	public static int size=30;
 
 	public static Point center = new Point(GUISettings.width/3+50, 100);
 	
@@ -52,7 +52,7 @@ public final class Setting {
 	}
 	
 	//Temp
-	public static int sceneID=2;
+	public static int sceneID=1;
 	
 	public static char restKey='r';
 	public static char discardKey='d';

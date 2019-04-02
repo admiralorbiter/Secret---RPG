@@ -53,6 +53,8 @@ public final class ScenarioDataLoader {
 				data.setTotalEnemies(15);
 				data.setStartingposition(new Point(7, 1));
 				data.setBoardSize(new Point(16, 16));
+				
+				
 				data.getEnemyTypeList().add("Bandit Archer");
 				data.getEnemyTypeList().add("Bandit Commander");
 				data.getEnemyTypeList().add("Living Bones");
@@ -67,8 +69,16 @@ public final class ScenarioDataLoader {
 				data.getNewLocations().add(new MapLocation('C', 18));
 				data.getNewLocations().add(new MapLocation('L', 2));
 				data.getPartyAchievements().add("Jekserah's Plans");
+				
+				data.setHexLayout(true);
 				data.setRoomTotal(6);
-				data.setBoardSize(new Point(15, 17));
+				data.setBoardSize(new Point(17, 15));
+				data.setTotalEnemies(13);
+				data.setStartingposition(new Point(8, 13));
+				
+				data.getEnemyTypeList().add("Inox Guard");
+				data.getEnemyTypeList().add("Inox Archer");
+				data.getEnemyTypeList().add("Inox Shaman");
 				return data;
 			case 4:
 				data.setName("Crypt of the Damned");

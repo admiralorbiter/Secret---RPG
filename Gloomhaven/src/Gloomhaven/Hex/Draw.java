@@ -43,8 +43,8 @@ public final class Draw {
 		}
 	}
 	
-	public static void range(Graphics2D g, HexCoordinate point, int range) {
-		
+	public static void range(Graphics2D g, HexCoordinate point, int range, boolean flatlayout) {
+
 		g.setColor(Color.blue);
 		
 		for(int q=-range; q<=range; q++) {
@@ -54,7 +54,7 @@ public final class Draw {
 				int s=-q-r;
 				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), point);
 
-				drawHex(g, hex, Setting.size, point.getLayout(), Setting.center, null);
+				drawHex(g, hex, Setting.size, flatlayout, Setting.center, null);
 			}
 		}
 	}
@@ -175,14 +175,14 @@ public final class Draw {
 		
 		if(Setting.test) {
 			if(flatlayout) {
-				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
+				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]);
 				if(size>=40 && entity!=null)
 					g.drawString(entity.getID() , tX[3]+20, tY[3]);
 				g.drawString(UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).x+","+UtilitiesHex.flatOffsetFromCube(1, new HexCoordinate(q, r, s)).y, tX[3]+20, tY[3]+15);
 			}
 			else {
 				g.drawString((int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getX()+","+(int)UtilitiesHex.pointyOffsetFromCube(1, new HexCoordinate(q, r, s)).getY(), tX[3]+20, tY[3]+40);
-				g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
+				//g.drawString(q+", "+r+","+s, tX[3]+20, tY[3]+20);
 				if(size>=40 && entity!=null)
 					g.drawString(entity.getID() , tX[3]+20, tY[3]+20);
 			}

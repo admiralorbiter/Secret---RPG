@@ -2,16 +2,18 @@ package Gloomhaven.Hex;
 
 import javax.swing.ImageIcon;
 
+import Gloomhaven.Door;
+
 public class Hex extends HexCoordinate {
 
 	private String quickID=" ";
 	private String id=" ";
 	private int roomID=0;
+	private Door door = null;
 	
 	private String lootID="";
 	private boolean loot=false;
 	
-	private boolean door=false;
 	private boolean doorOpen=false;
 	
 	boolean empty=true;
@@ -39,16 +41,30 @@ public class Hex extends HexCoordinate {
 	 public void setID(String id) {this.id=id;}
 	 public String getLootID() {return lootID;}
 	 public boolean hasLoot() {return loot;}
-	 public boolean hasDoor() {return door;}
+
 	 public boolean isDoorOpen() {return doorOpen;}
 	 public int getRoomID() {return roomID;}
-	 public boolean isSpaceEmpty() {return empty;}
+	 public boolean isSpaceEmpty() {
+		 if(door!=null)
+			 if(door.isDoorLocked())
+				 return false;
+		 
+		 return empty;
+	}
 	 public void setRoomID(int id) {this.roomID=id;}
 	 public void setSpaceEmpty(boolean empty) {this.empty=empty;}
 	 public boolean isHidden() {return hidden;}
 	 public void setHidden(boolean hidden) {this.hidden=hidden;}
-	 public void setDoor(boolean door) {this.door=door;}
-	 public void setDoorOpen(boolean doorOpen) {this.doorOpen=doorOpen;}
+	 
+	 public boolean hasDoor() {
+		 if(door!=null)
+			 return true;
+		 return false;
+	}
+	 
+	 public Door getDoor() {return door;}
+	 public void setDoor(Door door) {this.door=door;}
+	 
 	 public boolean hasObstacle() {return obstacle;}
 	 
 	 public ImageIcon getImage() {return image;}

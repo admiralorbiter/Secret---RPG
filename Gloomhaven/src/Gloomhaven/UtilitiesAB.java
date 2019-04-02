@@ -52,7 +52,7 @@ public final class UtilitiesAB {
 			
 			if(card.getEffects().getLoot()>0) {
 				List<Point> loot = new ArrayList<Point>();
-				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCubeCoordiantes(data.getHexLayout()), "Loot", data.getBoardSize());
+				loot=UtilitiesTargeting.createTargetList(board, card.getEffects().getLoot()+1, player.getCubeCoordiantes(data.getHexLayout()), "Loot", data.getBoardSize(), data.getHexLayout());
 				for(int i=0; i<loot.size(); i++)
 					UtilitiesLoot.loot(board, shop, player, loot.get(i));
 			}

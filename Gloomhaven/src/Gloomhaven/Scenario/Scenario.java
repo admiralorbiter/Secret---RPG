@@ -363,6 +363,12 @@ public class Scenario {
 	}
 	
 	private void matchTurnWithEnemyOrPlayer() {
+		System.out.println("Matching turn with a player or enemy");
+		
+		if(Setting.test) {
+			for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++)
+				System.out.println(enemyInfo.getEnemyAbilityDeck().get(i).getDeckID()+" , "+enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber());
+		}
 		
 		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
 			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {													//If enemy turns, do enemy attack
@@ -376,6 +382,7 @@ public class Scenario {
 					state=State.ROUND_END_DISCARD;
 			}
 		}
+		
 		//Next State: Long Rest or Player Choice
 		for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
 			if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
@@ -460,7 +467,6 @@ public class Scenario {
 		}
 		else {
 			enemyTurnIndex++;																		//Cycle through enemies and go to enemy attack state
-			System.out.println("Enemy Control Logic");
 			
 			if(enemyInfo.getEnemies().size()>0)
 				if(enemyInfo.getEnemy(enemyTurnIndex).getClassID().equals(enemyInfo.getDeckClass())) {

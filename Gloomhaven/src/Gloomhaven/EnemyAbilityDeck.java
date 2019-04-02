@@ -21,6 +21,7 @@ public class EnemyAbilityDeck {
 	public EnemyAbilityDeck(String classID) {
 		int abilityCardCount=8;
 		this.deckID=classID;
+		turnNumber=0;
 		for(int i=0; i<abilityCardCount; i++)
 			abilityDeck.add(new EnemyAbilityCard(classID, i+1, 1));
 	}

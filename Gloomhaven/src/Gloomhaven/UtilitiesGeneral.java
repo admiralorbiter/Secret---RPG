@@ -79,6 +79,7 @@ public final class UtilitiesGeneral {
 			turnList[min][2]=tempInit;
 		}
 		
+		System.out.println("Loc: UtilitiesGeneral.java - setTurnNumbers");
 		System.out.print("Init List: ");
 		for(int i=0; i<size; i++) {
 			System.out.print(turnList[i][0]+" "+turnList[i][2]+" , ");
@@ -94,12 +95,14 @@ public final class UtilitiesGeneral {
 					turnNum++;
 				}
 			}
+			
 			for(int j=0; j<enemyInfo.getEnemyAbilityDeck().size(); j++) {
 				if(enemyInfo.getEnemyAbilityDeck().get(j).getDeckID().equals(turnList[i][1])){
 					enemyInfo.getEnemyAbilityDeck().get(j).setTurnNumber(turnNum);
 					turnNum++;
 				}
 			}
+			System.out.println(i+" - "+ turnNum);
 		}
 	}
 	

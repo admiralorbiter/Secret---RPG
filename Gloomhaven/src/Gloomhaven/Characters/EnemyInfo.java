@@ -93,8 +93,8 @@ public class EnemyInfo {
 		enemyDecks.sort(Comparator.comparingInt(EnemyAbilityDeck::getInitiative));
 	}
 	
-	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
-	public int getTurnNumber() {return turnNumber;}
+	//public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
+	//public int getTurnNumber() {return turnNumber;}
 	public Enemy getEnemy(int index) {
 		if(enemies.size()>0)
 			return enemies.get(index);
@@ -167,14 +167,19 @@ public class EnemyInfo {
 		List<String> enemyClassTypes = getEnemyTypeList();
 		List<String> enemyClassDecks = new ArrayList<String>();
 		
-		for(int i=0; i<enemyDecks.size(); i++)
+		
+		for(int i=0; i<enemyDecks.size(); i++) {
 			enemyClassDecks.add(enemyDecks.get(i).getDeckID());
+		}
+		
 		
 		if(enemyClassTypes.size()>enemyDecks.size()) {
 			for(int i=0; i<enemyClassTypes.size(); i++) {
 				for(int j=0; j<enemyClassDecks.size(); j++) {
-					if(!enemyClassDecks.get(j).contains(enemyClassTypes.get(i))) {
+					if(!enemyClassDecks.contains(enemyClassTypes.get(i))) {
+						System.out.println("Added Enemy Ability Deck: "+enemyClassTypes.get(i));
 						enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
+						enemyClassDecks.add(enemyClassTypes.get(i));
 					}
 				}
 			}

@@ -40,10 +40,10 @@ public class EnemyInfo {
 			enemyDecks.add(new EnemyAbilityDeck(enemyClassTypes.get(i)));
 	}
 	
-	public void drawEnemies(Graphics2D g) {
+	public void drawEnemies(Graphics2D g, boolean flatlayout) {
 		g.setColor(Setting.enemyColor);
 		for(int i=0; i<enemies.size(); i++) {
-			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i));
+			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i), flatlayout);
 		}
 		g.setColor(Setting.enemyColor);
 	}

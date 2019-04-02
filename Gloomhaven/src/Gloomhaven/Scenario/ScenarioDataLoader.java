@@ -26,26 +26,36 @@ public final class ScenarioDataLoader {
 				data.setName("Black Barrow");
 				data.setGoal("Kill all enemies");
 				data.setLocation(new MapLocation('G', 10));
+				data.setHexLayout(true);
 				data.getPartyAchievements().add("First Steps");
 				data.getNewLocations().add(new MapLocation('G', 11));
+				
 				data.setRoomTotal(3);
 				data.setStartingposition(new Point(7, 12));
 				data.setBoardSize(new Point(11, 13));
 				data.setTotalEnemies(10);
-				data.getEnemyTypeList().add("Guard");
-				data.getEnemyTypeList().add("Archer");
-				data.getEnemyTypeList().add("LivingBones");
+				data.getEnemyTypeList().add("Bandit Guard");
+				data.getEnemyTypeList().add("Bandit Archer");
+				data.getEnemyTypeList().add("Living Bones");
+				
 				return data;
 			case 2:
 				data.setName("Barrow Lair");
 				data.setGoal("Kill the Bandit Commander and all revealed enemies");
-				data.setRequirements("Party Achievement: First Steps");
 				data.setLocation(new MapLocation('G', 11));
+				data.setHexLayout(false);
+				data.setRequirements("Party Achievement: First Steps");
 				data.setSpecialRules(true);
 				data.getNewLocations().add(new MapLocation('G', 3));
 				data.getNewLocations().add(new MapLocation('E', 11));
+				
 				data.setRoomTotal(6);
+				data.setStartingposition(new Point(0, 8));
 				data.setBoardSize(new Point(16, 16));
+				data.getEnemyTypeList().add("Bandit Archer");
+				data.getEnemyTypeList().add("Bandit Commander");
+				data.getEnemyTypeList().add("Living Bones");
+				data.getEnemyTypeList().add("Living Corpse");
 				return data;
 			case 3:
 				data.setName("Inox Encampement");

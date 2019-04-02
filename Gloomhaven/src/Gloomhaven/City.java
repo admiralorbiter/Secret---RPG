@@ -3,12 +3,13 @@ package Gloomhaven;
 import java.util.ArrayList;
 import java.util.List;
 
-public class City {
+public class City implements java.io.Serializable  {
 	private int prospLevel=1;
 	private int reputationLevel=0;
 	private List<String> globalAchievements = new ArrayList<String>();
 	private List<String> partyAchievements = new ArrayList<String>();
 	private List<Item> collectiveItems = new ArrayList<Item>();
+	private List<Integer> scenariosCompleted = new ArrayList<Integer>();
 	
 	public City() {
 		
@@ -37,4 +38,5 @@ public class City {
 	public void addPartyAchievement(String achievement) {partyAchievements.add(achievement);}
 	public List<Item> getCollectiveItems(){return collectiveItems;}
 	public void addCollectiveItems(Item item) {collectiveItems.add(item);}
+	public void addCompleteScenario(int scenarioNumber) {scenariosCompleted.add(scenarioNumber);}
 }

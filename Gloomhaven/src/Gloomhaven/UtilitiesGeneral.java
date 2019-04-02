@@ -79,12 +79,11 @@ public final class UtilitiesGeneral {
 			turnList[min][2]=tempInit;
 		}
 		
-		System.out.println("Loc: UtilitiesGeneral.java - setTurnNumbers");
+		System.out.println("");
 		System.out.print("Init List: ");
 		for(int i=0; i<size; i++) {
 			System.out.print(turnList[i][0]+" "+turnList[i][2]+" , ");
 		}
-		System.out.println("");
 		
 		int turnNum=0;
 		
@@ -102,7 +101,6 @@ public final class UtilitiesGeneral {
 					turnNum++;
 				}
 			}
-			System.out.println(i+" - "+ turnNum);
 		}
 	}
 	

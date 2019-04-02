@@ -60,10 +60,10 @@ public final class UtilitiesTargeting {
 		return targets;
 	}
 
-	public static void highlightTargets(List<Point> targets, Graphics2D g) {
+	public static void highlightTargets(List<Point> targets, Graphics2D g, boolean flatlayout) {
 		for(int i=0; i<targets.size(); i++) {
 			g.setColor(Setting.highlightColor);
-			Draw.drawHex(g, targets.get(i), null);
+			Draw.drawHex(g, targets.get(i), null, flatlayout);
 			g.setColor(Setting.defaultColor);
 		}
 	}

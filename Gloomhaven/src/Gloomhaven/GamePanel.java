@@ -7,6 +7,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,6 +82,31 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		for(int id=0; id<Setting.numberOfPlayers; id++)
 			party.add(new Player(id, Setting.playerClass));				//Adds the players to the party
 	
+		
+		//Read save game data
+		try {
+			FileInputStream cityIn = new FileInputStream("gloomhavenSave.ser"); 
+            ObjectInputStream in = new ObjectInputStream(cityIn); 
+
+			gloomhaven = (City)in.readObject();
+            in.close();
+            cityIn.close();
+            
+            /*FileInputStream partyIn = new FileInputStream("partySave.ser"); 
+            in = new ObjectInputStream(partyIn); 
+            
+            party = (List<Player>)in.readObject();
+            in.close();
+            partyIn.close();*/
+            
+            System.out.println("Read in City and Party Data");
+		}catch(IOException ex) 
+        { 
+            System.out.println("No save file."); 
+        }catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
 		shop.setMaxPlayers(party.size());
@@ -164,6 +194,27 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 				BattleGoalCardUtilities.evaluateBattleGoals(party.get(i));
 				party.get(i).getStats().endScenario();
 			}
+			//Save Data
+			try {
+				FileOutputStream cityOut = new FileOutputStream("gloomhavenSave.ser");
+				ObjectOutputStream out = new ObjectOutputStream(cityOut);
+				
+				out.writeObject(gloomhaven);
+				out.close();
+				cityOut.close();
+				
+				/*FileOutputStream partyOut = new FileOutputStream("partySave.ser");
+				out = new ObjectOutputStream(partyOut);
+				
+				out.writeObject(party);
+				out.close();
+				partyOut.close();*/
+				
+				System.out.println("City and Party has been saved.");
+			}  catch(IOException ex) 
+	        { 
+	            System.out.println("IOException is caught"); 
+	        } 
 			System.exit(0);											//[Temp] End of the game, just exit program
 		}
 	}

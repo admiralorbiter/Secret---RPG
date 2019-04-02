@@ -22,6 +22,7 @@ public class ScenarioData {
 	private Point startingPosition;
 	private int totalEnemies;
 	private int enemiesKilled=0;
+	private boolean flatlayout=true;
 	private List<String> enemyTypeList = new ArrayList<String>();
 	
 	public ScenarioData(int id) {
@@ -57,5 +58,6 @@ public class ScenarioData {
 		return ScenarioEnemyLoader.getEnemies(id, room);
 	}
 	public List<String> getEnemyTypeList(){return enemyTypeList;}
-
+	public boolean getHexLayout() {return flatlayout;}
+	public void setHexLayout(boolean layout) {this.flatlayout=layout;}
 }

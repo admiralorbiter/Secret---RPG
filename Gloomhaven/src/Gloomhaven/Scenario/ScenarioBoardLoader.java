@@ -124,6 +124,9 @@ public final class ScenarioBoardLoader {
 					}
 				}
 				break;
+			case 2:
+				
+				break;
 		}
 		
 		return board;

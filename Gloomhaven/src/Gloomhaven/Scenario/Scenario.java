@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -285,9 +288,9 @@ public class Scenario {
 		
 		elements.graphicsDrawTable(g);
 		GUI.drawBoardRectangle(g, data);
-		Draw.rectangleBoardSideways(g, board, data.getBoardSize());
-		Draw.drawParty(g, party);
-		enemyInfo.drawEnemies(g);
+		Draw.rectangleBoardSideways(g, board, data.getBoardSize(), data.getHexLayout());
+		Draw.drawParty(g, party, data.getHexLayout());
+		enemyInfo.drawEnemies(g, data.getHexLayout());
 		enemyInfo.update(board, data);
 		GUIScenario.EntityTable(g, party, enemyInfo.getEnemies());
 		
@@ -569,7 +572,7 @@ public class Scenario {
 			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), UsePlayerAbilityCard.getMove(card));
 			
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 			
 			if(k==Setting.moveKey) {
 				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout))<UsePlayerAbilityCard.getMove(card)) {
@@ -650,7 +653,7 @@ public class Scenario {
 			}
 			
 			if(targets.size()>0) {
-				UtilitiesTargeting.highlightTargets(targets, g);
+				UtilitiesTargeting.highlightTargets(targets, g, data.getHexLayout());
 				
 				selection();
 				g.setColor(Color.cyan);
@@ -659,7 +662,7 @@ public class Scenario {
 					UtilitiesTargeting.drawAttack(g, party.get(currentPlayer).getCubeCoordiantes(Setting.flatlayout), direction, UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets());
 				}
 				else {
-					Draw.drawHex(g, selectionCoordinate, null);
+					Draw.drawHex(g, selectionCoordinate, null, data.getHexLayout());
 				}
 				
 				if(k==Setting.targetKey) {
@@ -801,12 +804,12 @@ public class Scenario {
 		//If there are targets, highlight the targets and wait for selection
 		if(targets.size()>0) {
 			
-			UtilitiesTargeting.highlightTargets(targets, g);
+			UtilitiesTargeting.highlightTargets(targets, g, data.getHexLayout());
 			
 			selection();
 			g.setColor(Color.cyan);
 			//if(UsePlayerAbilityCard.getCardData(card).getEffects().getRange()!=0)
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 
 			//Space is used for selection of target
 			if(k==Setting.targetKey) {
@@ -846,7 +849,7 @@ public class Scenario {
 		
 		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(Setting.flatlayout), direction);
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, pushPoint, null);
+		Draw.drawHex(g, pushPoint, null, data.getHexLayout());
 		
 		if(num>=1 && num<=3) {
 			if(num==1) {
@@ -929,7 +932,7 @@ public class Scenario {
 		
 		selection();
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
+		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 				
 		if(k==Setting.moveKey) {
 			if(UtilitiesHex.distance(enemyPoint, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate))<=cardData.getData().getRange()) {
@@ -975,10 +978,10 @@ public class Scenario {
 		}
 		
 		if(targets.size()>0) {
-			UtilitiesTargeting.highlightTargets(targets, g);
+			UtilitiesTargeting.highlightTargets(targets, g, data.getHexLayout());
 			selection();
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(Setting.flatlayout, selectionCoordinate), null);
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
 			
 			if(k==Setting.targetKey) {
 				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("E")) {

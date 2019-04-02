@@ -59,8 +59,6 @@ public class Player extends character {
 	private boolean movementImmunity=false;
 	private boolean createAnyElement=false;
 	
-	Setting setting = new Setting();
-	
 	private StatsTracker stats = new StatsTracker();
 	
 	private BattleGoalCard battleGoal = null;

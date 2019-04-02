@@ -98,7 +98,7 @@ public final class Draw {
 		}
 	}
 	
-	public static void rectangleBoardSideways(Graphics2D g, Hex[][] board, Point dimensions) {
+	public static void rectangleBoardSideways(Graphics2D g, Hex[][] board, Point dimensions, boolean flatlayout) {
 		for(int x=0; x<dimensions.x; x++) {
 			for(int y=0; y<dimensions.y; y++) {
 				if(board[x][y]!=null) {
@@ -108,18 +108,18 @@ public final class Draw {
 						g.setColor(Setting.obstacleColor);
 					else
 						g.setColor(Setting.defaultColor);
-					drawHex(g, board[x][y], null);
+					drawHex(g, board[x][y], null, flatlayout);
 				}
 			}	
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, character entity) {
-		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, entity);
+	public static void drawHex(Graphics2D g, Point h, character entity, boolean flatlayout) {
+		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, character entity) {
-		drawHex(g, h, Setting.size, Setting.flatlayout, Setting.center, entity);
+	public static void drawHex(Graphics2D g, HexCoordinate h, character entity, boolean flatlayout) {
+		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
 	}
 	
 	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, character entity) {
@@ -138,10 +138,10 @@ public final class Draw {
 		drawHex(g, hex, size, flatlayout, center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, Hex hex, character entity) {
+	public static void drawHex(Graphics2D g, Hex hex, character entity, boolean flatlayout) {
 		if(hex!=null) {
 			if(!hex.isHidden())
-				drawHex(g, hex.offsetCoordinate, entity);
+				drawHex(g, hex.offsetCoordinate, entity, flatlayout);
 		}
 	}
 	
@@ -199,10 +199,10 @@ public final class Draw {
 			}
 	}
 
-	public static void drawParty(Graphics2D g, List<Player> party) {
+	public static void drawParty(Graphics2D g, List<Player> party, boolean flatlayout) {
 		g.setColor(Setting.playerColor);
 		for(int i=0; i<party.size(); i++) {
-			drawHex(g, party.get(i).getCoordinates(), party.get(i));
+			drawHex(g, party.get(i).getCoordinates(), party.get(i), flatlayout);
 		}
 		g.setColor(Setting.defaultColor);
 	}

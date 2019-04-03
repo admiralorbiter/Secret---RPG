@@ -458,6 +458,7 @@ public class Scenario {
 		
 			if(targets.get(targetIndex).hasRetaliate())
 				System.out.println("Scenario.java Loc 276: Reminder that if the player attacks a target with retalite it doesn't resolve anymore");
+		
 			state=State.PLAYER_DEFENSE;															//Next State: Player Defense
 		}else {
 			state=State.ENEMY_CONTROL_LOGIC;																//Next State: Attack, Enemy Attack, Round End
@@ -489,7 +490,10 @@ public class Scenario {
 	}
 	
 	private void playerDefense() {
+		
 		enemyInfo.drawAbilityCard(g);
+		GUI.drawEnemyAttack(g, enemyInfo.getEnemy(enemyTurnIndex), enemyInfo.getAttack(enemyTurnIndex));
+		
 		int playerIndex = getTargetIndex();
 		
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {

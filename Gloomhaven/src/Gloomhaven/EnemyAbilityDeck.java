@@ -18,6 +18,8 @@ public class EnemyAbilityDeck {
 	private String deckID;
 	private int turnNumber;
 	
+	AttackModifierCard card= attackModifierDeck.pickRandomModifierCard();
+	
 	public EnemyAbilityDeck(String classID) {
 		int abilityCardCount=8;
 		this.deckID=classID;
@@ -44,6 +46,8 @@ public class EnemyAbilityDeck {
 		 }
 		}
 		while(running);
+		
+		card= attackModifierDeck.pickRandomModifierCard();
 	}
 	
 	public void drawAbilityCard(Graphics g) {
@@ -52,7 +56,6 @@ public class EnemyAbilityDeck {
 	public String getDeckID() {return deckID;}
 	
 	public int getAttack(Enemy enemy) {
-		AttackModifierCard card = attackModifierDeck.pickRandomModifierCard();
 		return card.getMultiplier()*(enemy.getBaseStats().getAttack()+abilityDeck.get(abilityCardIndex).getAttack()+card.getPlusAttack());
 	}
 	

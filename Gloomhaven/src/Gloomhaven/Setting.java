@@ -6,14 +6,14 @@ import java.awt.Point;
 import javax.swing.ImageIcon;
 
 public final class Setting {
-	public static boolean test = true;
+	public static boolean test = false;
 	public static boolean testAbilityCard = false;
 	public static boolean stateTest=true;
-	public static boolean straightToScenario=true;
+	public static boolean straightToScenario=false;
 	
 	public static boolean drawLines = false;
 	
-	public static int size=30;
+	public static int size=40;
 
 	public static Point center = new Point(GUISettings.width/3+50, 100);
 	

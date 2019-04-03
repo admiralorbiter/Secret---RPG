@@ -10,7 +10,9 @@ import javax.swing.ImageIcon;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.BattleGoals.BattleGoalCard;
+import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
+import Gloomhaven.Hex.Draw;
 import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUI {
@@ -116,6 +118,14 @@ public final class GUI {
 		g.setFont(FontSettings.body);
 		g.drawString("Enemy Ability Card "+enemyDecks.get(enemyDeckIndex).getDeckID(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY);
 		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody);
+	}
+	
+	public static void drawEnemyAttack(Graphics g, Enemy enemy, int damage) {
+		g.drawImage(enemy.getImageIcon().getImage(), GUISettings.gLeft, GUISettings.gTop+100, 100, 100, null);
+		g.setFont(FontSettings.body);
+		g.drawString(enemy.getClassID(), GUISettings.gLeft, GUISettings.gTop+225);
+		g.setFont(FontSettings.hugeText);
+		g.drawString("Damage: "+damage, GUISettings.gLeft, GUISettings.gTop+300);
 	}
 	
 	public static void drawShortRestInfo(Graphics g, List<PlayerAbilityCard> abilityDeck) {

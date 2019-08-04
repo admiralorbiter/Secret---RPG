@@ -72,7 +72,7 @@ public class Scenario {
 	}
 	
 	private City gloomhaven;
-	private ScenarioData data;
+	public ScenarioData data;
 	private List<Player> party = new  ArrayList<Player>();
 	
 	private State state;
@@ -80,6 +80,7 @@ public class Scenario {
 	private KeyEvent key;
 	private char k;
 	private int num;
+	private Point mouseClick=null;
 	
 	private InfusionTable elements = new InfusionTable();
 	
@@ -125,6 +126,12 @@ public class Scenario {
 	}
 	
 	private void selection() {
+		
+		if(mouseClick!=null) {
+			Point p = UtilitiesHex.getOffsetHexFromPixels(mouseClick, data.getHexLayout());
+			if(board[p.x][p.y]!=null)
+				selectionCoordinate=p;
+		}
 		
 		if(key!=null)
 			if(key.getKeyCode()==KeyEvent.VK_SPACE)
@@ -197,10 +204,11 @@ public class Scenario {
 
 	}
 	
-	public boolean playRound(KeyEvent key, Graphics2D g) {
+	public boolean playRound(KeyEvent key, Graphics2D g, Point mouseClick) {
 		
 		this.g=g;
 		this.key=key;
+		this.mouseClick=mouseClick;
 		
 		if(Setting.drawLines)
 			GUI.drawLines(g);

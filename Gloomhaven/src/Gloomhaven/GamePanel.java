@@ -3,10 +3,12 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,6 +24,10 @@ import Gloomhaven.BattleGoals.BattleGoalCardUtilities;
 import Gloomhaven.BattleGoals.BattleGoalSelection;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.EventCard;
+import Gloomhaven.Hex.FractionalHex;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.HexLayout;
+import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.Scenario;
 
 
@@ -50,8 +56,9 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	
 	Shop shop = new Shop(gloomhaven.getProspLevel());
 	Event event;
-	int xClick=-99;
-	int yClick=-99;
+	//int xClick=-99;
+	//int yClick=-99;
+	Point mouseClick=null;
 	int partyIndex=0;
 	
 	BattleGoalSelection battleGoalSelection=null;
@@ -132,7 +139,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		}
 		else if(state==GameState.TOWN) {
 			
-			shop.drawShop(g, party, xClick, yClick);
+			shop.drawShop(g, party, mouseClick);
 			GUIGamepanel.drawTown(g);
 			
 			//Insert Town State Stuff Here
@@ -188,7 +195,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			}
 		}
 		else if(state==GameState.SCENARIO) {
-			if(scene.playRound(key, g))								//Play Round
+			if(scene.playRound(key, g, mouseClick))								//Play Round
 				state=GameState.END;
 			//if(scene.finished())									//If scenario is off, end state of game
 				//state=GameState.END;
@@ -268,9 +275,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
-
-		xClick=arg0.getX();
-		yClick=arg0.getY();
+		int xClick=arg0.getX();
+		int yClick=arg0.getY();
+		mouseClick = new Point(xClick, yClick);
+		UtilitiesHex.getOffsetHexFromPixels(new Point(xClick, yClick), scene.data.getHexLayout());
 		repaint();
 	}
 

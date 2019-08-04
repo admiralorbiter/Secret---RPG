@@ -36,7 +36,7 @@ public class MatrixSelection {
 		}
 	}
 	
-	public int drawSelection(Graphics g, List<Item> text , int xClick, int yClick) {
+	public int drawSelection(Graphics g, List<Item> text , Point mouseClick) {
 		int x=width/row;
 		int y=height/col;
 		int drawRow=0;
@@ -55,7 +55,10 @@ public class MatrixSelection {
 			
 			GUI.drawMatrixSelection(g, drawRow, drawCol, x, y, text, i);
 		}
-		Point selectionPoint = new Point(findSelection(xClick, yClick));
+		if(mouseClick==null)
+			return -99;
+		
+		Point selectionPoint = new Point(findSelection(mouseClick.x, mouseClick.y));
 		if(selectionPoint.getX()>=0 && selectionPoint.getX()<=col) {
 			if(selectionPoint.getY()>=0 && selectionPoint.getY()<=row)
 				return itemIndexes.indexOf(new Point(selectionPoint));

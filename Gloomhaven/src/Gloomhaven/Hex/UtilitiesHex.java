@@ -5,6 +5,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.Setting;
+
 public final class UtilitiesHex {
 
 	private static List<HexCoordinate> getHexDirectionList(){
@@ -92,7 +94,7 @@ public final class UtilitiesHex {
 	
 	public static FractionalHex pixelToHex(HexLayout layout, Point2D p) {
 		HexOrientation M = layout.getOrientation();
-		Point2D pt = new Point.Double((p.getX()-layout.getOrigin().getX())/layout.getSize().getX(), (p.getY()-layout.getOrigin().getY()/layout.getSize().getY()));
+		Point2D pt = new Point.Double((p.getX()-layout.getOrigin().getX())/layout.getSize().getX(), ((p.getY()-layout.getOrigin().getY())/layout.getSize().getY()));
 		double q = M.b0*pt.getX()+M.b1*pt.getY();
 		double r = M.b2*pt.getX()+M.b3*pt.getY();
 		return new FractionalHex(q, r, -q-r);
@@ -202,6 +204,24 @@ public final class UtilitiesHex {
 			return flatOffsetFromCube(1, hex);
 		else
 			return pointyOffsetFromCube(1, hex);
+	}
+	
+	public static Point getOffsetHexFromPixels(Point pixelPoint, boolean flatlayout) {
+		FractionalHex fh;
+		HexLayout hl;
+		
+		if(flatlayout)
+			hl = new HexLayout(UtilitiesHex.getFlatLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+		else
+			hl = new HexLayout(UtilitiesHex.getPointyLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+			
+		
+		fh=UtilitiesHex.pixelToHex(hl, pixelPoint);
+		
+		HexCoordinate hc = UtilitiesHex.hexRound(fh);
+		System.out.println(UtilitiesHex.getOffset(flatlayout, hc));
+		System.out.println(pixelPoint+" - "+UtilitiesHex.hexToPixel(hl, hc));
+		return UtilitiesHex.getOffset(flatlayout, hc);
 	}
 }
 

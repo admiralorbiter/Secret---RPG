@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -33,8 +34,8 @@ public class Shop {
 		supply.add(item);
 	}
 	
-	public void drawShop(Graphics g, List<Player> party, int  xClick,int  yClick) {
-		GUI.drawShop(g, shopImage, party, supply, xClick, yClick);
+	public void drawShop(Graphics g, List<Player> party, Point mouseClick) {
+		GUI.drawShop(g, shopImage, party, supply, mouseClick);
 
 	}
 	

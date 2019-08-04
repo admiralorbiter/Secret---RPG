@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -186,7 +187,7 @@ public final class GUI {
 		g.setColor(Color.WHITE);
 	}
 	
-	public static void drawShop(Graphics g, ImageIcon shopImage, List<Player> party, List<Item> supply, int xClick, int yClick) {
+	public static void drawShop(Graphics g, ImageIcon shopImage, List<Player> party, List<Item> supply, Point mouseClick) {
 		if(shopImage!=null)
 			g.drawImage(shopImage.getImage(), 50, 50, GUISettings.width-200, GUISettings.height-200, null);
 		
@@ -198,7 +199,8 @@ public final class GUI {
 		List<String> itemText = new ArrayList<String>();
 		for(int i=0; i<supply.size(); i++)
 			itemText.add(supply.get(i).getName());
-		int selectionFlag=matrix.drawSelection(g, supply, xClick, yClick);
+		
+		int selectionFlag=matrix.drawSelection(g, supply, mouseClick);
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(75, GUISettings.height-350, 300, 150);

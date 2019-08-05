@@ -9,6 +9,7 @@ public final class GUISettings {
 	
 	public static int leadingBody=15;
 	public static int leadingBigText=50;
+	public static int leadingBigBody=35;
 	public static int padding=10;
 	
 	//Player Info
@@ -68,7 +69,7 @@ public final class GUISettings {
 	public static int gTop = 50;
 	public static int gBottom = height-100;
 	public static int gRight = width-300;
-	public static int gYQ1 =height/4;
+	public static int gYQ1 =height/8;
 	public static int gMidX=width/2;
 	public static int gXQ3 = width*3/4;
 	public static int gYQ3 = height*3/4;

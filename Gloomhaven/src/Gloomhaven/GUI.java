@@ -51,28 +51,32 @@ public final class GUI {
 		g.drawString("Pick card to discard.", GUISettings.gLeft, GUISettings.gTop);
 	}
 	
+	//Ability Card Selection
 	public static void abilityCardTitle(Graphics g) {
-		g.drawRect(GUISettings.gLeft-5, GUISettings.gMid-GUISettings.leadingBigText, GUISettings.width/3, GUISettings.leadingBody*(Setting.getMaxHandCount()+3)*2);
-		g.setFont(FontSettings.bigText);
-		g.drawString("Ability Cards", GUISettings.gLeft, GUISettings.gMid);
-		g.setFont(FontSettings.body);
-		g.drawString("Cards Left", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody);
+		g.setColor(Color.white);
+		g.fillRect(GUISettings.gLeft-5, GUISettings.gYQ1-GUISettings.leadingBigText, GUISettings.width-50, GUISettings.leadingBigBody*(Setting.getMaxHandCount()+3)*2);
+		g.setColor(Color.black);
+		g.setFont(FontSettings.hugeText);
+		g.drawString("Ability Cards", GUISettings.gLeft, GUISettings.gYQ1);
+		g.setFont(FontSettings.abilityCardList);
+		g.drawString("Cards Left", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody);
 	}
-	
+	//Ability Card Selection
 	public static void chooseTopCard(Graphics g) {
-		g.setFont(FontSettings.body);
-		g.drawString("Choose top card.", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2);
+		g.setFont(FontSettings.abilityCardList);
+		g.drawString("Choose top card.", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*2);
 	}
-	
+	//Ability Card Selection
 	public static void chooseBottomCard(Graphics g) {
-		g.setFont(FontSettings.body);
-		g.drawString("Choose bottom card.", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2);
+		g.setFont(FontSettings.abilityCardList);
+		g.drawString("Choose bottom card.", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*2);
 	}
-	
+	//Ability Card Selection
 	public static void drawAbilityCardText(Graphics g, List<PlayerAbilityCard> abilityDeck, int i) {
-		g.setFont(FontSettings.bodySmall);
-		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*3+i*30);
-		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*4+i*30);
+		g.setColor(Color.black);
+		g.setFont(FontSettings.abilityCardList);
+		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*3+i*70);
+		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*4+i*70);
 	}
 	
 	public static void drawAbilityCardTextTop(Graphics g, PlayerAbilityCard topCard) {

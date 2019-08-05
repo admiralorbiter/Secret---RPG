@@ -45,7 +45,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	    END;
 	}
 	
-	GameState state=GameState.TESTING_SETUP;						//State of the Game
+	GameState state=GameState.TITLE_STATE;						//State of the Game
 	List<Player> party = new ArrayList<Player>();					//Party
 	Scenario scene;													//Current Scenario
 	KeyEvent key;													//Current Key Event
@@ -77,9 +77,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		setBackground(new Color(64, 64, 64));
 		setDoubleBuffered(true);
 		setFocusable(true);
-		if(state==GameState.TESTING_SETUP) {
-			initGame();
-		}	
+		initGame();	
 		repaint();	
 	}
 	
@@ -234,8 +232,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 		Graphics2D g = (Graphics2D)g1;
 		super.paintComponent(g);
 		g.setColor(Setting.defaultColor);						//Sets the paint component to the default color	
-		if(!(state==GameState.TESTING_SETUP)) 						//If it isn't in the setup, then go through game manager
-			gameManager(g);
+		gameManager(g);
 	}
 	
 	//Repaints if key is pressed and uses that key

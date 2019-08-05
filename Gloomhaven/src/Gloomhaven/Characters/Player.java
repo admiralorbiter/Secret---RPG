@@ -378,9 +378,10 @@ public class Player extends character {
 		}catch(NullPointerException ex){ }
 
 		abilityDeck.get(displayCard).showCard(g);
-		
 		abilityCardsLeft();
+		
 		GUI.abilityCardTitle(g);
+		drawAbilityCards(g);
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {
 				GUI.chooseTopCard(g);

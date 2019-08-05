@@ -106,6 +106,7 @@ public class Scenario {
 	private Enemy enemyTarget;
 	private Shop shop;
 	private Point updatePoint;
+	private boolean showAbilityCardList=true;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
 		this.shop=shop;
@@ -319,11 +320,15 @@ public class Scenario {
 
 
 		//Draw's the player's available ability cards
-		party.get(currentPlayer).drawAbilityCards(g);			
+		//party.get(currentPlayer).drawAbilityCards(g);			
 		
 		//Player enters long rest or picks ability cards
 		if((k==Setting.restKey) && (party.get(currentPlayer).discardPileSize()>1))
 			party.get(currentPlayer).setLongRest();
+		else if(key!=null) {
+			if(!(key.getKeyCode()==KeyEvent.VK_ALT))
+				party.get(currentPlayer).pickAbilityCards(key, num, g);
+		}
 		else
 			party.get(currentPlayer).pickAbilityCards(key, num, g);
 		

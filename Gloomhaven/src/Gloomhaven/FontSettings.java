@@ -8,4 +8,6 @@ public final class FontSettings {
 	public static Font body = new Font("Serif", Font.PLAIN, 14);
 	public static Font bodySmall = new Font("Serif", Font.PLAIN, 12);
 	public static Font hugeText = new Font("Serif", Font.PLAIN, 64);
+	
+	public static Font abilityCardList = new Font("Serif", Font.PLAIN, 32);
 }

@@ -7,7 +7,7 @@ public final class GUISettings {
 	public static int width=1900;
 	public static int height=1050;
 	
-	public static int leadingBody=15;
+	public static int leadingBody=25;
 	public static int leadingBigText=50;
 	public static int leadingBigBody=35;
 	public static int padding=10;
@@ -67,7 +67,7 @@ public final class GUISettings {
 	public static int gLeft = 10;
 	public static int gMid = height/2+100;
 	public static int gTop = 50;
-	public static int gBottom = height-100;
+	public static int gBottom = height-250;
 	public static int gRight = width-300;
 	public static int gYQ1 =height/8;
 	public static int gMidX=width/2;

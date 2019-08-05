@@ -96,7 +96,7 @@ public class Scenario {
 	
 	private PlayerAbilityCard card = null;
 	
-	private Point selectionCoordinate; 
+	private Point selectionCoordinate=null; 
 	
 	private Hex[][] board;
 	
@@ -106,7 +106,6 @@ public class Scenario {
 	private Enemy enemyTarget;
 	private Shop shop;
 	private Point updatePoint;
-	private boolean showAbilityCardList=true;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
 		this.shop=shop;
@@ -132,6 +131,8 @@ public class Scenario {
 			Point p = UtilitiesHex.getOffsetHexFromPixels(mouseClick, data.getHexLayout());
 			if(board[p.x][p.y]!=null)
 				selectionCoordinate=p;
+			
+			mouseClick=null;
 		}
 		
 		if(key!=null)
@@ -338,6 +339,7 @@ public class Scenario {
 				currentPlayer++;
 			else {
 				currentPlayer=0;
+				selectionCoordinate=null;
 				state=State.INITIATIVE;
 			}
 		}
@@ -384,6 +386,7 @@ public class Scenario {
 	}
 	
 	private void matchTurnWithEnemyOrPlayer() {
+		selectionCoordinate=null;
 		
 		if(Setting.test) {
 			System.out.println("");
@@ -549,7 +552,8 @@ public class Scenario {
 	}
 	
 	private void playerAttackLogic() {
-		selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
+		if(selectionCoordinate==null)
+			selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
 		
 		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, board, data, shop);
 		

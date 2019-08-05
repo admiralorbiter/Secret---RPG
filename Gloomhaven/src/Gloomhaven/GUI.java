@@ -53,7 +53,11 @@ public final class GUI {
 	
 	//Ability Card Selection
 	public static void abilityCardTitle(Graphics g) {
-		g.setColor(Color.white);
+		g.setColor(Color.black);
+		g.fillRect(0, 0, GUISettings.width, GUISettings.height);
+		g.setColor(new Color(242, 224, 199));
+		g.fillRect(GUISettings.gLeft+25, GUISettings.gYQ1-GUISettings.leadingBigText-50, GUISettings.width, GUISettings.leadingBigBody*(Setting.getMaxHandCount()+3)*2);
+		g.setColor(new Color(245, 239, 230));
 		g.fillRect(GUISettings.gLeft-5, GUISettings.gYQ1-GUISettings.leadingBigText, GUISettings.width-50, GUISettings.leadingBigBody*(Setting.getMaxHandCount()+3)*2);
 		g.setColor(Color.black);
 		g.setFont(FontSettings.hugeText);

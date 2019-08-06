@@ -108,49 +108,42 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	 */
 	private void gameManager(Graphics2D g) {	
 
-		if(state==GameState.TITLE_STATE) {
-			
-			GUIGamepanel.drawTitle(g);
-			if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE))
-				state=GameState.TOWN;
+		if(state==GameState.TITLE_STATE) {																			//[Title State]
+			GUIGamepanel.drawTitle(g);																				//Draw title screen
+			if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE))												//If space is pressed
+				state=GameState.TOWN;																				//Title State -> Town State
 			
 		}
-		else if(state==GameState.TOWN) {
+		else if(state==GameState.TOWN) {																			//[Town State]
 			
-			shop.drawShop(g, party, mouseClick);
-			GUIGamepanel.drawTown(g);
-			
-			//Insert Town State Stuff Here
-			if((key!=null) && shop.atLastPartyMember() && (key.getKeyCode()==KeyEvent.VK_SPACE)) {
-				event = new Event("City", cityDeck);
-				state=GameState.CITY_EVENT;
-			}
-		}
-		else if(state==GameState.CITY_EVENT) {
-			event.playRound(key, g, party, gloomhaven, shop, roadDeck);
-			
-			if(key!=null) {
-				if(event.isFinished()) {
-					event = new Event("Road", roadDeck);
-					state=GameState.ROAD_EVENT;
-				}
-			}
-		}
-		else if(state==GameState.ROAD_EVENT) {
-			event.playRound(key, g, party, gloomhaven, shop, cityDeck);
-			
-			if(key!=null) {
-				if(event.isFinished()) {
-					//event = null;
-					partyIndex=0;
-					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);
-					state=GameState.PICK_BATTLE_GOAL_CARD;
-				}
-			}
-		}
-		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {
+			shop.drawAndUpdateShop(g, party, mouseClick);															//Draw Shop and Update/Buy Items
 
-			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);
+			if((key!=null) && shop.atLastPartyMember() && (key.getKeyCode()==KeyEvent.VK_SPACE)) {					//If all party shopped and space pressed
+				event = new Event("City", cityDeck);																//Draws a new city event card							
+				state=GameState.CITY_EVENT;																			//Town State -> City Event State																	
+			}
+		}
+		else if(state==GameState.CITY_EVENT) {																		//[City Event State]
+			event.playRound(key, g, party, gloomhaven, shop, roadDeck);												//Resolve City Event Round
+			
+			if(key!=null && event.isFinished() && key.getKeyCode()==KeyEvent.VK_SPACE) {							//If event is resolved and space pressed
+				event = new Event("Road", roadDeck);																//Draw a new Road Event card
+				state=GameState.ROAD_EVENT;																			//City Event State -> Road Event State
+			}
+		}
+		else if(state==GameState.ROAD_EVENT) {																		//[Road Event State]
+			event.playRound(key, g, party, gloomhaven, shop, cityDeck);												//Resolve Road Event Round
+			
+			if(key!=null && event.isFinished() && key.getKeyCode()==KeyEvent.VK_SPACE) {							//If event is resolved and space pressed
+					partyIndex=0;																					//Party Index Reset
+					//TODO - Figure out if this is necessary as an object instead of an static class
+					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);									//Battle Goal Picked			
+					state=GameState.PICK_BATTLE_GOAL_CARD;															//Road Event State -> Pick Battle Goal Card
+			}
+		}
+		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {															//[Pick Battle Goal Card State]
+
+			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);			//Resolves battle goal selection
 			
 			if(finished==true) {
 				partyIndex++;

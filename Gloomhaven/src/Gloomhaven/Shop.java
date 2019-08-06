@@ -35,7 +35,8 @@ public class Shop implements Serializable{
 		supply.add(item);
 	}
 	
-	public void drawShop(Graphics g, List<Player> party, Point mouseClick) {
+	//TODO - Strip the shop mechanics from the GUI draw method
+	public void drawAndUpdateShop(Graphics g, List<Player> party, Point mouseClick) {
 		GUI.drawShop(g, shopImage, party, supply, mouseClick);
 
 	}

@@ -1,8 +1,9 @@
-package Gloomhaven;
+package Unsorted;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class Item {
+public class Item implements Serializable{
 	String quickID="Item";
 	int id;
 	int gold;

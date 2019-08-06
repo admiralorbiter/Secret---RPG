@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Unsorted;
 
 import java.util.ArrayList;
 import java.util.List;

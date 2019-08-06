@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Unsorted;
 
 public final class GUISettings {
 

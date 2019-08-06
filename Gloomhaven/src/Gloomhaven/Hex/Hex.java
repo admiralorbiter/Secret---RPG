@@ -2,7 +2,7 @@ package Gloomhaven.Hex;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.Door;
+import Unsorted.Door;
 
 public class Hex extends HexCoordinate {
 

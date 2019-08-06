@@ -4,10 +4,10 @@ import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.FontSettings;
-import Gloomhaven.GUI;
-import Gloomhaven.GUISettings;
-import Gloomhaven.Setting;
+import Unsorted.FontSettings;
+import Unsorted.GUI;
+import Unsorted.GUISettings;
+import Unsorted.Setting;
 
 public class AbilityCard {
 

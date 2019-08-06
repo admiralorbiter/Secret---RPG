@@ -3,7 +3,7 @@ package Gloomhaven.EventCards;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.City;
+import Unsorted.City;
 
 public final class CityEventCardLoader {
 
@@ -368,7 +368,7 @@ public final class CityEventCardLoader {
 		return option;
 	}
 	
-	public static void thresholdForResults(EventCard card, City gloomhaven) {
+	public static void determineThresholdForResults(EventCard card, City gloomhaven) {
 		int id=card.getID();
 		int choice = card.getChoice();
 		

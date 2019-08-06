@@ -2,7 +2,6 @@ package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
 
-import Gloomhaven.Setting;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardInterfaces.Brute;
 import Gloomhaven.CardInterfaces.CardImages;
@@ -12,6 +11,7 @@ import Gloomhaven.CardInterfaces.MindThief;
 import Gloomhaven.CardInterfaces.Scoundrel;
 import Gloomhaven.CardInterfaces.Spellweaver;
 import Gloomhaven.CardInterfaces.Tinkerer;
+import Unsorted.Setting;
 
 public class PlayerAbilityCard extends AbilityCard {
 	

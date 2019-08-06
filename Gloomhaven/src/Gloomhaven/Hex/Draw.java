@@ -10,10 +10,10 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.Character;
 import Gloomhaven.Scenario.Scenario;
+import Unsorted.Setting;
 
 public final class Draw {
 	

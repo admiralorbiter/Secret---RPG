@@ -14,23 +14,8 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.BossMoves;
-import Gloomhaven.City;
-import Gloomhaven.FontSettings;
-import Gloomhaven.GUI;
-import Gloomhaven.GUIScenario;
 import Gloomhaven.Gamepanel.GameState;
-import Gloomhaven.InfusionTable;
-import Gloomhaven.Item;
-import Gloomhaven.ItemLoader;
-import Gloomhaven.Setting;
 import Gloomhaven.Shop;
-import Gloomhaven.TreasureLoader;
-import Gloomhaven.UtilitiesAB;
-import Gloomhaven.UtilitiesBoard;
-import Gloomhaven.UtilitiesGeneral;
-import Gloomhaven.UtilitiesLoot;
-import Gloomhaven.UtilitiesTargeting;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.CardDataObject.CardDataObject;
@@ -41,6 +26,21 @@ import Gloomhaven.Hex.Draw;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
+import Unsorted.BossMoves;
+import Unsorted.City;
+import Unsorted.FontSettings;
+import Unsorted.GUI;
+import Unsorted.GUIScenario;
+import Unsorted.InfusionTable;
+import Unsorted.Item;
+import Unsorted.ItemLoader;
+import Unsorted.Setting;
+import Unsorted.TreasureLoader;
+import Unsorted.UtilitiesAB;
+import Unsorted.UtilitiesBoard;
+import Unsorted.UtilitiesGeneral;
+import Unsorted.UtilitiesLoot;
+import Unsorted.UtilitiesTargeting;
 
 public class Scenario implements Serializable{
 	public enum State {

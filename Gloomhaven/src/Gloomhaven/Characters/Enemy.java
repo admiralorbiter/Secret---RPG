@@ -6,12 +6,12 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.CharacterDataObject;
-import Gloomhaven.Setting;
 import Gloomhaven.CardDataObject.SimpleCardData;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
+import Unsorted.CharacterDataObject;
+import Unsorted.Setting;
 
 public class Enemy extends Character{
 	

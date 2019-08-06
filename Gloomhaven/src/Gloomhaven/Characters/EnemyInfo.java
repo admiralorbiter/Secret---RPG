@@ -8,11 +8,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.EnemyAbilityDeck;
-import Gloomhaven.FontSettings;
-import Gloomhaven.GUI;
-import Gloomhaven.GUISettings;
-import Gloomhaven.Setting;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
 import Gloomhaven.Hex.Draw;
@@ -20,6 +15,11 @@ import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.ScenarioData;
 import Gloomhaven.Scenario.ScenarioEnemyLoader;
+import Unsorted.EnemyAbilityDeck;
+import Unsorted.FontSettings;
+import Unsorted.GUI;
+import Unsorted.GUISettings;
+import Unsorted.Setting;
 
 public class EnemyInfo {
 	

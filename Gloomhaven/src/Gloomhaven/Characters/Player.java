@@ -11,15 +11,6 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.CharacterDataObject;
-import Gloomhaven.FontSettings;
-import Gloomhaven.GUI;
-import Gloomhaven.GUIScenario;
-import Gloomhaven.GUISettings;
-import Gloomhaven.Item;
-import Gloomhaven.ItemLoader;
-import Gloomhaven.Setting;
-import Gloomhaven.StatsTracker;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
@@ -28,6 +19,15 @@ import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
+import Unsorted.CharacterDataObject;
+import Unsorted.FontSettings;
+import Unsorted.GUI;
+import Unsorted.GUIScenario;
+import Unsorted.GUISettings;
+import Unsorted.Item;
+import Unsorted.ItemLoader;
+import Unsorted.Setting;
+import Unsorted.StatsTracker;
 
 public class Player extends Character {
 

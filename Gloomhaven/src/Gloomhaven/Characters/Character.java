@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import Gloomhaven.CharacterDataObject;
 import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.Counter;
@@ -16,6 +15,7 @@ import Gloomhaven.CardDataObject.NegativeConditions;
 import Gloomhaven.CardDataObject.PositiveConditions;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
+import Unsorted.CharacterDataObject;
 
 public class Character implements Serializable {
 	

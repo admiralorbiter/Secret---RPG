@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Unsorted;
 
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardDataObject.NegativeConditions;

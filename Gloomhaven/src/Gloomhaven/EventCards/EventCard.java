@@ -3,24 +3,29 @@ package Gloomhaven.EventCards;
 import java.io.Serializable;
 
 public class EventCard implements Serializable{
-	String optionA;
-	String optionB;
-	String resultA;
-	String resultB;
-	int id;
-	String type;
-	String text;
-	String thresholdType="None";
+	
+	public enum Choice{
+		TOP,
+		BOTTOM
+	}
+	
+	private String optionA;
+	private String optionB;
+	private String resultA;
+	private String resultB;
+	private int id;
+	private String text;
+	private String thresholdType="None";
 	
 	
-	boolean threshold;
-	boolean thresholdMet=false;
-	int thresholdAmount=0;
-	int choice=0;//1 is top 2 is bottom 3 is alttop 4 is altbottom
+	private boolean threshold;
+	private boolean thresholdMet=false;
+	private int thresholdAmount=0;
+	private int choice=0;//1 is top 2 is bottom 3 is alttop 4 is altbottom
+	
 	
 	public EventCard(String type, int id) {
 		this.id=id;
-		this.type=type;
 		
 		if(type.equals("City")) {
 			text=CityEventCardLoader.cardText(id);

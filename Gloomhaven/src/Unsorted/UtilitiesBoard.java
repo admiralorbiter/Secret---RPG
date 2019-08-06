@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Unsorted;
 
 import java.awt.Point;
 import java.util.List;

@@ -1,11 +1,11 @@
 package Gloomhaven.AbilityCards;
 
-import Gloomhaven.Archer;
-import Gloomhaven.Guard;
-import Gloomhaven.LivingBones;
 import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.CardInterfaces.CardInterface;
 import Gloomhaven.CardInterfaces.CardsEnemyTest;
+import Unsorted.Archer;
+import Unsorted.Guard;
+import Unsorted.LivingBones;
 
 public class EnemyAbilityCard extends AbilityCard {
 

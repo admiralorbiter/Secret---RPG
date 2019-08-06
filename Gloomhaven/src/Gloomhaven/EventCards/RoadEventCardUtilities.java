@@ -2,9 +2,9 @@ package Gloomhaven.EventCards;
 
 import java.util.List;
 
-import Gloomhaven.City;
-import Gloomhaven.ItemLoader;
 import Gloomhaven.Characters.Player;
+import Unsorted.City;
+import Unsorted.ItemLoader;
 
 public final class RoadEventCardUtilities {
 	

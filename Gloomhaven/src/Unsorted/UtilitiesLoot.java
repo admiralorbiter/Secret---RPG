@@ -1,7 +1,8 @@
-package Gloomhaven;
+package Unsorted;
 
 import java.awt.Point;
 
+import Gloomhaven.Shop;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Hex.Hex;
 

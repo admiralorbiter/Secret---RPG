@@ -2,6 +2,9 @@ package Gloomhaven;
 
 import javax.swing.JFrame;
 
+import Unsorted.GUISettings;
+import Unsorted.Setting;
+
 @SuppressWarnings("ucd")
 public class Application extends JFrame {
 

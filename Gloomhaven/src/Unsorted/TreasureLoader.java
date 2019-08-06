@@ -1,5 +1,6 @@
-package Gloomhaven;
+package Unsorted;
 
+import Gloomhaven.Shop;
 import Gloomhaven.Characters.Player;
 
 public final class TreasureLoader {

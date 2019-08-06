@@ -4,8 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.MapLocation;
 import Gloomhaven.Characters.Enemy;
+import Unsorted.MapLocation;
 
 public class ScenarioData {
 	private String name;

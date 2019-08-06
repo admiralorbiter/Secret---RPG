@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.swing.*;
 
+import GUI.GUIGamepanel;
 import Gloomhaven.BattleGoals.BattleGoalCard;
 import Gloomhaven.BattleGoals.BattleGoalCardUtilities;
 import Gloomhaven.BattleGoals.BattleGoalSelection;
@@ -25,13 +26,15 @@ import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.EventCard;
 import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.Scenario;
+import Unsorted.City;
+import Unsorted.Event;
+import Unsorted.Setting;
 
 
 public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	
 	public enum GameState {
 	    TITLE_STATE,
-	    TESTING_SETUP,
 	    TOWN,
 	    CITY_EVENT,
 	    ROAD_EVENT,
@@ -53,8 +56,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	private Event event;														//Event Holder
 	private Point mouseClick=null;												//Mouse Pixels Holder
 	private int partyIndex=0;													//Party index for selection and turns
-	//[TODO] - Refactor so each player can choose a battle goal, not just player 1
-	private BattleGoalSelection battleGoalSelection=null;						//Holds battle goal selected
+	private BattleGoalSelection battleGoalSelection=null;						//Holds two battle goals to be selected by player(s)
 	
 	public Gamepanel() {
 		
@@ -83,7 +85,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			party.add(new Player(id, Setting.playerClass));						//Adds the players to the party
 	
 		//Reads in saved city data if it exists
-		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("gloomhavenSave.ser"))){																	//Read save game data if it exists
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("gloomhavenSave.ser"))){				//Read save game data if it exists
 			gloomhaven = (City)in.readObject();
             System.out.println("Read in City and Party Data");
 		}catch(IOException ex) 
@@ -93,10 +95,9 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			e.printStackTrace();
 		}
 		
-		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
-		shop.setMaxPlayers(party.size());										//Sets player size for shop
+		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);												//Creates the scenario
 		
-		if(Setting.straightToScenario)											//Starts game loop
+		if(Setting.straightToScenario)																				//Starts game loop
 			state=GameState.SCENARIO;
 		else
 			state=GameState.TITLE_STATE;
@@ -116,11 +117,14 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 		}
 		else if(state==GameState.TOWN) {																			//[Town State]
 			
-			shop.drawAndUpdateShop(g, party, mouseClick);															//Draw Shop and Update/Buy Items
+			shop.drawAndUpdateShop(g, party.get(partyIndex), mouseClick);											//Draw Shop and Update/Buy Items
 
-			if((key!=null) && shop.atLastPartyMember() && (key.getKeyCode()==KeyEvent.VK_SPACE)) {					//If all party shopped and space pressed
+			if((key!=null) && partyIndex==(party.size()-1) && (key.getKeyCode()==KeyEvent.VK_SPACE)) {				//If all party shopped and space pressed
+				partyIndex=0;																						//Resets Party Index
 				event = new Event("City", cityDeck);																//Draws a new city event card							
 				state=GameState.CITY_EVENT;																			//Town State -> City Event State																	
+			}else if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE)) {
+				partyIndex++;																						//Procedes to the next party member
 			}
 		}
 		else if(state==GameState.CITY_EVENT) {																		//[City Event State]
@@ -136,109 +140,70 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			
 			if(key!=null && event.isFinished() && key.getKeyCode()==KeyEvent.VK_SPACE) {							//If event is resolved and space pressed
 					partyIndex=0;																					//Party Index Reset
-					//TODO - Figure out if this is necessary as an object instead of an static class
-					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);									//Battle Goal Picked			
+					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);									//Battle Goals Randomly Drawn			
 					state=GameState.PICK_BATTLE_GOAL_CARD;															//Road Event State -> Pick Battle Goal Card
 			}
 		}
 		else if(state==GameState.PICK_BATTLE_GOAL_CARD) {															//[Pick Battle Goal Card State]
-
-			boolean finished=battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck);			//Resolves battle goal selection
 			
-			if(finished==true) {
-				partyIndex++;
-				if(partyIndex==party.size()) {
-					partyIndex=0;
-					state=GameState.SCENARIO_TEXT;
-				}else {
-					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);
+			if(battleGoalSelection.chooseCard(g, key, party.get(partyIndex), battleGoalDeck)) {						//Resolves battle goal selection
+				partyIndex++;																						//Goes to the next player
+				if(partyIndex==party.size()) {																		//If all the party has selected change state
+					partyIndex=0;																					//Reset party index
+					state=GameState.SCENARIO_TEXT;																	//Pick Battlegoal State-> Scenario Text state
+				}else {																								
+					battleGoalSelection = new BattleGoalSelection(battleGoalDeck);									//If players are left, select two more cards
 				}
 			}
 		}
-		else if(state==GameState.SCENARIO_TEXT) {
-			GUIGamepanel.drawScenarioIntro(g);
+		else if(state==GameState.SCENARIO_TEXT) {																	//[Scenario Text State]
 			
-			if(key!=null) {
-				if(key.getKeyCode()==KeyEvent.VK_SPACE)
-					state=GameState.SCENARIO;
-			}
+			GUIGamepanel.drawScenarioIntro(g);																		//Draw scenario intro
+			if(key!=null && key.getKeyCode()==KeyEvent.VK_SPACE)													//If space is pressed go to next state
+					state=GameState.SCENARIO;																		//Scenario Text State -> Scenario State
 		}
-		else if(state==GameState.SCENARIO) {
-			if(scene.playRound(key, g, mouseClick))								//Play Round
-				state=GameState.END;
-			//if(scene.finished())									//If scenario is off, end state of game
-				//state=GameState.END;
-		}else if(state==GameState.END) {
-			for(int i=0; i<party.size(); i++) {
-				BattleGoalCardUtilities.evaluateBattleGoals(party.get(i));
-				party.get(i).getStats().endScenario();
+		else if(state==GameState.SCENARIO) {																		//[Scenario State]
+			
+			if(scene.playRound(key, g, mouseClick))																	//Start Scenario Loop and continue until it ends
+				state=GameState.END;																				//Scenario State -> End State
+			
+		}else if(state==GameState.END) {																			//[End State]
+			
+			for(int i=0; i<party.size(); i++) {																		//Go through party resolving end of scenario
+				BattleGoalCardUtilities.evaluateBattleGoals(party.get(i));											//Evaluates each battle goal
+				party.get(i).getStats().endScenario();																//Resolves and resets stats									
 			}
-			//Save Data
-			try {
-				FileOutputStream cityOut = new FileOutputStream("gloomhavenSave.ser");
-				ObjectOutputStream out = new ObjectOutputStream(cityOut);
-				
+
+			try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("gloomhavenSave.ser"))){		//Saves Data
 				out.writeObject(gloomhaven);
-				out.close();
-				cityOut.close();
-				
-				/*FileOutputStream partyOut = new FileOutputStream("partySave.ser");
-				out = new ObjectOutputStream(partyOut);
-				
-				out.writeObject(party);
-				out.close();
-				partyOut.close();*/
-				
 				System.out.println("City and Party has been saved.");
 			}  catch(IOException ex) 
 	        { 
 	            System.out.println("IOException is caught"); 
 	        } 
-			System.exit(0);											//[Temp] End of the game, just exit program
+			
+			System.exit(0);																							//[TODO] End of the game, just exit program
 		}
 	}
 	
 	@Override
 	public void paintComponent(Graphics g1) {
-		Graphics2D g = (Graphics2D)g1;
+		Graphics2D g = (Graphics2D)g1;											//Converts graphics go 2d graphics
 		super.paintComponent(g);
-		g.setColor(Setting.defaultColor);						//Sets the paint component to the default color	
-		gameManager(g);
+		g.setColor(Setting.defaultColor);										//Sets the paint component to the default color	
+		gameManager(g);															//Runs the game manager everytime repaint is called					
 	}
 	
-	//Repaints if key is pressed and uses that key
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {										//Key stored when key pressed and repaints graphics
 		key=e;
 		repaint();
 	}
 
-	//repaints if key released, but sets the key to null just to repaint graphics
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) {										//Key set to null when released and repaints graphics
 		key=null;
 		repaint();
-	}
-
-	//Does nothing
-	@Override public void keyTyped(KeyEvent e) {}
-
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -250,10 +215,13 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 		repaint();
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * Unused mouse and key methods
+	 */
+	@Override public void mouseReleased(MouseEvent arg0) {}
+	@Override public void keyTyped(KeyEvent e) {}
+	@Override public void mouseClicked(MouseEvent arg0) {}
+	@Override public void mouseEntered(MouseEvent arg0) {}
+	@Override public void mouseExited(MouseEvent arg0) {}
 
 }

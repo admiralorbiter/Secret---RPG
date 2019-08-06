@@ -1,4 +1,4 @@
-package Gloomhaven;
+package Unsorted;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -162,63 +162,76 @@ public final class GUI {
 		g.drawString("Attack: "+abilityDeck.get(abilityCardIndex).getAttack()+"  Move: "+abilityDeck.get(abilityCardIndex).getMove()+" Range: "+abilityDeck.get(abilityCardIndex).getRange(), GUISettings.enemyAbilityCardX, GUISettings.enemyAbilityCardY+GUISettings.leadingBody);
 	}
 	
-	public static void drawMatrixSelection(Graphics g, int drawRow, int drawCol, int x, int y, List<Item> text, int i) {
-		g.setFont(FontSettings.body);
+	/**
+	 * TODO - Change this function
+	 * @param g				Graphics Object
+	 * @param drawRow		Row that is being drawn
+	 * @param drawCol		Col that is being drawn
+	 * @param width			Width of the item box	
+	 * @param height		Height of the item Box
+	 * @param item			Item on display
+	 */
+	public static void drawMatrixSelection(Graphics g, int drawRow, int drawCol, int width, int height, Item item) {
+		g.setFont(FontSettings.bodySmall);
 		
+		//Draws Background for the item
 		g.setColor(Color.black);
-		g.fillRect(GUISettings.width/2+drawCol*x, GUISettings.height/6+15+drawRow*y, x-5, y-5);
+		g.fillRect(GUISettings.width/2+drawCol*width, GUISettings.height/6+15+drawRow*height, width-5, height-5);
+		
+		//Draws Item Name
 		g.setColor(Color.WHITE);
-		g.drawString(text.get(i).getName(), GUISettings.width/2+drawCol*x, GUISettings.height/6+25+drawRow*y);
-		//g.drawString(text.get(i).getText(), setting.getWidth()/2+drawCol*x, setting.getHeight()/6+65+drawRow*y);
-		
-		
-		int charLength=0;//x/5;
+		g.drawString(item.getName(), GUISettings.width/2+drawCol*width, GUISettings.height/6+25+drawRow*height);
+
+		//Goes through and draws each character and splits it that way
+		int charLength=0;
 		int rowLength=1;
 		int pixelsForEachChar=10;
-
-		for(int j=0; j<text.get(i).getText().length(); j++) {
+		for(int j=0; j<item.getText().length(); j++) {
 			
-			if(j%(x/pixelsForEachChar)==0) {
+			if(j%(width/pixelsForEachChar)==0) {
 				rowLength++;
 				charLength=0;
 			}
 			else {
 				charLength++;
 			}
-			char c = text.get(i).getText().charAt(j);
-			g.drawString(String.valueOf(c), GUISettings.width/2+drawCol*x+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*y+rowLength*11);
+			char c = item.getText().charAt(j);
+			g.drawString(String.valueOf(c), GUISettings.width/2+drawCol*width+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*height+rowLength*11);
 		}
 		rowLength++;
 		charLength=1;
+		
+		//Draws how much it costs
 		g.setColor(Color.RED);
-		g.drawString("Gold: "+text.get(i).getGold(), GUISettings.width/2+drawCol*x+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*y+rowLength*11);
+		g.drawString("Gold: "+item.getGold(), GUISettings.width/2+drawCol*width+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*height+rowLength*11);
 		g.setColor(Color.WHITE);
 	}
 	
-	public static void drawShop(Graphics g, ImageIcon shopImage, List<Player> party, List<Item> supply, Point mouseClick) {
+	/**
+	 * Draws the shop image and the items
+	 * @param g  			Graphics Object
+	 * @param shopImage		Shop Image
+	 * @param party			List of players
+	 * @param supply		Current Items in Shop
+	 * @param mouseClick	Last mouse click
+	 */
+	public static void drawShop(Graphics g, ImageIcon shopImage, Player player) {
 		if(shopImage!=null)
-			g.drawImage(shopImage.getImage(), 50, 50, GUISettings.width-200, GUISettings.height-200, null);
+			g.drawImage(shopImage.getImage(), 50, 50, GUISettings.width-200, GUISettings.height-200, null);	
 		
-		g.setColor(Color.black);
-		g.fillRect(GUISettings.width/2, GUISettings.height/6, 650, 650);
+		g.setColor(Color.black);													
+		g.fillRect(GUISettings.width/2, GUISettings.height/6, 650, 650);		//Draws black filled in rect that is the background for the items
 		g.setColor(Color.white);
 		
-		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());
-		List<String> itemText = new ArrayList<String>();
-		for(int i=0; i<supply.size(); i++)
-			itemText.add(supply.get(i).getName());
-		
-		int selectionFlag=matrix.drawSelection(g, supply, mouseClick);
-		
 		g.setColor(Color.BLACK);
-		g.fillRect(75, GUISettings.height-350, 300, 150);
+		g.fillRect(75, GUISettings.height-350, 300, 150);						//Draws black filled in rect that is the background for the gold
 		g.setColor(Color.WHITE);
 		
-		for(int i=0; i<party.size(); i++) {
-			g.drawRect(90, GUISettings.height-340+25*i, 200, 30);
-			g.setColor(Color.WHITE);
-			g.drawString(party.get(i).getName()+"    Available Gold: "+party.get(i).getCharacterData().getGold(), 100, GUISettings.height-325+25*i);
-		}
+		g.setFont(FontSettings.bigText);
+		g.drawRect(90, GUISettings.height-345, 250, 100);						//Draws current player's name and gold
+		g.setColor(Color.WHITE);
+		g.drawString(player.getName(),  100, GUISettings.height-325);
+		g.drawString("Available Gold: "+player.getCharacterData().getGold(), 100, GUISettings.height-300);
 		
 	}
 

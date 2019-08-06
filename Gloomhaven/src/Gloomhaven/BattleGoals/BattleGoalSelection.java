@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.FontSettings;
-import Gloomhaven.GUI;
-import Gloomhaven.GUISettings;
-import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
+import Unsorted.FontSettings;
+import Unsorted.GUI;
+import Unsorted.GUISettings;
+import Unsorted.Setting;
 
 public class BattleGoalSelection implements Serializable{
 

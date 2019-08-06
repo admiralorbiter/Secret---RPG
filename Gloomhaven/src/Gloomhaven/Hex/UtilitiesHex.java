@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import Gloomhaven.Setting;
+import Unsorted.Setting;
 
 public final class UtilitiesHex {
 

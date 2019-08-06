@@ -1,8 +1,8 @@
 package Gloomhaven.Scenario;
 
-import Gloomhaven.Door;
-import Gloomhaven.Setting;
 import Gloomhaven.Hex.Hex;
+import Unsorted.Door;
+import Unsorted.Setting;
 
 public final class ScenarioBoardLoader {
 	

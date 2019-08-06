@@ -1,4 +1,4 @@
-package Unsorted;
+package Gloomhaven;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -6,12 +6,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
-import Gloomhaven.Shop;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.CityEventCardLoader;
 import Gloomhaven.EventCards.CityEventCardUtilities;
 import Gloomhaven.EventCards.EventCard;
 import Gloomhaven.EventCards.EventCard.Choice;
+import Unsorted.City;
+import Unsorted.GUIEvent;
+import Unsorted.UtilitiesGeneral;
 import Gloomhaven.EventCards.RoadEventCardLoader;
 import Gloomhaven.EventCards.RoadEventCardUtilities;
 /**
@@ -19,7 +21,7 @@ import Gloomhaven.EventCards.RoadEventCardUtilities;
  * @author admir
  *
  */
-public class Event implements Serializable{
+public class EventHandler implements Serializable{
 	
 	public enum State{
 		SELECTION,
@@ -39,7 +41,7 @@ public class Event implements Serializable{
 	 * @param type		Type of event (city or road)
 	 * @param deck		Event Deck
 	 */
-	public Event(String type, List<EventCard> deck) {
+	public EventHandler(String type, List<EventCard> deck) {
 		this.type=type;
 		this.deck=deck;
 		finished=false;
@@ -116,10 +118,11 @@ public class Event implements Serializable{
 			
 			for(int i=0; i<party.size(); i++) {																		//Goes through the party and checks with each class
 				for(int j=0; j<classes.size(); j++) {
-					if(party.get(i).getClass().equals(classes.get(j)))
+					if(party.get(i).getClass().equals(classes.get(j))) {
 						setAltChoice();
 						eventCard.setThresholdMet(true);	
 						System.out.println("Event.java -playRound Loc 102: Successfully met class criteria");
+					}
 				}
 			}
 			state=State.FINISHED;

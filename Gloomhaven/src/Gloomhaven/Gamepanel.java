@@ -27,7 +27,6 @@ import Gloomhaven.EventCards.EventCard;
 import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.Scenario;
 import Unsorted.City;
-import Unsorted.Event;
 import Unsorted.Setting;
 
 
@@ -53,7 +52,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	private List<EventCard> roadDeck = new ArrayList<>();						//Road Deck for the game
 	private List<BattleGoalCard> battleGoalDeck = new ArrayList<>();			//Battle Goal Deck
 	private Shop shop = new Shop(gloomhaven.getProspLevel());					//Shop with items to buy
-	private Event event;														//Event Holder
+	private EventHandler event;														//Event Holder
 	private Point mouseClick=null;												//Mouse Pixels Holder
 	private int partyIndex=0;													//Party index for selection and turns
 	private BattleGoalSelection battleGoalSelection=null;						//Holds two battle goals to be selected by player(s)
@@ -121,7 +120,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 
 			if((key!=null) && partyIndex==(party.size()-1) && (key.getKeyCode()==KeyEvent.VK_SPACE)) {				//If all party shopped and space pressed
 				partyIndex=0;																						//Resets Party Index
-				event = new Event("City", cityDeck);																//Draws a new city event card							
+				event = new EventHandler("City", cityDeck);																//Draws a new city event card							
 				state=GameState.CITY_EVENT;																			//Town State -> City Event State																	
 			}else if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE)) {
 				partyIndex++;																						//Procedes to the next party member
@@ -131,7 +130,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			event.playRound(key, g, party, gloomhaven, shop, roadDeck);												//Resolve City Event Round
 			
 			if(key!=null && event.isFinished() && key.getKeyCode()==KeyEvent.VK_SPACE) {							//If event is resolved and space pressed
-				event = new Event("Road", roadDeck);																//Draw a new Road Event card
+				event = new EventHandler("Road", roadDeck);																//Draw a new Road Event card
 				state=GameState.ROAD_EVENT;																			//City Event State -> Road Event State
 			}
 		}

@@ -1,7 +1,11 @@
 package Gloomhaven.EventCards;
 
 import java.io.Serializable;
-
+/**
+ * Event Card that holds all the text and choices for the card
+ * @author admir
+ *
+ */
 public class EventCard implements Serializable{
 	
 	public enum Choice{
@@ -18,15 +22,20 @@ public class EventCard implements Serializable{
 	private String resultB;
 	private int id;
 	private String text;
+	
+	private String resultAltA=null;
+	private String resultAltB=null;
 	private String thresholdType="None";
-	
-	
-	private boolean threshold;
+	private boolean threshold=false;
 	private boolean thresholdMet=false;
 	private int thresholdAmount=0;
 	private Choice choice=Choice.NONE;
 	
-	
+	/**
+	 * Creates event card based on type of card and the id of the card
+	 * @param type		City or Road Card
+	 * @param id		Unique ID for the Card
+	 */
 	public EventCard(String type, int id) {
 		this.id=id;
 		
@@ -45,6 +54,30 @@ public class EventCard implements Serializable{
 		}
 	}
 	
+	/**
+	 * @return String that details the outcome of the card and choices
+	 */
+	public String getResults() {
+		String error = "Error in eventcard.java - get results function.";
+
+		switch(choice) {
+			case TOP:
+				return resultA;
+			case BOTTOM:
+				return resultB;
+			case ALTTOP:
+				if(resultAltA!=null)
+					return resultAltA;
+				return error;
+			case ALTBOTTOM:
+				if(resultAltB!=null)
+					return resultAltA;
+				return error;
+			default:
+				return error;
+		}
+	}
+	
 	//Getters and Setters
 	public int getID() {return id;}
 	public String getOptionA() {return optionA;}
@@ -56,20 +89,12 @@ public class EventCard implements Serializable{
 	public void setThresholdType(String type) {this.thresholdType=type;}
 	public void setThresholdAmount(int amount) {this.thresholdAmount=amount;}
 	public String getText() {return text;}
-	
-	public String getResults() {
-		if(choice==Choice.TOP) {
-			return resultA;
-		}
-		else if(choice== Choice.BOTTOM) {
-			return resultB;
-		}
-		
-		return "Error in eventcard.java - get results function.";
-	}
-
 	public boolean hasThreshold() {return threshold;}
 	public void setThreshold(boolean threshold) {this.threshold=threshold;}
 	public void setThresholdMet(boolean threshold) {this.thresholdMet=threshold;}
 	public int getThresholdAmount() {return thresholdAmount;}
+	public String getResultAltB() {return resultAltB;}
+	public void setResultAltB(String resultAltB) {this.resultAltB = resultAltB;}
+	public String getResultAltA() {return resultAltA;}
+	public void setResultAltA(String resultAltA) {this.resultAltA = resultAltA;}
 }

@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.EventCards.EventCard;
 import Gloomhaven.EventCards.EventCard.Choice;
-import Unsorted.Event.State;
+import Gloomhaven.EventHandler.State;
 
 public final class GUIEvent {
 	

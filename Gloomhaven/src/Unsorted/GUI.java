@@ -115,11 +115,17 @@ public final class GUI {
 		g.drawString("Press Space to Select this card. ", GUISettings.gAbilityCardX, GUISettings.gAbilityCardY+GUISettings.gAbilityCardh+GUISettings.leadingBody);
 	}
 	
-	public static void drawBattleGoal(Graphics g, List<BattleGoalCard> deck, int index1, int index2) {
+	/**
+	 * Draws the Two Battle Goals
+	 * @param g			Graphics Object
+	 * @param card1		Battle goal Card1
+	 * @param card2		Battle goal Card2
+	 */
+	public static void drawBattleGoal(Graphics g, BattleGoalCard card1, BattleGoalCard card2) {
 		g.setFont(FontSettings.bigText);
 		g.drawString("Pick Battle Goal Card", GUISettings.gLeft, GUISettings.gTop);
-		g.drawString("1: "+deck.get(index1).getName()+": "+deck.get(index1).getText()+"    "+deck.get(index1).getReward(), GUISettings.gGoalX, GUISettings.gGoalY);
-		g.drawString("2: "+deck.get(index2).getName()+": "+deck.get(index2).getText()+"    "+deck.get(index2).getReward(), GUISettings.gGoalX, GUISettings.gGoalY+GUISettings.leadingBigText);
+		g.drawString("1: "+card1.getName()+": "+card1.getText()+"    "+card1.getReward(), GUISettings.gGoalX, GUISettings.gGoalY);
+		g.drawString("2: "+card2.getName()+": "+card2.getText()+"    "+card2.getReward(), GUISettings.gGoalX, GUISettings.gGoalY+GUISettings.leadingBigText);
 		g.drawImage(new ImageIcon("src/Gloomhaven/img/BattleGoal.png").getImage(), GUISettings.gMidX, GUISettings.gYQ1, GUISettings.eventImageW, GUISettings.eventImageH, null);
 	}
 	

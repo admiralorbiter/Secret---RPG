@@ -2,19 +2,23 @@ package Gloomhaven.BattleGoals;
 
 import java.io.Serializable;
 
+/**
+ * Battle Goal Card Data Object
+ */
 public class BattleGoalCard implements Serializable{
+	private int id;
 	private String name="";
 	private String text="";
 	private int reward=0;
-	private int id;
+	private String thresholdKeyword="";
+	private int thresholdAmount=-1;
+	private String overUnderThresholdKeyword="";
 	
-	private String thresholdKeyword;
-	private int thresholdAmount;
-	private String overUnderThresholdKeyword;
 	public BattleGoalCard(int id) {
 		this.id=id;
 	}
 	
+	//Getters and Setters
 	public void setName(String name) {this.name=name;}
 	public void setText(String text) {this.text=text;}
 	public void setReward(int reward) {this.reward=reward;}

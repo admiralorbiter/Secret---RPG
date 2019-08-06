@@ -5,17 +5,28 @@ import java.util.List;
 
 import Gloomhaven.Characters.Player;
 
+/**
+ * Utility class for loading and evaluating battle goal cards
+ */
 public final class BattleGoalCardUtilities {
+	
+	private BattleGoalCardUtilities() {}
 
+	/**
+	 * @return Fully loaded battle goal deck
+	 */
 	public static List<BattleGoalCard> loadFullDeck(){
-		List<BattleGoalCard> battleGoalDeck = new ArrayList<BattleGoalCard>();
+		List<BattleGoalCard> battleGoalDeck = new ArrayList<>();
 		
 		for(int i=458; i<=481; i++)
 			battleGoalDeck.add(load(i));
 		
 		return battleGoalDeck;
 	}
-	
+	/**
+	 * Evaluates the battle goal card based on the stat being evaluates
+	 * and key words on the card
+	 */
 	public static void evaluateBattleGoals(Player player) {
 		BattleGoalCard card = player.getBattleGoalCard();
 		int stat=0;
@@ -24,63 +35,77 @@ public final class BattleGoalCardUtilities {
 		System.out.println("Current battle goal points: "+player.getBattleGoalTotal());
 		System.out.println(card.getThresholdKeyword()+"  "+card.getOverUnderThresholdKeyword()+"  "+card.getThresholdAmount());
 		
-		if(card.getThresholdKeyword().equals("hand_and_discard_size")) {
-			stat=player.getHandAndDiscardSize();
-		}else if(card.getThresholdKeyword().equals("experience")) {
-			stat=player.getStats().getScenarioExperience();
-		}else if(card.getThresholdKeyword().equals("hitpoints")) {
-			stat=player.getCharacterData().getHealth();
-		}else if(card.getThresholdKeyword().equals("loot_treasure")) {
-			stat=player.getStats().getTreasureLootTotal();
-		}
-		else if(card.getThresholdKeyword().equals("loot_money")) {
-			stat=player.getStats().getGoldLootTotal();
-		}else if(card.getThresholdKeyword().equals("loot")) {
-			stat=player.getStats().getTotalLoot();
-		}else if(card.getThresholdKeyword().equals("kills")) {
-			stat=player.getStats().getNumberOfScenarioKills();
-		}else if(card.getThresholdKeyword().equals("elite_kills")) {
-			stat=player.getStats().getScenarioEliteEnemiesKilled();
-		}else if(card.getThresholdKeyword().equals("items")) {
-			stat=player.getStats().getScenarioItemsUsed();
-		}else if(card.getThresholdKeyword().equals("short_rests")) {
-			stat=player.getStats().getScenarioShortRests();
-		}
-		else if(card.getThresholdKeyword().equals("long_rests")) {
-			stat=player.getStats().getScenarioLongRests();
-		}else {
-			System.out.println(card.getText()+"  is not implemented currently.");
+		//Sets the stat value
+		switch(card.getThresholdKeyword()) {
+			case "hand_and_discard_size":
+				stat=player.getHandAndDiscardSize();
+				break;
+			case "experience":
+				stat=player.getStats().getScenarioExperience();
+				break;
+			case "hitpoints":
+				stat=player.getCharacterData().getHealth();
+				break;
+			case "loot_treasure":
+				stat=player.getStats().getTreasureLootTotal();
+				break;
+			case "loot_money":
+				stat=player.getStats().getGoldLootTotal();
+				break;
+			case "loot":
+				stat=player.getStats().getTotalLoot();
+				break;
+			case "kills":
+				stat=player.getStats().getNumberOfScenarioKills();
+				break;
+			case "elite_kills":
+				stat=player.getStats().getScenarioEliteEnemiesKilled();
+				break;
+			case "items":
+				stat=player.getStats().getScenarioItemsUsed();
+				break;
+			case "short_rests":
+				stat=player.getStats().getScenarioShortRests();
+				break;
+			case "long_rests":
+				stat=player.getStats().getScenarioLongRests();
+				break;
+			default:
+				System.out.println(card.getText()+"  is not implemented currently.");
 		}
 		
-		if(card.getOverUnderThresholdKeyword().equals("unique")) {
-			switch(card.getID()) {
-				case 463:
+		//Resolves the card based on the state and keyword
+		switch(card.getOverUnderThresholdKeyword()) {
+			case "unique":
+				if(card.getID()==463) {
 					if(stat==player.getCharacterData().getMaxHealth())
 						player.changeBattleGoalTotal(card.getReward());
-					break;
-				case 473:
+				}else {
 					if(stat>=(player.getCharacterData().getLevel()+2))
 						player.changeBattleGoalTotal(card.getReward());
-					break;
-			}
+				}
+				break;
+			case "more":
+				if(stat>=card.getThresholdAmount())
+					player.changeBattleGoalTotal(card.getReward());
+				break;
+			case "less":
+				if(stat<=card.getThresholdAmount())
+					player.changeBattleGoalTotal(card.getReward());
+				break;
+			case "equal":
+				if(stat==card.getThresholdAmount())
+					player.changeBattleGoalTotal(card.getReward());
+				break;
+			default:
+				System.out.println("BattleGoalCardUtilities.java - Error evaluating battle goals with id: "+card.getID());
 		}
-		else if(card.getOverUnderThresholdKeyword().equals("more")) {
-			if(stat>=card.getThresholdAmount())
-				player.changeBattleGoalTotal(card.getReward());
-		} else if(card.getOverUnderThresholdKeyword().equals("less")) {
-			if(stat<=card.getThresholdAmount())
-				player.changeBattleGoalTotal(card.getReward());
-		}else if(card.getOverUnderThresholdKeyword().equals("equal")) {
-			if(stat==card.getThresholdAmount())
-				player.changeBattleGoalTotal(card.getReward());
-		}else {
-			System.out.println("BattleGoalCardUtilities.java - Error evaluating battle goals with id: "+card.getID());
-		}
-		
+
 		System.out.println("New battle goal points: "+player.getBattleGoalTotal());
 	}
 	
-	public static BattleGoalCard load(int id) {
+	//Loads the battle goal card based on id
+	private static BattleGoalCard load(int id) {
 		BattleGoalCard card = new BattleGoalCard(id);
 		
 		
@@ -277,6 +302,8 @@ public final class BattleGoalCardUtilities {
 				card.setOverUnderThresholdKeyword("equal");
 				card.setReward(1);
 				return card;
+			default:
+				System.out.println("Error loading battle goal card");
 		}
 		
 		System.out.println("There has been an error loading battle goal card with id: "+id);

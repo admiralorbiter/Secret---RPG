@@ -3,19 +3,20 @@ package Gloomhaven.EventCards;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.EventCards.EventCard.Choice;
 import Unsorted.City;
 
 public final class RoadEventCardLoader {
-	public static String cardText(int id) {
-		String option="Need to add text for each event card";
-		
-		return option;
+	
+	private static 	String option="Error";
+	
+	private RoadEventCardLoader() {}
+	
+	public static String cardText(int id) {	
+		return "Need to add text for each event card";
 	}
 	
 	public static String cityA(int id) {
-		String option="Error";
-		
-		
 		switch(id) {
 			case 1:
 				return "Run from the howling to safety.";
@@ -77,14 +78,12 @@ public final class RoadEventCardLoader {
 				return "Attempt to clear the stones from the path.";
 			case 30:
 				return "Help the survivors deal with the ccarnage.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static String cityB(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "Let the wolves come.";
@@ -146,13 +145,12 @@ public final class RoadEventCardLoader {
 				return "Backtrack and find a way around the stone-filled valley.";
 			case 30:
 				return "Finish the job the Vermlings started and loot whatever is left.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
-	public static boolean destroyCard(int id, int choice) {
-
+	public static boolean destroyCard(int id, Choice choice) {
 		switch(id) {
 			case 1:
 				return false;
@@ -169,7 +167,7 @@ public final class RoadEventCardLoader {
 			case 7:
 				return true;
 			case 8:
-				if(choice==1)
+				if(choice==Choice.TOP)
 					return false;
 				
 				return true;
@@ -178,7 +176,7 @@ public final class RoadEventCardLoader {
 			case 10:
 				return true;
 			case 11:
-				if(choice==2)
+				if(choice==Choice.BOTTOM)
 					return true;
 				return false;
 			case 12:
@@ -200,12 +198,12 @@ public final class RoadEventCardLoader {
 			case 25: return false;
 			case 26: return true;
 			case 27:
-				if(choice==2)
+				if(choice==Choice.BOTTOM)
 					return false;
 				return true;
 			case 28: return true;
 			case 29: 
-				if(choice==2)
+				if(choice==Choice.BOTTOM)
 					return false;
 				return true;
 			case 30: return true;
@@ -215,8 +213,6 @@ public final class RoadEventCardLoader {
 	}
 	
 	public static String resultsA(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "All start scenario with Poison";
@@ -278,15 +274,12 @@ public final class RoadEventCardLoader {
 				return "If cragheart, no effect. Otherwise, Discard 2 cards each.";
 			case 30:
 				return "If Mind Thief/Beast Tyrant No effect. Otherwise, consume 1 item each. Gain 1 rep.";
-					
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static String resultsB(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "All start scenario with 3 damage.";
@@ -348,18 +341,18 @@ public final class RoadEventCardLoader {
 				return "All start scneario with Wound.";
 			case 30:
 				return "Gain 2 gold each.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static void determineThresholdForResults(EventCard card, City gloomhaven) {
 		int id=card.getID();
-		int choice = card.getChoice();
+		Choice choice = card.getChoice();
 		
 		card.setThreshold(false);
 		
-		if(choice==1) {
+		if(choice==Choice.TOP) {
 			switch(id) {
 				case 25:
 					card.setThresholdType("Class");
@@ -387,7 +380,7 @@ public final class RoadEventCardLoader {
 					break;
 					
 			}
-		}else if(choice==2) {
+		}else if(choice==Choice.BOTTOM) {
 			switch(id) {
 				case 11:
 					card.setThresholdType("Class");
@@ -399,9 +392,9 @@ public final class RoadEventCardLoader {
 	
 	public static List<String> thresholdClassList(EventCard card){
 		int id=card.getID();
-		int choice = card.getChoice();
+		Choice choice = card.getChoice();
 		List<String> classes = new ArrayList<String>();
-		if(choice==1) {
+		if(choice==Choice.TOP) {
 			switch(id) {
 				case 25:
 					classes.add("Brute");
@@ -429,7 +422,7 @@ public final class RoadEventCardLoader {
 					classes.add("Beast Tyrant");
 					return classes;
 			}
-		}else if(choice==2) {
+		}else if(choice==Choice.BOTTOM) {
 			switch(id) {
 				case 11:
 					classes.add("Cragheart");

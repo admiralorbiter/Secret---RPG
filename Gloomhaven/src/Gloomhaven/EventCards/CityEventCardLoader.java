@@ -3,20 +3,20 @@ package Gloomhaven.EventCards;
 import java.util.ArrayList;
 import java.util.List;
 
+import Gloomhaven.EventCards.EventCard.Choice;
 import Unsorted.City;
 
 public final class CityEventCardLoader {
 
+	private CityEventCardLoader() {}
+	
+	private static String option="Error";
+	
 	public static String cardText(int id) {
-		String option="Need to add text for each event card";
-		
-		return option;
+		return "Need to add text for each event card";
 	}
 	
 	public static String cityA(int id) {
-		String option="Error";
-		
-		
 		switch(id) {
 			case 1:
 				return "Join the fray! These insults will not go unanswered.";
@@ -78,14 +78,12 @@ public final class CityEventCardLoader {
 				return "Talk to the Savvas, appealing to their sense of duty and community.";
 			case 30:
 				return "Give chase! No one steals from you and gets away with it.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static String cityB(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "Do your best to stop the fighting. This is a respectable establishment.";
@@ -147,12 +145,12 @@ public final class CityEventCardLoader {
 				return "Talk to the managers and attempt to get the Savvas better pay.";
 			case 30:
 				return "Take a clear shot at him with a bow before he disappears into the grating.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
-	public static boolean destroyCard(int id, int choice) {
+	public static boolean destroyCard(int id, Choice choice) {
 
 		switch(id) {
 			case 1:
@@ -160,8 +158,9 @@ public final class CityEventCardLoader {
 			case 2:
 				return false;
 			case 3:
-				if(choice==1 || choice==2)
+				if(choice==Choice.TOP)
 					return true;
+				return false;
 			case 4:
 				return true;
 			case 5:
@@ -171,8 +170,9 @@ public final class CityEventCardLoader {
 			case 7:
 				return true;
 			case 8:
-				if(choice==1 || choice==2)
+				if(choice==Choice.TOP || choice==Choice.BOTTOM)
 					return true;
+				return false;
 			case 9:
 				return true;
 			case 10:
@@ -196,13 +196,13 @@ public final class CityEventCardLoader {
 			case 19:
 				return true;
 			case 20:
-				if(choice==1)
+				if(choice==Choice.TOP)
 					return false;
 				return true;
 			case 21:
 				return true;
 			case 22:
-				if(choice==1)
+				if(choice==Choice.TOP)
 					return true;
 				return false;
 			case 23:
@@ -218,11 +218,11 @@ public final class CityEventCardLoader {
 			case 28:
 				return true;
 			case 29:
-				if(choice==1 || choice==2)
+				if(choice==Choice.TOP || choice==Choice.BOTTOM)
 					return true;
 				return false;
 			case 30:
-				if(choice==1 || choice==2)
+				if(choice==Choice.TOP || choice==Choice.BOTTOM)
 					return true;
 				return false;
 		}
@@ -231,8 +231,6 @@ public final class CityEventCardLoader {
 	}
 	
 	public static String resultsA(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "Gain 10 experience each. Either lose 5 gold each or lose 1 repuatation.";
@@ -294,14 +292,12 @@ public final class CityEventCardLoader {
 				return "Cragheart/Elementalist - Gain 1 prosperity. Othewrise, no effect.";
 			case 30:
 				return "Mindthief - Gain 5 gold each. Gain 1 collective Flea Bitten Shawl (Item 105). Otherwise, lose 5 gold each.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static String resultsB(int id) {
-		String option="Error";
-		
 		switch(id) {
 			case 1:
 				return "Gain 1 reputation.";
@@ -363,18 +359,18 @@ public final class CityEventCardLoader {
 				return "Scoundrel/Sawbones/Soothsinger - Gain 1 prosperity. Otherwise, no effect.";
 			case 30:
 				return "Lose 1 rep.";
+			default:
+				return option;
 		}
-		
-		return option;
 	}
 	
 	public static void determineThresholdForResults(EventCard card, City gloomhaven) {
 		int id=card.getID();
-		int choice = card.getChoice();
+		Choice choice = card.getChoice();
 		
 		card.setThreshold(false);
 		
-		if(choice==1) {
+		if(choice==Choice.TOP) {
 			switch(id) {
 				case 2:
 					card.setThresholdType("PayCollectiveGold");
@@ -401,8 +397,11 @@ public final class CityEventCardLoader {
 					break;
 				case 16:
 					card.setThresholdType("PayCollectiveGold");
-					card.setThresholdAmount(10);
-					card.setThreshold(true);
+					if(gloomhaven.getReputationLevel()>9)
+						card.setThresholdAmount(10);
+					else
+						card.setThresholdAmount(20);
+						card.setThreshold(true);
 					break;
 				case 19:
 					card.setThresholdType("PayCollectiveGold");
@@ -434,7 +433,7 @@ public final class CityEventCardLoader {
 					card.setThreshold(true);
 					break;
 			}
-		}else if(choice==2) {
+		}else if(choice==Choice.BOTTOM) {
 			switch(id) {
 				case 15:
 					card.setThresholdType("PayCollectiveGold");
@@ -455,9 +454,9 @@ public final class CityEventCardLoader {
 	
 	public static List<String> thresholdClassList(EventCard card){
 		int id=card.getID();
-		int choice = card.getChoice();
+		Choice choice = card.getChoice();
 		List<String> classes = new ArrayList<String>();
-		if(choice==1) {
+		if(choice==Choice.TOP) {
 			switch(id) {
 				case 25:
 					classes.add("Brute");
@@ -485,7 +484,7 @@ public final class CityEventCardLoader {
 					classes.add("Mind Thief");
 					return classes;
 			}
-		}else if(choice==2) {
+		}else if(choice==Choice.BOTTOM) {
 			switch(id) {
 				case 26:
 					classes.add("Scoundrel");

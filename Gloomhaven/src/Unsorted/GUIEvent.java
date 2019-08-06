@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import Gloomhaven.EventCards.EventCard;
+import Gloomhaven.EventCards.EventCard.Choice;
 import Unsorted.Event.State;
 
 public final class GUIEvent {
@@ -28,7 +29,7 @@ public final class GUIEvent {
 		g.drawString("1: "+eventCard.getOptionA(), GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText*2);
 		g.drawString("2: "+eventCard.getOptionB(), GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText*3);
 		
-		if(eventCard.getChoice()!=0) {
+		if(eventCard.getChoice()!=Choice.NONE) {
 			g.drawString(eventCard.getResults(), GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBigText*4);
 			g.drawString("Press space to continue", GUISettings.gLeft, GUISettings.gBottom);
 		}

@@ -3,18 +3,21 @@ package Gloomhaven.EventCards;
 import java.util.List;
 
 import Gloomhaven.Characters.Player;
+import Gloomhaven.EventCards.EventCard.Choice;
 import Unsorted.City;
 import Unsorted.ItemLoader;
 
 public final class RoadEventCardUtilities {
 	
+	private RoadEventCardUtilities() {}
+	
 	public static void resolveRoadEvent(EventCard card, City gloomhaven, List<Player> party, List<EventCard> cityDeck) {
 		int id=card.getID();
-		int choice=card.getChoice();
+		Choice choice=card.getChoice();
 		
 		//System.out.println("Resolve Road Event    "+id+","+choice);
 		
-		if(choice==1) {
+		if(choice==Choice.TOP || choice==Choice.ALTTOP) {
 			switch(id) {
 				case 1:
 					EventCardUtilities.addNegativeConditions("Poison", party);
@@ -130,7 +133,7 @@ public final class RoadEventCardUtilities {
 				default:
 					System.out.println("Card had no effect.");
 			}
-		}else if(choice==2) {
+		}else if(choice==Choice.BOTTOM || choice==Choice.ALTBOTTOM) {
 			switch(id) {
 				case 1:
 					EventCardUtilities.takeDamage(3, party);

@@ -5,8 +5,11 @@ import java.io.Serializable;
 public class EventCard implements Serializable{
 	
 	public enum Choice{
+		NONE,
 		TOP,
-		BOTTOM
+		ALTTOP,
+		BOTTOM,
+		ALTBOTTOM
 	}
 	
 	private String optionA;
@@ -21,7 +24,7 @@ public class EventCard implements Serializable{
 	private boolean threshold;
 	private boolean thresholdMet=false;
 	private int thresholdAmount=0;
-	private int choice=0;//1 is top 2 is bottom 3 is alttop 4 is altbottom
+	private Choice choice=Choice.NONE;
 	
 	
 	public EventCard(String type, int id) {
@@ -46,8 +49,8 @@ public class EventCard implements Serializable{
 	public int getID() {return id;}
 	public String getOptionA() {return optionA;}
 	public String getOptionB() {return optionB;}
-	public int getChoice() {return choice;}
-	public void setChoice(int choice) {this.choice=choice;}
+	public Choice getChoice() {return choice;}
+	public void setChoice(Choice choice) {this.choice=choice;}
 	public boolean wasThresholdMet() {return thresholdMet;}
 	public String getThresholdType() {return thresholdType;}
 	public void setThresholdType(String type) {this.thresholdType=type;}
@@ -55,10 +58,10 @@ public class EventCard implements Serializable{
 	public String getText() {return text;}
 	
 	public String getResults() {
-		if(choice==1) {
+		if(choice==Choice.TOP) {
 			return resultA;
 		}
-		else if(choice== 2) {
+		else if(choice== Choice.BOTTOM) {
 			return resultB;
 		}
 		

@@ -11,6 +11,7 @@ import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.CityEventCardLoader;
 import Gloomhaven.EventCards.CityEventCardUtilities;
 import Gloomhaven.EventCards.EventCard;
+import Gloomhaven.EventCards.EventCard.Choice;
 import Gloomhaven.EventCards.RoadEventCardLoader;
 import Gloomhaven.EventCards.RoadEventCardUtilities;
 /**
@@ -59,36 +60,36 @@ public class Event implements Serializable{
 		char k=UtilitiesGeneral.parseKeyCharacter(key);
 
 		if(eventCard!=null)
-			GUIEvent.drawEventHeader(g, type, eventCard, state);				//Draws the event header
+			GUIEvent.drawEventHeader(g, type, eventCard, state);													//Draws the event header
 		else
 			return;
 		
 		if(state==State.SELECTION) {
-			selectionRound(g, key, k, gloomhaven);								//Resolves selection state for the card choices
+			selectionRound(g, key, k, gloomhaven);																	//Resolves selection state for the card choices
 		}
 		else if(state==State.THRESHOLD) {		
-			threholdRound(g, key, k, party, eventCard);							//If card has extra outcomes, resolves those choices
+			threholdRound(g, key, k, party, eventCard);																//If card has extra outcomes, resolves those choices
 		}
 		else if(state==State.FINISHED) {
-			finishRound(party, gloomhaven, shop, secondDeck);					//Resolves the outcome of the card and choices
+			finishRound(party, gloomhaven, shop, secondDeck);														//Resolves the outcome of the card and choices
 		}
 
 	}
 	
 	private void selectionRound(Graphics g, KeyEvent key, char k, City gloomhaven) {
-		GUIEvent.drawSelection(g, eventCard);									//Draws the event card choices
+		GUIEvent.drawSelection(g, eventCard);																		//Draws the event card choices
 		
 		if(key!=null) {
-			if(key.getKeyCode()==KeyEvent.VK_1 && eventCard.getChoice()==0) {	//If a card hasn't been picked and card picked
-				eventCard.setChoice(1);											//Sets the choice based on key press
-				thresholdBasedOnEventType(type, gloomhaven);					//Determines if the card has a threshold based on id and type
+			if(key.getKeyCode()==KeyEvent.VK_1 && eventCard.getChoice()==Choice.NONE) {								//If a card hasn't been picked and card picked
+				eventCard.setChoice(Choice.TOP);																	//Sets the choice based on key press
+				thresholdBasedOnEventType(type, gloomhaven);														//Determines if the card has a threshold based on id and type
 				
-			}else if(key.getKeyCode()==KeyEvent.VK_2  && eventCard.getChoice()==0) {
-				eventCard.setChoice(2);	
+			}else if(key.getKeyCode()==KeyEvent.VK_2  && eventCard.getChoice()==Choice.NONE) {
+				eventCard.setChoice(Choice.BOTTOM);	
 				thresholdBasedOnEventType(type, gloomhaven);
 			}
 			
-			if(key.getKeyCode()==KeyEvent.VK_SPACE && eventCard.getChoice()!=0) {
+			if(key.getKeyCode()==KeyEvent.VK_SPACE && eventCard.getChoice()!=Choice.NONE) {
 				if(eventCard.hasThreshold())
 					state=State.THRESHOLD;
 				else
@@ -116,6 +117,7 @@ public class Event implements Serializable{
 			for(int i=0; i<party.size(); i++) {																		//Goes through the party and checks with each class
 				for(int j=0; j<classes.size(); j++) {
 					if(party.get(i).getClass().equals(classes.get(j)))
+						setAltChoice();
 						eventCard.setThresholdMet(true);	
 						System.out.println("Event.java -playRound Loc 102: Successfully met class criteria");
 				}
@@ -128,11 +130,20 @@ public class Event implements Serializable{
 		if(key!=null) {	
 			if(k=='y' && party.get(0).getCharacterData().getGold()>=eventCard.getThresholdAmount()) {				//If player 1 has enough gold and chooses to spend it, trigger card
 				party.get(0).getCharacterData().changeGold(-1*eventCard.getThresholdAmount());						//TODO: Need to have it so it can be split between players.
+				eventCard.setThresholdMet(true);
 				state=State.FINISHED;
 			}else if(k=='n' || party.get(0).getCharacterData().getGold()<eventCard.getThresholdAmount()) {			//If player 1 doesn't have enough gold or chooses no, finish card
+				setAltChoice();
 				state=State.FINISHED;
 			}
 		}
+	}
+	
+	private void setAltChoice() {
+		if(eventCard.getChoice()==Choice.TOP)
+			eventCard.setChoice(Choice.ALTTOP);
+		else
+			eventCard.setChoice(Choice.ALTBOTTOM);
 	}
 	
 	private void finishRound(List<Player> party, City gloomhaven, Shop shop, List<EventCard> secondDeck) {

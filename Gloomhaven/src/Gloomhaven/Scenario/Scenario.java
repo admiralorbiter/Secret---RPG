@@ -4,17 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
-import Gloomhaven.Gamepanel.GameState;
 import Gloomhaven.Shop;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
@@ -28,14 +22,12 @@ import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
 import Unsorted.BossMoves;
 import Unsorted.City;
-import Unsorted.FontSettings;
 import Unsorted.GUI;
 import Unsorted.GUIScenario;
 import Unsorted.InfusionTable;
 import Unsorted.Item;
 import Unsorted.ItemLoader;
 import Unsorted.Setting;
-import Unsorted.TreasureLoader;
 import Unsorted.UtilitiesAB;
 import Unsorted.UtilitiesBoard;
 import Unsorted.UtilitiesGeneral;
@@ -75,34 +67,24 @@ public class Scenario implements Serializable{
 	private City gloomhaven;
 	public ScenarioData data;
 	private List<Player> party = new  ArrayList<Player>();
-	
 	private State state;
 	private Graphics2D g;
 	private KeyEvent key;
 	private char k;
 	private int num;
 	private Point mouseClick=null;
-	
 	private InfusionTable elements = new InfusionTable();
-	
 	private int currentPlayer=0;
 	private int turnIndex=0;
 	private int enemyTurnIndex=0;
 	private int enemyDeckIndex=0;
 	private String targetID;
 	private int itemUsed;
-	
-	//private List<Enemy> enemies = new ArrayList<Enemy>();
 	private EnemyInfo enemyInfo;
-	
 	private PlayerAbilityCard card = null;
-	
 	private Point selectionCoordinate=null; 
-	
 	private Hex[][] board;
-	
 	private int direction=0;
-	
 	private Enemy enemyControlled;
 	private Enemy enemyTarget;
 	private Shop shop;

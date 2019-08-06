@@ -29,7 +29,7 @@ import Gloomhaven.CardDataObject.CardDataObject;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
 
-public class Player extends character {
+public class Player extends Character {
 
 	//Player variables
 	private List<PlayerAbilityCard> abilityDeck = new ArrayList<PlayerAbilityCard>();                     	//Class Ability Deck

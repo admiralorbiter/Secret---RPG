@@ -2,6 +2,7 @@ package Gloomhaven.BattleGoals;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -11,7 +12,7 @@ import Gloomhaven.GUISettings;
 import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
 
-public class BattleGoalSelection {
+public class BattleGoalSelection implements Serializable{
 
 	int index1=-1;
 	int index2=-1;

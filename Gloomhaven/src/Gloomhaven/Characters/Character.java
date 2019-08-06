@@ -1,6 +1,7 @@
 package Gloomhaven.Characters;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import Gloomhaven.CardDataObject.PositiveConditions;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
 
-public class character {
+public class Character implements Serializable {
 	
 	ImageIcon image=null;
 	String id;
@@ -34,7 +35,7 @@ public class character {
 	
 	protected CharacterDataObject data;
 
-	public character() {
+	public Character() {
 		
 	}
 	

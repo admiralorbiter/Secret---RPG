@@ -1,6 +1,8 @@
 package Gloomhaven.EventCards;
 
-public class EventCard {
+import java.io.Serializable;
+
+public class EventCard implements Serializable{
 	String optionA;
 	String optionB;
 	String resultA;

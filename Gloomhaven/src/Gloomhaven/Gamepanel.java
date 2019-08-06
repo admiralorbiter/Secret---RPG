@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.geom.Point2D;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,14 +23,11 @@ import Gloomhaven.BattleGoals.BattleGoalCardUtilities;
 import Gloomhaven.BattleGoals.BattleGoalSelection;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.EventCards.EventCard;
-import Gloomhaven.Hex.FractionalHex;
-import Gloomhaven.Hex.HexCoordinate;
-import Gloomhaven.Hex.HexLayout;
 import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.Scenario;
 
 
-public class GamePanel extends JPanel implements KeyListener, MouseListener{
+public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	
 	public enum GameState {
 	    TITLE_STATE,
@@ -45,95 +41,79 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 	    END;
 	}
 	
-	GameState state=GameState.TITLE_STATE;						//State of the Game
-	List<Player> party = new ArrayList<Player>();					//Party
-	Scenario scene;													//Current Scenario
-	KeyEvent key;													//Current Key Event
-	City gloomhaven = new City();
-	List<EventCard> cityDeck = new ArrayList<EventCard>();
-	List<EventCard> roadDeck = new ArrayList<EventCard>();
-	List<BattleGoalCard> battleGoalDeck = new ArrayList<BattleGoalCard>();
+	private GameState state=GameState.TITLE_STATE;								//State of the Game
+	private List<Player> party = new ArrayList<>();								//Party
+	private Scenario scene;														//Current Scenario
+	private KeyEvent key;														//Current KeyEvent
+	private City gloomhaven = new City();										//Data Object with City Information
+	private List<EventCard> cityDeck = new ArrayList<>();						//City Deck for the game
+	private List<EventCard> roadDeck = new ArrayList<>();						//Road Deck for the game
+	private List<BattleGoalCard> battleGoalDeck = new ArrayList<>();			//Battle Goal Deck
+	private Shop shop = new Shop(gloomhaven.getProspLevel());					//Shop with items to buy
+	private Event event;														//Event Holder
+	private Point mouseClick=null;												//Mouse Pixels Holder
+	private int partyIndex=0;													//Party index for selection and turns
+	//[TODO] - Refactor so each player can choose a battle goal, not just player 1
+	private BattleGoalSelection battleGoalSelection=null;						//Holds battle goal selected
 	
-	Shop shop = new Shop(gloomhaven.getProspLevel());
-	Event event;
-	//int xClick=-99;
-	//int yClick=-99;
-	Point mouseClick=null;
-	int partyIndex=0;
-	
-	BattleGoalSelection battleGoalSelection=null;
-	
-	public GamePanel() {
+	public Gamepanel() {
 		
-		for(int i=1; i<=30; i++) {
+		for(int i=1; i<=30; i++) {												//Creates a new city and road deck
 			cityDeck.add(new EventCard("City", i));
 			roadDeck.add(new EventCard("Road", i));
 		}
-		
-		battleGoalDeck = BattleGoalCardUtilities.loadFullDeck();
+
+		battleGoalDeck = BattleGoalCardUtilities.loadFullDeck();				//Loads the full battle goal deck
 		
 		addKeyListener(this);
 		addMouseListener(this);
 		setBackground(new Color(64, 64, 64));
 		setDoubleBuffered(true);
 		setFocusable(true);
-		initGame();	
+		initGame();																//Initializes events and scenario
 		repaint();	
 	}
 	
-	//Initials Scenario, Town Event, Road Event
-	void initGame() {
-		//[Temp] Need unique IDs and class 
-		for(int id=0; id<Setting.numberOfPlayers; id++)
-			party.add(new Player(id, Setting.playerClass));				//Adds the players to the party
-	
-		
-		//Read save game data
-		try {
-			FileInputStream cityIn = new FileInputStream("gloomhavenSave.ser"); 
-            ObjectInputStream in = new ObjectInputStream(cityIn); 
+	/**
+	 * Initials Scenario, Town Event, Road Event
+	 */
+	private void initGame() {
 
+		for(int id=0; id<Setting.numberOfPlayers; id++)							//[TODO] Need unique IDs and class 
+			party.add(new Player(id, Setting.playerClass));						//Adds the players to the party
+	
+		//Reads in saved city data if it exists
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("gloomhavenSave.ser"))){																	//Read save game data if it exists
 			gloomhaven = (City)in.readObject();
-            in.close();
-            cityIn.close();
-            
-            /*FileInputStream partyIn = new FileInputStream("partySave.ser"); 
-            in = new ObjectInputStream(partyIn); 
-            
-            party = (List<Player>)in.readObject();
-            in.close();
-            partyIn.close();*/
-            
             System.out.println("Read in City and Party Data");
 		}catch(IOException ex) 
         { 
             System.out.println("No save file."); 
         }catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		scene= new Scenario(Setting.sceneID, party, gloomhaven, shop);			//Creates the scenario
-		shop.setMaxPlayers(party.size());
-		//state=GameState.TOWN;										//Init Phase -> Town Phase
-		if(Setting.straightToScenario)
+		shop.setMaxPlayers(party.size());										//Sets player size for shop
+		
+		if(Setting.straightToScenario)											//Starts game loop
 			state=GameState.SCENARIO;
 		else
 			state=GameState.TITLE_STATE;
 	}
 	
-	public void gameManager(Graphics2D g) {	
-		//Goes through the game loop town->roadevent->scene->town etc...
+	/**
+	 * Goes through the game loop town->roadevent->scene->town etc... 
+	 * @param g Graphics Object
+	 */
+	private void gameManager(Graphics2D g) {	
+
 		if(state==GameState.TITLE_STATE) {
 			
 			GUIGamepanel.drawTitle(g);
+			if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE))
+				state=GameState.TOWN;
 			
-			if(key!=null)
-				if(key.getKeyCode()==KeyEvent.VK_SPACE)
-					if(shop.atLastPartyMember()) {
-						event = new Event("City", cityDeck);
-						state=GameState.TOWN;
-					}
 		}
 		else if(state==GameState.TOWN) {
 			
@@ -141,12 +121,10 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener{
 			GUIGamepanel.drawTown(g);
 			
 			//Insert Town State Stuff Here
-			if(key!=null)
-				if(key.getKeyCode()==KeyEvent.VK_SPACE)
-					if(shop.atLastPartyMember()) {
-						event = new Event("City", cityDeck);
-						state=GameState.CITY_EVENT;
-					}
+			if((key!=null) && shop.atLastPartyMember() && (key.getKeyCode()==KeyEvent.VK_SPACE)) {
+				event = new Event("City", cityDeck);
+				state=GameState.CITY_EVENT;
+			}
 		}
 		else if(state==GameState.CITY_EVENT) {
 			event.playRound(key, g, party, gloomhaven, shop, roadDeck);

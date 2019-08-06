@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.Setting;
 import Gloomhaven.Characters.Player;
-import Gloomhaven.Characters.character;
+import Gloomhaven.Characters.Character;
 import Gloomhaven.Scenario.Scenario;
 
 public final class Draw {
@@ -115,19 +115,19 @@ public final class Draw {
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, character entity, boolean flatlayout) {
+	public static void drawHex(Graphics2D g, Point h, Character entity, boolean flatlayout) {
 		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, character entity, boolean flatlayout) {
+	public static void drawHex(Graphics2D g, HexCoordinate h, Character entity, boolean flatlayout) {
 		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, character entity) {
+	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, Character entity) {
 		drawHex(g, h.q, h.r, h.s, size, flatlayout, center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, character entity) {
+	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, Character entity) {
 		
 		HexCoordinate hex;
 		
@@ -139,14 +139,14 @@ public final class Draw {
 		drawHex(g, hex, size, flatlayout, center, entity);
 	}
 	
-	public static void drawHex(Graphics2D g, Hex hex, character entity, boolean flatlayout) {
+	public static void drawHex(Graphics2D g, Hex hex, Character entity, boolean flatlayout) {
 		if(hex!=null) {
 			if(!hex.isHidden())
 				drawHex(g, hex.offsetCoordinate, entity, flatlayout);
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, character entity) {
+	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, Character entity) {
 		HexLayout layout;
 
 		if(flatlayout)

@@ -5,12 +5,12 @@ import javax.swing.JFrame;
 @SuppressWarnings("ucd")
 public class Application extends JFrame {
 
-	GamePanel game;
+	Gamepanel game;
 
 	public Application() {
 		setSize(GUISettings.width, GUISettings.height);
 		setTitle(Setting.title);
-		game = new GamePanel();
+		game = new Gamepanel();
 		add(game);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		repaint();

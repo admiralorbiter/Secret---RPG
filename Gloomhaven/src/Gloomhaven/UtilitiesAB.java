@@ -12,7 +12,7 @@ import Gloomhaven.CardDataObject.Effects;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.UtilitiesCharacters;
-import Gloomhaven.Characters.character;
+import Gloomhaven.Characters.Character;
 import Gloomhaven.Hex.Hex;
 import Gloomhaven.Scenario.ScenarioData;
 
@@ -231,7 +231,7 @@ public final class UtilitiesAB {
 	
 	//Quickly checks if anything is in melee range, if it finds something, goes back and does a more thorough target list
 	//[Rem] Should evaluate whether it is faster to just create the full list using one function and no quick melee check
-	public static boolean checkMeleeRange(character entity, Hex board[][], String lookingForID, Point dimensions) {
+	public static boolean checkMeleeRange(Character entity, Hex board[][], String lookingForID, Point dimensions) {
 		
 		Point coordinates = entity.getCoordinates();
 		int x=(int) coordinates.getX();

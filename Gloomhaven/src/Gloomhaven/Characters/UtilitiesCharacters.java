@@ -5,7 +5,7 @@ import Gloomhaven.AttackModifier.AttackModifierDeck;
 import Gloomhaven.CardDataObject.CardDataObject;
 
 public final class UtilitiesCharacters {
-	public static  int getAttack(character entity, CardDataObject attackCard, AttackModifierDeck attackModifierDeck, boolean advantage, boolean disadvantage) {
+	public static  int getAttack(Character entity, CardDataObject attackCard, AttackModifierDeck attackModifierDeck, boolean advantage, boolean disadvantage) {
 		
 		
 		

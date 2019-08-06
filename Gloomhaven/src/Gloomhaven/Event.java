@@ -2,6 +2,7 @@ package Gloomhaven;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Random;
 
@@ -12,7 +13,7 @@ import Gloomhaven.EventCards.EventCard;
 import Gloomhaven.EventCards.RoadEventCardLoader;
 import Gloomhaven.EventCards.RoadEventCardUtilities;
 
-public class Event {
+public class Event implements Serializable{
 	
 	public enum State{
 		SELECTION,

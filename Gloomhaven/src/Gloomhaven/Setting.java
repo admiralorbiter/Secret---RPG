@@ -9,7 +9,7 @@ public final class Setting {
 	public static boolean test = false;
 	public static boolean testAbilityCard = false;
 	public static boolean stateTest=true;
-	public static boolean straightToScenario=true;
+	public static boolean straightToScenario=false;
 	
 	public static boolean drawLines = false;
 	

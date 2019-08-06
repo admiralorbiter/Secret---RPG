@@ -3,6 +3,7 @@ package Gloomhaven;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,7 +12,7 @@ import javax.swing.ImageIcon;
 
 import Gloomhaven.Characters.Player;
 
-public class Shop {
+public class Shop implements Serializable{
 	
 	ImageIcon shopImage=null;
 	List<Item> supply = new ArrayList<Item>();

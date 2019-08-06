@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,7 +19,7 @@ import Gloomhaven.City;
 import Gloomhaven.FontSettings;
 import Gloomhaven.GUI;
 import Gloomhaven.GUIScenario;
-import Gloomhaven.GamePanel.GameState;
+import Gloomhaven.Gamepanel.GameState;
 import Gloomhaven.InfusionTable;
 import Gloomhaven.Item;
 import Gloomhaven.ItemLoader;
@@ -41,7 +42,7 @@ import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
 
-public class Scenario {
+public class Scenario implements Serializable{
 	public enum State {
 	    CARD_SELECTION,
 	    INITIATIVE,

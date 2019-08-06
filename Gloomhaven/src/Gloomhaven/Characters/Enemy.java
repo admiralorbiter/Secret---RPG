@@ -13,7 +13,7 @@ import Gloomhaven.Hex.Hex;
 import Gloomhaven.Hex.HexCoordinate;
 import Gloomhaven.Hex.UtilitiesHex;
 
-public class Enemy extends character{
+public class Enemy extends Character{
 	
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;

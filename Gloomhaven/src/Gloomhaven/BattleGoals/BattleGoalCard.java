@@ -1,6 +1,8 @@
 package Gloomhaven.BattleGoals;
 
-public class BattleGoalCard {
+import java.io.Serializable;
+
+public class BattleGoalCard implements Serializable{
 	private String name="";
 	private String text="";
 	private int reward=0;

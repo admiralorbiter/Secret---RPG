@@ -90,6 +90,7 @@ public class Scenario implements Serializable{
 	private Enemy enemyTarget;
 	private Point updatePoint;
 	private boolean anyMostersKilled=false;
+	private boolean anyDoorOpened=false;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
 		this.shop=shop;
@@ -121,6 +122,10 @@ public class Scenario implements Serializable{
 		
 		switch(state) {
 			case CARD_SELECTION:
+				if(enemyInfo.getEnemies().isEmpty()) {
+					for(Player player : party)
+						player.getStats().setNoEnemiesAroundFlag(true);
+				}
 				cardSelection();
 				break;
 			case INITIATIVE:
@@ -299,6 +304,12 @@ public class Scenario implements Serializable{
 		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasDoor() &&(board[(int) ending.getX()][(int) ending.getY()].isDoorOpen()==false)) {
 			//showRoom(board[(int) ending.getX()][(int) ending.getY()].getRoomID());
+			
+			if(!anyDoorOpened) {
+				anyDoorOpened=true;
+				player.getStats().setFirstToOpenDoor(true);
+			}
+			
 			ScenarioBoardLoader.showRoom(board, data.getId(), board[ending.x][ending.y].getRoomID());
 			//enemyInfo.updateEnemyList(data.getId(), board[ending.x][ending.y].getRoomID());
 			updatePoint=new Point(ending);
@@ -454,7 +465,7 @@ public class Scenario implements Serializable{
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {
 			int damage = enemyInfo.getAttack(enemyTurnIndex);
 
-			party.get(playerIndex).takeDamage(damage);
+			party.get(playerIndex);
 			if(party.get(playerIndex).getCharacterData().getHealth()<=0)
 				party.remove(playerIndex);
 			
@@ -1017,9 +1028,18 @@ public class Scenario implements Serializable{
 		
 		if(enemyInfo.getUpdateEnemyFlag())
 			enemyInfo.updateEnemyList(data.getId(), board[updatePoint.x][updatePoint.y].getRoomID());
-		
+
 		for(int i=0; i<party.size(); i++)
 			party.get(i).endTurn();																//End of turn clean up for each player
+		
+		for(Player player : party) {
+			if(player.isExhausted()) {
+				for(Player cardHolder : party) {
+					if(cardHolder.getBattleGoalCard().getThresholdKeyword().equals("exhaustion"))
+						cardHolder.getStats().setExhaustionFlag(true);
+				}
+			}
+		}
 		
 		if(party.size()==0) 
 			System.exit(1);																		//If party is dead, end program

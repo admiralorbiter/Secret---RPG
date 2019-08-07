@@ -22,6 +22,10 @@ public class StatsTracker {
 	private boolean overkill=false;
 	private boolean firstBlood=false;
 	private boolean singleBlow = false;
+	private boolean noEnemiesAround=false;
+	private boolean lessHalfHP=false;
+	private boolean exhaustion=false;
+	private boolean firstToOpenDoor=false;
 	
 	public StatsTracker() {
 
@@ -42,6 +46,7 @@ public class StatsTracker {
 	public void addGold(int amount) {scenario_goldLoot=scenario_goldLoot+amount;}
 	public void addTreasure(String treasure) {scenario_treasureLoot.add(treasure);}
 	public void increaseItemUse() {scenario_itemUses++;}
+
 	public void endScenario() {
 		for(int i=0; i<scenario_enemiesKilled.size(); i++) {
 			enemiesKilled.add(scenario_enemiesKilled.get(i));
@@ -77,4 +82,13 @@ public class StatsTracker {
 	public void setFirstBlood(boolean firstBlood) {this.firstBlood=firstBlood;}
 	public boolean singleBlow() {return singleBlow;}
 	public void setSingleBlow(boolean singleBlow) {this.singleBlow=singleBlow;}
+	public boolean noEnemiesAroundFlag() { return noEnemiesAround;}
+	public void setNoEnemiesAroundFlag(boolean noEnemiesAround) {this.noEnemiesAround=noEnemiesAround;}
+	public boolean getLessHalfHPFlag() {return lessHalfHP;}
+	public void setLessHalfHPFlag(boolean lessHalfHP) {this.lessHalfHP=lessHalfHP;}
+	public boolean getExhaustionFlag() {return exhaustion;}
+	public void setExhaustionFlag(boolean exhaustion) {this.exhaustion=exhaustion;}
+	public boolean getFirstToOpenDoor() {return firstToOpenDoor;}
+	public void setFirstToOpenDoor(boolean firstToOpenDoor) {this.firstToOpenDoor=firstToOpenDoor;}
+
 }

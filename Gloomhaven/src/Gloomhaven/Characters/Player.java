@@ -11,6 +11,7 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+import Gloomhaven.AbilityCards.AbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.AbilityCards.UsePlayerAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
@@ -63,6 +64,8 @@ public class Player extends Character {
 	private BattleGoalCard battleGoal = null;
 	private int currentBattleGoalCount = 0;
 
+	private boolean exhausted=false;
+	
 	public int getHandAndDiscardSize() {
 		int count = 0;
 		for (int i = 0; i < abilityDeck.size(); i++) {
@@ -548,6 +551,17 @@ public class Player extends Character {
 			else
 				abilityDeck.get(index).setCardIndiscardPile();
 		}
+		
+		int lostPile=0;
+		
+		for(AbilityCard card : abilityDeck) {
+			if(card.isLostFlag())
+				lostPile++;
+		}
+		
+		if(abilityDeck.size()-lostPile<3)
+			exhausted=true;
+		
 		secondCardChoice = null;
 		firstCardChoice = null;
 		longRest = false;
@@ -771,6 +785,9 @@ public class Player extends Character {
 
 		if (damage > 0)
 			data.setHealth(data.getHealth() - damage);
+		
+		if(data.getHealth()<data.getMaxHealth()/2)
+			stats.setLessHalfHPFlag(true);
 
 		// [Test]
 		System.out.println(name + " was attacked for " + damage + " making thier health " + data.getHealth());
@@ -856,6 +873,8 @@ public class Player extends Character {
 	public int getBattleGoalTotal() {
 		return currentBattleGoalCount;
 	}
+	
+	public boolean isExhausted() {return exhausted;}
 	
 	//Testing
 	public void setBattleGoalTotal(int battleGoalCount) {this.currentBattleGoalCount=battleGoalCount;}

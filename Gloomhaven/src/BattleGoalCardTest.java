@@ -75,13 +75,13 @@ class BattleGoalCardTest {
 		
 		//Testing Card 466
 		card = loadBattleGoalCard(466, player);
-		//Mockito.when(player.getStats().getScenarioExperience()).thenReturn(1);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().getExhaustionFlag()).thenReturn(false);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 467
 		card = loadBattleGoalCard(467, player);
-		//Mockito.when(player.getHandAndDiscardSize()).thenReturn(20);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().getFirstToOpenDoor()).thenReturn(true);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 468
 		card = loadBattleGoalCard(468, player);
@@ -115,8 +115,8 @@ class BattleGoalCardTest {
 		
 		//Testing Card 474
 		card = loadBattleGoalCard(474, player);
-		//Mockito.when(player.getStats().getScenarioExperience()).thenReturn(1);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().noEnemiesAroundFlag()).thenReturn(false);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 475
 		card = loadBattleGoalCard(475, player);
@@ -135,8 +135,8 @@ class BattleGoalCardTest {
 		
 		//Testing Card 478
 		card = loadBattleGoalCard(478, player);
-		//Mockito.when(player.getStats().getGoldLootTotal()).thenReturn(10);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().getLessHalfHPFlag()).thenReturn(false);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 479
 		card = loadBattleGoalCard(479, player);

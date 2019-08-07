@@ -82,6 +82,22 @@ public final class BattleGoalCardUtilities {
 				if(player.getStats().singleBlow())
 					stat=1;
 				break;
+			case "no_enemies_around":
+				if(!player.getStats().noEnemiesAroundFlag())
+					stat=1;
+				break;
+			case "less_half_hp":
+				if(!player.getStats().getLessHalfHPFlag())
+					stat=1;
+				break;
+			case "exhaustion":
+				if(!player.getStats().getExhaustionFlag())
+					stat=1;
+				break;
+			case "room_reveal":
+				if(player.getStats().getFirstToOpenDoor())
+					stat=1;
+				break;
 			default:
 				System.out.println(card.getText()+"  is not implemented currently.");
 		}
@@ -191,7 +207,7 @@ public final class BattleGoalCardUtilities {
 				card.setText("Allow none of your character allies to become exhausted during the scenario.");
 				card.setReward(1);
 				card.setThresholdKeyword("exhaustion");
-				card.setThresholdAmount(0);
+				card.setThresholdAmount(1);
 				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 467:
@@ -200,7 +216,7 @@ public final class BattleGoalCardUtilities {
 				card.setReward(1);
 				card.setThresholdKeyword("room_reveal");
 				card.setThresholdAmount(1);
-				card.setOverUnderThresholdKeyword("more");
+				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 468:
 				card.setName("Hoarder");
@@ -254,9 +270,9 @@ public final class BattleGoalCardUtilities {
 				card.setName("Aggressor");
 				card.setText("Have one or more monsters present on the map at the beginning of every round during the scenario.");
 				card.setReward(2);
-				card.setThresholdKeyword("unique");
+				card.setThresholdKeyword("no_enemies_around");
 				card.setThresholdAmount(1);
-				card.setOverUnderThresholdKeyword("more");
+				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 475:
 				card.setName("Dynamo");
@@ -286,9 +302,9 @@ public final class BattleGoalCardUtilities {
 				card.setName("Diehard");
 				card.setText("Never allow your current hit point value to drop below half your maxium hit point value (rounded up) during the scenario.");
 				card.setReward(1);
-				card.setThresholdKeyword("unique");
-				card.setThresholdAmount(-1);
-				card.setOverUnderThresholdKeyword("unique");
+				card.setThresholdKeyword("less_half_hp");
+				card.setThresholdAmount(1);
+				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 479:
 				card.setName("Executioner");

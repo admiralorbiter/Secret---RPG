@@ -89,7 +89,7 @@ public final class BattleGoalCardUtilities {
 				if(stat>=card.getThresholdAmount())
 					player.changeBattleGoalTotal(card.getReward());
 				break;
-			case "less":
+			case "fewer":
 				if(stat<=card.getThresholdAmount())
 					player.changeBattleGoalTotal(card.getReward());
 				break;
@@ -105,7 +105,7 @@ public final class BattleGoalCardUtilities {
 	}
 	
 	//Loads the battle goal card based on id
-	private static BattleGoalCard load(int id) {
+	public static BattleGoalCard load(int id) {
 		BattleGoalCard card = new BattleGoalCard(id);
 		
 		

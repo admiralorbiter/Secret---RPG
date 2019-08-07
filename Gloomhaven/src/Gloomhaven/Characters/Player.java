@@ -856,4 +856,8 @@ public class Player extends Character {
 	public int getBattleGoalTotal() {
 		return currentBattleGoalCount;
 	}
+	
+	//Testing
+	public void setBattleGoalTotal(int battleGoalCount) {this.currentBattleGoalCount=battleGoalCount;}
+	public void setData(CharacterDataObject data) {this.data=data;}
 }

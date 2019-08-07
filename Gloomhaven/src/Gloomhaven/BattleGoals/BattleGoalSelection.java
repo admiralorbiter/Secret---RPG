@@ -62,4 +62,8 @@ public class BattleGoalSelection implements Serializable{
 		}
 		return false;
 	}
+	
+	//Getters
+	public BattleGoalCard getCard1() {return card1;}
+	public BattleGoalCard getCard2() {return card2;}
 }

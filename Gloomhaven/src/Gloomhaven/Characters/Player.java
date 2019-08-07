@@ -397,13 +397,11 @@ public class Player extends Character {
 						initiative = abilityDeck.get(index).getInitiative();
 						cardChoice = !cardChoice;
 					}
-				}
-
-				if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
-						topCard = abilityDeck.get(key);
-						abilityDeck.get(key).setCardInPlay();
-						initiative = abilityDeck.get(key).getInitiative();
-						cardChoice = !cardChoice;
+				}else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
+					topCard = abilityDeck.get(key);
+					abilityDeck.get(key).setCardInPlay();
+					initiative = abilityDeck.get(key).getInitiative();
+					cardChoice = !cardChoice;
 				}
 			}
 			else {
@@ -414,15 +412,12 @@ public class Player extends Character {
 					if (abilityDeck.get(index).isCardFree()) {
 						bottomCard = abilityDeck.get(index);
 						abilityDeck.get(index).setCardInPlay();
-						initiative = abilityDeck.get(index).getInitiative();
 						cardChoice = !cardChoice;
 					}
-				}
-	
-				if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
-						bottomCard = abilityDeck.get(key);
-						abilityDeck.get(key).setCardInPlay();
-						cardChoice = !cardChoice;
+				}else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
+					bottomCard = abilityDeck.get(key);
+					abilityDeck.get(key).setCardInPlay();
+					cardChoice = !cardChoice;
 				}
 			}
 		}	

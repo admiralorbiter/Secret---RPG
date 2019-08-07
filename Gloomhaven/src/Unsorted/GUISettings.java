@@ -14,12 +14,12 @@ public final class GUISettings {
 	
 	//Player Info
 	public static int playerInfoY=25;
-	public static int playerInfoW=200;
+	public static int playerInfoW=250;
 	public static int playerInfoH=200;
 	public static int playerInfoX=width-playerInfoW-50;
 	
 	//Cards in PLay
-	public static int cardsInPlayX=width/2;
+	public static int cardsInPlayX=width*73/100;
 	public static int cardsInPlayY=25;
 	public static int cardsInPlayTableW=200;
 	
@@ -27,7 +27,7 @@ public final class GUISettings {
 	public static int eventImageH=640;
 	
 	//Entity Table
-	public static int entityTableH=125;
+	public static int entityTableH=250;
 	public static int entityTableW=200;
 	public static int entityTableX=width-entityTableW-50;
 	public static int entityTableY=250;
@@ -43,7 +43,7 @@ public final class GUISettings {
 	public static int infusionTableW=200;
 	public static int infusionTableH=250;
 	public static int infusionTableX=width-infusionTableW-50;
-	public static int infusionTableY=500;
+	public static int infusionTableY=750;
 	
 	//Long/Short Rest & Discard
 	public static int restX=10;

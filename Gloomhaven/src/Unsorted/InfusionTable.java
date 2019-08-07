@@ -1,11 +1,12 @@
 package Unsorted;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class InfusionTable {
+public class InfusionTable implements Serializable{
 	
 	String earth = "Earth";
 	String fire="Fire";

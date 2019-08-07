@@ -1,13 +1,14 @@
 package Gloomhaven.Scenario;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import Gloomhaven.Characters.Enemy;
 import Unsorted.MapLocation;
 
-public class ScenarioData {
+public class ScenarioData implements Serializable {
 	private String name;
 	private int id;
 	private String requirements="None";

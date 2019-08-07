@@ -1,8 +1,9 @@
 package Gloomhaven.Hex;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-public class HexCoordinate {
+public class HexCoordinate implements Serializable{
 	
 	Point offsetCoordinate;
 	int q,r,s;

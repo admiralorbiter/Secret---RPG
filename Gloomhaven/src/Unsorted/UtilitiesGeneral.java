@@ -36,14 +36,7 @@ public final class UtilitiesGeneral {
 	public static void setTurnNumbers(List<Player> party, EnemyInfo enemyInfo) {
 		int size = party.size()+enemyInfo.getEnemyAbilityDeck().size();
 		String[][] turnList = new String[size][3];
-		
-		/*
-		for(int i=0; i<size; i++) {
-			System.out.print(turnList[i][0]+" "+turnList[i][2]+" , ");
-		}
-		System.out.println("");
-		*/
-		
+
 		int index=0;
 		for(int i=0; i<party.size(); i++) {
 			turnList[index][0]="Player";

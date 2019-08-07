@@ -380,7 +380,7 @@ public class Player extends Character {
 		abilityDeck.get(displayCard).showCard(g);
 		abilityCardsLeft();
 		
-		GUI.abilityCardTitle(g);
+		GUI.abilityCardTitle(g, discardPileSize());
 		drawAbilityCards(g);
 		if(abilityDeck.size()>1) {
 			if(cardChoice) {

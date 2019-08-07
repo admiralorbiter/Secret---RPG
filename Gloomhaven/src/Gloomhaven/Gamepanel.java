@@ -210,7 +210,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 		int xClick=arg0.getX();
 		int yClick=arg0.getY();
 		mouseClick = new Point(xClick, yClick);
-		UtilitiesHex.getOffsetHexFromPixels(new Point(xClick, yClick), scene.data.getHexLayout());
+		UtilitiesHex.getOffsetHexFromPixels(new Point(xClick, yClick), scene.getData().getHexLayout());
 		repaint();
 	}
 

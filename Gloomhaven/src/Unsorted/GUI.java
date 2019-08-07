@@ -18,7 +18,7 @@ import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUI {
 
-	
+	//For testing purposes only
 	public static void drawLines(Graphics g) {
 		int lineLength=GUISettings.lineLength;
 
@@ -39,20 +39,14 @@ public final class GUI {
 		}
 
 	}
-	
-	public static void drawBoardRectangle(Graphics g, ScenarioData data) {
-		//g.drawRect(Setting.center.x-data.getBoardSize().x*Setting.size/2, Setting.center.y-data.getBoardSize().y*Setting.size/2, data.getBoardSize().x*Setting.size, data.getBoardSize().y*Setting.size);
-		//if(Setting.test)
-			g.drawRect(Setting.center.x-Setting.size, Setting.center.y-Setting.size, (data.getBoardSize().x-2)*Setting.size*2, (data.getBoardSize().y-2)*Setting.size*2+Setting.size);
-	}
-	
+
 	public static void chooseDiscard(Graphics g) {
 		g.setFont(FontSettings.body);
 		g.drawString("Pick card to discard.", GUISettings.gLeft, GUISettings.gTop);
 	}
 	
 	//Ability Card Selection
-	public static void abilityCardTitle(Graphics g) {
+	public static void abilityCardTitle(Graphics g, int discardPileSize) {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, GUISettings.width, GUISettings.height);
 		g.setColor(new Color(242, 224, 199));
@@ -63,7 +57,8 @@ public final class GUI {
 		g.setFont(FontSettings.hugeText);
 		g.drawString("Ability Cards", GUISettings.gLeft, GUISettings.gYQ1);
 		g.setFont(FontSettings.abilityCardList);
-		g.drawString("Cards Left", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody);
+		if(discardPileSize>1)	
+			g.drawString("Take a long rest with "+Setting.restKey, GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody);
 	}
 	//Ability Card Selection
 	public static void chooseTopCard(Graphics g) {

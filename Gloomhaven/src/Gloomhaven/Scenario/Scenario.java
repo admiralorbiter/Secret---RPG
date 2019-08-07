@@ -64,30 +64,30 @@ public class Scenario implements Serializable{
 	    END;
 	}
 	
-	private City gloomhaven;
-	public ScenarioData data;
-	private List<Player> party = new  ArrayList<Player>();
-	private State state;
-	private Graphics2D g;
+	private City gloomhaven;																						//City Data Object
+	private Shop shop;																								//Shop Data Object
+	private List<Player> party;																						//List of Players
+	private ScenarioData data;																						//Scenario Data Object
+	private State state;																							//Scenario State
+	private EnemyInfo enemyInfo;																					//Enemy data and methods																				
+	private Hex[][] board;																							//Hex Board
+	
+	private transient Graphics2D g;
 	private KeyEvent key;
 	private char k;
-	private int num;
+	private int num; 
 	private Point mouseClick=null;
 	private InfusionTable elements = new InfusionTable();
 	private int currentPlayer=0;
 	private int turnIndex=0;
 	private int enemyTurnIndex=0;
-	private int enemyDeckIndex=0;
 	private String targetID;
 	private int itemUsed;
-	private EnemyInfo enemyInfo;
 	private PlayerAbilityCard card = null;
 	private Point selectionCoordinate=null; 
-	private Hex[][] board;
 	private int direction=0;
 	private Enemy enemyControlled;
 	private Enemy enemyTarget;
-	private Shop shop;
 	private Point updatePoint;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
@@ -101,11 +101,145 @@ public class Scenario implements Serializable{
 		for(int i=0; i<party.size(); i++)
 			party.get(i).getStats().startScenario();
 		
-		//enemies=data.getEnemies(0);
-		//TODO: Have the party pick thier starting positions
-		party.get(0).setCoordinates(data.getStartingPosition());
+		party.get(0).setCoordinates(data.getStartingPosition());													//TODO: Have the party pick thier starting positions
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		state=State.CARD_SELECTION;
+	}
+	
+	public boolean playRound(KeyEvent key, Graphics2D g, Point mouseClick) {
+		
+		this.g=g;
+		this.key=key;
+		this.mouseClick=mouseClick;
+		
+		if(Setting.drawLines)																						//For testing purpoes only
+			GUI.drawLines(g);
+		
+		setup();
+		GUIScenario.drawControlsAndHelp(g, state, party, currentPlayer, card);										//Draws directions and controls for each state
+		
+		switch(state) {
+			case CARD_SELECTION:
+				cardSelection();
+				break;
+			case INITIATIVE:
+				initiative();
+				break;
+			case ATTACK:
+				matchTurnWithEnemyOrPlayer();
+				if(state==State.ATTACK)																				//[TODO] Figure out this bug
+					turnIndex++;
+				break;
+			case LONG_REST:
+				longRest();
+				break;
+			case ENEMY_ATTACK:
+				enemyAttack();
+				break;
+			case ENEMY_CONTROL_LOGIC:
+				enemyControlLogic();
+				break;
+			case PLAYER_DEFENSE:
+				playerDefense();
+				break;
+			case PLAYER_DISCARD:
+				if(party.get(currentPlayer).discardForHealth(num, g))												//Prints ability cards then waits until one is picked. 
+					enemyControlLogic();
+				break;
+			case PLAYER_CHOICE:
+				playerCardChoice();
+				break;
+			case PLAYER_ATTACK_LOGIC:
+				playerAttackLogic();
+				break;
+			case PLAYER_ITEM:
+				usePlayerItem();
+				break;
+			case PLAYER_MOVE:
+				playerMove();
+				break;
+			case PLAYER_ATTACK:
+				playerAttack();
+				break;
+			case PLAYER_PUSH_SELECTION:
+				playerPushSelection();
+				break;
+			case PLAYER_PUSH:
+				playerPush();
+				break;
+			case MINDCONTROL:
+				mindcontrol();
+				break;
+			case CREATE_INFUSION:
+				createInfusion();
+				break;
+			case USE_ANY_INFUSION:
+				useAnyInfusion();
+				break;
+			case ROUND_END_DISCARD:
+				roundEndDiscard();
+				break;
+			case ROUND_END_REST:
+				roundEndRest();
+				break;
+			default:
+		}
+
+		enemyInfo.update(board, data);																				//Removes dead enemies and increases stats
+		
+		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data, party);								//Evaluates if the scenario goal has been met	
+	}
+	
+	/** Setups the beginning of the loop */
+	private void setup() {
+
+		GUIScenario.drawStateOfScenario(g, gloomhaven, state, data);												//Draws the state of the scenario
+		elements.graphicsDrawTable(g);																				//Draws the element table
+		Draw.rectangleBoardSideways(g, board, data.getBoardSize(), data.getHexLayout());							//Draws board and border
+		Draw.drawParty(g, party, data.getHexLayout());																//Draws player hexes
+		enemyInfo.drawEnemies(g, data.getHexLayout());																//Draws active enemy hexes
+		GUIScenario.EntityTable(g, party, enemyInfo.getEnemies());													//Draws the entity table
+		
+		//TODO - Make this so it shows all the players
+		party.get(0).graphicsPlayerInfo(g);																			//Draws player info
+		party.get(0).graphicsDrawCardsInPlay(g);																	//Draws cards in play															
+
+		k=UtilitiesGeneral.parseKeyCharacter(key);
+		num=UtilitiesGeneral.parseKeyNum(key);
+	}
+	
+	/** Card Selection Process */
+	private void cardSelection() {
+
+		if((k==Setting.restKey) && (party.get(currentPlayer).discardPileSize()>1))									//Player can choose to rest if there is a big enough discard pile
+			party.get(currentPlayer).setLongRest();
+		else if(key!=null && key.getKeyCode()!=KeyEvent.VK_ALT)														//If player presses ALT, hides the card selection
+				party.get(currentPlayer).pickAbilityCards(key, num, g);
+		else if(key==null)																							
+			party.get(currentPlayer).pickAbilityCards(key, num, g);
+		
+		
+		if(party.get(currentPlayer).cardsLocked()) {																//If player has picked both cards
+			if((currentPlayer+1)!=party.size())																		//Go to the next player
+				currentPlayer++;
+			else {																									//Or change to state
+				currentPlayer=0;
+				selectionCoordinate=null;
+				state=State.INITIATIVE;																				//Card Selection -> Initiative
+			}
+		}
+	}
+	
+	/** Sets the initiative */
+	private void initiative() {
+		enemyInfo.initiationRound();															//Sorts enemy by initiative
+		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
+
+		UtilitiesGeneral.setTurnNumbers(party, enemyInfo);
+		
+		currentPlayer=0;
+		turnIndex=0;
+		state=State.ATTACK;
 	}
 	
 	private void selection() {
@@ -187,185 +321,6 @@ public class Scenario implements Serializable{
 		
 		return true;
 
-	}
-	
-	public boolean playRound(KeyEvent key, Graphics2D g, Point mouseClick) {
-		
-		this.g=g;
-		this.key=key;
-		this.mouseClick=mouseClick;
-		
-		if(Setting.drawLines)
-			GUI.drawLines(g);
-		
-		setupBeginningOfRound();
-		Graphics2D();
-		
-		switch(state) {
-			case CARD_SELECTION:
-				cardSelection();
-				break;
-			case INITIATIVE:
-				initiative();
-				break;
-			case ATTACK:
-				matchTurnWithEnemyOrPlayer();
-				//This is a quick fix
-				if(state==State.ATTACK)
-					turnIndex++;
-				break;
-			case LONG_REST:
-				longRest();
-				break;
-			case ENEMY_ATTACK:
-				enemyAttack();
-				break;
-			case ENEMY_CONTROL_LOGIC:
-				enemyControlLogic();
-				break;
-			case PLAYER_DEFENSE:
-				playerDefense();
-				break;
-			case PLAYER_DISCARD:
-				if(party.get(currentPlayer).discardForHealth(num, g))										//Prints ability cards then waits until one is picked. 
-					enemyControlLogic();
-				break;
-			case PLAYER_CHOICE:
-				playerCardChoice();
-				break;
-			case PLAYER_ATTACK_LOGIC:
-				playerAttackLogic();
-				break;
-			case PLAYER_ITEM:
-				usePlayerItem();
-				break;
-			case PLAYER_MOVE:
-				playerMove();
-				break;
-			case PLAYER_ATTACK:
-				playerAttack();
-				break;
-			case PLAYER_PUSH_SELECTION:
-				playerPushSelection();
-				break;
-			case PLAYER_PUSH:
-				playerPush();
-				break;
-			case MINDCONTROL:
-				mindcontrol();
-				break;
-			case CREATE_INFUSION:
-				createInfusion();
-				break;
-			case USE_ANY_INFUSION:
-				useAnyInfusion();
-				break;
-			case ROUND_END_DISCARD:
-				roundEndDiscard();
-				break;
-			case ROUND_END_REST:
-				roundEndRest();
-				break;
-		}
-		
-		/*
-		if(Setting.drawLines)
-			GUI.drawLines(g);
-		*/
-		
-		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data, party);
-	}
-	
-	private void Graphics2D() {
-		GUIScenario.drawControlsAndHelp(g, state, party, currentPlayer, card);
-	}
-	
-	private void setupBeginningOfRound() {
-		//Title
-		GUIScenario.drawStateOfScenario(g, gloomhaven, state, data   );
-		
-		elements.graphicsDrawTable(g);
-		GUI.drawBoardRectangle(g, data);
-		Draw.rectangleBoardSideways(g, board, data.getBoardSize(), data.getHexLayout());
-		Draw.drawParty(g, party, data.getHexLayout());
-		enemyInfo.drawEnemies(g, data.getHexLayout());
-		enemyInfo.update(board, data);
-		GUIScenario.EntityTable(g, party, enemyInfo.getEnemies());
-		
-		party.get(0).graphicsPlayerInfo(g);
-		party.get(0).graphicsDrawCardsInPlay(g);
-		
-		//Parse the keyboard event into character and number (sometimes both)
-		k=UtilitiesGeneral.parseKeyCharacter(key);
-		num=UtilitiesGeneral.parseKeyNum(key);
-	}
-	
-	private void cardSelection() {
-
-
-		//Draw's the player's available ability cards
-		//party.get(currentPlayer).drawAbilityCards(g);			
-		
-		//Player enters long rest or picks ability cards
-		if((k==Setting.restKey) && (party.get(currentPlayer).discardPileSize()>1))
-			party.get(currentPlayer).setLongRest();
-		else if(key!=null) {
-			if(!(key.getKeyCode()==KeyEvent.VK_ALT))
-				party.get(currentPlayer).pickAbilityCards(key, num, g);
-		}
-		else
-			party.get(currentPlayer).pickAbilityCards(key, num, g);
-		
-		
-		if(party.get(currentPlayer).cardsLocked()) {
-			if((currentPlayer+1)!=party.size())
-				currentPlayer++;
-			else {
-				currentPlayer=0;
-				selectionCoordinate=null;
-				state=State.INITIATIVE;
-			}
-		}
-	}
-	
-	private void initiative() {
-		enemyInfo.initiationRound();
-		//int enemyInit=enemyInfo.getInitiative();
-		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
-		
-		//Goes through the party and enemy and gives a turn number
-		//The party is in order, so i just have to fit the enemy in
-		//[Rem] Doesn't work if the players have the same init	
-		/*
-		for(int i=0; i<party.size(); i++) {
-
-			if(enemyInit==party.get(i).getInitiative()) {
-				//Do nothing at the moment
-				//[Temp]
-			}
-			else if(enemyInit<party.get(i).getInitiative()) {		//If enemy's init is lowest, it goes first
-				enemyInfo.setTurnNumber(i);
-				party.get(i).setTurnNumber(i+1);
-			}
-			else if(party.get(i).getInitiative()<enemyInit) {	//Sorts player's with lower init before enemy
-				party.get(i).setTurnNumber(i);
-				enemyInfo.setTurnNumber(i+1);
-			}
-			else if(party.get(i-1).getInitiative()<enemyInit){	//places the enemy between players if the previous one is lower, but the next is higher
-				enemyInfo.setTurnNumber(i);
-				party.get(i).setTurnNumber(i+1);
-			}
-			else {												//Everyone else is placed after the enemy
-				party.get(i).setTurnNumber(i+1);
-			}
-		}
-		*/
-		
-		UtilitiesGeneral.setTurnNumbers(party, enemyInfo);
-		
-		currentPlayer=0;
-		turnIndex=0;
-		state=State.ATTACK;
 	}
 	
 	private void matchTurnWithEnemyOrPlayer() {
@@ -1109,4 +1064,6 @@ public class Scenario implements Serializable{
 			state=State.CARD_SELECTION;															//Next State: Card Selection (Back to beginning)
 		}
 	}
+	
+	public ScenarioData getData() {return data;}
 }

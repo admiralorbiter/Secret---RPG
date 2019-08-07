@@ -3,6 +3,7 @@ package Gloomhaven.Characters;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,7 +22,7 @@ import Unsorted.GUI;
 import Unsorted.GUISettings;
 import Unsorted.Setting;
 
-public class EnemyInfo {
+public class EnemyInfo implements Serializable{
 	
 	private List<Enemy> enemies = new ArrayList<Enemy>();
 	private int turnNumber;

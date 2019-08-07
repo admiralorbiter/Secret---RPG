@@ -1,7 +1,6 @@
 package Unsorted;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.util.List;
 
@@ -17,11 +16,13 @@ import Gloomhaven.Scenario.ScenarioData;
 
 public final class GUIScenario {
 	
+	private GUIScenario() {}
+	
 	public static void EntityTable(Graphics g, List<Player> party , List<Enemy> enemies) {
 		g.setColor(Setting.defaultColor);
-		g.drawRect(GUISettings.entityTableX-GUISettings.padding, GUISettings.entityTableY, GUISettings.entityTableW, GUISettings.entityTableH);
+		g.drawRect(GUISettings.entityTableX-GUISettings.padding, GUISettings.entityTableY, GUISettings.entityTableW, (party.size()+enemies.size())*GUISettings.leadingBigText);  //GUISettings.entityTableH
 		
-		g.setFont(FontSettings.heading);
+		g.setFont(FontSettings.body);
 		g.drawString("Entity Table", GUISettings.entityTableX, GUISettings.entityTableY+GUISettings.leadingBody);
 		
 		g.setFont(FontSettings.body);
@@ -208,12 +209,6 @@ public final class GUIScenario {
 		g.setFont(FontSettings.body);
 		
 		switch(state) {
-			case CARD_SELECTION:
-				g.drawString("Picking Cards for your turn.", GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBody*2);
-				//Allows the user to take a long rest if they have enough in the discard pile 
-				if(party.get(currentPlayer).discardPileSize()>1)	
-					g.drawString("Take a long rest with "+Setting.restKey, GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBody*3);
-				break;
 			case INITIATIVE:
 				//List of all the initiatives for the round
 				g.drawString("Initiatives:", GUISettings.gLeft, GUISettings.gBottom);											
@@ -252,8 +247,9 @@ public final class GUIScenario {
 				break;
 		}
 	}
-	
+
 	public static void drawStateOfScenario(Graphics g, City gloomhaven, State state, ScenarioData data) {
+		g.setFont(FontSettings.bigText);
 		g.drawString("State of Scenario      Prosperity: "+gloomhaven.getProspLevel()+"Rep: "+gloomhaven.getReputationLevel()+"  "+data.getGoal(), GUISettings.gLeft, GUISettings.gTop);
 		g.drawString(state.toString(), GUISettings.gLeft, GUISettings.gTop+GUISettings.leadingBody);
 		

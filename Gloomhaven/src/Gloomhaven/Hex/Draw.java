@@ -100,6 +100,8 @@ public final class Draw {
 	}
 	
 	public static void rectangleBoardSideways(Graphics2D g, Hex[][] board, Point dimensions, boolean flatlayout) {
+		g.drawRect(Setting.center.x-Setting.size, Setting.center.y-Setting.size, (dimensions.x-2)*Setting.size*2, (dimensions.y-2)*Setting.size*2+Setting.size);
+		
 		for(int x=0; x<dimensions.x; x++) {
 			for(int y=0; y<dimensions.y; y++) {
 				if(board[x][y]!=null) {

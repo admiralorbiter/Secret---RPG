@@ -17,6 +17,12 @@ public class StatsTracker {
 	private int scenario_experience=0;
 	private List<String> scenario_treasureLoot = new ArrayList<String>();
 	private int scenario_goldLoot = 0;
+	
+	//Unique
+	private boolean overkill=false;
+	private boolean firstBlood=false;
+	private boolean singleBlow = false;
+	
 	public StatsTracker() {
 
 	}
@@ -65,4 +71,10 @@ public class StatsTracker {
 	public int getScenarioItemsUsed() {return scenario_itemUses;}
 	public int getScenarioShortRests() {return scenario_shortRests;}
 	public int getScenarioLongRests() {return scenario_longRests;}
+	public boolean overkillComplete() {return overkill;}
+	public void setOverkill(boolean overkill) {this.overkill=overkill;}
+	public boolean firstBlood() {return firstBlood;}
+	public void setFirstBlood(boolean firstBlood) {this.firstBlood=firstBlood;}
+	public boolean singleBlow() {return singleBlow;}
+	public void setSingleBlow(boolean singleBlow) {this.singleBlow=singleBlow;}
 }

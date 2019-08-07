@@ -89,6 +89,7 @@ public class Scenario implements Serializable{
 	private Enemy enemyControlled;
 	private Enemy enemyTarget;
 	private Point updatePoint;
+	private boolean anyMostersKilled=false;
 	
 	public Scenario(int sceneID, List<Player> party, City gloomhaven, Shop shop) {
 		this.shop=shop;
@@ -744,7 +745,7 @@ public class Scenario implements Serializable{
 			if(targets.contains(selection)) {
 				card.increaseAbilityCardCounter();
 				boolean adjacentBonus=false;
-				UtilitiesAB.resolveAttack(enemyInfo.getEnemy(selection), party.get(currentPlayer), card, board, adjacentBonus, elements, data);
+				UtilitiesAB.resolveAttack(enemyInfo.getEnemy(selection), party.get(currentPlayer), card, board, adjacentBonus, elements, data, anyMostersKilled);
 				return true;
 			}
 		}

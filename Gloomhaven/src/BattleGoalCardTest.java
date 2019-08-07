@@ -1,15 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.Mockito.*;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 import Gloomhaven.BattleGoals.BattleGoalCard;
@@ -20,7 +12,7 @@ import Unsorted.CharacterDataObject;
 import Unsorted.Setting;
 import Unsorted.StatsTracker;
 
-class BattleGoalTest {
+class BattleGoalCardTest {
 	BattleGoalSelection battleGoalLogic = new BattleGoalSelection(BattleGoalCardUtilities.loadFullDeck());
 	
 	@Test
@@ -28,7 +20,7 @@ class BattleGoalTest {
 		
 	}
 	
-	//@PrepareForTest(Player.class)
+	@PrepareForTest(Player.class)
 	@Test
 	void battleGoalLogicTest() {
 		Player player = Mockito.spy(new Player(0, Setting.playerClass));
@@ -128,8 +120,8 @@ class BattleGoalTest {
 		
 		//Testing Card 475
 		card = loadBattleGoalCard(475, player);
-		//Mockito.when(player.getHandAndDiscardSize()).thenReturn(20);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().overkillComplete()).thenReturn(true);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 476
 		card = loadBattleGoalCard(476, player);
@@ -138,8 +130,8 @@ class BattleGoalTest {
 		
 		//Testing Card 477
 		card = loadBattleGoalCard(477, player);
-		//Mockito.when(player.getStats().getGoldLootTotal()).thenReturn(0);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().firstBlood()).thenReturn(true);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 478
 		card = loadBattleGoalCard(478, player);
@@ -148,8 +140,8 @@ class BattleGoalTest {
 		
 		//Testing Card 479
 		card = loadBattleGoalCard(479, player);
-		//Mockito.when(player.getStats().getGoldLootTotal()).thenReturn(10);
-		//evaluateSuccess(player, card);
+		Mockito.when(player.getStats().singleBlow()).thenReturn(true);
+		evaluateSuccess(player, card);
 		
 		//Testing Card 480
 		card = loadBattleGoalCard(480, player);
@@ -171,7 +163,7 @@ class BattleGoalTest {
 	private void evaluateSuccess(Player player, BattleGoalCard card) {
 		player.setBattleGoalTotal(0);
 		BattleGoalCardUtilities.evaluateBattleGoals(player);
-		assertEquals(player.getBattleGoalTotal(), card.getReward());
+		assertEquals(card.getReward(), player.getBattleGoalTotal());
 	}
 
 }

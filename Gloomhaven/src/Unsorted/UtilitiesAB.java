@@ -95,7 +95,7 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 	}
 	
-	public static void resolveAttack(Enemy enemy, Player player, PlayerAbilityCard abilityCard, Hex[][] board, boolean adjacentBonus, InfusionTable elements, ScenarioData data) {
+	public static void resolveAttack(Enemy enemy, Player player, PlayerAbilityCard abilityCard, Hex[][] board, boolean adjacentBonus, InfusionTable elements, ScenarioData data, boolean anyMonstersKilled) {
 
 		CardDataObject card =UsePlayerAbilityCard.getCardData(abilityCard);
 		
@@ -205,6 +205,17 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 		
 		if(enemy.getCharacterData().getHealth()<=0) {
+			if(player.getBattleGoalCard().getThresholdKeyword().equals("overkill"))
+					player.getStats().setOverkill(true);
+			
+			if(player.getBattleGoalCard().getThresholdKeyword().equals("first_blood") && anyMonstersKilled==false) {
+				anyMonstersKilled=true;
+				player.getStats().setFirstBlood(true);
+			}
+			
+			if(player.getBattleGoalCard().getThresholdKeyword().equals("single_blow") && enemy.getCharacterData().getMaxHealth()<=attack)
+				player.getStats().setSingleBlow(true);
+			
 			System.out.println(player.getName()+"   killed enemy "+enemy.getClassID());
 			player.getStats().addKilledEnemy(enemy);
 			if(enemy.isElite())

@@ -70,6 +70,18 @@ public final class BattleGoalCardUtilities {
 			case "long_rests":
 				stat=player.getStats().getScenarioLongRests();
 				break;
+			case "overkill":
+				if(player.getStats().overkillComplete())
+					stat=4;
+				break;
+			case "first_blood":
+				if(player.getStats().firstBlood())
+					stat=1;
+				break;
+			case "single_blow":
+				if(player.getStats().singleBlow())
+					stat=1;
+				break;
 			default:
 				System.out.println(card.getText()+"  is not implemented currently.");
 		}
@@ -162,7 +174,7 @@ public final class BattleGoalCardUtilities {
 				card.setName("Neutralizer");
 				card.setText("Cause a trap to be sprung or disarmed on your turn or on the turn of one of your summons during the scneario.");
 				card.setReward(1);
-				card.setThresholdKeyword("traps");
+				card.setThresholdKeyword("trap");
 				card.setThresholdAmount(1);
 				card.setOverUnderThresholdKeyword("more");
 				return card;
@@ -267,12 +279,12 @@ public final class BattleGoalCardUtilities {
 				card.setText("Be the first to kill a monster during the scenario.");
 				card.setReward(1);
 				card.setThresholdKeyword("first_blood");
-				card.setThresholdAmount(-1);
+				card.setThresholdAmount(1);
 				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 478:
 				card.setName("Diehard");
-				card.setText("Never allow your current hit point value to drop below half your maxium hi point value (rounded up) during the scenario.");
+				card.setText("Never allow your current hit point value to drop below half your maxium hit point value (rounded up) during the scenario.");
 				card.setReward(1);
 				card.setThresholdKeyword("unique");
 				card.setThresholdAmount(-1);
@@ -282,8 +294,8 @@ public final class BattleGoalCardUtilities {
 				card.setName("Executioner");
 				card.setText("Kill an undamaged monster with a single attack during the scenario.");
 				card.setReward(1);
-				card.setThresholdKeyword("unique");
-				card.setThresholdAmount(0);
+				card.setThresholdKeyword("single_blow");
+				card.setThresholdAmount(1);
 				card.setOverUnderThresholdKeyword("equal");
 				return card;
 			case 480:

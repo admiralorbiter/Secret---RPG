@@ -2,6 +2,7 @@ package Unsorted;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +75,19 @@ public final class GUI {
 	public static void drawAbilityCardText(Graphics g, List<PlayerAbilityCard> abilityDeck, int i) {
 		g.setColor(Color.black);
 		g.setFont(FontSettings.abilityCardList);
+		Point mousePosition = MouseInfo.getPointerInfo().getLocation();
+		if(checkMousePositionX(mousePosition) && checkMousePositionY(mousePosition, i)) {
+				g.setColor(Color.white);
+		}
 		g.drawString(i+": "+abilityDeck.get(i).getText()[0]+"   "+abilityDeck.get(i).getText()[1], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*3+i*70);
 		g.drawString("   			"+abilityDeck.get(i).getText()[2], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBigBody*4+i*70);
 	}
+	
+	//TODO need to move these into a utility card
+	private static boolean checkMousePositionX(Point mousePosition) {return mousePosition.x>= GUISettings.gLeft && mousePosition.x<=GUISettings.width;}
+	private static boolean checkMousePositionY(Point mousePosition, int i) {return mousePosition.y>GUISettings.gYQ1+GUISettings.leadingBigBody*3+i*70 && mousePosition.y<=GUISettings.gYQ1+GUISettings.leadingBigBody*5+i*70;}
+	public static boolean checkMouseIsOnAbilityCard(Point mousePosition, int i) { return checkMousePositionX(mousePosition) && checkMousePositionY(mousePosition, i);}
+	
 	
 	public static void drawAbilityCardTextTop(Graphics g, PlayerAbilityCard topCard) {
 		g.setFont(FontSettings.body);

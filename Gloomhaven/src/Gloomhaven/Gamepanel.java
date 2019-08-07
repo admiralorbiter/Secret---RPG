@@ -183,6 +183,8 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			
 			System.exit(0);																							//[TODO] End of the game, just exit program
 		}
+		
+		repaint();
 	}
 	
 	@Override

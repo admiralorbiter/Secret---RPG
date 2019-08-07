@@ -38,12 +38,7 @@ public class AbilityCard {
 	public void setDiscardFlag(boolean discardFlag) {this.discardFlag = discardFlag;}
 	public boolean isInPlayFlag() {return inPlayFlag;}
 	public void setInPlayFlag(boolean inPlayFlag) {this.inPlayFlag = inPlayFlag;}
-	
-	public void showCard(Graphics g) {
-		if(Setting.testAbilityCard)
-			GUI.drawCard(g, getImage());
-	}
-	
+
 	public boolean isCardFree() {
 		if(lostFlag)
 			return false;

@@ -214,9 +214,9 @@ public class Scenario implements Serializable{
 		if((k==Setting.restKey) && (party.get(currentPlayer).discardPileSize()>1))									//Player can choose to rest if there is a big enough discard pile
 			party.get(currentPlayer).setLongRest();
 		else if(key!=null && key.getKeyCode()!=KeyEvent.VK_ALT)														//If player presses ALT, hides the card selection
-				party.get(currentPlayer).pickAbilityCards(key, num, g);
+				party.get(currentPlayer).pickAbilityCards(key, num, g, mouseClick);
 		else if(key==null)																							
-			party.get(currentPlayer).pickAbilityCards(key, num, g);
+			party.get(currentPlayer).pickAbilityCards(key, num, g, mouseClick);
 		
 		
 		if(party.get(currentPlayer).cardsLocked()) {																//If player has picked both cards

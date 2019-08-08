@@ -41,7 +41,7 @@ public class Hex extends HexCoordinate {
 	 public void setID(String id) {this.id=id;}
 	 public String getLootID() {return lootID;}
 	 public boolean hasLoot() {return loot;}
-
+	 public void openDoor() {doorOpen=true;}
 	 public boolean isDoorOpen() {return doorOpen;}
 	 public int getRoomID() {return roomID;}
 	 public boolean isSpaceEmpty() {

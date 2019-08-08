@@ -165,6 +165,7 @@ public class Scenario implements Serializable{
 				playerMove();
 				Draw.drawParty(g, party, data.getHexLayout());																//Draws player hexes
 				enemyInfo.drawEnemies(g, data.getHexLayout());																//Draws active enemy hexes
+				Draw.itemsAndObstaclesOnly(g, board, data.getBoardSize(), data.getHexLayout());
 				break;
 			case PLAYER_ATTACK:
 				playerAttack();
@@ -194,7 +195,7 @@ public class Scenario implements Serializable{
 		}
 		
 		enemyInfo.update(board, data);																				//Removes dead enemies and increases stats
-		
+	
 		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data, party);								//Evaluates if the scenario goal has been met	
 	}
 	
@@ -204,6 +205,7 @@ public class Scenario implements Serializable{
 		GUIScenario.drawStateOfScenario(g, gloomhaven, state, data);												//Draws the state of the scenario
 		elements.graphicsDrawTable(g);																				//Draws the element table
 		Draw.rectangleBoardSideways(g, board, data.getBoardSize(), data.getHexLayout());							//Draws board and border
+		Draw.itemsAndObstaclesOnly(g, board, data.getBoardSize(), data.getHexLayout());
 		Draw.drawParty(g, party, data.getHexLayout());																//Draws player hexes
 		enemyInfo.drawEnemies(g, data.getHexLayout());																//Draws active enemy hexes
 		GUIScenario.EntityTable(g, party, enemyInfo.getEnemies());													//Draws the entity table
@@ -254,7 +256,7 @@ public class Scenario implements Serializable{
 		
 		if(mouseClick!=null) {
 			Point p = UtilitiesHex.getOffsetHexFromPixels(mouseClick, data.getHexLayout());
-			if(board[p.x][p.y]!=null)
+			if(p.x>=0 && p.y>=0 && board[p.x][p.y]!=null)
 				selectionCoordinate=p;
 			
 			mouseClick=null;
@@ -311,9 +313,10 @@ public class Scenario implements Serializable{
 				anyDoorOpened=true;
 				player.getStats().setFirstToOpenDoor(true);
 			}
-			
+			board[(int) ending.getX()][(int) ending.getY()].openDoor();
 			ScenarioBoardLoader.showRoom(board, data.getId(), board[ending.x][ending.y].getRoomID());
 			//enemyInfo.updateEnemyList(data.getId(), board[ending.x][ending.y].getRoomID());
+			//board[(int) ending.getX()][(int) ending.getY()].closeDoor();
 			updatePoint=new Point(ending);
 			enemyInfo.setUpdateEnemyFlag(true);
 			System.out.println("Opening Door");
@@ -553,7 +556,7 @@ public class Scenario implements Serializable{
 			Draw.range(g, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), UsePlayerAbilityCard.getMove(card), data.getHexLayout());
 			
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout(), null);
 			
 			if(k==Setting.moveKey) {
 				if(UtilitiesHex.distance(UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()))<UsePlayerAbilityCard.getMove(card)) {
@@ -641,7 +644,7 @@ public class Scenario implements Serializable{
 					UtilitiesTargeting.drawAttack(g, party.get(currentPlayer).getCubeCoordiantes(data.getHexLayout()), direction, UsePlayerAbilityCard.getCardData(card).getData().getTarget().getTargets(), data.getHexLayout());
 				}
 				else {
-					Draw.drawHex(g, selectionCoordinate, null, data.getHexLayout());
+					Draw.drawHex(g, selectionCoordinate, null, data.getHexLayout(), null);
 				}
 				
 				if(k==Setting.targetKey) {
@@ -788,7 +791,7 @@ public class Scenario implements Serializable{
 			selection();
 			g.setColor(Color.cyan);
 			//if(UsePlayerAbilityCard.getCardData(card).getEffects().getRange()!=0)
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout(), null);
 
 			//Space is used for selection of target
 			if(k==Setting.targetKey) {
@@ -828,7 +831,7 @@ public class Scenario implements Serializable{
 		
 		HexCoordinate pushPoint = UtilitiesHex.neighbor(enemyTarget.getCubeCoordiantes(data.getHexLayout()), direction);
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, pushPoint, null, data.getHexLayout());
+		Draw.drawHex(g, pushPoint, null, data.getHexLayout(), null);
 		
 		if(num>=1 && num<=3) {
 			if(num==1) {
@@ -911,7 +914,7 @@ public class Scenario implements Serializable{
 		
 		selection();
 		g.setColor(Color.cyan);
-		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
+		Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout(), null);
 				
 		if(k==Setting.moveKey) {
 			if(UtilitiesHex.distance(enemyPoint, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate))<=cardData.getData().getRange()) {
@@ -960,7 +963,7 @@ public class Scenario implements Serializable{
 			UtilitiesTargeting.highlightTargets(targets, g, data.getHexLayout());
 			selection();
 			g.setColor(Color.cyan);
-			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout());
+			Draw.drawHex(g, UtilitiesHex.getCubeCoordinates(data.getHexLayout(), selectionCoordinate), null, data.getHexLayout(), null);
 			
 			if(k==Setting.targetKey) {
 				if(board[selectionCoordinate.x][selectionCoordinate.y].getQuickID().equals("E")) {

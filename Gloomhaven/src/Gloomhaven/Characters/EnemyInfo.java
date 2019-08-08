@@ -49,7 +49,7 @@ public class EnemyInfo implements Serializable{
 
 		for(int i=0; i<enemies.size(); i++) {
 			g.setColor(Setting.enemyColor);
-			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i), flatlayout);
+			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i), flatlayout, null);
 			
 			HexCoordinate hex;
 			HexLayout hl;

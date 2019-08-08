@@ -9,7 +9,7 @@ public final class Setting {
 	public static boolean test = false;
 	public static boolean testAbilityCard = false;
 	public static boolean stateTest=true;
-	public static boolean straightToScenario=true;
+	public static boolean straightToScenario=false;
 	
 	public static boolean drawLines = false;
 	
@@ -31,6 +31,7 @@ public final class Setting {
 	public static Color enemyColor = Color.MAGENTA;
 	public static Color lootColor = Color.YELLOW;
 	public static Color obstacleColor = Color.GREEN;
+	public static Color doorColor = new Color(166, 164, 123);
 	public static Color hextFill = Color.black;
 	public static Color playerInfoColor = Color.white;
 	//Party Info

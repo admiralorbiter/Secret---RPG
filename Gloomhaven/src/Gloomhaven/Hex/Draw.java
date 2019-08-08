@@ -24,7 +24,7 @@ public final class Draw {
 				int q=x;
 				int r=y;
 				int s=-x-y;				
-				drawHex(g, q, r, s, size, flatlayout, new Point(500, 500), null);
+				drawHex(g, q, r, s, size, flatlayout, new Point(500, 500), null, null);
 				//drawHex(g, s, q, r, 40, true, new Point(500, 500));
 				//drawHex(g, r, s, q, 40, true, new Point(500, 500));
 			}
@@ -38,7 +38,7 @@ public final class Draw {
 				int q=x;
 				int r=y;
 				int s=-x-y;	
-				drawHex(g, q, r, s, size, flatlayout, center, null);
+				drawHex(g, q, r, s, size, flatlayout, center, null, null);
 			}
 		}
 	}
@@ -54,7 +54,7 @@ public final class Draw {
 				int s=-q-r;
 				HexCoordinate hex = UtilitiesHex.add(new HexCoordinate(q, s, r), point);
 
-				drawHex(g, hex, Setting.size, flatlayout, Setting.center, null);
+				drawHex(g, hex, Setting.size, flatlayout, Setting.center, null, null);
 			}
 		}
 	}
@@ -67,7 +67,7 @@ public final class Draw {
 			int r2 = Math.min(radius, -q+radius);
 			for(int r = r1; r<=r2; r++) {
 				int s=-q-r;
-				drawHex(g, q, r, s, size, flatlayout, center, null);
+				drawHex(g, q, r, s, size, flatlayout, center, null, null);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ public final class Draw {
 			int q_offset=(int) Math.floor(q/2);
 			for(int s=-q_offset; s<width-q_offset; s++) {
 				int r=-s-q;
-				drawHex(g, q, r, s, size, false, center, null);
+				drawHex(g, q, r, s, size, false, center, null, null);
 			}
 		}
 	}
@@ -94,7 +94,7 @@ public final class Draw {
 			int r_offset=(int) Math.floor(r/2);
 			for(int q=-r_offset; q<width-r_offset; q++) {
 				int s=-q-r;
-				drawHex(g, q, r, s, size, flatlayout, center, null);
+				drawHex(g, q, r, s, size, flatlayout, center, null, null);
 			}
 		}
 	}
@@ -111,25 +111,47 @@ public final class Draw {
 						g.setColor(Setting.obstacleColor);
 					else
 						g.setColor(Setting.defaultColor);
-					drawHex(g, board[x][y], null, flatlayout);
+					drawHex(g, board[x][y], null, flatlayout, null);
 				}
 			}	
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, Character entity, boolean flatlayout) {
-		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
+	public static void itemsAndObstaclesOnly(Graphics2D g, Hex[][] board, Point dimensions, boolean flatlayout) {
+		g.drawRect(Setting.center.x-Setting.size, Setting.center.y-Setting.size, (dimensions.x-2)*Setting.size*2, (dimensions.y-2)*Setting.size*2+Setting.size);
+		
+		for(int x=0; x<dimensions.x; x++) {
+			for(int y=0; y<dimensions.y; y++) {
+				if(board[x][y]!=null) {
+					if(board[x][y].hasLoot()) {
+						g.setColor(Setting.lootColor);
+						drawHex(g, board[x][y], null, flatlayout, Setting.lootColor);
+					}
+					else if(board[x][y].hasObstacle()) {
+						g.setColor(Setting.obstacleColor);
+						drawHex(g, board[x][y], null, flatlayout, Setting.obstacleColor);
+					}else if(board[x][y].hasDoor()) {
+						g.setColor(Setting.doorColor);
+						drawHex(g, board[x][y], null, flatlayout, Setting.doorColor);
+					}
+				}
+			}	
+		}
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, Character entity, boolean flatlayout) {
-		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity);
+	public static void drawHex(Graphics2D g, Point h, Character entity, boolean flatlayout, Color fill) {
+		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity, fill);
 	}
 	
-	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, Character entity) {
-		drawHex(g, h.q, h.r, h.s, size, flatlayout, center, entity);
+	public static void drawHex(Graphics2D g, HexCoordinate h, Character entity, boolean flatlayout, Color fill) {
+		drawHex(g, h, Setting.size, flatlayout, Setting.center, entity, fill);
 	}
 	
-	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, Character entity) {
+	public static void drawHex(Graphics2D g, HexCoordinate h, int size, boolean flatlayout, Point center, Character entity, Color fill) {
+		drawHex(g, h.q, h.r, h.s, size, flatlayout, center, entity, fill);
+	}
+	
+	public static void drawHex(Graphics2D g, Point h, int size, boolean flatlayout, Point center, Character entity, Color fill) {
 		
 		HexCoordinate hex;
 		
@@ -138,17 +160,17 @@ public final class Draw {
 		else
 			hex = UtilitiesHex.pointyOffsetToCube(1, h);
 		
-		drawHex(g, hex, size, flatlayout, center, entity);
+		drawHex(g, hex, size, flatlayout, center, entity, fill);
 	}
 	
-	public static void drawHex(Graphics2D g, Hex hex, Character entity, boolean flatlayout) {
+	public static void drawHex(Graphics2D g, Hex hex, Character entity, boolean flatlayout, Color fill) {
 		if(hex!=null) {
 			if(!hex.isHidden())
-				drawHex(g, hex.offsetCoordinate, entity, flatlayout);
+				drawHex(g, hex.offsetCoordinate, entity, flatlayout, fill);
 		}
 	}
 	
-	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, Character entity) {
+	public static void drawHex(Graphics2D g, int q, int r, int s, int size, boolean flatlayout, Point center, Character entity, Color fill) {
 		HexLayout layout;
 
 		if(flatlayout)
@@ -168,7 +190,11 @@ public final class Draw {
 
 		Color oldColor = g.getColor();
 		
-		g.setColor(Setting.hextFill);
+		if(fill==null)
+			g.setColor(Setting.hextFill);
+		else
+			g.setColor(fill);
+		
 		g.fillPolygon(tX, tY, 6);
 		g.setColor(oldColor);
 		g.drawPolygon(tX, tY, 6);
@@ -205,7 +231,7 @@ public final class Draw {
 	public static void drawParty(Graphics2D g, List<Player> party, boolean flatlayout) {
 		g.setColor(Setting.playerColor);
 		for(int i=0; i<party.size(); i++) {
-			drawHex(g, party.get(i).getCoordinates(), party.get(i), flatlayout);
+			drawHex(g, party.get(i).getCoordinates(), party.get(i), flatlayout, null);
 		}
 		g.setColor(Setting.defaultColor);
 	}

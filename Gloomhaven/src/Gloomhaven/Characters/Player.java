@@ -463,11 +463,12 @@ public class Player extends Character {
 
 	private void showPickedCards(KeyEvent e, Graphics g) {
 
+		int rows=0;
 		if (topCard != null) {
-			GUI.drawAbilityCardTextTop(g, topCard);
+			rows=GUI.drawAbilityCardTextTop(g, topCard);
 		}
 		if (bottomCard != null) {
-			GUI.drawAbilityCardTextBottom(g, bottomCard);
+			GUI.drawAbilityCardTextBottom(g, bottomCard, rows);
 		}
 	}
 

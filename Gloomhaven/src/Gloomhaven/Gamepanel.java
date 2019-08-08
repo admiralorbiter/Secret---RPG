@@ -28,6 +28,7 @@ import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.Scenario;
 import Unsorted.City;
 import Unsorted.Setting;
+import Utility.StringUtilities;
 
 
 public class Gamepanel extends JPanel implements KeyListener, MouseListener{
@@ -107,7 +108,7 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	 * @param g Graphics Object
 	 */
 	private void gameManager(Graphics2D g) {	
-
+		
 		if(state==GameState.TITLE_STATE) {																			//[Title State]
 			GUIGamepanel.drawTitle(g);																				//Draw title screen
 			if((key!=null) && (key.getKeyCode()==KeyEvent.VK_SPACE))												//If space is pressed
@@ -183,7 +184,6 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 			
 			System.exit(0);																							//[TODO] End of the game, just exit program
 		}
-		
 		repaint();
 	}
 	
@@ -192,7 +192,9 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 		Graphics2D g = (Graphics2D)g1;											//Converts graphics go 2d graphics
 		super.paintComponent(g);
 		g.setColor(Setting.defaultColor);										//Sets the paint component to the default color	
-		gameManager(g);															//Runs the game manager everytime repaint is called					
+		gameManager(g);															//Runs the game manager everytime repaint is called	
+		key=null;
+		mouseClick=null;
 	}
 	
 	@Override
@@ -206,9 +208,22 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 		key=null;
 		repaint();
 	}
+	
+	@Override public void keyTyped(KeyEvent e) {
+		//key=e;
+		//repaint();
+	}
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		/*int xClick=arg0.getX();
+		int yClick=arg0.getY();
+		mouseClick = new Point(xClick, yClick);
+		UtilitiesHex.getOffsetHexFromPixels(new Point(xClick, yClick), scene.getData().getHexLayout());
+		repaint();*/
+	}
+	
+	@Override public void mouseReleased(MouseEvent arg0) {
 		int xClick=arg0.getX();
 		int yClick=arg0.getY();
 		mouseClick = new Point(xClick, yClick);
@@ -219,8 +234,6 @@ public class Gamepanel extends JPanel implements KeyListener, MouseListener{
 	/**
 	 * Unused mouse and key methods
 	 */
-	@Override public void mouseReleased(MouseEvent arg0) {}
-	@Override public void keyTyped(KeyEvent e) {}
 	@Override public void mouseClicked(MouseEvent arg0) {}
 	@Override public void mouseEntered(MouseEvent arg0) {}
 	@Override public void mouseExited(MouseEvent arg0) {}

@@ -1,8 +1,10 @@
 package Gloomhaven.Characters;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,6 +15,8 @@ import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AttackModifier.AttackModifierCard;
 import Gloomhaven.Hex.Draw;
 import Gloomhaven.Hex.Hex;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.HexLayout;
 import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.ScenarioData;
 import Gloomhaven.Scenario.ScenarioEnemyLoader;
@@ -42,10 +46,31 @@ public class EnemyInfo implements Serializable{
 	}
 	
 	public void drawEnemies(Graphics2D g, boolean flatlayout) {
-		g.setColor(Setting.enemyColor);
+
 		for(int i=0; i<enemies.size(); i++) {
+			g.setColor(Setting.enemyColor);
 			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i), flatlayout);
+			
+			HexCoordinate hex;
+			HexLayout hl;
+			
+			if(flatlayout) {
+				hex = UtilitiesHex.flatOffsetToCube(1, enemies.get(i).getCoordinates());
+				hl = new HexLayout(UtilitiesHex.getFlatLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+			}
+			else {
+				hex = UtilitiesHex.pointyOffsetToCube(1, enemies.get(i).getCoordinates());
+				hl = new HexLayout(UtilitiesHex.getPointyLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+			}
+			Point2D p = UtilitiesHex.hexToPixel(hl, enemies.get(i).getCubeCoordiantes(flatlayout));
+			if(enemies.get(i).getCharacterData().getHealth()<=2)
+				g.setColor(Color.RED);
+			else
+				g.setColor(Color.GREEN);
+			
+			g.drawString(""+enemies.get(i).getCharacterData().getHealth(), (int)p.getX(), (int)p.getY()-20);
 		}
+
 		g.setColor(Setting.enemyColor);
 	}
 	

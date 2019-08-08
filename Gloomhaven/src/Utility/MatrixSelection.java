@@ -27,6 +27,7 @@ public class MatrixSelection {
 	 * @param height		Pixel Height
 	 * @param itemTotal		Items in Matrix
 	 */
+	//TODO - Need to refactor so row and col is switched
 	public MatrixSelection(int width, int height, int itemTotal) {
 		this.width=width;
 		this.height=height;
@@ -35,18 +36,22 @@ public class MatrixSelection {
 		//Rows and Col determined by number of items
 		if(itemTotal<9) {
 			row=3;
-			col=3;
+			//col=3;
 		}else if(itemTotal<16) {
 			row=4;
-			col=4;
+			//col=4;
 		}
 		else if(itemTotal<25) {
 			row=5;
-			col=5;
+			//col=5;
 		}else {
 			row=6;
-			col=6;
+			//col=6;
 		}
+		if(itemTotal%row==0)
+			col=itemTotal/row;
+		else
+			col=itemTotal/row+1;
 	}
 	
 	/**
@@ -70,8 +75,8 @@ public class MatrixSelection {
 			else {
 				drawCol++;
 			}
-			
-			GUI.drawMatrixSelection(g, drawRow, drawCol, width/row, height/col, itemList.get(i));
+		
+			GUI.drawMatrixSelection(g, drawRow, drawCol, width/row, height/col+5, itemList.get(i));
 		}
 	}
 	

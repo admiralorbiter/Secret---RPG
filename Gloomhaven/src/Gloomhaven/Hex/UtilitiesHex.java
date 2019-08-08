@@ -219,9 +219,8 @@ public final class UtilitiesHex {
 		fh=UtilitiesHex.pixelToHex(hl, pixelPoint);
 		
 		HexCoordinate hc = UtilitiesHex.hexRound(fh);
-		System.out.println(UtilitiesHex.getOffset(flatlayout, hc));
-		System.out.println(pixelPoint+" - "+UtilitiesHex.hexToPixel(hl, hc));
 		return UtilitiesHex.getOffset(flatlayout, hc);
 	}
+
 }
 

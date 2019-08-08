@@ -16,6 +16,7 @@ import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Hex.Draw;
 import Gloomhaven.Scenario.ScenarioData;
+import Utility.StringUtilities;
 
 public final class GUI {
 
@@ -89,23 +90,43 @@ public final class GUI {
 	public static boolean checkMouseIsOnAbilityCard(Point mousePosition, int i) { return checkMousePositionX(mousePosition) && checkMousePositionY(mousePosition, i);}
 	
 	
-	public static void drawAbilityCardTextTop(Graphics g, PlayerAbilityCard topCard) {
+	public static int drawAbilityCardTextTop(Graphics g, PlayerAbilityCard topCard) {
 		g.setFont(FontSettings.body);
-		g.drawString("Cards", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*0);
-		g.drawString("Init: "+topCard.getText()[0], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*1);
-		g.drawString("1: Top of Card: "+topCard.getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*2);
-		g.drawString("2: Bottom of Card "+topCard.getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*3);
-		g.drawString("3: Top Alt - Attack +2", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*4);
-		g.drawString("4: Bottom Alt - Move +2", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*5);
+		int width=1050;
+		int row = drawString(g, "Cards", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody, width, GUISettings.leadingBody);
+		row+=drawString(g, "Init: "+topCard.getText()[0], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "1: "+topCard.getText()[1], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "2: "+topCard.getText()[2], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "3: Top Alt - Attack +2                4: Bottom Alt - Move +2", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		g.drawLine(GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width/2, GUISettings.gYQ1+GUISettings.leadingBody*(row+1));
+		return row;
 	}
 	
-	public static void drawAbilityCardTextBottom(Graphics g, PlayerAbilityCard bottomCard) {
+	public static void drawAbilityCardTextBottom(Graphics g, PlayerAbilityCard bottomCard, int row) {
 		g.setFont(FontSettings.body);
-		//g.drawString(bottomCard.getText()[0], 10, startingY+offsetY*6);
-		g.drawString("5: Top of Card "+bottomCard.getText()[1], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*7);
-		g.drawString("6: Bottom of Card "+bottomCard.getText()[2], GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*8);
-		g.drawString("7: Top Alt - Attack +2", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*9);
-		g.drawString("8: Bottom Alt - Move +2", GUISettings.gLeft, GUISettings.gMid+GUISettings.leadingBody*10);
+		int width=1050;
+		row=row+3;
+		row+=drawString(g, "Bottom Card", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "5: "+bottomCard.getText()[1], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "6: "+bottomCard.getText()[2], GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+		row+=drawString(g, "7: Top Alt - Attack +2                8: Bottom Alt - Move +2", GUISettings.gLeft, GUISettings.gYQ1+GUISettings.leadingBody*(row+1), width, GUISettings.leadingBody);
+		row++;
+	}
+	
+	private static int drawString(Graphics g, String string, int x, int y, int width, int leading) {
+		List<String> list = StringUtilities.lineBreakBasedOnCharacter(g, width, string);
+		
+		for(int i=0; i<list.size(); i++)
+			g.drawString(list.get(i), x, y+leading*i);
+		
+		return list.size();
 	}
 	
 	public static void drawItemCardDuringTurn(Graphics g, char[] buttons, List<Item> usableItems, int i) {
@@ -185,16 +206,19 @@ public final class GUI {
 	 */
 	public static void drawMatrixSelection(Graphics g, int drawRow, int drawCol, int width, int height, Item item) {
 		g.setFont(FontSettings.bodySmall);
-		
+
 		//Draws Background for the item
 		g.setColor(Color.black);
-		g.fillRect(GUISettings.width/2+drawCol*width, GUISettings.height/6+15+drawRow*height, width-5, height-5);
+		g.fillRect(GUISettings.width/2+drawCol*width-5, GUISettings.height/6+15+drawRow*height-5, width+10, height+10);
 		
 		//Draws Item Name
 		g.setColor(Color.WHITE);
-		g.drawString(item.getName(), GUISettings.width/2+drawCol*width, GUISettings.height/6+25+drawRow*height);
+		//g.drawString(item.getName(), GUISettings.width/2+drawCol*width, GUISettings.height/6+25+drawRow*height);
+		int row=0;
+		row+=drawString(g, item.getName(), GUISettings.width/2+drawCol*width, GUISettings.height/6+25+drawRow*height+row*15, width , 15);
 
 		//Goes through and draws each character and splits it that way
+		/*
 		int charLength=0;
 		int rowLength=1;
 		int pixelsForEachChar=10;
@@ -212,10 +236,13 @@ public final class GUI {
 		}
 		rowLength++;
 		charLength=1;
+		*/
+		row+=drawString(g, item.getText(), GUISettings.width/2+drawCol*width, GUISettings.height/6+40+drawRow*height+row*15, width, 15);
 		
 		//Draws how much it costs
 		g.setColor(Color.RED);
-		g.drawString("Gold: "+item.getGold(), GUISettings.width/2+drawCol*width+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*height+rowLength*11);
+		row+=drawString(g, "Gold: "+item.getGold(), GUISettings.width/2+drawCol*width, GUISettings.height/6+40+drawRow*height+row*15, width, 15);
+		//g.drawString("Gold: "+item.getGold(), GUISettings.width/2+drawCol*width+charLength*pixelsForEachChar, GUISettings.height/6+20+drawRow*height+rowLength*11);
 		g.setColor(Color.WHITE);
 	}
 	
@@ -231,8 +258,8 @@ public final class GUI {
 		if(shopImage!=null)
 			g.drawImage(shopImage.getImage(), 50, 50, GUISettings.width-200, GUISettings.height-200, null);	
 		
-		g.setColor(Color.black);													
-		g.fillRect(GUISettings.width/2, GUISettings.height/6, 650, 650);		//Draws black filled in rect that is the background for the items
+		g.setColor(new Color(227, 224, 188));													
+		g.fillRect(GUISettings.width/2-10, GUISettings.height/6, 900+20, 800);		//Draws black filled in rect that is the background for the items
 		g.setColor(Color.white);
 		
 		g.setColor(Color.BLACK);

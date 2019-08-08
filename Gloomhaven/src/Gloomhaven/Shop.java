@@ -50,7 +50,7 @@ public class Shop implements Serializable{
 	public void drawAndUpdateShop(Graphics g, Player player, Point mouseClick) {
 		GUI.drawShop(g, shopImage, player);										//Draws shop background
 		
-		MatrixSelection matrix = new MatrixSelection(650, 650, supply.size());	//Creates a matrix based on the number of items available
+		MatrixSelection matrix = new MatrixSelection(900, 800, supply.size());	//Creates a matrix based on the number of items available
 		
 		List<String> itemText = new ArrayList<>();								
 		for(int i=0; i<supply.size(); i++)										//Pulls item text from all the items in the store
@@ -59,8 +59,9 @@ public class Shop implements Serializable{
 		matrix.drawSelection(g, supply);										//Draws the items
 		int selection = matrix.selectItem(mouseClick);							//Updates the matrix with mouse click and returns selection
 		
-		if(selection!=-99)														//If selection is not flagged as inactive, then attempt to buy item
+		if(selection!=-99) {													//If selection is not flagged as inactive, then attempt to buy item
 			buyItem(player, supply.get(selection));
+		}
 	}
 
 	/** Attempts to buy item */
@@ -81,7 +82,7 @@ public class Shop implements Serializable{
 	
 	/**
 	 * Draws a random item from the random design item pile and adds the rest to the shop
-	 * @param Player to is drawing the item 	
+	 * @param Player 	
 	 */
 	public void retrieveRandomItemDesign(Player player) {
 		

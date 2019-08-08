@@ -113,7 +113,7 @@ public class Scenario implements Serializable{
 		this.g=g;
 		this.key=key;
 		this.mouseClick=mouseClick;
-		
+
 		if(Setting.drawLines)																						//For testing purpoes only
 			GUI.drawLines(g);
 		
@@ -163,6 +163,8 @@ public class Scenario implements Serializable{
 				break;
 			case PLAYER_MOVE:
 				playerMove();
+				Draw.drawParty(g, party, data.getHexLayout());																//Draws player hexes
+				enemyInfo.drawEnemies(g, data.getHexLayout());																//Draws active enemy hexes
 				break;
 			case PLAYER_ATTACK:
 				playerAttack();
@@ -190,7 +192,7 @@ public class Scenario implements Serializable{
 				break;
 			default:
 		}
-
+		
 		enemyInfo.update(board, data);																				//Removes dead enemies and increases stats
 		
 		return ScenarioEvaluateEnd.evaluateOne(enemyInfo.getEnemies(), data, party);								//Evaluates if the scenario goal has been met	

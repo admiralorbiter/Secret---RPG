@@ -120,7 +120,7 @@ public final class GUI {
 		row++;
 	}
 	
-	private static int drawString(Graphics g, String string, int x, int y, int width, int leading) {
+	public static int drawString(Graphics g, String string, int x, int y, int width, int leading) {
 		List<String> list = StringUtilities.lineBreakBasedOnCharacter(g, width, string);
 		
 		for(int i=0; i<list.size(); i++)

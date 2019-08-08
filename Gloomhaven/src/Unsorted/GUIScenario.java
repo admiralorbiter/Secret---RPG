@@ -127,17 +127,16 @@ public final class GUIScenario {
 		int rows=2;
 		
 		if(augment!=null) {
-			g.drawString(augment.getCardText(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
-			rows++;
+			//g.drawString(augment.getCardText(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
+			rows+=GUI.drawString(g, augment.getCardText(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows, GUISettings.cardsInPlayTableW, GUISettings.leadingBody);
 		}
 		
 		for(int i=0; i<inPlay.size(); i++) {
-			g.drawString(inPlay.get(i).getName(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
-			rows++;
+			rows+=GUI.drawString(g, inPlay.get(i).getName(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows, GUISettings.cardsInPlayTableW, GUISettings.leadingBody);
 		}
 		
 		for(int j=0; j<counterTriggers.size(); j++) {
-			g.drawString(counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows);
+			rows+=GUI.drawString(g, "Counter: "+counterTriggers.get(j).getEffectFlag()+"  "+counterTriggers.get(j).getTriggerFlag(), GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody*rows, GUISettings.cardsInPlayTableW, GUISettings.leadingBody);
 		}
 
 		rows++;

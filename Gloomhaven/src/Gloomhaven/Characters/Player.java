@@ -600,7 +600,7 @@ public class Player extends Character {
 
 	public void graphicsDrawCardsInPlay(Graphics g) {
 
-		GUIScenario.graphicsDrawCardsInPlay(g, augment, inPlay, counterTriggers);
+		GUIScenario.graphiascsDrawCardsInPlay(g, augment, inPlay, counterTriggers);
 	}
 
 	public void graphicsPlayerInfo(Graphics g) {

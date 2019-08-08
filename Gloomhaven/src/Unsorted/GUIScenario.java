@@ -118,7 +118,7 @@ public final class GUIScenario {
 		g.setColor(Setting.defaultColor);
 	}
 	
-	public static void graphicsDrawCardsInPlay(Graphics g, CardDataObject augment, List<PlayerAbilityCard> inPlay, List<Counter> counterTriggers) {
+	public static void graphiascsDrawCardsInPlay(Graphics g, CardDataObject augment, List<PlayerAbilityCard> inPlay, List<Counter> counterTriggers) {
 
 		g.setFont(FontSettings.heading);
 		g.drawString("Cards in play.", GUISettings.cardsInPlayX, GUISettings.cardsInPlayY+GUISettings.leadingBody);
@@ -175,7 +175,7 @@ public final class GUIScenario {
 		g.drawString("Health "+data.getHealth()+"  XP "+data.getXp(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*3);
 	
 		int rows=0;
-		
+		/*
 		if(isAugmented) {
 			g.drawString("Augment Active: ", GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4));
 			g.drawString(augment.getCardText(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*5);
@@ -191,7 +191,7 @@ public final class GUIScenario {
 			rows++;
 			g.drawString(roundTriggers.get(i).getTriggerFlag(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		}
-		
+		*/
 		g.drawString("Gold: "+data.getGold(), GUISettings.playerInfoX+GUISettings.padding+25, GUISettings.playerInfoY+GUISettings.leadingBody*(4+rows));
 		
 		if(roundBonus!=null)

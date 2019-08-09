@@ -162,14 +162,52 @@ public class EnemyInfo implements Serializable{
 		
 		//Check if they are further x or y
 		//if the difference is x is greater, move x, else move y
+		
+		boolean moved=false;
+		
 		if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)>Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
 			//move left
-			if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x>0)
+			if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x>0) {
 				if(board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
 					enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x-1, enemies.get(index).getCoordinates().y));
-					board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].equals(obj)
+					board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
+					moved=true;
 				}
-					
+			}
+			//move right
+			if(moved==false) {
+				if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x<0) {
+					if(board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
+						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x+1, enemies.get(index).getCoordinates().y));
+						board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
+						moved=true;
+					}
+				}
+			}
+		}
+		//up/down
+		if(moved==false) {
+			if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)<Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
+				//move up
+				if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y>0) {
+					if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].isSpaceEmpty()) {
+						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y-1));
+						board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].setSpaceEmpty();
+						moved=true;
+					}
+				}
+			}
+			
+			//move right
+			if(moved==false) {
+				if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y<0) {
+					if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].isSpaceEmpty()) {
+						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y+1));
+						board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].setSpaceEmpty();
+						moved=true;
+					}
+				}
+			}
 		}
 	}
 	

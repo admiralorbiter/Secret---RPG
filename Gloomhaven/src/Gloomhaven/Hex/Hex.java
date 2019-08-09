@@ -48,11 +48,23 @@ public class Hex extends HexCoordinate {
 		 if(door!=null)
 			 if(door.isDoorLocked())
 				 return false;
+		 if(obstacle)
+			 return false;
 		 
-		 return empty;
+		 if(hidden)
+			 return false;
+		 
+		 if(!quickID.equals(" "))
+			 return false;
+		 
+		 return true;
 	}
 	 public void setRoomID(int id) {this.roomID=id;}
-	 public void setSpaceEmpty(boolean empty) {this.empty=empty;}
+	 public void setSpaceEmpty() {
+		 quickID=" ";
+		 id = " ";
+		 image = null;
+	 }
 	 public boolean isHidden() {return hidden;}
 	 public void setHidden(boolean hidden) {this.hidden=hidden;}
 	 

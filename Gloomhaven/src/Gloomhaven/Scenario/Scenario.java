@@ -299,7 +299,8 @@ public class Scenario implements Serializable{
 	
 	private boolean movePlayer(Player player, Point ending) {	
 	
-		if(board[ending.x][ending.y].hasObstacle() || board[ending.x][ending.y].isHidden() || board[ending.x][ending.y].getQuickID().equals("E"))
+		//if(board[ending.x][ending.y].hasObstacle() || board[ending.x][ending.y].isHidden() || board[ending.x][ending.y].getQuickID().equals("E"))
+		if(!board[ending.x][ending.y].isSpaceEmpty())
 			return false;
 		
 		if(board[(int) ending.getX()][(int) ending.getY()].hasLoot()) {
@@ -331,9 +332,7 @@ public class Scenario implements Serializable{
 		*/
 
 		//Resets the old tile
-		board[player.getCoordinates().x][player.getCoordinates().y].setQuickID(" ");
-		board[player.getCoordinates().x][player.getCoordinates().y].setID(" ");
-		board[player.getCoordinates().x][player.getCoordinates().y].setImage(null);
+		board[player.getCoordinates().x][player.getCoordinates().y].setSpaceEmpty();
 		player.setCoordinates(ending);
 		
 		return true;

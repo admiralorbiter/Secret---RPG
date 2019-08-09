@@ -395,7 +395,7 @@ public class Scenario implements Serializable{
 	
 	private void enemyAttack() {
 		enemyInfo.drawAbilityCard(g);  
-		enemyInfo.enemyMoveProcedure(enemyTurnIndex, party, g);
+		enemyInfo.enemyMoveProcedure(board, enemyTurnIndex, party, g);
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		
@@ -470,7 +470,7 @@ public class Scenario implements Serializable{
 		if((k==Setting.healKey)||(party.get(playerIndex).abilityCardsLeft()==0)) {
 			int damage = enemyInfo.getAttack(enemyTurnIndex);
 
-			party.get(playerIndex);
+			party.get(playerIndex).takeDamage(damage);;
 			if(party.get(playerIndex).getCharacterData().getHealth()<=0)
 				party.remove(playerIndex);
 			

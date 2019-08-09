@@ -18,7 +18,6 @@ public class Enemy extends Character{
 	private boolean eliteFlag;
 	private SimpleCardData baseStats;
 	private Point startingPosition;
-	private int attack=0;
 	
 	public Enemy(int id, String classID, int room, boolean elite, Point startingPosition) {
 		
@@ -73,9 +72,7 @@ public class Enemy extends Character{
 	}
 	
 	public Point getStartingPosition() {return startingPosition;}
-	public int getAttack() {return attack;}
-	public void setAttack(int attack) {this.attack=attack;}
-	
+
 	public void move(HexCoordinate hex, Point dimensions) {
 		Point coordinate = UtilitiesHex.getOffset(hex.getLayout(), hex);
 		

@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Characters.Character;
 import Gloomhaven.Scenario.Scenario;
+import Unsorted.GUI;
 import Unsorted.Setting;
 
 public final class Draw {
@@ -232,7 +233,9 @@ public final class Draw {
 		g.setColor(Setting.playerColor);
 		for(int i=0; i<party.size(); i++) {
 			drawHex(g, party.get(i).getCoordinates(), party.get(i), flatlayout, null);
+			GUI.drawCharacterInfo(g, flatlayout, party.get(i));
 		}
+		
 		g.setColor(Setting.defaultColor);
 	}
 }

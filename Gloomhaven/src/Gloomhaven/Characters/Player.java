@@ -64,8 +64,8 @@ public class Player extends Character {
 	private BattleGoalCard battleGoal = null;
 	private int currentBattleGoalCount = 0;
 
-	private boolean exhausted=false;
-	
+	private boolean exhausted = false;
+
 	public int getHandAndDiscardSize() {
 		int count = 0;
 		for (int i = 0; i < abilityDeck.size(); i++) {
@@ -400,16 +400,15 @@ public class Player extends Character {
 						initiative = abilityDeck.get(index).getInitiative();
 						cardChoice = !cardChoice;
 					}
-				}else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
+				} else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
 					topCard = abilityDeck.get(key);
 					abilityDeck.get(key).setCardInPlay();
 					initiative = abilityDeck.get(key).getInitiative();
 					cardChoice = !cardChoice;
 				}
-			}
-			else {
+			} else {
 				GUI.chooseBottomCard(g);
-	
+
 				if (checkIfAbilityCardSelected(mouseClick) != -1) {
 					int index = checkIfAbilityCardSelected(mouseClick);
 					if (abilityDeck.get(index).isCardFree()) {
@@ -417,13 +416,13 @@ public class Player extends Character {
 						abilityDeck.get(index).setCardInPlay();
 						cardChoice = !cardChoice;
 					}
-				}else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
+				} else if (key >= 0 && key < abilityDeck.size() && abilityDeck.get(key).isCardFree()) {
 					bottomCard = abilityDeck.get(key);
 					abilityDeck.get(key).setCardInPlay();
 					cardChoice = !cardChoice;
 				}
 			}
-		}	
+		}
 	}
 
 	/**
@@ -463,9 +462,9 @@ public class Player extends Character {
 
 	private void showPickedCards(KeyEvent e, Graphics g) {
 
-		int rows=0;
+		int rows = 0;
 		if (topCard != null) {
-			rows=GUI.drawAbilityCardTextTop(g, topCard);
+			rows = GUI.drawAbilityCardTextTop(g, topCard);
 		}
 		if (bottomCard != null) {
 			GUI.drawAbilityCardTextBottom(g, bottomCard, rows);
@@ -552,17 +551,17 @@ public class Player extends Character {
 			else
 				abilityDeck.get(index).setCardIndiscardPile();
 		}
-		
-		int lostPile=0;
-		
-		for(AbilityCard card : abilityDeck) {
-			if(card.isLostFlag())
+
+		int lostPile = 0;
+
+		for (AbilityCard card : abilityDeck) {
+			if (card.isLostFlag())
 				lostPile++;
 		}
-		
-		if(abilityDeck.size()-lostPile<3)
-			exhausted=true;
-		
+
+		if (abilityDeck.size() - lostPile < 3)
+			exhausted = true;
+
 		secondCardChoice = null;
 		firstCardChoice = null;
 		longRest = false;
@@ -786,8 +785,8 @@ public class Player extends Character {
 
 		if (damage > 0)
 			data.setHealth(data.getHealth() - damage);
-		
-		if(data.getHealth()<data.getMaxHealth()/2)
+
+		if (data.getHealth() < data.getMaxHealth() / 2)
 			stats.setLessHalfHPFlag(true);
 
 		// [Test]
@@ -874,10 +873,17 @@ public class Player extends Character {
 	public int getBattleGoalTotal() {
 		return currentBattleGoalCount;
 	}
-	
-	public boolean isExhausted() {return exhausted;}
-	
-	//Testing
-	public void setBattleGoalTotal(int battleGoalCount) {this.currentBattleGoalCount=battleGoalCount;}
-	public void setData(CharacterDataObject data) {this.data=data;}
+
+	public boolean isExhausted() {
+		return exhausted;
+	}
+
+	// Testing
+	public void setBattleGoalTotal(int battleGoalCount) {
+		this.currentBattleGoalCount = battleGoalCount;
+	}
+
+	public void setData(CharacterDataObject data) {
+		this.data = data;
+	}
 }

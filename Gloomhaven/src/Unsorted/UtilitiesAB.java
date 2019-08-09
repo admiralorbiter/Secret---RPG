@@ -102,7 +102,7 @@ public final class UtilitiesAB {
 		int attack= 0;
 
 		if(abilityCard.getFlag()=="AltTop")
-			attack=6;
+			attack=Setting.ALTATTACK;
 		else
 			attack=UtilitiesCharacters.getAttack(player, card, player.getAttackModDeck(), false, false);
 			//attack=player.getAttack(card, false, false);
@@ -205,17 +205,18 @@ public final class UtilitiesAB {
 		enemy.takeDamage(attack);
 		
 		if(enemy.getCharacterData().getHealth()<=0) {
-			if(player.getBattleGoalCard().getThresholdKeyword().equals("overkill"))
-					player.getStats().setOverkill(true);
-			
-			if(player.getBattleGoalCard().getThresholdKeyword().equals("first_blood") && anyMonstersKilled==false) {
-				anyMonstersKilled=true;
-				player.getStats().setFirstBlood(true);
+			if(player.getBattleGoalCard()!=null) {
+				if(player.getBattleGoalCard().getThresholdKeyword().equals("overkill"))
+						player.getStats().setOverkill(true);
+				
+				if(player.getBattleGoalCard().getThresholdKeyword().equals("first_blood") && anyMonstersKilled==false) {
+					anyMonstersKilled=true;
+					player.getStats().setFirstBlood(true);
+				}
+				
+				if(player.getBattleGoalCard().getThresholdKeyword().equals("single_blow") && enemy.getCharacterData().getMaxHealth()<=attack)
+					player.getStats().setSingleBlow(true);
 			}
-			
-			if(player.getBattleGoalCard().getThresholdKeyword().equals("single_blow") && enemy.getCharacterData().getMaxHealth()<=attack)
-				player.getStats().setSingleBlow(true);
-			
 			System.out.println(player.getName()+"   killed enemy "+enemy.getClassID());
 			player.getStats().addKilledEnemy(enemy);
 			if(enemy.isElite())

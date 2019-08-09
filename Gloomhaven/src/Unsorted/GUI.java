@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +13,13 @@ import javax.swing.ImageIcon;
 import Gloomhaven.AbilityCards.EnemyAbilityCard;
 import Gloomhaven.AbilityCards.PlayerAbilityCard;
 import Gloomhaven.BattleGoals.BattleGoalCard;
+import Gloomhaven.Characters.Character;
 import Gloomhaven.Characters.Enemy;
 import Gloomhaven.Characters.Player;
 import Gloomhaven.Hex.Draw;
+import Gloomhaven.Hex.HexCoordinate;
+import Gloomhaven.Hex.HexLayout;
+import Gloomhaven.Hex.UtilitiesHex;
 import Gloomhaven.Scenario.ScenarioData;
 import Utility.StringUtilities;
 
@@ -272,6 +277,27 @@ public final class GUI {
 		g.drawString(player.getName(),  100, GUISettings.height-325);
 		g.drawString("Available Gold: "+player.getCharacterData().getGold(), 100, GUISettings.height-300);
 		
+	}
+	
+	public static void drawCharacterInfo(Graphics g, boolean flatlayout, Character character) {
+		HexCoordinate hex;
+		HexLayout hl;
+		
+		if(flatlayout) {
+			hex = UtilitiesHex.flatOffsetToCube(1, character.getCoordinates());
+			hl = new HexLayout(UtilitiesHex.getFlatLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+		}
+		else {
+			hex = UtilitiesHex.pointyOffsetToCube(1, character.getCoordinates());
+			hl = new HexLayout(UtilitiesHex.getPointyLayoutOrientation(), new Point(Setting.size, Setting.size), Setting.center);
+		}
+		Point2D p = UtilitiesHex.hexToPixel(hl, character.getCubeCoordiantes(flatlayout));
+		if(character.getCharacterData().getHealth()<=2)
+			g.setColor(Color.RED);
+		else
+			g.setColor(Color.GREEN);
+		
+		g.drawString(""+character.getCharacterData().getHealth(), (int)p.getX()-10, (int)p.getY()-20);
 	}
 
 }

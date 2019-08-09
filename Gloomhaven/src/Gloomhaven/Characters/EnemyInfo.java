@@ -25,6 +25,7 @@ import Unsorted.FontSettings;
 import Unsorted.GUI;
 import Unsorted.GUISettings;
 import Unsorted.Setting;
+import Unsorted.UtilitiesAB;
 
 public class EnemyInfo implements Serializable{
 	
@@ -51,6 +52,7 @@ public class EnemyInfo implements Serializable{
 			g.setColor(Setting.enemyColor);
 			Draw.drawHex(g, enemies.get(i).getCoordinates(), enemies.get(i), flatlayout, null);
 			
+			/*
 			HexCoordinate hex;
 			HexLayout hl;
 			
@@ -70,8 +72,14 @@ public class EnemyInfo implements Serializable{
 			
 			g.drawString(""+enemies.get(i).getCharacterData().getHealth(), (int)p.getX(), (int)p.getY()-20);
 		}
-
+		*/
+			
+		GUI.drawCharacterInfo(g, flatlayout, enemies.get(i));
+		}
+		
 		g.setColor(Setting.enemyColor);
+		
+		
 	}
 	
 	public void initiationRound() {
@@ -141,8 +149,28 @@ public class EnemyInfo implements Serializable{
 		return enemyTypeList;
 	}
 	
-	public void enemyMoveProcedure(int index, List<Player> party, Graphics g) {
-			
+	public void enemyMoveProcedure(Hex[][] board, int index, List<Player> party, Graphics g) {
+		
+		//TODO fix this hack of a system. doesn't move diag or do line of site
+		//checks which player is closest and then moves towards that player
+		int closestIndex=0;
+		int distance=UtilitiesAB.distance(enemies.get(index).getCoordinates(), party.get(0).getCoordinates());
+		for(int j=1; j<party.size(); j++) {
+			if(UtilitiesAB.distance(enemies.get(index).getCoordinates(), party.get(j).getCoordinates())<distance)
+				closestIndex=j;
+		}
+		
+		//Check if they are further x or y
+		//if the difference is x is greater, move x, else move y
+		if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)>Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
+			//move left
+			if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x>0)
+				if(board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
+					enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x-1, enemies.get(index).getCoordinates().y));
+					board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].equals(obj)
+				}
+					
+		}
 	}
 	
 	public List<Enemy> getTurnEnemies(){

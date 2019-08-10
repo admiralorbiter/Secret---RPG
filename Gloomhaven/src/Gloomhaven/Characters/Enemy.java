@@ -32,10 +32,24 @@ public class Enemy extends Character{
 		//Testing Need to actually udate stats.
 		if(elite) {
 			setImage(new ImageIcon("src/Gloomhaven/img/EnemyIconElite.png"));
-			baseStats=new SimpleCardData(4, 3, 6);
+			//baseStats=new SimpleCardData(4, 3, 6);
 		}else {
 			setImage(new ImageIcon("src/Gloomhaven/img/EnemyIcon.png"));
-			baseStats=new SimpleCardData(3, 2, 5);
+			//baseStats=new SimpleCardData(3, 2, 5);
+		}
+		
+		switch(classID) {
+			case "Bandit Guard":
+				baseStats=new SimpleCardData(2, 2, 0);
+				break;
+			case "Bandit Archer":
+				baseStats=new SimpleCardData(2, 2, 3);
+				break;
+			case "Living Bones":
+				baseStats=new SimpleCardData(1, 2, 0);
+				break;
+			default:
+				baseStats=new SimpleCardData(1, 1, 0);
 		}
 		
 		this.startingPosition=startingPosition;

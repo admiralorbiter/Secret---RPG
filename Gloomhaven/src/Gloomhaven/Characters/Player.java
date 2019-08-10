@@ -886,4 +886,10 @@ public class Player extends Character {
 	public void setData(CharacterDataObject data) {
 		this.data = data;
 	}
+	
+	//For testing
+	public void setAbilityCard(PlayerAbilityCard card) {
+		this.topCard=card;
+		this.firstCardChoice=card;
+	}
 }

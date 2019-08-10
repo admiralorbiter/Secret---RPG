@@ -73,5 +73,4 @@ public class PlayerAbilityCard extends AbilityCard {
 		
 		return text;
 	}
-	
 }

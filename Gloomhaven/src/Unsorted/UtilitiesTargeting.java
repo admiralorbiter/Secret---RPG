@@ -17,9 +17,9 @@ public final class UtilitiesTargeting {
 	
 	public static List<Player> createTargetListPlayer(Hex board[][], int range, HexCoordinate starting, Point dimensions, List<Player> party, boolean flatlayout){
 		List<Point> targetPoints = new ArrayList<Point>();
-		
+
 		targetPoints=createTargetList(board, range, starting, "P", dimensions, flatlayout);
-	
+
 		List<Player> targets = new ArrayList<Player>();
 		
 		for(int i=0; i<targetPoints.size(); i++) {

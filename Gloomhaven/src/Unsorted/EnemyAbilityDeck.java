@@ -32,7 +32,8 @@ public class EnemyAbilityDeck {
 	public int getInitiative() {return abilityDeck.get(abilityCardIndex).getInitiative();}
 	public void setTurnNumber(int turnNumber) {this.turnNumber=turnNumber;}
 	public int getTurnNumber() {return turnNumber;}
-	
+	public String getText() {return abilityDeck.get(abilityCardIndex).getText();}
+	public AttackModifierCard getAttackModifierCard() {return card;}
 	
 	public void pickRandomAbilityCard() {
 		Random rand = new Random();

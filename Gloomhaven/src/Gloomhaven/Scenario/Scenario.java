@@ -393,7 +393,7 @@ public class Scenario implements Serializable{
 	}
 	
 	private void enemyAttack() {
-		enemyInfo.drawAbilityCard(g);  
+		enemyInfo.drawAbilityCard(g, enemyInfo.getEnemy(enemyTurnIndex));  
 		enemyInfo.enemyMoveProcedure(board, enemyTurnIndex, party, g);
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
@@ -407,7 +407,7 @@ public class Scenario implements Serializable{
 		if(enemyInfo.getTurnEnemies().size()!=0)
 			targets = UtilitiesTargeting.createTargetListPlayer(board, enemyInfo.getEnemy(enemyTurnIndex).getBaseStats().getRange(), enemyInfo.getEnemy(enemyTurnIndex).getCubeCoordiantes(data.getHexLayout()), data.getBoardSize(), party, data.getHexLayout());
 		//targets = enemyInfo.createTargetListForEnemy(enemyTurnIndex, party, g);
-		
+
 		if(targets.size()>0) {
 			
 			int min=100;
@@ -461,7 +461,7 @@ public class Scenario implements Serializable{
 	
 	private void playerDefense() {
 		
-		enemyInfo.drawAbilityCard(g);
+		enemyInfo.drawAbilityCard(g, enemyInfo.getEnemy(enemyTurnIndex));
 		GUI.drawEnemyAttack(g, enemyInfo.getEnemy(enemyTurnIndex), enemyInfo.getAttack(enemyTurnIndex));
 		
 		int playerIndex = getTargetIndex();

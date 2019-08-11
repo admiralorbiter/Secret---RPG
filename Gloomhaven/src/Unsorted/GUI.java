@@ -161,10 +161,14 @@ public final class GUI {
 		g.drawImage(new ImageIcon("src/Gloomhaven/img/BattleGoal.png").getImage(), GUISettings.gMidX, GUISettings.gYQ1, GUISettings.eventImageW, GUISettings.eventImageH, null);
 	}
 	
-	public static void drawEnemyAbilityCards(Graphics g, List<EnemyAbilityDeck> enemyDecks, int enemyDeckIndex) {
+	public static void drawEnemyAbilityCards(Graphics g, List<EnemyAbilityDeck> enemyDecks, int enemyDeckIndex, Enemy enemy) {
 		g.setFont(FontSettings.body);
-		g.drawString("Enemy Ability Card "+enemyDecks.get(enemyDeckIndex).getDeckID(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY);
-		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody);
+		g.drawString("Enemy Ability Card "+enemyDecks.get(enemyDeckIndex).getDeckID()+"   Attack: "+enemy.getBaseStats().getAttack(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY);
+		g.drawString(enemyDecks.get(enemyDeckIndex).getText(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody);
+		g.drawString("Attack +"+enemyDecks.get(enemyDeckIndex).getAttackModifierCard().getPlusAttack()+"   x"+enemyDecks.get(enemyDeckIndex).getAttackModifierCard().getMultiplier(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody*2);
+		g.drawString("Attack: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getAttack()+"  Move: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getMove()+" Range: "+enemyDecks.get(enemyDeckIndex).getEnemyAbilityCard().getRange(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody*3);
+		if(Setting.TestShowEnemyCardIndex)
+			g.drawString("Ability Card Index: "+enemyDecks.get(enemyDeckIndex).getAbilityCardIndex(), GUISettings.gEnemyAbilityCardX, GUISettings.gEnemyAbilityCardY+GUISettings.leadingBody*4);
 	}
 	
 	public static void drawEnemyAttack(Graphics g, Enemy enemy, int damage) {

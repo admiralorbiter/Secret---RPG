@@ -66,4 +66,7 @@ public final class Setting {
 	public static char targetKey='t';
 	
 	public static ImageIcon background = new ImageIcon("src/Gloomhaven/img/RoundedBackground.png");
+	
+	//test
+	public static boolean TestShowEnemyCardIndex=true;
 }

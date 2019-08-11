@@ -14,14 +14,14 @@ public class EnemyAbilityCard extends AbilityCard {
 	public EnemyAbilityCard(String enemyClass, int cardID, int enemyLevel) {
 		
 		CardInterface classCardData=null;
-		
-		if(enemyClass.equals("Archer")) {
+	
+		if(enemyClass.equals("Bandit Archer")) {
 			classCardData = new Archer();
 		}
-		else if(enemyClass.equals("LivingBones")) {
+		else if(enemyClass.equals("Living Bones")) {
 			classCardData = new LivingBones();
 		}
-		else if(enemyClass.equals("Guard")) {
+		else if(enemyClass.equals("Bandit Guard")) {
 			classCardData = new Guard();
 		}
 		else {

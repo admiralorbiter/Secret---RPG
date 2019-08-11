@@ -40,16 +40,16 @@ public class Enemy extends Character{
 		
 		switch(classID) {
 			case "Bandit Guard":
-				baseStats=new SimpleCardData(2, 2, 0);
+				baseStats=new SimpleCardData(2, 2, 1);
 				break;
 			case "Bandit Archer":
 				baseStats=new SimpleCardData(2, 2, 3);
 				break;
 			case "Living Bones":
-				baseStats=new SimpleCardData(1, 2, 0);
+				baseStats=new SimpleCardData(1, 2, 1);
 				break;
 			default:
-				baseStats=new SimpleCardData(1, 1, 0);
+				baseStats=new SimpleCardData(1, 1, 1);
 		}
 		
 		this.startingPosition=startingPosition;

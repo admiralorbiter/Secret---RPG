@@ -283,8 +283,8 @@ public class EnemyInfo implements Serializable{
 	public void setEnemyDeckIndex(int index) {this.enemyDeckIndex=index;}
 	public String getDeckClass() {return enemyDecks.get(enemyDeckIndex).getDeckID();}
 	
-	public void drawAbilityCard(Graphics g) {
-		GUI.drawEnemyAbilityCards(g, enemyDecks, enemyDeckIndex);
+	public void drawAbilityCard(Graphics g, Enemy enemy) {
+		GUI.drawEnemyAbilityCards(g, enemyDecks, enemyDeckIndex, enemy);
 	}
 	
 }

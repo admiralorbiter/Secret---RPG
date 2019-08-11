@@ -18,52 +18,56 @@ public class CharacterDataObject {
 		int TEST_SHIELD=Setting.TEST_SHIELD;
 		int scenarioLevel=1;
 		
-		switch(flag) {
-			case "Bandit Guard":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			case "Bandit Archer":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			case "Living Bones":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			case "Bandit Commander":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				bossFlag=true;
-				break;
-			case "Inox Guard":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			case "Inox Archer":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			case "Inox Shaman":
-				health=TEST_HEALTH;
-				shield=TEST_SHIELD;
-				maxHealth=TEST_HEALTH;
-				break;
-			default:
-				level=1;
-				health=450;
-				xp=0;
-				shield=0;
-				level=1;
-				maxHealth=450;
-				gold=100;
-		}
+		if(Setting.TestStats && flag!="Player") {
+			health=TEST_HEALTH;
+			shield=TEST_SHIELD;
+		}else {
+			switch(flag) {
+				case "Bandit Guard":
+					health=5;
+					shield=0;
+					break;
+				case "Bandit Archer":
+					health=4;
+					shield=0;
+					break;
+				case "Living Bones":
+					health=5;
+					shield=0;
+					break;
+				case "Bandit Commander":
+					health=TEST_HEALTH;
+					shield=TEST_SHIELD;
+					maxHealth=TEST_HEALTH;
+					bossFlag=true;
+					break;
+				case "Inox Guard":
+					health=TEST_HEALTH;
+					shield=TEST_SHIELD;
+					maxHealth=TEST_HEALTH;
+					break;
+				case "Inox Archer":
+					health=TEST_HEALTH;
+					shield=TEST_SHIELD;
+					maxHealth=TEST_HEALTH;
+					break;
+				case "Inox Shaman":
+					health=TEST_HEALTH;
+					shield=TEST_SHIELD;
+					maxHealth=TEST_HEALTH;
+					break;
+				default:
+					level=1;
+					health=450;
+					xp=0;
+					shield=0;
+					level=1;
+					maxHealth=450;
+					gold=100;
+			}
+		}	
+		
+		maxHealth=health;
 		
 		if(eliteFlag) {
 			health=health+scenarioLevel;

@@ -69,4 +69,5 @@ public final class Setting {
 	
 	//test
 	public static boolean TestShowEnemyCardIndex=true;
+	public static boolean TestStats=false;
 }

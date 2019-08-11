@@ -394,7 +394,7 @@ public class Scenario implements Serializable{
 	
 	private void enemyAttack() {
 		enemyInfo.drawAbilityCard(g, enemyInfo.getEnemy(enemyTurnIndex));  
-		enemyInfo.enemyMoveProcedure(board, enemyTurnIndex, party, g);
+		enemyInfo.enemyMoveProcedure(board, enemyTurnIndex, party, g, data);
 		
 		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
 		

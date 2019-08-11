@@ -26,6 +26,7 @@ import Unsorted.GUI;
 import Unsorted.GUISettings;
 import Unsorted.Setting;
 import Unsorted.UtilitiesAB;
+import Unsorted.UtilitiesTargeting;
 
 public class EnemyInfo implements Serializable{
 	
@@ -149,7 +150,7 @@ public class EnemyInfo implements Serializable{
 		return enemyTypeList;
 	}
 	
-	public void enemyMoveProcedure(Hex[][] board, int index, List<Player> party, Graphics g) {
+	public void enemyMoveProcedure(Hex[][] board, int index, List<Player> party, Graphics g, ScenarioData data) {
 		
 		//TODO fix this hack of a system. doesn't move diag or do line of site
 		//checks which player is closest and then moves towards that player
@@ -165,46 +166,49 @@ public class EnemyInfo implements Serializable{
 		
 		boolean moved=false;
 		
-		if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)>Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
-			//move left
-			if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x>0) {
-				if(board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
-					enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x-1, enemies.get(index).getCoordinates().y));
-					board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
-					moved=true;
-				}
-			}
-			//move right
-			if(moved==false) {
-				if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x<0) {
-					if(board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
-						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x+1, enemies.get(index).getCoordinates().y));
-						board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
+		if(UtilitiesTargeting.createTargetList(board, 1, enemies.get(index).getCubeCoordiantes(data.getHexLayout()), "P", data.getBoardSize(), data.getHexLayout()).size()==0)
+		{
+			if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)>Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
+				//move left
+				if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x>0) {
+					if(board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
+						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x-1, enemies.get(index).getCoordinates().y));
+						board[enemies.get(index).getCoordinates().x-1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
 						moved=true;
 					}
 				}
-			}
-		}
-		//up/down
-		if(moved==false) {
-			if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)<Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
-				//move up
-				if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y>0) {
-					if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].isSpaceEmpty()) {
-						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y-1));
-						board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].setSpaceEmpty();
-						moved=true;
+				//move right
+				if(moved==false) {
+					if(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x<0) {
+						if(board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y]!=null && board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].isSpaceEmpty()) {
+							enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x+1, enemies.get(index).getCoordinates().y));
+							board[enemies.get(index).getCoordinates().x+1][enemies.get(index).getCoordinates().y].setSpaceEmpty();
+							moved=true;
+						}
 					}
 				}
 			}
-			
-			//move right
+			//up/down
 			if(moved==false) {
-				if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y<0) {
-					if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].isSpaceEmpty()) {
-						enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y+1));
-						board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].setSpaceEmpty();
-						moved=true;
+				if(Math.abs(enemies.get(index).getCoordinates().x-party.get(closestIndex).getCoordinates().x)<Math.abs(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y)) {
+					//move up
+					if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y>0) {
+						if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].isSpaceEmpty()) {
+							enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y-1));
+							board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y-1].setSpaceEmpty();
+							moved=true;
+						}
+					}
+				}
+				
+				//move right
+				if(moved==false) {
+					if(enemies.get(index).getCoordinates().y-party.get(closestIndex).getCoordinates().y<0) {
+						if(board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1]!=null && board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].isSpaceEmpty()) {
+							enemies.get(index).setCoordinates(new Point(enemies.get(index).getCoordinates().x, enemies.get(index).getCoordinates().y+1));
+							board[enemies.get(index).getCoordinates().x][enemies.get(index).getCoordinates().y+1].setSpaceEmpty();
+							moved=true;
+						}
 					}
 				}
 			}

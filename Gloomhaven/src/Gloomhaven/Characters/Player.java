@@ -82,7 +82,7 @@ public class Player extends Character {
 		setClassID(classID);
 		setName("Jon");
 		setImage(new ImageIcon("src/Gloomhaven/img/MindthiefIcon.png"));
-		data = new CharacterDataObject(classID, false);
+		data = new CharacterDataObject("Player", false);
 
 		maxHandCount = Setting.getMaxHandCount();
 

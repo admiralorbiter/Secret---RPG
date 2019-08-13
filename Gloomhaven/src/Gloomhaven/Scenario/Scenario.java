@@ -249,33 +249,33 @@ public class Scenario implements Serializable{
 	
 	/** Matches the turn with enemy or player */
 	private void matchTurnWithEnemyOrPlayer() {
-
+		
+		//Looks at enemies first to match with turn number
 		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
 			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {									//Checks if it is enemy turn based on the turn tied to the ability deck
-				enemyTurnIndex=0;																	//Resets enemy turn index
-				enemyInfo.setEnemyDeckIndex(i);
-				if(enemyInfo.getEnemies().size()>0)
-					state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK	
+				enemyTurnIndex=0;																					//Resets enemy turn index for enemies in the current deck
+				enemyInfo.setEnemyDeckIndex(i);																		//Sets the deck index for the enemy attack state					
+				if(!enemyInfo.getEnemies().isEmpty())																//If enemies are left on the board
+					state=State.ENEMY_ATTACK;																		//Match Turn -> Enemy Attack	
 				else
-					state=State.ROUND_END_DISCARD;
+					state=State.ROUND_END_DISCARD;																	//Ends the round if no enemies on board
 			}
 		}
 		
-		//Next State: Long Rest or Player Choice
-		for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
-			if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
+		//After no enemies are found, looks at the party
+		for(int i=0; i<party.size(); i++) {																			//Searches for a match on the turn and the players
+			if(party.get(i).getTurnNumber()==turnIndex) {															//Once a match is found, checks if the player is on rest or needs to use cards
 				if(party.get(i).onRest()) {					
 					currentPlayer=i;
 					party.get(i).resetCardChoice();
 					state=State.LONG_REST;
-					break;
 				}
 				else {
 					currentPlayer=i;
-					party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
+					party.get(i).resetCardChoice();																	//Resets card choice so it can be used in player choice when picking cards
 					state=State.PLAYER_CHOICE;
-					break;
 				}
+				break;
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package Gloomhaven.AbilityCards;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
@@ -9,7 +10,7 @@ import Unsorted.GUI;
 import Unsorted.GUISettings;
 import Unsorted.Setting;
 
-public class AbilityCard {
+public class AbilityCard implements Serializable{
 
 	private String name="If you are seeing this, then error";
 	private int initiative=-99;

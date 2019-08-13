@@ -40,20 +40,15 @@ public class Scenario implements Serializable{
 	    INITIATIVE,
 	    ATTACK,
 	    ENEMY_ATTACK,
-	    ENEMY_MOVE,
 	    ENEMY_CONTROL_LOGIC,
 	    PLAYER_CHOICE,
 	    PLAYER_DEFENSE,
 	    PLAYER_DISCARD,
-	    ENEMY_DEFENSE,
-	    PLAYER_CARD,
 	    ROUND_END_DISCARD,
 	    ROUND_END_REST,
 	    PLAYER_ATTACK_LOGIC,
 	    PLAYER_MOVE,
 	    PLAYER_ATTACK,
-	    PLAYER_LOOT,
-	    PLAYER_HEAL,
 	    LONG_REST,
 	    PLAYER_PUSH_SELECTION,
 	    PLAYER_PUSH,
@@ -61,7 +56,6 @@ public class Scenario implements Serializable{
 	    CREATE_INFUSION,
 	    USE_ANY_INFUSION,
 	    MINDCONTROL,
-	    END;
 	}
 	
 	private City gloomhaven;																						//City Data Object
@@ -96,37 +90,38 @@ public class Scenario implements Serializable{
 		this.shop=shop;
 		this.gloomhaven=gloomhaven;
 		this.party=party;
-		data = ScenarioDataLoader.loadScenarioData(sceneID);
-		enemyInfo = new EnemyInfo(data);
-		board = ScenarioBoardLoader.loadBoardLayout(sceneID, data);
+		
+		data = ScenarioDataLoader.loadScenarioData(sceneID);														//Loads scenario data based on id
+		enemyInfo = new EnemyInfo(data);																			//Loads enemy info from the scenario
+		board = ScenarioBoardLoader.loadBoardLayout(sceneID, data);													//Loads board based on id and data
 		
 		for(int i=0; i<party.size(); i++)
-			party.get(i).getStats().startScenario();
+			party.get(i).getStats().startScenario();																//Resets player scenario stats for battle cards													
 		
-		party.get(0).setCoordinates(data.getStartingPosition());													//TODO: Have the party pick thier starting positions
-		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());
-		state=State.CARD_SELECTION;
+		party.get(0).setCoordinates(data.getStartingPosition());													//Sets player 1 position
+		UtilitiesBoard.updatePositions(board, party, enemyInfo.getEnemies());										//Updates the board with player and enemy positions
+		state=State.CARD_SELECTION;																					//Initialization -> Card Selection
 	}
 	
 	public boolean playRound(KeyEvent key, Graphics2D g, Point mouseClick) {
 		
-		this.g=g;
+		this.g=g;																									
 		this.key=key;
 		this.mouseClick=mouseClick;
 
-		if(Setting.drawLines)																						//For testing purpoes only
-			GUI.drawLines(g);
+		if(Setting.drawLines)																						//[TESTING]
+			GUI.drawLines(g);																						//Draws grid lines to help with gui placement
 		
-		setup();
+		setup();																									//Sets up loop and redraws most of the gui
 		GUIScenario.drawControlsAndHelp(g, state, party, currentPlayer, card);										//Draws directions and controls for each state
 		
 		switch(state) {
 			case CARD_SELECTION:
-				if(enemyInfo.getEnemies().isEmpty()) {
-					for(Player player : party)
-						player.getStats().setNoEnemiesAroundFlag(true);
+				if(enemyInfo.getEnemies().isEmpty()) {																//if there are no enemies currently on the board
+					for(Player player : party)																		//set battle card flag if round isn't over
+						player.getStats().setNoEnemiesAroundFlag(true);												//No enemies around flag
 				}
-				cardSelection();
+				cardSelection();																					
 				break;
 			case INITIATIVE:
 				initiative();
@@ -242,14 +237,47 @@ public class Scenario implements Serializable{
 	
 	/** Sets the initiative */
 	private void initiative() {
-		enemyInfo.initiationRound();															//Sorts enemy by initiative
-		party.sort(Comparator.comparingInt(Player::getInitiative));								//Order just the players based on initiative
+		enemyInfo.initiationRound();																				//Sorts enemy by initiative
+		party.sort(Comparator.comparingInt(Player::getInitiative));													//Order just the players based on initiative
 
-		UtilitiesGeneral.setTurnNumbers(party, enemyInfo);
+		UtilitiesGeneral.setTurnNumbers(party, enemyInfo);															//Goes through player and enemies to determine turn order
 		
 		currentPlayer=0;
 		turnIndex=0;
 		state=State.ATTACK;
+	}
+	
+	/** Matches the turn with enemy or player */
+	private void matchTurnWithEnemyOrPlayer() {
+
+		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
+			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {									//Checks if it is enemy turn based on the turn tied to the ability deck
+				enemyTurnIndex=0;																	//Resets enemy turn index
+				enemyInfo.setEnemyDeckIndex(i);
+				if(enemyInfo.getEnemies().size()>0)
+					state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK	
+				else
+					state=State.ROUND_END_DISCARD;
+			}
+		}
+		
+		//Next State: Long Rest or Player Choice
+		for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
+			if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
+				if(party.get(i).onRest()) {					
+					currentPlayer=i;
+					party.get(i).resetCardChoice();
+					state=State.LONG_REST;
+					break;
+				}
+				else {
+					currentPlayer=i;
+					party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
+					state=State.PLAYER_CHOICE;
+					break;
+				}
+			}
+		}
 	}
 	
 	private void selection() {
@@ -339,47 +367,6 @@ public class Scenario implements Serializable{
 
 	}
 	
-	private void matchTurnWithEnemyOrPlayer() {
-		selectionCoordinate=null;
-		
-		if(Setting.test) {
-			System.out.println("");
-			System.out.println("Turn Index: "+turnIndex+"  "+party.get(0).getTurnNumber());
-			for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++)
-				System.out.println(enemyInfo.getEnemyAbilityDeck().get(i).getDeckID()+" , "+enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber());
-		}
-		
-		for(int i=0; i<enemyInfo.getEnemyAbilityDeck().size(); i++) {
-			if(enemyInfo.getEnemyAbilityDeck().get(i).getTurnNumber()==turnIndex) {													//If enemy turns, do enemy attack
-				enemyTurnIndex=0;																	//Resets enemy turn index
-				//enemyDeckIndex=i;
-				enemyInfo.setEnemyDeckIndex(i);
-				if(enemyInfo.getEnemies().size()>0)
-					state=State.ENEMY_ATTACK;															//Goes to STATE:ENEMY_ATTACK	
-				else
-					state=State.ROUND_END_DISCARD;
-			}
-		}
-		
-		//Next State: Long Rest or Player Choice
-		for(int i=0; i<party.size(); i++) {													//Searches for a match on the turn and the players
-			if(party.get(i).getTurnNumber()==turnIndex) {										//Once a match is found, sets the index, changes state, and breaks
-				if(party.get(i).onRest()) {					
-					currentPlayer=i;
-					party.get(i).resetCardChoice();
-					state=State.LONG_REST;
-					break;
-				}
-				else {
-					currentPlayer=i;
-					party.get(i).resetCardChoice();											//Resets card choice so it can be used in player choice when picking cards
-					state=State.PLAYER_CHOICE;
-					break;
-				}
-			}
-		}
-	}
-	
 	private void longRest() {
 		boolean finished=false;																	//Indicates if the round is over
 		party.get(currentPlayer).takeLongRest(g, num);											//Draws discard pile and has player pick a card and sets long rest to false
@@ -393,6 +380,7 @@ public class Scenario implements Serializable{
 	}
 	
 	private void enemyAttack() {
+		
 		enemyInfo.drawAbilityCard(g, enemyInfo.getEnemy(enemyTurnIndex));  
 		enemyInfo.enemyMoveProcedure(board, enemyTurnIndex, party, g, data);
 		

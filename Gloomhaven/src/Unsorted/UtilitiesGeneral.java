@@ -35,6 +35,7 @@ public final class UtilitiesGeneral {
 	
 	public static void setTurnNumbers(List<Player> party, EnemyInfo enemyInfo) {
 		int size = party.size()+enemyInfo.getEnemyAbilityDeck().size();
+
 		String[][] turnList = new String[size][3];
 
 		int index=0;
@@ -63,20 +64,23 @@ public final class UtilitiesGeneral {
 			String tempDeckID = turnList[min][1];
 			String tempInit=turnList[min][2];
 			
-			turnList[i][0]=turnList[min][0];
-			turnList[i][1]=turnList[min][1];
-			turnList[i][2]=turnList[min][2];
+			turnList[min][0]=turnList[i][0];
+			turnList[min][1]=turnList[i][1];
+			turnList[min][2]=turnList[i][2];
 			
-			turnList[min][0]=tempQuickID;
-			turnList[min][1]=tempDeckID;
-			turnList[min][2]=tempInit;
+			turnList[i][0]=tempQuickID;
+			turnList[i][1]=tempDeckID;
+			turnList[i][2]=tempInit;
+			
+			System.out.println(min);
 		}
 		
 		System.out.println("");
 		System.out.print("Init List: ");
 		for(int i=0; i<size; i++) {
-			System.out.print(turnList[i][0]+" "+turnList[i][2]+" , ");
+			System.out.print(turnList[i][0]+" "+turnList[i][1]+"  "+turnList[i][2]+" , ");
 		}
+		System.out.println();
 		
 		int turnNum=0;
 		

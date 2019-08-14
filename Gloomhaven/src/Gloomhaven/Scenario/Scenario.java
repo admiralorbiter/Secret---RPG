@@ -134,6 +134,15 @@ public class Scenario implements Serializable{
 			case LONG_REST:
 				longRest();
 				break;
+			case PLAYER_CHOICE:
+				playerCardChoice();
+				break;
+			case PLAYER_ITEM:
+				usePlayerItem();
+				break;
+			case PLAYER_ATTACK_LOGIC:
+				playerAttackLogic();
+				break;
 			case ENEMY_ATTACK:
 				enemyAttack();
 				break;
@@ -146,15 +155,6 @@ public class Scenario implements Serializable{
 			case PLAYER_DISCARD:
 				if(party.get(currentPlayer).discardForHealth(num, g))												//Prints ability cards then waits until one is picked. 
 					enemyControlLogic();
-				break;
-			case PLAYER_CHOICE:
-				playerCardChoice();
-				break;
-			case PLAYER_ATTACK_LOGIC:
-				playerAttackLogic();
-				break;
-			case PLAYER_ITEM:
-				usePlayerItem();
 				break;
 			case PLAYER_MOVE:
 				playerMove();
@@ -280,6 +280,77 @@ public class Scenario implements Serializable{
 		}
 	}
 	
+	/** Takes long rest. Lose one card, refresh cards, items and heal +2 */
+	private void longRest() {
+		boolean finished=false;																						//Indicates if the round is over
+		party.get(currentPlayer).takeLongRest(g, num);																//Draws discard pile and has player pick a card and sets long rest to false
+		if(!party.get(currentPlayer).onRest())																		//If long rest is over, then the turn is over
+			finished=true;
+		
+		if(finished) {
+			turnIndex++;																							//Moves to the next player
+			state=State.ATTACK;																						//Long Rest -> Attack
+		}
+	}
+	
+	/** Prints picked ability cards. Has user make an attack */
+	private void playerCardChoice() {
+		int cardPick=party.get(currentPlayer).pickPlayCard(key, num, k, g);											//Prints ability cards then waits for one to pick
+		if(cardPick>=1 && cardPick<=8) {
+			card = party.get(currentPlayer).playCard();
+			state=State.PLAYER_ATTACK_LOGIC;																		//Player Card Choice -> Player Attack Logic
+		}
+		
+		if(cardPick>=100) {																							
+			itemUsed=cardPick-100;																					//If Item is picked, goes to item phase
+			state=State.PLAYER_ITEM;																				//Player Card Choice -> Player Item
+		}
+	}
+	
+	/** Resolves player picked item*/
+	//TODO
+	private void usePlayerItem() {
+		List<Item> usableItems = ItemLoader.onTurn(party.get(currentPlayer).getItems());
+		
+		if(usableItems.get(itemUsed).getConsumed())																	//If the item is consume on use, consume
+			ItemLoader.consumeItem(party.get(currentPlayer), usableItems.get(itemUsed));
+		else if(usableItems.get(itemUsed).getSpent())																//If the item is spend on us, spend
+			ItemLoader.spendItem(party.get(currentPlayer), usableItems.get(itemUsed));
+		
+		if(party.get(currentPlayer).getCreateAnyElement())															//If the item created an element
+			state=State.CREATE_INFUSION;																			//Player Item -> Create Infusion
+		else																										//else
+			state=State.PLAYER_CHOICE;																				//Player Item -> Player Choice, so player has to play an item before thier last card
+	}
+	
+	/** Controls the flow and logic of the player attacks*/
+	private void playerAttackLogic() {
+		if(selectionCoordinate==null)
+			selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
+		
+		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, board, data, shop);
+		
+		if(UsePlayerAbilityCard.getMove(card)>0)
+			state=State.PLAYER_MOVE;
+		else if(UsePlayerAbilityCard.getCardData(card).getConsumeElementalFlag())
+			state=State.USE_ANY_INFUSION;
+		else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0)
+			state=State.PLAYER_ATTACK;
+		else {
+			if(party.get(currentPlayer).getCardChoice()==false) {
+				state=State.PLAYER_CHOICE;
+			}else {
+				//if turn is over
+				if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
+					state=State.ROUND_END_DISCARD;
+				else {
+					turnIndex++;
+					state=State.ATTACK;
+				}
+			}
+		}
+	}
+	
 	private void selection() {
 		
 		if(mouseClick!=null) {
@@ -365,18 +436,6 @@ public class Scenario implements Serializable{
 		
 		return true;
 
-	}
-	
-	private void longRest() {
-		boolean finished=false;																	//Indicates if the round is over
-		party.get(currentPlayer).takeLongRest(g, num);											//Draws discard pile and has player pick a card and sets long rest to false
-		if(party.get(currentPlayer).onRest()==false)												//If long rest is over, then the turn is over
-			finished=true;
-		
-		if(finished) {
-			turnIndex++;																				//Moves to the next player
-			state=State.ATTACK;																	//Next State: Attack
-		}
 	}
 	
 	private void enemyAttack() {
@@ -479,59 +538,6 @@ public class Scenario implements Serializable{
 			}
 		}
 		return -1;																					//Only returns a -1 if there is an error
-	}
-	
-	private void playerCardChoice() {
-		int cardPick=party.get(currentPlayer).pickPlayCard(key, num, k, g);								//Prints ability cards then waits for one to pick
-		if(cardPick>=1 && cardPick<=8) {
-			card = party.get(currentPlayer).playCard();
-			state=State.PLAYER_ATTACK_LOGIC;													//Next State: Player Attack Logic
-		}
-		if(cardPick>=100) {
-			itemUsed=cardPick-100;
-			state=State.PLAYER_ITEM;
-		}
-	}
-	
-	private void playerAttackLogic() {
-		if(selectionCoordinate==null)
-			selectionCoordinate=new Point(party.get(currentPlayer).getCoordinates());
-		
-		UtilitiesAB.resolveCard(party.get(currentPlayer), card, elements, board, data, shop);
-		
-		if(UsePlayerAbilityCard.getMove(card)>0)
-			state=State.PLAYER_MOVE;
-		else if(UsePlayerAbilityCard.getCardData(card).getConsumeElementalFlag())
-			state=State.USE_ANY_INFUSION;
-		else if(UsePlayerAbilityCard.getRange(card)>0 || UsePlayerAbilityCard.getAttack(card)>0)
-			state=State.PLAYER_ATTACK;
-		else {
-			if(party.get(currentPlayer).getCardChoice()==false) {
-				state=State.PLAYER_CHOICE;
-			}else {
-				//if turn is over
-				if(turnIndex==(party.size()+enemyInfo.getEnemyAbilityDeck().size()-1))
-					state=State.ROUND_END_DISCARD;
-				else {
-					turnIndex++;
-					state=State.ATTACK;
-				}
-			}
-		}
-	}
-	
-	private void usePlayerItem() {
-		List<Item> usableItems = ItemLoader.onTurn(party.get(currentPlayer).getItems());
-		
-		if(usableItems.get(itemUsed).getConsumed())
-			ItemLoader.consumeItem(party.get(currentPlayer), usableItems.get(itemUsed));
-		else if(usableItems.get(itemUsed).getSpent())
-			ItemLoader.spendItem(party.get(currentPlayer), usableItems.get(itemUsed));
-		
-		if(party.get(currentPlayer).getCreateAnyElement())
-			state=State.CREATE_INFUSION;
-		else
-			state=State.PLAYER_CHOICE;
 	}
 	
 	private void playerMove() {
